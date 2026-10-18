@@ -2521,7 +2521,7 @@ function renderCell() {
 function renderBest() {
   if (!R.best) return; // the view changed while the server was answering
   const el = clear(R.best), p = A.data.poll, on = onBoard(), N = on.length;
-  const durs = uniq([60, 90, 120, 150, 180, p.duration, A.duration].filter(Boolean)).sort((a, b) => a - b);
+  const durs = uniq([60, 90, 120, 150, 180, 210, 240, 270, 300, p.duration, A.duration].filter(Boolean)).sort((a, b) => a - b);
   el.append(h('div', { class: 'best-head' },
     h('h3', null, t('bestTitle')),
     h('label', { class: 'inline-field', for: 'a-dur' }, t('length'),
@@ -2916,7 +2916,7 @@ function openPollEditor(poll) {
       fld('', 'pe-from', t('fFrom'), selectEl('pe-from', times.slice(0, -1), f.dayStart, () => {}, { class: 'input', disabled: answered })),
       fld('', 'pe-to', t('fTo'), selectEl('pe-to', times.slice(1), f.dayEnd, () => {}, { class: 'input', disabled: answered })),
       fld('', 'pe-slot', t('fStep'), selectEl('pe-slot', [15, 30, 60].map(v => [v, t('stepMin', { n: v })]), f.slot, () => {}, { class: 'input', disabled: answered })),
-      fld('', 'pe-dur', t('fDuration'), selectEl('pe-dur', uniq([60, 90, 120, 150, 180, 240, f.duration]).sort((a, b) => a - b).map(v => [v, durText(v)]), f.duration, () => {}, { class: 'input' })),
+      fld('', 'pe-dur', t('fDuration'), selectEl('pe-dur', uniq([60, 90, 120, 150, 180, 210, 240, 270, 300, f.duration]).sort((a, b) => a - b).map(v => [v, durText(v)]), f.duration, () => {}, { class: 'input' })),
       answered ? h('p', { class: 'hint full' }, t('gridLocked')) : null,
       fld('', 'pe-deadline', t('fDeadline'), h('input', { id: 'pe-deadline', class: 'input', type: 'date', value: f.deadline || '' })),
       fld('', 'pe-tz', t('fTz'), h('input', { id: 'pe-tz', class: 'input', maxlength: '60', value: f.tz || '' })),
