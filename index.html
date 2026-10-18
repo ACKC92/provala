@@ -244,6 +244,13 @@ q { quotes: "\201C" "\201D"; }
   box-shadow: var(--frame), inset 0 0 0 1px var(--paper-edge), inset 0 0 60px var(--paper-burn), 0 18px 44px rgb(0 0 0 / 55%);
 }
 .folio::before, .modal::before { content: ""; position: absolute; inset: -10px; pointer-events: none; background: var(--corners); }
+/* The way between the members' and the organizer's sign-in pages: an invisible spot over the bottom-right corner
+   ornament's diamond (its centre sits exactly on the sheet's corner). It glows when pointed at or focused. */
+.admin-door { position: absolute; right: -14px; bottom: -14px; z-index: 2; width: 28px; height: 28px; border-radius: 50%; }
+.admin-door::after { content: ""; position: absolute; inset: 2px; border-radius: 50%; opacity: 0; transition: opacity 0.2s;
+  background: radial-gradient(circle, rgb(232 205 133 / 75%) 0 22%, rgb(232 205 133 / 25%) 45%, transparent 70%); }
+.admin-door:hover::after, .admin-door:focus-visible::after, .admin-door:active::after { opacity: 1; }
+.admin-door:focus-visible { outline: 2px solid var(--gold-hi); outline-offset: 1px; }
 .folio.narrow { max-width: 540px; margin-inline: auto; }
 .folio:has(> .banner-wrap) { padding-top: min(var(--fp), 22px); }
 .banner-wrap { margin-bottom: 14px; }
@@ -858,7 +865,7 @@ const T = {
     fillBoth: 'Write your username and password.',
     badLogin: "That username and password don't match. Check for typos and try again.",
     locked: 'Too many wrong tries. Wait 15 minutes, then try again.',
-    forgot: "Forgot your password? Message your conductor and they'll give you a new one.",
+    forgot: "Forgot your password? Message your conductor and they'll give you a new one.", organizerDoor: 'Organizer sign-in', memberDoor: 'Member sign-in',
     demoLoginHint: 'In the demo, the username is deneme and the password is demo.', useDemoLogin: 'Fill in the demo login',
     signedInAs: 'Signed in as {name}', changePassword: 'Change password',
     pwTitle: 'Change your password', pwOld: 'Current password', pwNew: 'New password',
@@ -1007,7 +1014,7 @@ const T = {
     fillBoth: 'Kullanıcı adınızı ve şifrenizi yazın.',
     badLogin: 'Kullanıcı adı ya da şifre yanlış. Yazım hatası olmadığına bakıp tekrar deneyin.',
     locked: 'Çok fazla yanlış deneme oldu. 15 dakika bekleyip tekrar deneyin.',
-    forgot: 'Şifrenizi mi unuttunuz? Şefinize yazın, size yeni bir şifre versin.',
+    forgot: 'Şifrenizi mi unuttunuz? Şefinize yazın, size yeni bir şifre versin.', organizerDoor: 'Şef girişi', memberDoor: 'Üye girişi',
     demoLoginHint: 'Demoda kullanıcı adı deneme, şifre demo.', useDemoLogin: 'Demo bilgilerini doldur',
     signedInAs: '{name} olarak giriş yaptınız', changePassword: 'Şifremi değiştir',
     pwTitle: 'Şifrenizi değiştirin', pwOld: 'Şu anki şifre', pwNew: 'Yeni şifre',
@@ -2040,9 +2047,15 @@ function renderLogin(main) {
     h('p', { class: 'hint' }, t('forgot')),
     isDemo ? h('div', { class: 'actions' }, h('span', { class: 'hint' }, t('demoLoginHint')),
       h('button', { type: 'button', class: 'btn small', onclick: () => { user.value = 'deneme'; pass.value = 'demo'; form.requestSubmit(); } }, t('useDemoLogin'))) : null));
+  // The organizer's way in: the gold diamond in the sheet's bottom-right corner ornament leads to the planner's sign-in.
+  main.append(cornerDoor('#admin', t('organizerDoor')));
   // On a computer, start typing straight away; on a phone, don't pop the keyboard up uninvited.
   if (window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches) setTimeout(() => (user.value ? pass : user).focus(), 0);
 }
+
+// A wordless link over the gold diamond in the sign-in sheet's bottom-right corner: from the members' sign-in
+// to the planner's, and back. Members won't notice it; it glows when pointed at or focused.
+const cornerDoor = (href, label) => h('a', { class: 'admin-door', href, 'aria-label': label, title: label });
 
 function openPasswordDialog() {
   const prev = document.activeElement;
@@ -2758,7 +2771,7 @@ function buildGate() {
 function renderAdmin(main) {
   if (!A.authed) {
     if (A.loading && A.key) { main.append(stateBlock(t('loading'))); return; }
-    main.append(buildGate());
+    main.append(buildGate(), cornerDoor('#', t('memberDoor')));
     return;
   }
   if (A.error) main.append(errorBlock(A.error, adminEnter));

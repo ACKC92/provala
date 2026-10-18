@@ -71,7 +71,7 @@ You don't need to upload `Code.gs` to GitHub. It contains no secrets (the key an
 
 ## Step 3: Add your members
 
-1. Open `https://<your-username>.github.io/provala/#admin`, paste your organizer key, and click **Open planner**. That browser stays signed in to the planner for 30 days, or until you click **Sign out**. The key itself isn't saved in the browser.
+1. Open `https://<your-username>.github.io/provala/#admin` (or, on the sign-in page, tap the gold diamond at the bottom-right corner of the sign-in sheet: it's the organizer's way in, and members won't notice it; the same diamond on the planner's sign-in takes you back), paste your organizer key, and click **Open planner**. That browser stays signed in to the planner for 30 days, or until you click **Sign out**. The key itself isn't saved in the browser.
 2. Click **New poll**, check the details, and click **Create poll** (Step 4 has more about polls).
 3. Open the **Members** tab. Type or paste your group's names, one per line, and click **Add**.
 4. Each person gets a username (from their first name, like `ayse`) and an easy password (like `kiraz-tempo-mavi-47`). Next to each name, click **Message (TR)** or **Message (EN)**. That copies a ready-to-send message with the link, their username and their password. Paste it into a private chat with that person, not the group chat.
