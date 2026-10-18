@@ -5,7 +5,7 @@ A free availability planner for a group that meets regularly. Members mark the d
 - **Only your members can use it.** You add them in the planner and each person gets their own username and password. Without signing in, the link shows a sign-in screen and nothing else: no titles, no dates, no names, and no way to answer.
 - **Members** sign in once on their phone or computer and stay signed in there. They tap a day (or a weekday name like *Tue* for every Tuesday) and mark its half hours as *Available* or *If needed*, add notes for specific days and a general comment, and send. *If needed* asks for a short reason, either in that day's note or in the general comment. They can come back any time, from any device, to change their answers. They never see anyone else's answers.
 - **You (the organizer)** sign in to the planner with a private key. You get a timetable that shows how many people are free at each half hour, a board you drag people onto to see the overlaps of any group, a ranked list of the best times (marked *tam kadro* when everyone can come), a "two meetings a month" suggestion, a list of who hasn't answered yet, and a schedule you publish to members. You can copy the schedule as a ready-made message for WhatsApp in Turkish or English, and members can add the dates to their calendars.
-- The page switches between Turkish and English, and between day and night (the moon and sun button in the header). It starts out matching the device's own setting.
+- The page switches between Turkish and English (TR / EN in the header), and between day and night (the moon and sun button). Every page opens in Turkish, whatever language the phone is set to; someone who presses EN keeps English on that device until they press TR. Day or night starts out matching the device's own setting.
 
 ## What goes where
 
@@ -77,6 +77,8 @@ You don't need to upload `Code.gs` to GitHub. It contains no secrets (the key an
 4. Each person gets a username (from their first name, like `ayse`) and an easy password (like `kiraz-tempo-mavi-47`). Next to each name, click **Message (TR)** or **Message (EN)**. That copies a ready-to-send message with the link, their username and their password. Paste it into a private chat with that person, not the group chat.
 5. The passwords are shown only now. The sheet keeps them in a scrambled form that can't be turned back into the password. If someone loses theirs, click **New password** next to their name and send them the new message.
 
+6. Next to each name, pick their **voice part** (Soprano, Alto, Tenor, Bas). It's saved at once. Members then see, for each rehearsal you publish, who can come part by part (see "What members see of each other" below). You can leave someone without a part.
+
 Members can change their password after signing in (**Change password** under the title). Usernames don't care about capital letters or Turkish characters: `Ayşe`, `AYSE` and `ayse` all work.
 
 ## Step 4: Run your first month
@@ -87,7 +89,7 @@ Members can change their password after signing in (**Change password** under th
    - **The board.** Everyone starts on it. Drag names off to the "Not on the board" tray, or drag them back, to see the overlaps for any group (for example, only one section). Tapping a name also moves it.
    - **Best times.** One line per day, best first, for the meeting length you choose, with who is missing and why. **Two meetings a month** suggests the best pair of dates at least 10 days apart (you can change the gap).
 3. The **People** tab shows how many members have answered and who hasn't yet, then each person's month at a glance with their comment and day notes. You can delete an answer there, or show only that person on the board.
-4. Click **Add** next to a time (or **Add both**), then open the **Schedule** tab. Adjust times, add a place and notes, and click **Publish to members**. Signed-in members see the dates under **Schedule** with buttons to add them to Google Calendar or any calendar app.
+4. Click **Add** next to a time (or **Add both**), then open the **Schedule** tab. Adjust times, add a place and notes, and click **Publish to members**. Signed-in members see the dates under **Schedule** with buttons to add them to Google Calendar or any calendar app, and who can come by voice part. Under each meeting in the editor you see the same part counts (like `Tenor 1/3`) before you publish, so you can spot a part nobody covers.
 5. Publishing doesn't send anything. Click **Copy as message (TR)** or **(EN)** and paste the dates into your group chat.
 
 ## Every month after that
@@ -111,7 +113,7 @@ The last column of each sheet, **Data**, is what the app reads. Make changes thr
 - **Changed `index.html`?** Upload it to the GitHub repository again (with your `API_URL` filled in). Pages updates within a minute or two.
 - **Set up earlier under the old name Tutti?** Nothing breaks. The page finds your sheet by its ID, so you can rename the sheet and the Apps Script project to Provala whenever you like. If you also rename the GitHub repository, the link changes to `https://<your-username>.github.io/provala/`. Send members the new link; they stay signed in, because it's still the same github.io address.
 - **Want a different banner?** Replace `banner.webp` in the repository with the new picture (same name, about 3 times as wide as it is tall). The link-preview picture is the separate `preview.jpg` (1200 × 630); replace that file too. WhatsApp keeps old previews for a while, so the new picture can take a day or so to show in chats where the link was already shared.
-- **Changed `Code.gs`?** Paste the new code, save it, then **Deploy → Manage deployments**, click the pencil icon, set Version to **New version**, and click **Deploy**. The URL stays the same. Without this step, the live web app keeps running the old code. The page works with an older `Code.gs` too, just a little slower: signing in and opening the planner then take two requests instead of one.
+- **Changed `Code.gs`?** Paste the new code, save it, then **Deploy → Manage deployments**, click the pencil icon, set Version to **New version**, and click **Deploy**. The URL stays the same. Without this step, the live web app keeps running the old code. The page works with an older `Code.gs` too, but without voice parts, the numbers in the calendar and the who-can-come lists (setting a voice part then says the new `Code.gs` is needed), and a little slower: signing in and opening the planner then take two requests instead of one.
 - **Someone forgot their password?** Members tab → **New password** next to their name. Their old password and sign-ins stop working.
 - **Someone left the group?** Members tab → **Remove**. They can't sign in any more; answers they already gave stay.
 - **Want everyone to sign in again** (for example, after a phone was lost)? Run `signOutEveryone` in the Apps Script editor (pick it in the same dropdown as `setup`, then **▶ Run**). Passwords keep working. A phone that is offline can still show its last copy of that member's own page, but it can't load anything new or send anything until someone signs in again.
@@ -128,8 +130,17 @@ Paste the new `Code.gs` and deploy a **New version** (see above), then upload th
 
 **What is public.** The page's code on GitHub, including the address of your Apps Script. That's by design: the address only leads to a sign-in, and the script gives nothing out without a member's sign-in or the organizer key. Neither file contains a password or key.
 
+**What members see of each other.** Only you see anyone's notes and comment, and anyone's full answer. Members see:
+- **How many people are free, without names.** In the calendar, each day has a small number: how many people can come at that day's best time for a meeting of your usual length. With one day picked, each time shows how many are free then (and, with +, how many only if needed).
+  - The numbers appear only once answers with times from at least 5 people *besides the person looking* are counted, so a number can't simply be one person's answer.
+  - They update once a day, at midnight in the poll's time zone: an answer sent or changed today counts from tomorrow (until then, the earlier version counts). So nobody can work out someone's times by watching the numbers change right after they press send. If only one person answers on a given day, someone comparing the numbers from one day to the next could still work out that person's times; that's the price of exact numbers.
+  - Answers from removed members don't count. Removing a member or deleting an answer changes the numbers right away, not the next day.
+  - Once a poll has answers, its time zone is fixed, like its hours (it decides when "today" ends).
+- **Who can come to a published rehearsal.** Under each published meeting: per voice part, the names of the people whose answers say they can come for the whole meeting, and how many members the part has (like `Tenor 1/3`). Nobody is named as missing, and "only if needed" isn't shown. In a part with one or two people, `0/1` does show that person can't come for all of it; that's what makes the list useful. The list follows the answers as they are now.
+- The page tells members this right under their answers. Before your first poll with this version, tell the group in your chat too: people may have answered expecting nobody to see anything.
+
 **What protects your members' answers.**
-- Only members you add can sign in, and each member can only ever load their own answers. So that the page opens at once on a return visit, it keeps a copy of the member's own page (the poll and their own answers) on their device, next to the sign-in; signing out removes both. Names, notes and schedules are shown as plain text, so nothing a member types can run as code in anyone's browser.
+- Only members you add can sign in, and each member only ever loads their own answers, plus the numbers and rehearsal lists above, which `Code.gs` works out on the server. Other people's answers never reach a member's phone. So that the page opens at once on a return visit, it keeps a copy of the member's page (the poll, their own answers, the numbers and lists above) on their device, next to the sign-in; signing out removes both. Names, notes and schedules are shown as plain text, so nothing a member types can run as code in anyone's browser.
 - Passwords are stored only as salted, keyed hashes. The secrets for those hashes and for sign-ins live in the script's properties, not in the sheet, so even a copy of the sheet doesn't reveal passwords.
 - After 8 wrong passwords in a row, that username is paused for 15 minutes. After 10 wrong organizer keys, the planner is paused for 15 minutes.
 - Sign-ins are signed and expire: 180 days for members, 30 days for the planner. A password change, a new password from you, or `signOutEveryone` ends them early.
@@ -141,7 +152,7 @@ Paste the new `Code.gs` and deploy a **New version** (see above), then upload th
 - Keep the organizer key private. Sign out of the planner on computers that aren't yours.
 - All your GitHub Pages sites share one address (`<your-username>.github.io`), and pages on the same address can read each other's saved sign-ins. Don't add third-party scripts (trackers, widgets) to your other pages there. For complete separation, put Provala in a free GitHub organization instead, so it gets its own address.
 
-**Limits.** A poll can cover up to 3 months and take up to 400 answers. You can add up to 400 members. Times are in the poll's time zone (set automatically from your browser, editable in the poll settings).
+**Limits.** A poll can cover up to 3 months and take up to 400 answers. You can add up to 400 members. Times are in the poll's time zone (set automatically from your browser, editable in the poll settings until the first answer).
 
 ## Troubleshooting
 
