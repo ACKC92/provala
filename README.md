@@ -13,6 +13,7 @@ A free availability planner for a group that meets regularly. Members mark the d
 | --- | --- | --- |
 | `index.html` | Your GitHub repository (public) | The page itself. No names, no answers, no passwords. |
 | `banner.webp` | GitHub, next to `index.html` | The Provayoyo banner. |
+| `tex-*.webp` (8 files) | GitHub, next to `index.html` | The parchment and ground textures. Each device fetches only the ones it needs. |
 | `vollkorn.woff2`, `vollkorn-italic.woff2`, `OFL.txt` | GitHub, next to `index.html` | The page's font (Vollkorn) and its free licence. |
 | `icon.png` | GitHub, next to `index.html` | The icon in the browser tab and on a phone's home screen. |
 | `preview.jpg` | GitHub, next to `index.html` | The picture WhatsApp shows when you share the link. |
@@ -62,7 +63,7 @@ To check it works, open that URL in your browser. You should see a short line of
    ```
 
 2. On GitHub, create a new **public** repository, for example `provala`.
-3. Click **uploading an existing file**, drag in all of these at once: `index.html`, `banner.webp`, `vollkorn.woff2`, `vollkorn-italic.woff2`, `OFL.txt`, `icon.png` and `preview.jpg` (and this `README.md` if you like). Then click **Commit changes**. They must all sit in the same folder as `index.html`. `preview.jpg` is the picture WhatsApp and other apps show when you share the link. Its address is written into `index.html` as `https://ackc92.github.io/provala/preview.jpg`; if your repository or username is different, change the `og:url` and `og:image` lines near the top of `index.html` to match.
+3. Click **uploading an existing file**, drag in all of these at once: `index.html`, `banner.webp`, the eight `tex-…webp` files, `vollkorn.woff2`, `vollkorn-italic.woff2`, `OFL.txt`, `icon.png` and `preview.jpg` (and this `README.md` if you like). Then click **Commit changes**. They must all sit in the same folder as `index.html`. `preview.jpg` is the picture WhatsApp and other apps show when you share the link. Its address is written into `index.html` as `https://ackc92.github.io/provala/preview.jpg`; if your repository or username is different, change the `og:url` and `og:image` lines near the top of `index.html` to match.
 4. Go to the repository's **Settings → Pages**. Under "Build and deployment", set Source to **Deploy from a branch**, Branch to **main** and the folder to **/ (root)**, then click **Save**.
 5. After a minute or two the page is live at `https://<your-username>.github.io/provala/`.
 
@@ -149,6 +150,8 @@ Paste the new `Code.gs` and deploy a **New version** (see above), then upload th
 - **A member can't sign in**: check the username in the Members tab. If they've tried too many times, they can wait 15 minutes, or you can give them a new password.
 - **Your changes to `Code.gs` don't show up**: deploy a **New version** (see above).
 - **The organizer key isn't accepted**: run `showOrganizerKey` and copy it again, without extra spaces.
+- **The page says "The page couldn't open" / "Sayfa açılamadı"**: press **Reload** first. If it comes back, press **Clear the copy and reload**: it removes only the copy of the page kept on that phone or computer; the person stays signed in and unsent answers are kept. The line under the buttons says what went wrong, which is useful in a screenshot.
+- **The textures are missing (flat colours)**: the `tex-…webp` files aren't next to `index.html` on GitHub. Upload them; the page works without them, it just looks plainer.
 
 ## Try it first
 

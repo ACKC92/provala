@@ -102,11 +102,14 @@
   --r: 4px;
   /* The double gold line around a framed sheet */
   --frame: 0 0 0 3px var(--ground-deep), 0 0 0 4px var(--gold-lo);
-  /* Textures and ornaments, drawn here so the page needs no image files for them */
-  --tex-grain-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' seed='1' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .62 0 0 0 0 .47 0 0 0 0 .27 0 0 0 .5 -.16'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
-  --tex-clouds-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='640' height='640'%3E%3Cfilter id='c' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.006' numOctaves='4' seed='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .36 0 0 0 0 .25 0 0 0 0 .14 0 0 0 .5 -.2'/%3E%3C/filter%3E%3Crect width='640' height='640' filter='url(%23c)'/%3E%3C/svg%3E");
-  --tex-grain-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' seed='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .38 0 0 0 0 .24 0 0 0 0 .1 0 0 0 .42 -.12'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
-  --tex-stains: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='520' height='520'%3E%3Cfilter id='c' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.008' numOctaves='4' seed='11' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .55 0 0 0 0 .38 0 0 0 0 .17 0 0 0 .85 -.36'/%3E%3C/filter%3E%3Crect width='520' height='520' filter='url(%23c)'/%3E%3C/svg%3E");
+  /* Textures: small image tiles beside this page (tex-*.webp), drawn once from SVG noise. The page used to draw
+     the noise live with an SVG filter: heavy work for phones, and the likely cause of a white page in Chrome on
+     Android. Each grain comes in three sharpnesses; the browser fetches only the one that suits its screen.
+     The corner ornaments below are still drawn here. */
+  --tex-grain-light: -webkit-image-set(url("tex-grain-light-1x.webp") 1x, url("tex-grain-light-2x.webp") 2x, url("tex-grain-light-3x.webp") 3x);
+  --tex-clouds-light: -webkit-image-set(url("tex-clouds-light.webp") 0.5x);
+  --tex-grain-dark: -webkit-image-set(url("tex-grain-dark-1x.webp") 1x, url("tex-grain-dark-2x.webp") 2x, url("tex-grain-dark-3x.webp") 3x);
+  --tex-stains: -webkit-image-set(url("tex-stains.webp") 0.5x);
   --corners: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cg transform='matrix(1 0 0 1 0 0)'%3E%3Cpath d='M10 1.5 18.5 10 10 18.5 1.5 10Z' fill='%23130d07'/%3E%3Cpath d='M10 4.5 15.5 10 10 15.5 4.5 10Z' fill='none' stroke='%23e6c87c' stroke-width='1.3'/%3E%3Ccircle cx='10' cy='10' r='1.7' fill='%23e6c87c'/%3E%3Cg fill='none' stroke-linecap='round'%3E%3Cpath d='M18.5 10C24 10 26 5.5 30.5 5.5 34.5 5.5 35.5 9.5 32.8 10.8 30.8 11.7 29 9.6 30.6 8.4' stroke='%23130d07' stroke-width='3.4'/%3E%3Cpath d='M10 18.5C10 24 5.5 26 5.5 30.5 5.5 34.5 9.5 35.5 10.8 32.8 11.7 30.8 9.6 29 8.4 30.6' stroke='%23130d07' stroke-width='3.4'/%3E%3Cpath d='M18.5 10C24 10 26 5.5 30.5 5.5 34.5 5.5 35.5 9.5 32.8 10.8 30.8 11.7 29 9.6 30.6 8.4' stroke='%23e6c87c' stroke-width='1.3'/%3E%3Cpath d='M10 18.5C10 24 5.5 26 5.5 30.5 5.5 34.5 9.5 35.5 10.8 32.8 11.7 30.8 9.6 29 8.4 30.6' stroke='%23e6c87c' stroke-width='1.3'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") left top / 48px 48px no-repeat, url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cg transform='matrix(-1 0 0 1 48 0)'%3E%3Cpath d='M10 1.5 18.5 10 10 18.5 1.5 10Z' fill='%23130d07'/%3E%3Cpath d='M10 4.5 15.5 10 10 15.5 4.5 10Z' fill='none' stroke='%23e6c87c' stroke-width='1.3'/%3E%3Ccircle cx='10' cy='10' r='1.7' fill='%23e6c87c'/%3E%3Cg fill='none' stroke-linecap='round'%3E%3Cpath d='M18.5 10C24 10 26 5.5 30.5 5.5 34.5 5.5 35.5 9.5 32.8 10.8 30.8 11.7 29 9.6 30.6 8.4' stroke='%23130d07' stroke-width='3.4'/%3E%3Cpath d='M10 18.5C10 24 5.5 26 5.5 30.5 5.5 34.5 9.5 35.5 10.8 32.8 11.7 30.8 9.6 29 8.4 30.6' stroke='%23130d07' stroke-width='3.4'/%3E%3Cpath d='M18.5 10C24 10 26 5.5 30.5 5.5 34.5 5.5 35.5 9.5 32.8 10.8 30.8 11.7 29 9.6 30.6 8.4' stroke='%23e6c87c' stroke-width='1.3'/%3E%3Cpath d='M10 18.5C10 24 5.5 26 5.5 30.5 5.5 34.5 9.5 35.5 10.8 32.8 11.7 30.8 9.6 29 8.4 30.6' stroke='%23e6c87c' stroke-width='1.3'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") right top / 48px 48px no-repeat, url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cg transform='matrix(1 0 0 -1 0 48)'%3E%3Cpath d='M10 1.5 18.5 10 10 18.5 1.5 10Z' fill='%23130d07'/%3E%3Cpath d='M10 4.5 15.5 10 10 15.5 4.5 10Z' fill='none' stroke='%23e6c87c' stroke-width='1.3'/%3E%3Ccircle cx='10' cy='10' r='1.7' fill='%23e6c87c'/%3E%3Cg fill='none' stroke-linecap='round'%3E%3Cpath d='M18.5 10C24 10 26 5.5 30.5 5.5 34.5 5.5 35.5 9.5 32.8 10.8 30.8 11.7 29 9.6 30.6 8.4' stroke='%23130d07' stroke-width='3.4'/%3E%3Cpath d='M10 18.5C10 24 5.5 26 5.5 30.5 5.5 34.5 9.5 35.5 10.8 32.8 11.7 30.8 9.6 29 8.4 30.6' stroke='%23130d07' stroke-width='3.4'/%3E%3Cpath d='M18.5 10C24 10 26 5.5 30.5 5.5 34.5 5.5 35.5 9.5 32.8 10.8 30.8 11.7 29 9.6 30.6 8.4' stroke='%23e6c87c' stroke-width='1.3'/%3E%3Cpath d='M10 18.5C10 24 5.5 26 5.5 30.5 5.5 34.5 9.5 35.5 10.8 32.8 11.7 30.8 9.6 29 8.4 30.6' stroke='%23e6c87c' stroke-width='1.3'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") left bottom / 48px 48px no-repeat, url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cg transform='matrix(-1 0 0 -1 48 48)'%3E%3Cpath d='M10 1.5 18.5 10 10 18.5 1.5 10Z' fill='%23130d07'/%3E%3Cpath d='M10 4.5 15.5 10 10 15.5 4.5 10Z' fill='none' stroke='%23e6c87c' stroke-width='1.3'/%3E%3Ccircle cx='10' cy='10' r='1.7' fill='%23e6c87c'/%3E%3Cg fill='none' stroke-linecap='round'%3E%3Cpath d='M18.5 10C24 10 26 5.5 30.5 5.5 34.5 5.5 35.5 9.5 32.8 10.8 30.8 11.7 29 9.6 30.6 8.4' stroke='%23130d07' stroke-width='3.4'/%3E%3Cpath d='M10 18.5C10 24 5.5 26 5.5 30.5 5.5 34.5 9.5 35.5 10.8 32.8 11.7 30.8 9.6 29 8.4 30.6' stroke='%23130d07' stroke-width='3.4'/%3E%3Cpath d='M18.5 10C24 10 26 5.5 30.5 5.5 34.5 5.5 35.5 9.5 32.8 10.8 30.8 11.7 29 9.6 30.6 8.4' stroke='%23e6c87c' stroke-width='1.3'/%3E%3Cpath d='M10 18.5C10 24 5.5 26 5.5 30.5 5.5 34.5 9.5 35.5 10.8 32.8 11.7 30.8 9.6 29 8.4 30.6' stroke='%23e6c87c' stroke-width='1.3'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") right bottom / 48px 48px no-repeat;
   --tex-paper: var(--tex-grain-dark);
   --tex-paper-2: var(--tex-stains);
@@ -317,9 +320,15 @@ textarea.input { min-height: 88px; resize: vertical; line-height: 1.5; }
 .chip-s.ok { background: var(--free); color: var(--free-ink); }
 .chip-s.cur { background: var(--accent); color: var(--accent-ink); }
 .chip-s.warn { background: var(--maybe-soft); color: var(--ink); }
+/* The answer-by date: the priest's red with a gold edge, so nobody misses it. */
+.chip-s.due { background: var(--rubric); color: #f8eed6; font-weight: 700; box-shadow: inset 0 0 0 1px var(--gold), 0 1px 2px rgb(30 10 4 / 35%); }
 .sent-chip::before { content: ""; width: 9px; height: 5px; margin-top: -3px; border: solid currentColor; border-width: 0 0 2px 2px; transform: rotate(-45deg); }
 .state { display: grid; justify-items: start; gap: 12px; padding-block: 36px; max-width: 580px; }
 .state h2 { font: 700 30px/1.15 var(--font-display); }
+/* Shown until the script draws the page, and the safety net's message if it can't */
+.boot { padding: 56px 16px; text-align: center; color: var(--ground-ink-2); font: italic 17px/1.4 var(--font-body); }
+.fail-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.fail-detail { font-size: 13px; overflow-wrap: anywhere; }
 
 /* Member: hero and notices */
 .hero { display: grid; gap: 6px; }
@@ -642,8 +651,69 @@ fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
 </style>
 </head>
 <body>
-<div id="app"></div>
+<div id="app"><p class="boot">Provala açılıyor…</p></div>
+<noscript><p class="boot">Provala'yı kullanmak için tarayıcıda JavaScript açık olmalı. / Provala needs JavaScript turned on.</p></noscript>
 <div id="toasts" class="toasts" aria-live="polite"></div>
+<script>
+/* Safety net, written in old-style JavaScript so any browser runs it. If the page can't start, or drawing it
+   fails, this shows what happened and two ways out instead of an empty page:
+   reload, or clear the copy of the page kept on this device (sign-in and unsent answers stay). */
+(function () {
+  var T = {
+    tr: { title: 'Sayfa açılamadı', text: 'Bir şeyler ters gitti. Sayfayı yenilemeyi deneyin. Düzelmezse ikinci düğmeyle bu cihazda saklanan kopyayı temizleyin; girişiniz ve gönderilmemiş yanıtlarınız silinmez. Tarayıcınız eskiyse güncellemek de işe yarayabilir.', reload: 'Yenile', clear: 'Kopyayı temizle ve yenile', detail: 'Teknik ayrıntı: ' },
+    en: { title: 'The page couldn’t open', text: 'Something went wrong. Try reloading. If that doesn’t help, use the second button to clear the copy kept on this device; you stay signed in and unsent answers are kept. If your browser is old, updating it can help too.', reload: 'Reload', clear: 'Clear the copy and reload', detail: 'Details: ' }
+  };
+  function lang() {
+    var l = null;
+    try { l = localStorage.getItem('tutti-lang'); } catch (e) { /* no storage */ }
+    if (l === 'tr' || l === 'en') return l;
+    var nav = (navigator.languages && navigator.languages[0]) || navigator.language || 'tr';
+    return /^tr\b/i.test(nav) ? 'tr' : 'en';
+  }
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text) e.appendChild(document.createTextNode(text));
+    return e;
+  }
+  function button(cls, text, act) {
+    var b = el('button', cls, text);
+    b.type = 'button';
+    b.onclick = act;
+    return b;
+  }
+  window.provalaFail = function (err) {
+    var t = T[lang()];
+    var app = document.getElementById('app');
+    if (!app) return;
+    while (app.firstChild) app.removeChild(app.firstChild);
+    var main = el('main', 'wrap main'), folio = el('div', 'folio narrow'), box = el('section', 'state fail');
+    box.setAttribute('role', 'alert');
+    box.appendChild(el('h2', null, t.title));
+    box.appendChild(el('p', 'muted', t.text));
+    var acts = el('div', 'fail-actions');
+    acts.appendChild(button('btn primary', t.reload, function () { location.reload(); }));
+    acts.appendChild(button('btn', t.clear, function () {
+      try { localStorage.removeItem('tutti-page'); } catch (e) { /* no storage */ }
+      location.reload();
+    }));
+    box.appendChild(acts);
+    var msg = err ? String(err.message || err).slice(0, 240) : '';
+    if (msg) box.appendChild(el('p', 'muted fail-detail', t.detail + msg));
+    folio.appendChild(box);
+    main.appendChild(folio);
+    app.appendChild(main);
+    try { console.error('Provala:', err); } catch (e) { /* no console */ }
+  };
+  // Before the page is up, any uncaught error (including a browser too old to read the main script) shows the message.
+  window.addEventListener('error', function (e) { if (!window.provalaUp) window.provalaFail(e.error || e.message); });
+  // And if, somehow, nothing has been drawn after a while, say so too.
+  setTimeout(function () {
+    var app = document.getElementById('app');
+    if (!window.provalaUp && app && app.querySelector('.boot')) window.provalaFail(null);
+  }, 10000);
+})();
+</script>
 <script>
 (function () {
 'use strict';
@@ -877,7 +947,7 @@ const T = {
     demoBanner: 'Örnek kişilerle demo. Değişiklikler bu tarayıcıda kalır.',
     demoOrganizer: 'Organizatör görünümünü aç', demoMember: 'Üye sayfasına dön', demoReset: 'Demoyu sıfırla', demoResetDone: 'Demo sıfırlandı',
     noPollTitle: 'Şu an açık bir anket yok', noPollText: 'Yeni anket açılınca yine bu bağlantıdan doldurabilirsiniz.',
-    deadline: 'Son gün: {date}', closedChip: 'Yanıtlar kapandı',
+    deadline: 'Son bildirim günü: {date}', closedChip: 'Yanıtlar kapandı',
     closedNotice: 'Bu anket kapandı. Verdiğiniz yanıtlara yine de bakabilirsiniz.',
     timesIn: 'Saatler {city} saatine göre.', yourTz: 'Cihazınız {city} saatini kullanıyor.',
     scheduleReady: 'Buluşma tarihleri belli oldu.', seeSchedule: 'Tarihlere bakın',
@@ -1862,7 +1932,7 @@ function buildHero(p, compact) {
   const msg = loc(p.message);
   const mine = (Intl.DateTimeFormat().resolvedOptions().timeZone) || '';
   const meta = h('div', { class: 'hero-meta' },
-    p.deadline && p.open ? h('span', { class: 'chip-s' }, t('deadline', { date: dFull(p.deadline) })) : null,
+    p.deadline && p.open ? h('span', { class: 'chip-s due' }, t('deadline', { date: dFull(p.deadline) })) : null,
     !p.open ? h('span', { class: 'chip-s warn' }, t('closedChip')) : null,
     p.tz && mine && mine !== p.tz ? h('span', null, t('timesIn', { city: tzCity(p.tz) }) + ' ' + t('yourTz', { city: tzCity(mine) })) : null,
     compact || !S.member ? null : buildAccount());
@@ -1880,7 +1950,7 @@ function syncSentChip() {
   if (!M.savedAt) { if (chip) chip.remove(); return; }
   if (!chip) {
     chip = h('span', { class: 'chip-s ok sent-chip' });
-    const deadline = R.heroMeta.querySelector('.chip-s:not(.sent-chip)');
+    const deadline = R.heroMeta.querySelector('.chip-s.due');
     if (deadline) deadline.after(chip); else R.heroMeta.prepend(chip);
   }
   chip.textContent = t('sentChip', { ago: ago(M.savedAt) });
@@ -3278,7 +3348,11 @@ function syncTopHeight() {
 window.addEventListener('resize', syncTopHeight);
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(syncTopHeight);
 
+// Draws the whole page. If that ever fails, the safety net (top of the page) shows a message instead of a half-empty page.
 function render() {
+  try { drawPage(); } catch (e) { if (window.provalaFail) window.provalaFail(e); else throw e; }
+}
+function drawPage() {
   document.documentElement.lang = S.lang;
   applyMode();
   document.title = t('docTitle');
@@ -3403,6 +3477,7 @@ window.addEventListener('beforeunload', e => {
   if (M.dirty && S.poll && S.poll.open) { e.preventDefault(); e.returnValue = ''; }
 });
 onRoute();
+window.provalaUp = true;
 })();
 </script>
 </body>
