@@ -858,6 +858,60 @@ fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
 .toast { pointer-events: auto; display: flex; align-items: center; gap: 12px; padding: 11px 14px; border-radius: var(--r); background: #24180d; color: var(--ground-ink); border: 1px solid var(--gold-lo); box-shadow: inset 0 0 0 1px rgb(232 205 133 / 12%), var(--shadow); font-weight: 600; }
 .toast.error { background: #a1261c; color: #f8eed6; border-color: #6b130c; }
 .toast button { margin-left: auto; padding: 0; border: 0; background: none; color: inherit; font-weight: 700; text-decoration: underline; }
+/* Release 3. Holidays are red-letter days (the rubric red); closed days are hatched and can't be picked. */
+.day.hol .num { color: var(--rubric-ink); font-weight: 700; }
+.day.shut, .md.shut { background: repeating-linear-gradient(135deg, transparent 0 5px, var(--rule) 5px 6px); }
+.day.shut .num { text-decoration: line-through; text-decoration-color: var(--ink-3); }
+.cal-marks { display: grid; gap: 4px; margin-top: 10px; }
+.cal-marks .hint { line-height: 1.45; }
+.mk-hol { display: inline-grid; place-items: center; min-width: 22px; height: 18px; border: 1px solid var(--rule); border-radius: 3px; background: var(--sheet); color: var(--rubric-ink); font: 700 12px/1 var(--font-body); vertical-align: -3px; }
+.mk-shut { display: inline-block; width: 22px; height: 18px; border: 1px dashed var(--rule-strong); border-radius: 3px; vertical-align: -4px;
+  background: repeating-linear-gradient(135deg, transparent 0 5px, var(--rule) 5px 6px); }
+.prev-box { margin-bottom: 12px; }
+.hol-line { margin: -2px 0 8px; color: var(--rubric-ink); font-weight: 700; font-size: 14.5px; }
+.chip-s.hol { margin-left: 8px; min-height: 22px; padding: 0 8px; background: transparent; border: 1px solid var(--rubric-ink); color: var(--rubric-ink); font-size: 12.5px; vertical-align: 1px; }
+.chip-s.call { min-height: 22px; padding: 0 9px; background: var(--accent-soft); color: var(--ink); font-size: 12.5px; box-shadow: inset 0 0 0 1px var(--notice-edge); }
+.next-when .chip-s.call, .next-title .chip-s.call { margin-left: 8px; vertical-align: 1px; }
+.event-call { margin: -2px 0 2px; }
+.event.others { background: transparent; box-shadow: none; border-style: dashed; }
+.event.others .event-day, .event.others .event-body h3, .event.others .event-body h4 { color: var(--ink-3); }
+.not-called { color: var(--ink-2); }
+.hol-mk { color: var(--rubric-ink); font-size: 11px; line-height: 1; cursor: help; }
+.score-lab.shut { color: var(--ink-3); }
+.c-shut { display: flex; align-items: center; height: 25px; padding: 0 10px; border-top: 1px solid var(--rule); color: var(--ink-3); font-size: 12.5px; font-weight: 600; white-space: nowrap; overflow: hidden;
+  background: repeating-linear-gradient(135deg, transparent 0 6px, var(--rule) 6px 7px); }
+.c-shut.wks { border-top: 2px solid var(--rule-strong); }
+.secs { display: grid; gap: 6px; }
+.sec-tools .tool { min-height: 34px; padding: 0 10px; font-size: 14.5px; }
+.sec-hint { color: var(--accent); font-weight: 600; }
+.req { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; padding: 10px 12px; border: 1px dashed var(--rule-strong); border-radius: var(--r); }
+.req-label { font-weight: 700; color: var(--ink); }
+.req-chip { padding-right: 4px; background: var(--maybe-soft); color: var(--ink); }
+.req-none { font-weight: 450; color: var(--ink-2); }
+.req-x { display: inline-grid; place-items: center; width: 24px; height: 24px; margin-left: 2px; padding: 0; border: 0; border-radius: 50%; background: none; color: var(--ink-2); font-size: 12px; cursor: pointer; }
+.req-x:hover, .req-x:focus-visible { background: var(--quiet-hover); color: var(--ink); }
+.req .select { width: auto; max-width: 100%; min-height: 32px; padding-block: 2px; font-size: 14px; }
+.req .hint { flex-basis: 100%; }
+.req-miss, .req-miss .lbl { color: var(--rubric-ink); }
+.sec-n.weak { color: var(--rubric-ink); font-weight: 700; }
+.ev-row .f-call { grid-column: 1 / -1; }
+.f-call > summary { cursor: pointer; color: var(--ink-2); font-size: 14px; font-weight: 600; }
+.call-sum { color: var(--ink); }
+.call-opts { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 4px; }
+.call-opts label { display: inline-flex; align-items: center; gap: 6px; min-height: 34px; padding: 0 10px; border: 1px solid var(--rule-strong); border-radius: var(--r); background: var(--btn-face); font-size: 14.5px; cursor: pointer; }
+.call-opts input { accent-color: var(--accent); width: 16px; height: 16px; }
+.closed-box { display: grid; gap: 8px; margin-top: 6px; }
+.hol-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.hol-list .switch-row { font-weight: 450; align-items: flex-start; }
+.hol-list .switch-row input { margin-top: 3px; flex: none; }
+.hol-list.own li { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 10px; }
+.closed-add { display: grid; grid-template-columns: minmax(0, 11em) minmax(0, 1fr) auto; align-items: end; gap: 8px; }
+@media (max-width: 560px) { .closed-add { grid-template-columns: minmax(0, 1fr); } .closed-add .btn { justify-self: start; } }
+.att-rest > summary { cursor: pointer; margin-bottom: 4px; font-size: 13.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); }
+.md.hol b { color: var(--rubric-ink); }
+.hol-state { color: var(--ink-3); }
+.score-wrap:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.hol-state.shut { color: var(--rubric-ink); font-weight: 700; }
 </style>
 </head>
 <body>
@@ -900,7 +954,7 @@ var API_URL = 'https://script.google.com/macros/s/AKfycbzjxxXx_t5JqctCYV3iDAjsd-
   // What went wrong on a member's device is sent to the backend, so it can be fixed without anyone having to
   // describe it: the error and the browser, never names, answers or anything typed. At most three per page load,
   // and nothing at all without a backend address (as in the demo).
-  var VERSION = '2026-10-r2', sent = 0, seen = {};
+  var VERSION = '2026-10-r3', sent = 0, seen = {};
   window.provalaReport = function (err, where) {
     try {
       var url = typeof window.API_URL === 'string' ? window.API_URL.replace(/^\s+|\s+$/g, '') : '';
@@ -1025,6 +1079,50 @@ const D = {
   }
 };
 const mondayOf = s => D.add(s, -((D.wd(s) + 6) % 7));
+
+/* ---------- Public holidays in Türkiye: red-letter days in the calendars. The fixed ones are set by law; the bayrams
+   follow Diyanet's dates. Years not listed are worked out from the Hijri calendar (Umm al-Qura), which gives Diyanet's
+   dates for every year from 2023 to 2028; add a year here once Diyanet publishes it. A holiday is only marked: the
+   organizer decides, poll by poll, which ones to close. */
+const BAYRAMS = { 2026: ['2026-03-20', '2026-05-27'], 2027: ['2027-03-09', '2027-05-16'], 2028: ['2028-02-26', '2028-05-05'] };
+const FIXED_HOLIDAYS = [['01-01', 'holNewYear'], ['04-23', 'holApr23'], ['05-01', 'holMay1'], ['05-19', 'holMay19'],
+  ['07-15', 'holJul15'], ['08-30', 'holAug30'], ['10-28', 'holOct28', true], ['10-29', 'holOct29']];
+const holYears = {};
+// The first days of Ramazan Bayramı and of Kurban Bayramı in year y: [[...], [...]], as lists, since the Hijri year is
+// shorter and one of them now and then comes twice in a year (Ramazan Bayramı in January and December 2033). Empty
+// if they can't be worked out here.
+function bayramStarts(y) {
+  if (BAYRAMS[y]) return BAYRAMS[y].map(d => [d]);
+  const out = [[], []];
+  try {
+    const f = new Intl.DateTimeFormat('en-u-ca-islamic-umalqura', { timeZone: 'UTC', month: 'numeric', day: 'numeric' });
+    if (f.resolvedOptions().calendar !== 'islamic-umalqura') return out;
+    for (let d = y + '-01-01'; d <= y + '-12-31'; d = D.add(d, 1)) {
+      const x = {};
+      for (const part of f.formatToParts(D.parse(d))) x[part.type] = part.value;
+      if (x.month === '10' && x.day === '1') out[0].push(d);
+      if (x.month === '12' && x.day === '10') out[1].push(d);
+    }
+  } catch (e) { /* no Hijri calendar in this browser: only the fixed holidays */ }
+  return out;
+}
+function holidaysOf(y) {
+  if (holYears[y]) return holYears[y];
+  const map = {}, put = (d, x) => (map[d] = map[d] || []).push(x);
+  for (const [md, k, half] of FIXED_HOLIDAYS) put(y + '-' + md, { k, half: !!half });
+  const [ram, kur] = bayramStarts(y);
+  for (const d of ram) { put(D.add(d, -1), { k: 'holRamEve', half: true }); for (let i = 0; i < 3; i++) put(D.add(d, i), { k: 'holRam', n: i + 1 }); }
+  for (const d of kur) { put(D.add(d, -1), { k: 'holKurEve', half: true }); for (let i = 0; i < 4; i++) put(D.add(d, i), { k: 'holKur', n: i + 1 }); }
+  return (holYears[y] = map);
+}
+// The holidays on a day (two can fall on one), or null. A bayram can start in one year and end in the next.
+function holidayOn(d) {
+  const y = +d.slice(0, 4), m = d.slice(5, 7);
+  const list = [].concat(holidaysOf(y)[d] || [], m === '01' ? holidaysOf(y - 1)[d] || [] : [], m === '12' ? holidaysOf(y + 1)[d] || [] : []);
+  return list.length ? list : null;
+}
+// "Cumhuriyet Bayramı", or "Kurban Bayramı (4. gün) · Atatürk’ü Anma, Gençlik ve Spor Bayramı".
+const holText = (list, lang) => (list || []).map(x => t(x.k, { n: x.n }, lang)).join(' · ');
 
 /* ------------------------------------------------------------------- i18n */
 const T = {
@@ -1179,8 +1277,7 @@ const T = {
     free: 'Free', ifNeeded: 'If needed', notFree: 'Not free', addHere: 'Add a meeting here',
     bestTitle: 'Best times', length: 'Length', canStart: 'can start between {a} and {b}', missing: 'Missing', add: 'Add',
     noWindows: 'No time works for the people on the board.',
-    pairsTitle: 'Two meetings a month', minGapLabel: 'Gap', daysN: 'at least {n} days',
-    pairsNone: 'No two dates are far enough apart. Try a shorter gap.', addBoth: 'Add both',
+    minGapLabel: 'Gap', daysN: ({ n }) => 'at least ' + n + (n === 1 ? ' day' : ' days'), addBoth: 'Add both',
     addedToDraft: 'Added to the schedule draft', viewDraft: 'Open schedule',
     peopleUpdated: 'Updated {ago}', onlyThis: 'Show only this person on the board', deleteAnswer: 'Delete answer',
     confirmDeleteAnswer: "Delete {name}'s answer? This can't be undone.", yesDelete: 'Delete', keep: 'Keep', deleted: 'Answer deleted', noComment: 'No comment', fromComment: 'from their comment',
@@ -1263,6 +1360,38 @@ const T = {
     sinceTitle: 'Since your last visit ({ago}): ', sinceAnswers: ({ n }) => n + (n === 1 ? ' new or changed answer' : ' new or changed answers'),
     sinceReplies: ({ n }) => n + (n === 1 ? ' reply to meetings' : ' replies to meetings'), newBadge: 'new',
     errorsNotice: ({ n }) => 'The page ran into ' + (n === 1 ? 'a problem' : n + ' problems') + ' on members’ devices. The details are in the Errors sheet of your spreadsheet.', dismiss: 'OK',
+    // Release 3: holidays, closed days, required people, sectionals, ranking, several meetings, "like last month".
+    holNewYear: 'New Year’s Day', holApr23: 'National Sovereignty and Children’s Day', holMay1: 'Labour and Solidarity Day',
+    holMay19: 'Commemoration of Atatürk, Youth and Sports Day', holJul15: 'Democracy and National Unity Day', holAug30: 'Victory Day',
+    holOct28: 'Eve of Republic Day (half day)', holOct29: 'Republic Day',
+    holRamEve: 'Eve of Eid al-Fitr (half day)', holRam: 'Eid al-Fitr (day {n})', holKurEve: 'Eve of Eid al-Adha (half day)', holKur: 'Eid al-Adha (day {n})',
+    marksHol: 'Red numbers are public holidays:', marksShut: 'No rehearsal on the hatched days, so no times there:', closedDay: 'no rehearsal',
+    prevText: ({ title }) => 'You can bring over your last answer (“' + title + '”), weekday by weekday. Then fix what’s changed and send it.',
+    prevFill: 'Fill in like last month', prevDone: 'Filled in from your last answer. Fix what’s different, then send it.',
+    sectional: 'Sectional', notCalled: 'A sectional for other sections: you don’t need to come.',
+    errNotCalled: 'This is a sectional for other sections, so there’s nothing to reply to.',
+    secFilter: 'Sections on the board', secAll: 'Everyone',
+    secAddHint: ({ who }) => 'Meetings you add now will be sectionals for ' + who + '.',
+    callAll: 'Everyone', callLabel: 'Who’s called',
+    callHint: 'A sectional: only the ticked sections are asked to reply, and only they show in the numbers. Other members see the meeting, but aren’t expected to come.',
+    callNone: 'Someone has to be called. To call a meeting off, remove it.', msgOnly: ({ who }) => 'only ' + who,
+    addedSectional: ({ who }) => 'Added to the draft as a sectional for ' + who,
+    rankLabel: 'Rank by', rankBalance: 'weakest section', rankCount: 'number of people',
+    rankBalanceHint: 'Ranked by how much of the weakest section can come: 10 people with every section there come before 12 with no tenors.',
+    bySection: 'By section', reqMissing: 'Needed, but can’t come', reqMaybe: 'Needed, but only free if needed',
+    setsTitle: 'Meetings in a month', setsCount: 'How many', meetingsN: ({ n }) => n + ' meetings',
+    setsNone: ({ n }) => n + ' meetings don’t fit with this gap. Try a shorter gap or fewer meetings.', addThem: 'Add them all',
+    reqLabel: 'Needed at every meeting:', reqNoAnswer: 'no answer yet', reqRemove: ({ name }) => 'Remove ' + name,
+    reqAddLabel: 'Add someone every meeting needs', reqAdd: 'Add someone…',
+    reqHint: 'The accompanist or a soloist, say: the times they can come go first.',
+    closedRow: 'Closed', attClosedDay: 'A closed day: members couldn’t mark times on it.', attNotCalled: 'Not called to this sectional',
+    fClosed: 'Holidays and closed days', closedPickDates: 'Pick the poll’s first and last day to see its holidays.',
+    closedHint: 'Holidays stay open: tick the ones you won’t rehearse on. Nobody can mark times on a closed day.',
+    closedTick: 'closed, no rehearsal', closedOpen: 'open', closedNoHol: 'No public holidays on these days.', closedRemove: ({ day }) => 'Open ' + day + ' again',
+    closedDayLabel: 'Close another day', closedNoteLabel: 'Why (members see this)', closedNotePh: 'The hall is taken',
+    closedAdd: 'Close this day', closedNotInPoll: 'That day isn’t one of the poll’s days.',
+    holHint: ({ list }) => 'Public holidays in this poll: ' + list + '. They stay open; close the ones you won’t rehearse on.', holHintBtn: 'Set holidays',
+    heatAria: 'Each row is a day and each column a time; the greener, the more people can come. The best times are listed below.',
   },
   tr: {
     docTitle: 'Provala',
@@ -1415,8 +1544,7 @@ const T = {
     free: 'Uygun', ifNeeded: 'Gerekirse', notFree: 'Uygun değil', addHere: 'Buraya buluşma ekle',
     bestTitle: 'En uygun zamanlar', length: 'Süre', canStart: '{a} ile {b} arasında başlayabilir', missing: 'Eksik', add: 'Ekle',
     noWindows: 'Panodaki kişilere uyan bir zaman yok.',
-    pairsTitle: 'Ayda iki buluşma', minGapLabel: 'Aralık', daysN: 'en az {n} gün',
-    pairsNone: 'Yeterince aralıklı iki tarih bulunamadı. Daha kısa bir aralık deneyin.', addBoth: 'İkisini de ekle',
+    minGapLabel: 'Aralık', daysN: 'en az {n} gün', addBoth: 'İkisini de ekle',
     addedToDraft: 'Takvim taslağına eklendi', viewDraft: 'Takvimi aç',
     peopleUpdated: '{ago} güncellendi', onlyThis: 'Panoda yalnızca bu kişiyi göster', deleteAnswer: 'Yanıtı sil',
     confirmDeleteAnswer: '{name} adlı kişinin yanıtı silinsin mi? Bu işlem geri alınamaz.', yesDelete: 'Sil', keep: 'Vazgeç', deleted: 'Yanıt silindi', noComment: 'Yorum yok', fromComment: 'genel yorumundan',
@@ -1499,6 +1627,38 @@ const T = {
     sinceTitle: 'Son ziyaretinizden ({ago}) bu yana: ', sinceAnswers: ({ n }) => n + ' yeni ya da değişen yanıt',
     sinceReplies: ({ n }) => 'buluşmalara ' + n + ' yanıt', newBadge: 'yeni',
     errorsNotice: ({ n }) => 'Sayfa, üyelerin cihazlarında ' + n + ' kez sorunla karşılaştı. Ayrıntılar e-tablonuzdaki Errors sayfasında.', dismiss: 'Tamam',
+    // Sürüm 3: tatiller, kapalı günler, gerekli kişiler, bölüm provaları, sıralama, birden çok buluşma, "geçen ayki gibi".
+    holNewYear: 'Yılbaşı', holApr23: 'Ulusal Egemenlik ve Çocuk Bayramı', holMay1: 'Emek ve Dayanışma Günü',
+    holMay19: 'Atatürk’ü Anma, Gençlik ve Spor Bayramı', holJul15: 'Demokrasi ve Millî Birlik Günü', holAug30: 'Zafer Bayramı',
+    holOct28: 'Cumhuriyet Bayramı arifesi (yarım gün)', holOct29: 'Cumhuriyet Bayramı',
+    holRamEve: 'Ramazan Bayramı arifesi (yarım gün)', holRam: 'Ramazan Bayramı ({n}. gün)', holKurEve: 'Kurban Bayramı arifesi (yarım gün)', holKur: 'Kurban Bayramı ({n}. gün)',
+    marksHol: 'Kırmızı rakamlı günler resmî tatil:', marksShut: 'Taralı günlerde prova yok, saat işaretlenmez:', closedDay: 'prova yok',
+    prevText: ({ title }) => 'Önceki yanıtınızı (“' + title + '”) haftanın günlerine göre buraya taşıyabilirsiniz. Sonra değişenleri düzeltip gönderin.',
+    prevFill: 'Geçen ayki gibi doldur', prevDone: 'Önceki yanıtınıza göre dolduruldu. Farklı olanları düzeltip gönderin.',
+    sectional: 'Bölüm provası', notCalled: 'Başka bölümlerin provası; gelmeniz gerekmiyor.',
+    errNotCalled: 'Bu, başka bölümlerin provası; yanıt vermeniz gerekmiyor.',
+    secFilter: 'Panodaki bölümler', secAll: 'Herkes',
+    secAddHint: ({ who }) => 'Şimdi ekleyeceğiniz buluşmalar ' + who + ' için bölüm provası olur.',
+    callAll: 'Herkes', callLabel: 'Kimler çağrılı',
+    callHint: 'Bölüm provası: yalnız işaretli bölümlerden yanıt istenir ve sayılarda yalnız onlar görünür. Diğer üyeler buluşmayı görür ama gelmeleri beklenmez.',
+    callNone: 'En az bir bölüm çağrılmalı. Buluşmayı iptal etmek için kaldırın.', msgOnly: ({ who }) => 'yalnız ' + who,
+    addedSectional: ({ who }) => 'Taslağa ' + who + ' için bölüm provası olarak eklendi',
+    rankLabel: 'Sıralama', rankBalance: 'en zayıf bölüm', rankCount: 'kişi sayısı',
+    rankBalanceHint: 'En zayıf bölümün ne kadarının gelebildiğine göre sıralandı: her bölümün olduğu 10 kişi, tenorsuz 12 kişiden önce gelir.',
+    bySection: 'Bölümlere göre', reqMissing: 'Gerekli ama gelemiyor', reqMaybe: 'Gerekli, ancak gerekirse gelebilir',
+    setsTitle: 'Ayın buluşmaları', setsCount: 'Kaç tane', meetingsN: '{n} buluşma',
+    setsNone: ({ n }) => n + ' buluşma bu aralıkla sığmıyor. Daha kısa bir aralık ya da daha az buluşma deneyin.', addThem: 'Hepsini ekle',
+    reqLabel: 'Her buluşmada olması gerekenler:', reqNoAnswer: 'henüz yanıt vermedi', reqRemove: ({ name }) => name + ' listeden çıksın',
+    reqAddLabel: 'Her buluşmada olması gereken birini ekleyin', reqAdd: 'Kişi ekle…',
+    reqHint: 'Örneğin piyanist ya da solist: onların gelebildiği zamanlar öne geçer.',
+    closedRow: 'Kapalı', attClosedDay: 'Kapalı gün: üyeler bu güne saat işaretleyemedi.', attNotCalled: 'Bu bölüm provasına çağrılmayanlar',
+    fClosed: 'Tatiller ve kapalı günler', closedPickDates: 'Tatilleri görmek için anketin ilk ve son gününü seçin.',
+    closedHint: 'Tatiller açık kalır; prova yapmayacağınız günleri işaretleyin. Kapalı günlere kimse saat işaretleyemez.',
+    closedTick: 'kapalı, prova yok', closedOpen: 'açık', closedNoHol: 'Bu günlerde resmî tatil yok.', closedRemove: ({ day }) => day + ' yeniden açılsın',
+    closedDayLabel: 'Başka bir günü kapat', closedNoteLabel: 'Neden (üyeler görür)', closedNotePh: 'Salon dolu',
+    closedAdd: 'Bu günü kapat', closedNotInPoll: 'Bu gün anketin günlerinden biri değil.',
+    holHint: ({ list }) => 'Bu ankette resmî tatiller var: ' + list + '. Açık kalırlar; prova yapmayacağınız günleri kapatabilirsiniz.', holHintBtn: 'Tatilleri ayarla',
+    heatAria: 'Her satır bir gün, her sütun bir saat; yeşil koyulaştıkça daha çok kişi uygun. En uygun zamanlar aşağıda listelenir.',
   }
 };
 
@@ -1588,11 +1748,24 @@ function durWords(m) {
   return parts.filter(Boolean).join(' ');
 }
 const tzCity = tz => (tz || '').split('/').pop().replace(/_/g, ' ');
+// "Soprano, Alto ve Tenor" / "Soprano, Alto and Tenor".
+const listFmts = {};
+function listText(list, lang) {
+  lang = lang || S.lang;
+  try { return (listFmts[lang] || (listFmts[lang] = new Intl.ListFormat(LOC[lang], { style: 'long', type: 'conjunction' }))).format(list); }
+  catch (e) { return list.join(', '); }
+}
 
 /* ------------------------------------------------------------- poll logic */
 const slotCount = p => Math.round((p.dayEnd - p.dayStart) / p.slot);
 const allowed = (p, d) => d >= p.start && d <= p.end && p.days.indexOf(D.wd(d)) !== -1;
+// Days the organizer closed (a holiday they won't rehearse on, a hall that's taken): date -> a note for members ('' for
+// none). Nobody marks times on them, and answers from before a day was closed don't count (as in Code.gs).
+const closedOf = p => (p && p.closed && typeof p.closed === 'object' && !Array.isArray(p.closed) ? p.closed : {});
+const isClosed = (p, d) => Object.prototype.hasOwnProperty.call(closedOf(p), d);
+const isOpen = (p, d) => allowed(p, d) && !isClosed(p, d);
 const pollDates = p => D.range(p.start, p.end).filter(d => p.days.indexOf(D.wd(d)) !== -1);
+const openDates = p => pollDates(p).filter(d => !isClosed(p, d));
 const loc = (o, lang) => (o ? o[lang || S.lang] || o.tr || o.en || '' : '');
 
 function runs(str, ch) {
@@ -1655,40 +1828,96 @@ function windowStatus(rs, d, s, e) {
   }
   return { a, m, maybe, miss };
 }
+/** How one person can do the slots [s, e) on day d: 2 = free, 1 = only if needed, 0 = not. */
+function personState(r, d, s, e) {
+  const str = r.avail[d];
+  if (!str) return 0;
+  let st = 2;
+  for (let k = s; k < e; k++) { const c = str[k]; if (c !== '1' && c !== '2') return 0; if (c === '1') st = 1; }
+  return st;
+}
+/* ---------- Best times. ctx (see planCtx): rs, the answers on the board; secOf, the sections each one's member is in
+   ("group|section"); secKeys, the sections on the board; req, the answers of the people every meeting needs; bal, rank
+   by the weakest section rather than by the number of people. */
+function winEval(ctx, d, s, e) {
+  let a = 0, m = 0;
+  const maybe = [], miss = [], secs = {};
+  for (const r of ctx.rs) {
+    const st = personState(r, d, s, e);
+    if (st === 2) a++; else if (st === 1) { m++; maybe.push(r); } else miss.push(r);
+    for (const k of ctx.secOf.get(r) || []) {
+      const x = secs[k] || (secs[k] = { key: k, n: 0, a: 0, m: 0, v: 0 });
+      x.n++;
+      if (st === 2) x.a++; else if (st === 1) x.m++;
+    }
+  }
+  const reqMiss = [], reqMaybe = [];
+  for (const r of ctx.req) { const st = personState(r, d, s, e); if (!st) reqMiss.push(r); else if (st === 1) reqMaybe.push(r); }
+  // How much of each section can come ("if needed" counts half); the weakest section is the one with the least.
+  const list = ctx.secKeys.filter(k => secs[k]).map(k => secs[k]);
+  let weak = null;
+  for (const x of list) { x.v = Math.round((x.a + x.m / 2) / x.n * 1000) / 1000; if (!weak || x.v < weak.v) weak = x; }
+  return { d, s, e, a, m, maybe, miss, score: a + m / 2, secs: list, weakest: weak ? weak.v : 1, weak: weak ? weak.key : '',
+    reqMiss, reqMaybe, req: reqMiss.length ? 0 : reqMaybe.length ? 1 : 2 };
+}
+// Better first: the people every meeting needs can all come (free, then at least if needed); then, ranking by sections,
+// the weakest section best covered; then the most people.
+const cmpWin = (x, y, bal) => (y.req - x.req) || (bal ? y.weakest - x.weakest : 0) || (y.score - x.score) || (y.a - x.a);
+// The same order as one number, to pick several meetings by.
+const winValue = (w, bal) => w.req * 1e7 + (bal ? Math.round(w.weakest * 1000) * 1e3 : 0) + w.score * 2;
 /** The best start time on each day for a meeting of `dur` minutes, best days first. */
-function bestWindows(dates, rs, p, dur) {
+function bestWindows(dates, ctx, p, dur) {
   const n = slotCount(p), L = Math.max(1, Math.ceil(dur / p.slot)), out = [];
   for (const d of dates) {
     let best = null;
     for (let s = 0; s + L <= n; s++) {
-      const w = windowStatus(rs, d, s, s + L);
-      const score = w.a + w.m / 2;
-      if (!best || score > best.score) best = Object.assign({ d, s, e: s + L, s2: s, score }, w);
-      else if (score === best.score && s === best.s2 + 1 && w.a === best.a) best.s2 = s;
+      const w = winEval(ctx, d, s, s + L);
+      // Nobody on the board can come: not a time for them, even if the people every meeting needs are free then.
+      if (!(w.score > 0)) continue;
+      const c = best ? cmpWin(w, best, ctx.bal) : -1;
+      if (c < 0) best = Object.assign(w, { s2: s });
+      else if (c === 0 && s === best.s2 + 1) best.s2 = s;
     }
-    if (best && best.score > 0) out.push(best);
+    if (best) out.push(best);
   }
-  out.sort((x, y) => y.score - x.score || y.a - x.a || (x.d < y.d ? -1 : 1));
+  out.sort((x, y) => cmpWin(x, y, ctx.bal) || (x.d < y.d ? -1 : 1));
   return out;
 }
-/** For each month, the two dates at least `gap` days apart that suit the most people. */
-function bestPairs(wins, gap) {
+/** For each month, n dates at least `gap` days apart: the set whose least good meeting is best, then the best in all. */
+function bestSets(wins, n, gap, bal) {
   const by = {};
   for (const w of wins) (by[w.d.slice(0, 7)] = by[w.d.slice(0, 7)] || []).push(w);
   const out = [];
   for (const mk of Object.keys(by).sort()) {
     const list = by[mk].slice().sort((x, y) => (x.d < y.d ? -1 : 1));
-    let best = null;
-    for (let i = 0; i < list.length; i++) {
-      for (let j = i + 1; j < list.length; j++) {
-        if (D.diff(list[i].d, list[j].d) < gap) continue;
-        const lo = Math.min(list[i].score, list[j].score), sum = list[i].score + list[j].score;
-        if (!best || lo > best.lo || (lo === best.lo && sum > best.sum)) best = { month: mk, a: list[i], b: list[j], lo, sum };
-      }
+    for (const floor of uniq(list.map(w => winValue(w, bal))).sort((a, b) => b - a)) {
+      const pick = bestSum(list.filter(w => winValue(w, bal) >= floor), n, gap, bal);
+      if (pick) { out.push({ month: mk, list: pick }); break; }
     }
-    if (best) out.push(best);
   }
   return out;
+}
+// n of the meetings (sorted by date), at least `gap` days apart, with the most value together; null if they don't fit.
+function bestSum(list, n, gap, bal) {
+  const L = list.length;
+  if (L < n) return null;
+  const val = list.map(w => winValue(w, bal));
+  const sum = list.map(() => new Array(n + 1).fill(-1)), from = list.map(() => new Array(n + 1).fill(-1));
+  for (let i = 0; i < L; i++) {
+    sum[i][1] = val[i];
+    for (let k = 2; k <= n; k++) {
+      for (let j = 0; j < i; j++) {
+        if (sum[j][k - 1] < 0 || D.diff(list[j].d, list[i].d) < gap) continue;
+        if (sum[j][k - 1] + val[i] > sum[i][k]) { sum[i][k] = sum[j][k - 1] + val[i]; from[i][k] = j; }
+      }
+    }
+  }
+  let end = -1;
+  for (let i = 0; i < L; i++) if (sum[i][n] >= 0 && (end < 0 || sum[i][n] > sum[end][n])) end = i;
+  if (end < 0) return null;
+  const pick = [];
+  for (let i = end, k = n; k >= 1; i = from[i][k], k--) pick.unshift(list[i]);
+  return pick;
 }
 
 /* ---------- Groups, their sections, and who can come to a meeting: the same rules as Code.gs (groupsOf_,
@@ -1733,6 +1962,33 @@ function windowState(str, s, e, n) {
   for (let i = s; i < e; i++) { if (str[i] === '1') st = 1; else if (str[i] !== '2') return 0; }
   return st;
 }
+// Sectionals (as in Code.gs): whom a meeting calls, as it stands now ({ groupId: true or [sectionIds] }, null for
+// everyone), and whether a member is called to it. Only the poll's groups and the sections they still have: every
+// section that's left is all of the group, and every group, all of it, is everyone (the rule a call is saved by).
+// A member without a section isn't in a sectional of sections.
+function callOf(ev, p, gmap) {
+  const c = ev && ev.call;
+  if (!c || typeof c !== 'object' || Array.isArray(c)) return null;
+  const gids = pollGroups(p, gmap), out = {};
+  let whole = 0;
+  for (const gid of gids) {
+    if (!own(c, gid)) continue;
+    let v = c[gid];
+    const g = gmap[gid];
+    if (Array.isArray(v)) {
+      const ids = g.sections.map(x => x.id).filter(id => v.indexOf(id) !== -1);
+      if (ids.length && ids.length === g.sections.length) v = true;
+      else if (ids.length) { out[gid] = ids; continue; }
+    }
+    if (v === true) { out[gid] = true; whole++; }
+  }
+  return !Object.keys(out).length || whole === gids.length ? null : out;
+}
+function isCalled(m, ev, p, gmap) {
+  const c = callOf(ev, p, gmap);
+  if (!c) return canSee(m, p, gmap);
+  return Object.keys(c).some(gid => inGroup(m, gid) && (c[gid] === true || c[gid].indexOf(sectionOf(m, gmap[gid])) !== -1));
+}
 // A reply belongs to the meeting as it was when given: a changed day or time asks again (as in Code.gs).
 const fpOf = ev => ev.date + '|' + ev.start + '|' + ev.end;
 const REPLY_S = { yes: 1, part: 1, no: 1 };
@@ -1750,14 +2006,20 @@ function attendOf(p, events, rs, ms, rp, gmap) {
   });
   const byName = (a, b) => a.localeCompare(b, 'tr');
   return (events || []).map(ev => {
-    const inside = allowed(p, ev.date) && ev.start >= p.dayStart && ev.end <= p.dayEnd;
+    const inside = isOpen(p, ev.date) && ev.start >= p.dayStart && ev.end <= p.dayEnd;
     const s = Math.floor((ev.start - p.dayStart) / p.slot), e = Math.ceil((ev.end - p.dayStart) / p.slot);
+    const call = callOf(ev, p, gmap);
     let replied = false;
-    const per = gs.map(x => {
+    const per = gs.filter(x => !call || own(call, x.g.id)).map(x => {
+      // A sectional: only the sections it calls (null: all of the group).
+      const only = call && call[x.g.id] !== true ? call[x.g.id] : null;
+      const keys = only ? x.keys.filter(k => only.indexOf(k) !== -1) : x.keys;
+      const members = only ? x.members.filter(mm => only.indexOf(sectionOf(mm, x.g)) !== -1) : x.members;
       const parts = {};
-      for (const k of x.keys) parts[k] = { part: k, yes: [], partly: [], of: 0 };
-      for (const mm of x.members) {
+      for (const k of keys) parts[k] = { part: k, yes: [], partly: [], of: 0 };
+      for (const mm of members) {
         const g = parts[x.keyOf(mm)];
+        if (!g) continue;
         g.of++;
         const r = validReply(rp[mm.id] && rp[mm.id][ev.id], ev);
         if (r) {
@@ -1769,7 +2031,7 @@ function attendOf(p, events, rs, ms, rp, gmap) {
       }
       return {
         id: x.g.id,
-        parts: x.keys.map(k => parts[k]).filter(g => g.part || g.of || g.yes.length)
+        parts: keys.map(k => parts[k]).filter(g => g.part || g.of || g.yes.length)
           .map(g => { g.yes.sort(byName); g.partly.sort(byName); return g; })
       };
     });
@@ -1792,12 +2054,32 @@ function sectionLabel(g, id, all) {
 /* ---------------------------------------------------------------- the API */
 class ApiError extends Error { constructor(code, message) { super(message || code); this.code = code; } }
 
+// What only a newer Code.gs acts on, which an older one (after going back to it) still finds in the sheet and sends
+// along: sectionals (`call`), closed days and the people every meeting needs. The older one takes everyone's replies
+// and counts times on closed days, so the page leaves them out too, unless the answer's `caps` (or the last ones it
+// had) name them.
+const NEWER_DATA = ['call', 'closed', 'required'];
+function fitCaps(data, caps) {
+  const drop = NEWER_DATA.filter(k => (caps || []).indexOf(k) === -1);
+  if (!drop.length) return data;
+  const walk = x => {
+    if (Array.isArray(x)) { for (const y of x) walk(y); return; }
+    if (!x || typeof x !== 'object') return;
+    for (const k of drop) delete x[k];
+    for (const k of Object.keys(x)) walk(x[k]);
+  };
+  walk(data);
+  return data;
+}
+const capsFor = (data, body) => (Array.isArray(data.caps) ? data.caps : data.state && Array.isArray(data.state.caps) ? data.state.caps
+  : body && body.action === 'admin' ? A.caps : S.caps);
+
 const Remote = {
   async call(method, body, params) {
     if (isDemo) {
       const data = await window.ProvalaDemo.call(method, body, params);
       if (!data || !data.ok) throw new ApiError((data && data.error) || 'server_error', data && data.message);
-      return data;
+      return fitCaps(data, capsFor(data, body));
     }
     if (!API_URL) throw new ApiError('no_url');
     let res;
@@ -1819,7 +2101,7 @@ const Remote = {
     let data;
     try { data = await res.json(); } catch (e) { throw new ApiError('network'); }
     if (!data || !data.ok) throw new ApiError((data && data.error) || 'server_error', data && data.message);
-    return data;
+    return fitCaps(data, capsFor(data, body));
   },
   login(username, password, p) { return this.call('POST', { action: 'login', username, password, p: p || '' }); },
   state(session, p) { return this.call('POST', { action: 'state', session, p: p || '' }); },
@@ -1839,7 +2121,8 @@ function errText(e) {
     closed: 'errClosed', busy: 'errBusy', network: 'errNetwork', not_set_up: 'errNotSetUp', no_poll: 'errNoPoll', bad_key: 'badKey',
     too_large: 'errTooLarge', full: 'errFull', invalid: 'errInvalid', bad_login: 'badLogin', locked: 'locked',
     bad_password: 'errBadPassword', weak_password: 'errWeakPassword', auth_required: 'errSignedOut', unknown_action: 'errOldBackend',
-    past: 'errPast', no_event: 'errNoEvent', no_url: 'errNoUrl', reason_needed: 'replyNeedReason', in_use: 'errInUse', not_found: 'errNotFound'
+    past: 'errPast', no_event: 'errNoEvent', no_url: 'errNoUrl', reason_needed: 'replyNeedReason', in_use: 'errInUse', not_found: 'errNotFound',
+    not_called: 'errNotCalled'
   };
   return t(map[e && e.code] || 'errGeneric');
 }
@@ -1988,11 +2271,11 @@ function markDirty() {
 // is fetched behind it. It holds only what that member may see anyway (their own answer, the group's numbers,
 // who can come to each rehearsal), and signing out removes it (like unsent changes).
 const PAGE_KEY = 'tutti-page';
-const pageOf = st => ({ member: st.member, poll: st.poll, schedule: st.schedule, mine: st.mine, group: st.group || null, attend: st.attend || null,
+const pageOf = st => ({ member: st.member, poll: st.poll, schedule: st.schedule, mine: st.mine, prev: st.prev || null, group: st.group || null, attend: st.attend || null,
   replies: st.replies || {}, more: st.more || [], caps: st.caps || [], polls: st.polls || [], groups: st.groups || [] });
 // The parts of a page copy that don't depend on answering: taken as they are.
 function takePage(st) {
-  S.member = st.member; S.poll = st.poll; S.schedule = st.schedule; S.group = st.group || null; S.attend = st.attend || null;
+  S.member = st.member; S.poll = st.poll; S.schedule = st.schedule; S.prev = st.prev || null; S.group = st.group || null; S.attend = st.attend || null;
   S.replies = st.replies || {}; S.more = st.more || []; S.caps = st.caps || []; S.polls = st.polls || []; S.groups = st.groups || [];
   S.page = pageOf(st);
 }
@@ -2019,7 +2302,7 @@ function applyState(st, keepUi) {
   resetMember();
   if (st.mine && S.poll && st.mine.pollId === S.poll.id) applyMine(st.mine);
   if (S.poll) restoreDraft();
-  if (ui && S.poll) Object.assign(M, ui, { sel: new Set(Array.from(ui.sel).filter(d => allowed(S.poll, d))) });
+  if (ui && S.poll) Object.assign(M, ui, { sel: new Set(Array.from(ui.sel).filter(d => isOpen(S.poll, d))) });
 }
 
 async function bootPublic() {
@@ -2143,7 +2426,7 @@ function endSession() {
   pageGen++; pageFetch = null;
   store.del('tutti-session');
   store.del(PAGE_KEY);
-  Object.assign(S, { session: '', member: null, needLogin: true, poll: null, schedule: null, group: null, attend: null, page: null,
+  Object.assign(S, { session: '', member: null, needLogin: true, poll: null, schedule: null, prev: null, group: null, attend: null, page: null,
     replies: {}, more: [], caps: [], polls: [], groups: [], history: null, feed: '' });
   historyJob = null; feedUi.ask = false; refetchAfterReplies = false;
   for (const k of Object.keys(replyQueue)) delete replyQueue[k];
@@ -2452,10 +2735,10 @@ const CAL_HELP = [['helpOneT'], ['helpWdT'], ['helpWkT'], ['helpMultiT', 'helpMu
 function renderCal() {
   if (!R.cal) return; // the view changed while the server was answering
   const p = S.poll, el = clear(R.cal), ro = !p.open;
-  const dates = D.range(p.start, p.end), allDays = pollDates(p);
+  const dates = D.range(p.start, p.end), allDays = openDates(p);
   const isOn = list => list.length > 0 && list.every(d => M.sel.has(d));
   const missing = noteMissing();
-  el.append(h('div', { class: 'cal-head' },
+  el.append(prevBox(p) || '', h('div', { class: 'cal-head' },
     h('div', { class: 'cal-tools' },
       // one button: "Select all days" while nothing is selected, "Deselect" once something is
       h('button', {
@@ -2482,7 +2765,7 @@ function renderCal() {
     }
     for (let c = mondayOf(first); c <= last; c = D.add(c, 7)) {
       const week = D.range(c, D.add(c, 6));
-      const list = week.filter(d => d.slice(0, 7) === mk && allowed(p, d));
+      const list = week.filter(d => d.slice(0, 7) === mk && isOpen(p, d));
       const label = t('selWeek', { w: D.week(c) });
       grid.append(h('button', {
         type: 'button', class: 'wk' + (isOn(list) ? ' on' : ''), disabled: !list.length, title: label, 'aria-label': label,
@@ -2492,10 +2775,39 @@ function renderCal() {
     }
     months.append(h('section', null, h('h3', { class: 'month-name' }, dMonth(first)), grid));
   }
-  el.append(months, groupLegend(p) || '', buildClearAll(ro),
+  el.append(months, calMarks(p) || '', groupLegend(p) || '', buildClearAll(ro),
     h('ul', { class: 'cal-help' }, CAL_HELP.map(x => h('li', null,
       t(x[0]), x[1] ? h('span', { class: 'only-mouse' }, ' ' + t(x[1])) : null))));
   fitStick();
+}
+// "Like last month": their latest earlier answer, laid out by weekday on this poll's open days (from Code.gs), while
+// nothing is marked yet. One press fills it in; they fix what's different and save.
+const hasOpenTimes = () => Object.keys(M.avail).some(d => isOpen(S.poll, d));
+function prevBox(p) {
+  if (!S.prev || !S.prev.avail || !can('prev') || !p.open || hasOpenTimes()) return null;
+  return h('div', { class: 'notice prev-box' },
+    h('span', null, t('prevText', { title: loc(S.prev.poll && S.prev.poll.title) })),
+    h('button', { type: 'button', class: 'btn small', id: 'prev-fill', onclick: fillPrev }, t('prevFill')));
+}
+function fillPrev() {
+  const p = S.poll, snap = Object.assign({}, M.avail), re = new RegExp('^[012]{' + slotCount(p) + '}$');
+  for (const d of Object.keys(S.prev.avail)) {
+    const v = S.prev.avail[d];
+    if (isOpen(p, d) && typeof v === 'string' && re.test(v) && /[12]/.test(v)) M.avail[d] = v;
+  }
+  afterChange();
+  const first = R.cal && R.cal.querySelector('.day:not(:disabled)');
+  if (first) first.focus({ preventScroll: true });
+  toast(t('prevDone'), { action: { label: t('undo'), fn: () => { M.avail = snap; afterChange(); } } });
+}
+// Which days are holidays (red numbers) and which are closed (hatched), and why.
+function calMarks(p) {
+  const hols = pollDates(p).filter(d => holidayOn(d) && !isClosed(p, d)), shut = pollDates(p).filter(d => isClosed(p, d));
+  if (!hols.length && !shut.length) return null;
+  const why = d => closedOf(p)[d] || (holidayOn(d) ? holText(holidayOn(d)) : '');
+  return h('div', { class: 'cal-marks' },
+    hols.length ? h('p', { class: 'hint' }, h('span', { class: 'mk-hol', 'aria-hidden': 'true' }, '12'), ' ', t('marksHol') + ' ' + hols.map(d => dShort(d) + ' (' + holText(holidayOn(d)) + ')').join(', ')) : null,
+    shut.length ? h('p', { class: 'hint' }, h('span', { class: 'mk-shut', 'aria-hidden': 'true' }), ' ', t('marksShut') + ' ' + shut.map(d => dShort(d) + (why(d) ? ' (' + why(d) + ')' : '')).join(', ')) : null);
 }
 // What the numbers in the days' corners mean, or when they'll appear. (Nothing with an older Code.gs.)
 function groupLegend(p) {
@@ -2516,12 +2828,15 @@ function fitStick() {
 window.addEventListener('resize', fitStick);
 
 function dayCell(p, d, needsNote) {
-  const ok = allowed(p, d), s = M.avail[d], note = (M.notes[d] || '').trim(), on = M.sel.has(d);
+  const ok = isOpen(p, d), shut = allowed(p, d) && isClosed(p, d), hol = holidayOn(d);
+  const s = ok ? M.avail[d] : '', note = ok ? (M.notes[d] || '').trim() : '', on = M.sel.has(d);
   // How many people can come at this day's best time (the group's numbers; no names).
   const g = ok && S.group && S.group.days ? S.group.days[d] : null, best = g ? g.best : 0;
+  const why = shut ? closedOf(p)[d] : '';
   return h('button', {
-    type: 'button', class: 'day' + (on ? ' sel' : ''), disabled: !ok, 'aria-pressed': ok ? String(on) : null,
-    'aria-label': dLong(d) + (s ? ', ' + t('hasTimes') : '') + (note ? ', ' + t('hasNote') : '') + (needsNote ? ', ' + t('needTag') : '') + (best ? ', ' + t('dayCount', { n: best }) : ''),
+    type: 'button', class: 'day' + (on ? ' sel' : '') + (hol ? ' hol' : '') + (shut ? ' shut' : ''), disabled: !ok, 'aria-pressed': ok ? String(on) : null,
+    title: [hol ? holText(hol) : '', shut ? t('closedDay') + (why ? ': ' + why : '') : ''].filter(Boolean).join(' · ') || null,
+    'aria-label': dLong(d) + (hol ? ', ' + holText(hol) : '') + (shut ? ', ' + t('closedDay') + (why ? ': ' + why : '') : '') + (s ? ', ' + t('hasTimes') : '') + (note ? ', ' + t('hasNote') : '') + (needsNote ? ', ' + t('needTag') : '') + (best ? ', ' + t('dayCount', { n: best }) : ''),
     dataset: { k: 'd' + d },
     onclick: e => {
       if (M.multi || e.ctrlKey || e.metaKey || e.shiftKey) { on ? M.sel.delete(d) : M.sel.add(d); M.selBy = M.sel.size ? 'group' : ''; afterSelect(); return; }
@@ -2539,7 +2854,7 @@ function dayCell(p, d, needsNote) {
 function buildClearAll(ro) {
   const box = h('div', { class: 'cal-foot' });
   if (ro) return box;
-  const has = Object.keys(M.avail).length > 0 || Object.keys(M.notes).some(k => (M.notes[k] || '').trim());
+  const has = hasOpenTimes() || Object.keys(M.notes).some(k => isOpen(S.poll, k) && (M.notes[k] || '').trim());
   const idle = () => clear(box).append(h('button', { type: 'button', class: 'btn small quiet danger-quiet', dataset: { k: 'clearall' }, disabled: !has, onclick: ask }, t('clearAll')));
   function ask() {
     clear(box).append(h('div', { class: 'confirm', role: 'group', 'aria-label': t('clearAll') }, h('span', null, t('clearAllAsk')),
@@ -2549,7 +2864,10 @@ function buildClearAll(ro) {
   }
   function doClear() {
     const snap = { avail: Object.assign({}, M.avail), notes: Object.assign({}, M.notes) };
-    M.avail = {}; M.notes = {}; M.noteErr = false;
+    // Only the days that can be picked: a closed day keeps what it had, for if it opens again.
+    for (const d of Object.keys(M.avail)) if (isOpen(S.poll, d)) delete M.avail[d];
+    for (const d of Object.keys(M.notes)) if (isOpen(S.poll, d)) delete M.notes[d];
+    M.noteErr = false;
     afterChange();
     toast(t('clearedToast'), { action: { label: t('undo'), fn: () => { M.avail = snap.avail; M.notes = snap.notes; afterChange(); } } });
   }
@@ -2589,6 +2907,8 @@ function renderTimes() {
           h('span', { class: 'sw ' + x[1], 'aria-hidden': 'true' }), t(x[2])))));
   }
   el.append(bar);
+  const hol = sel.length === 1 ? holidayOn(sel[0]) : null;
+  if (hol) el.append(h('p', { class: 'hol-line' }, holText(hol)));
   if (!ro) {
     el.append(h('p', { class: 'hint' }, h('span', { class: 'only-touch' }, t('paintTouch')), h('span', { class: 'only-mouse' }, t('paintMouse'))));
     if (sel.length > 1) el.append(h('p', { class: 'hint many' }, t('paintMany', { n: sel.length })));
@@ -2604,7 +2924,7 @@ function renderTimes() {
 
 // One day selected: its name with arrows to step to the previous or next day people can pick.
 function dayNav(d) {
-  const all = pollDates(S.poll), i = all.indexOf(d);
+  const all = openDates(S.poll), i = all.indexOf(d);
   const arrow = (x, cls, key) => h('button', {
     type: 'button', class: 'btn small day-arrow ' + cls, disabled: !x, title: t(key), 'aria-label': t(key), dataset: { k: key },
     onclick: () => { selectOnly(x); afterSelect(); }
@@ -2781,7 +3101,7 @@ function buildNote(sel, ro) {
 const hasMaybe = d => (M.avail[d] || '').indexOf('1') !== -1;
 function noteMissing() {
   if (!S.poll || M.comment.trim()) return [];
-  return Object.keys(M.avail).filter(d => allowed(S.poll, d) && hasMaybe(d) && !(M.notes[d] || '').trim()).sort();
+  return Object.keys(M.avail).filter(d => isOpen(S.poll, d) && hasMaybe(d) && !(M.notes[d] || '').trim()).sort();
 }
 function refreshNeeds() {
   const missing = noteMissing();
@@ -2804,7 +3124,7 @@ function refreshNeeds() {
 function renderSummary() {
   if (!R.summary) return; // the view changed while the server was answering
   const p = S.poll, el = clear(R.summary);
-  const days = uniq(Object.keys(M.avail).concat(Object.keys(M.notes).filter(d => (M.notes[d] || '').trim()))).filter(d => allowed(p, d)).sort();
+  const days = uniq(Object.keys(M.avail).concat(Object.keys(M.notes).filter(d => (M.notes[d] || '').trim()))).filter(d => isOpen(p, d)).sort();
   if (!days.length) { el.append(h('p', { class: 'muted' }, t('summaryEmpty'))); return; }
   const missing = noteMissing();
   el.append(h('ul', { class: 'answers' }, days.map(d => {
@@ -2822,7 +3142,7 @@ function renderSummary() {
 
 function updateSaveBar() {
   if (!R.saveBtn || !R.saveBtn.isConnected) return;
-  const nDays = Object.keys(M.avail).length;
+  const nDays = Object.keys(M.avail).filter(d => isOpen(S.poll, d)).length;
   add(clear(R.saveStatus), [
     h('strong', null, M.saving ? t('saving') : M.dirty && M.savedAt ? t('stUnsaved') : M.savedAt ? t('stSaved') : t('stNew')),
     h('span', null, t('daysMarked', { n: nDays }) + (M.savedAt && !M.dirty ? ' · ' + ago(M.savedAt) : ''))]);
@@ -2906,6 +3226,8 @@ function nowIn(tz) {
   }
 }
 const isOver = (ev, now) => ev.date < now.day || (ev.date === now.day && ev.end <= now.min);
+// Is this member called to a meeting? (A sectional of other sections isn't theirs.)
+const meCalled = (ev, p) => !callOf(ev, p, memberGmap()) || isCalled(S.member || {}, ev, p, memberGmap());
 
 // What the member's schedule holds: the poll on show, and other polls' meetings still to come, earliest first.
 function schedBlocks() {
@@ -3160,7 +3482,7 @@ function nextMeeting() {
   for (const b of schedBlocks()) {
     const now = nowIn(b.p.tz);
     for (const ev of (b.s && b.s.events) || []) {
-      if (isOver(ev, now)) continue;
+      if (isOver(ev, now) || !meCalled(ev, b.p)) continue;
       if (!best || ev.date < best.ev.date || (ev.date === best.ev.date && ev.start < best.ev.start)) best = { b, ev, now };
     }
   }
@@ -3186,7 +3508,7 @@ function buildNext() {
         h('h2', { class: 'eyebrow', id: 'next-h' }, t('nextTitle')),
         h('a', { class: 'next-all', href: '#schedule' }, t('allMeetings'))),
       h('p', { class: 'next-when' }, groupTag(b.p), h('strong', null, ev.title || t('meeting')),
-        ' · ' + (near ? near + ', ' : '') + dLong(ev.date) + ', ' + hm(ev.start) + '–' + hm(ev.end) + (ev.place ? ' · ' + ev.place : '')),
+        ' · ' + (near ? near + ', ' : '') + dLong(ev.date) + ', ' + hm(ev.start) + '–' + hm(ev.end) + (ev.place ? ' · ' + ev.place : ''), callTag(ev, b.p)),
       can('replies') ? replyBox(b.p, ev, b.replies[ev.id], 'nx') : null);
   }
   // The date column already says which day; "today" and "tomorrow" are worth saying again.
@@ -3195,7 +3517,7 @@ function buildNext() {
     eventDate(ev),
     h('div', { class: 'event-body' },
       h('h2', { class: 'eyebrow', id: 'next-h' }, t('nextTitle')),
-      h('p', { class: 'next-title' }, groupTag(b.p), ev.title || t('meeting')),
+      h('p', { class: 'next-title' }, groupTag(b.p), ev.title || t('meeting'), callTag(ev, b.p)),
       h('p', { class: 'event-time' }, day + hm(ev.start) + '–' + hm(ev.end)),
       ev.place ? h('p', { class: 'event-place' }, ev.place) : null),
     can('replies') ? replyBox(b.p, ev, b.replies[ev.id], 'nx') : null,
@@ -3204,6 +3526,11 @@ function buildNext() {
 
 // "Orkestra" before a meeting or poll title, for a member of several groups.
 const groupTag = p => (manyGroups() && p && groupsLabel(p.groups) ? h('span', { class: 'grp-tag' }, groupsLabel(p.groups)) : null);
+// "Bölüm provası: Tenor, Bas" after a sectional's title.
+function callTag(ev, p) {
+  const call = callOf(ev, p, memberGmap());
+  return call ? h('span', { class: 'chip-s call' }, t('sectional') + ': ' + callText(call, p, memberGmap())) : null;
+}
 
 /* ---------- The schedule page */
 function renderSchedule(main) {
@@ -3222,7 +3549,7 @@ function renderSchedule(main) {
       const now = nowIn(b.p.tz);
       sec.append(h('div', { class: 'events' }, evs.map(ev => eventCard(b, ev, now, several))));
       for (const ev of evs) {
-        all.push([ev, b.p]);
+        if (meCalled(ev, b.p)) all.push([ev, b.p]);
         if (attendIn(b.attend, ev)) anyAtt = true;
         if (ev.date >= now.day) anyOpen = true;
       }
@@ -3244,18 +3571,20 @@ function renderSchedule(main) {
 }
 
 function eventCard(b, ev, now, nested) {
-  const over = isOver(ev, now);
-  return h('article', { class: 'event' + (over ? ' past' : '') },
+  const over = isOver(ev, now), called = meCalled(ev, b.p);
+  return h('article', { class: 'event' + (over ? ' past' : '') + (called ? '' : ' others') },
     eventDate(ev),
     h('div', { class: 'event-body' },
       h(nested ? 'h4' : 'h3', null, ev.title || t('meeting')),
+      callTag(ev, b.p) ? h('p', { class: 'event-call' }, callTag(ev, b.p)) : null,
       h('p', { class: 'event-time' }, hm(ev.start) + '–' + hm(ev.end)),
       ev.place ? h('p', { class: 'event-place' }, ev.place) : null,
       ev.note ? h('p', { class: 'event-note' }, ev.note) : null,
-      over ? null : h('div', { class: 'event-actions' },
+      called ? null : h('p', { class: 'hint not-called' }, t('notCalled')),
+      over || !called ? null : h('div', { class: 'event-actions' },
         h('a', { class: 'btn small', href: gcalUrl(ev, b.p), target: '_blank', rel: 'noopener' }, t('googleCal')),
         framed ? null : h('button', { type: 'button', class: 'btn small', onclick: () => download('provala-' + ev.date + '.ics', icsText([ev], b.p), 'text/calendar') }, t('icsOne')))),
-    can('replies') ? replyBox(b.p, ev, b.replies[ev.id], 'rp') : null,
+    can('replies') && called ? replyBox(b.p, ev, b.replies[ev.id], 'rp') : null,
     buildAttend(ev, b.attend));
 }
 
@@ -3381,14 +3710,22 @@ const A = {
   // A 30-day planner sign-in made from the key; older versions kept the key itself under tutti-admin-key.
   key: store.get('tutti-org') || store.get('tutti-admin-key') || '', authed: false, loading: false, error: null, keyErr: '',
   polls: [], currentId: '', pollId: store.get('tutti-admin-poll') || '', data: null,
-  board: new Set(), tab: 'plan', duration: 120, minGap: 10, cell: null, hl: null, scrollX: null,
+  board: new Set(), tab: 'plan', duration: 120, cell: null, hl: null, scrollX: null,
   draft: { events: [], note: '' }, draftDirty: false, busy: false,
   creds: [],   // sign-in details just created; shown once, never stored
   caps: [], errors: null, since: {}, openEv: new Set(), season: null, seasonBusy: false,
   // Release 2: the groups (with an older Code.gs, the one choir), which poll each group is shown, and the
   // group the Members tab shows (and new members join) and the season is seen for ('' = all).
-  groups: [], current: {}, memberGroup: '', seasonGroup: ''
+  groups: [], current: {}, memberGroup: '', seasonGroup: '',
+  // Release 3: the sections the board is filtered to ("group|section"; none: everyone), how best times are ranked
+  // (by the weakest section, or by the number of people), how many meetings a month to find and how far apart, and
+  // the meetings whose "who's called" list is open in the schedule editor.
+  secs: new Set(), rank: store.get('tutti-org-rank') === 'count' ? 'count' : 'balance', sets: setsPref(), openCall: new Set()
 };
+function setsPref() {
+  const x = store.json('tutti-org-sets');
+  return x && x.n >= 2 && x.n <= 8 && x.gap >= 1 && x.gap <= 14 ? { n: Math.round(x.n), gap: Math.round(x.gap) } : { n: 2, gap: 10 };
+}
 const adminGmap = () => gmapOf(A.groups);
 const manyAdminGroups = () => (A.groups || []).length > 1;
 // The members of the open poll's groups: who it asks, whose replies and attendance it has.
@@ -3456,6 +3793,7 @@ function applyAdminPoll(r) {
   // What's new since this device last opened this poll here: the earlier visit is noted once per page load.
   if (!(id in A.since)) { A.since[id] = store.get('tutti-org-seen-' + id) || ''; store.set('tutti-org-seen-' + id, new Date().toISOString()); }
   A.board = new Set(r.responses.map(x => x.id));
+  A.secs = new Set();
   A.duration = r.poll.duration || 120;
   A.cell = null; A.hl = null; A.scrollX = null;
   A.draft = clone(r.schedule && (r.schedule.draft || r.schedule.published) || { events: [], note: '' });
@@ -3648,15 +3986,77 @@ function renderTray() {
   const el = clear(R.tray), off = people().filter(r => !A.board.has(r.id));
   el.append(h('h3', null, t('trayTitle')), h('p', { class: 'hint' }, t('trayHint')),
     h('div', { class: 'chips' }, off.length ? off.map(r => chip(r, false)) : h('p', { class: 'muted' }, t('trayEmpty'))),
-    h('div', { class: 'actions' }, h('button', { type: 'button', class: 'btn small', disabled: !off.length, onclick: () => { A.data.responses.forEach(r => A.board.add(r.id)); A.hl = null; refreshPlan(); } }, t('addAll'))));
+    h('div', { class: 'actions' }, h('button', { type: 'button', class: 'btn small', disabled: !off.length, onclick: () => { A.data.responses.forEach(r => A.board.add(r.id)); A.secs.clear(); A.hl = null; refreshPlan(); } }, t('addAll'))));
 }
 function renderBoardBar() {
   if (!R.boardBar) return; // the view changed while the server was answering
   const el = clear(R.boardBar), on = onBoard();
   el.append(h('div', { class: 'board-head' },
     h('h3', null, t('boardTitle', { n: on.length })),
-    h('button', { type: 'button', class: 'btn small quiet', disabled: !on.length, onclick: () => { A.board.clear(); A.cell = null; A.hl = null; refreshPlan(); } }, t('clearBoard'))),
+    h('button', { type: 'button', class: 'btn small quiet', disabled: !on.length, onclick: () => { A.board.clear(); A.secs.clear(); A.cell = null; A.hl = null; refreshPlan(); } }, t('clearBoard'))),
+    secFilter(),
     h('div', { class: 'chips' }, on.length ? on.map(r => chip(r, true)) : h('p', { class: 'muted' }, t('boardEmpty'))));
+}
+
+/* ---------- Sections on the board: one tap puts only the tenors (or tenors and basses…) on it. Meetings added while
+   it's on are sectionals for those sections (the schedule editor can change that). */
+function secOptions() {
+  const gmap = adminGmap(), gids = pollGroups(A.data.poll, gmap), ms = pollMembers(), many = gids.length > 1, out = [];
+  for (const gid of gids) {
+    for (const x of gmap[gid].sections) {
+      if (ms.some(m => inGroup(m, gid) && sectionOf(m, gmap[gid]) === x.id)) out.push({ key: gid + '|' + x.id, label: (many ? groupName(gmap[gid]) + ' · ' : '') + secName(x) });
+    }
+  }
+  return out;
+}
+function secFilter() {
+  const opts = secOptions();
+  if (opts.length < 2) return null;
+  const call = acan('call') ? callFromSecs() : null;
+  const btn = (key, label, on) => h('button', {
+    type: 'button', class: 'tool sec-btn', 'aria-pressed': String(on), dataset: { k: 'sec' + key },
+    onclick: () => redrawKeepingFocus(() => setSecs(key))
+  }, label);
+  return h('div', { class: 'secs' },
+    h('div', { class: 'tools sec-tools', role: 'group', 'aria-label': t('secFilter') },
+      btn('', t('secAll'), !A.secs.size), opts.map(o => btn(o.key, o.label, A.secs.has(o.key)))),
+    call ? h('p', { class: 'hint sec-hint' }, t('secAddHint', { who: callText(call, A.data.poll, adminGmap()) })) : null);
+}
+function setSecs(key) {
+  if (!key) A.secs.clear();
+  else if (A.secs.has(key)) A.secs.delete(key);
+  else A.secs.add(key);
+  const gmap = adminGmap(), gids = pollGroups(A.data.poll, gmap), byId = new Map(A.data.members.map(m => [m.id, m]));
+  A.board = new Set(A.data.responses.filter(r => {
+    if (!A.secs.size) return true;
+    const m = r.memberId ? byId.get(r.memberId) : null;
+    return !!m && gids.some(gid => inGroup(m, gid) && A.secs.has(gid + '|' + sectionOf(m, gmap[gid])));
+  }).map(r => r.id));
+  A.cell = null; A.hl = null;
+  refreshPlan();
+}
+// The sectional the filter stands for: every section of a group is all of it; every group, all of it, is everyone.
+function callFromSecs() {
+  if (!A.secs.size) return null;
+  const gmap = adminGmap(), gids = pollGroups(A.data.poll, gmap), out = {};
+  let whole = 0;
+  for (const gid of gids) {
+    const g = gmap[gid], ids = g.sections.map(x => x.id).filter(sid => A.secs.has(gid + '|' + sid));
+    if (!ids.length) continue;
+    if (ids.length === g.sections.length) { out[gid] = true; whole++; } else out[gid] = ids;
+  }
+  return !Object.keys(out).length || whole === gids.length ? null : out;
+}
+// "Tenor ve Bas", "Koro: Tenor ve Bas · Orkestra", or "Herkes".
+function callText(call, p, gmap, lang) {
+  if (!call) return t('callAll', null, lang);
+  const many = pollGroups(p, gmap).length > 1;
+  return Object.keys(call).filter(gid => own(gmap, gid)).map(gid => {
+    const g = gmap[gid];
+    if (call[gid] === true) return groupName(g, lang);
+    const names = listText(call[gid].map(id => { const x = g.sections.find(y => y.id === id); return x ? secName(x, lang) : id; }), lang);
+    return many ? groupName(g, lang) + ': ' + names : names;
+  }).join(' · ');
 }
 
 function legend() {
@@ -3672,7 +4072,7 @@ function renderScore() {
   const n = slotCount(p), dates = pollDates(p);
   el.append(h('div', { class: 'score-head' }, h('h3', null, t('heatTitle')), legend()));
   const cw = p.slot === 60 ? 30 : p.slot === 30 ? 15 : 9;
-  const grid = h('div', { class: 'score', style: '--n:' + n + ';--cw:' + cw + 'px', role: 'grid', 'aria-label': t('heatTitle') });
+  const grid = h('div', { class: 'score', style: '--n:' + n + ';--cw:' + cw + 'px', role: 'img', 'aria-label': t('heatAria') });
   grid.append(h('div', { class: 'score-corner' }));
   for (let i = 0; i < n;) {
     const m = p.dayStart + i * p.slot;
@@ -3681,10 +4081,18 @@ function renderScore() {
     i += span;
   }
   dates.forEach((d, idx) => {
-    const wd = D.wd(d), wks = wd === 1 && idx > 0;
+    const wd = D.wd(d), wks = wd === 1 && idx > 0, hol = holidayOn(d);
     const noters = on.filter(r => r.notes && r.notes[d]);
-    grid.append(h('div', { class: 'score-lab' + (wd === 0 || wd === 6 ? ' wkend' : '') + (wks ? ' wks' : ''), role: 'rowheader' },
-      dShort(d), noters.length ? h('span', { class: 'ln', title: noters.map(r => r.name + ': ' + r.notes[d]).join('\n') }, '✎') : null));
+    const lab = h('div', { class: 'score-lab' + (wd === 0 || wd === 6 || hol ? ' wkend' : '') + (wks ? ' wks' : '') + (isClosed(p, d) ? ' shut' : '') },
+      dShort(d), hol ? h('span', { class: 'hol-mk', title: holText(hol) }, '✦', h('span', { class: 'visually-hidden' }, ', ' + holText(hol))) : null,
+      noters.length ? h('span', { class: 'ln', title: noters.map(r => r.name + ': ' + r.notes[d]).join('\n') }, '✎') : null);
+    grid.append(lab);
+    // A closed day: no times to show (answers from before it closed don't count).
+    if (isClosed(p, d)) {
+      const why = closedOf(p)[d] || (hol ? holText(hol) : '');
+      grid.append(h('div', { class: 'c-shut' + (wks ? ' wks' : ''), style: 'grid-column: span ' + n }, t('closedRow') + (why ? ': ' + why : '')));
+      return;
+    }
     for (let i = 0; i < n; i++) {
       let a = 0, mb = 0;
       for (const r of on) { const c = r.avail[d] ? r.avail[d][i] : '0'; if (c === '2') a++; else if (c === '1') mb++; }
@@ -3697,7 +4105,7 @@ function renderScore() {
       if ((p.dayStart + i * p.slot) % 60 === 0) cls += ' bar';
       if (i === n - 1) cls += ' fin';
       if (wks) cls += ' wks';
-      grid.append(h('div', { class: cls, role: 'gridcell', dataset: { d, i: String(i), l: String(lvl) }, title: dShort(d) + ' ' + hm(p.dayStart + i * p.slot) + ' · ' + a + '/' + N + (mb ? ' (+' + mb + ' ' + t('ifNeededShort') + ')' : '') }));
+      grid.append(h('div', { class: cls, dataset: { d, i: String(i), l: String(lvl) }, title: dShort(d) + ' ' + hm(p.dayStart + i * p.slot) + ' · ' + a + '/' + N + (mb ? ' (+' + mb + ' ' + t('ifNeededShort') + ')' : '') }));
     }
   });
   grid.addEventListener('click', e => {
@@ -3709,10 +4117,17 @@ function renderScore() {
     if (R.cell) R.cell.scrollIntoView({ behavior: smooth(), block: 'nearest' });
   });
   R.grid = grid;
-  const wrap = h('div', { class: 'score-wrap' }, grid);
+  const wrap = h('div', { class: 'score-wrap', tabindex: '0', role: 'region', 'aria-label': t('heatTitle') }, grid);
   wrap.addEventListener('scroll', () => { A.scrollX = wrap.scrollLeft; }, { passive: true });
   el.append(wrap);
   if (!A.cell) el.append(R.tapHint = h('p', { class: 'hint' }, t('tapCell')));
+  // Holidays in the poll stay open; the settings close the ones there'll be no rehearsal on.
+  const hols = dates.filter(d => holidayOn(d) && !isClosed(p, d));
+  if (hols.length && acan('closed')) {
+    el.append(h('p', { class: 'hint hol-hint' }, h('span', { class: 'hol-mk', 'aria-hidden': 'true' }, '✦ '),
+      t('holHint', { list: hols.map(d => dShort(d) + ' (' + holText(holidayOn(d)) + ')').join(', ') }), ' ',
+      h('button', { type: 'button', class: 'btn small quiet', onclick: () => openPollEditor(A.data.poll, 'closed') }, t('holHintBtn'))));
+  }
   markScore();
   // After layout: shorten hour labels if columns are narrow, and on small screens
   // scroll the timetable to the best time instead of the start of the day.
@@ -3721,7 +4136,7 @@ function renderScore() {
     fitHours();
     if (A.scrollX !== null) { wrap.scrollLeft = A.scrollX; return; }
     if (!N || wrap.scrollWidth <= wrap.clientWidth + 4) return;
-    const w = bestWindows(dates, on, p, A.duration)[0];
+    const w = bestWindows(openDates(p), planCtx(), p, A.duration)[0];
     const c = w && grid.querySelector('.c[data-d="' + w.d + '"][data-i="' + w.s + '"]');
     if (c) wrap.scrollLeft = Math.max(0, c.getBoundingClientRect().left - wrap.getBoundingClientRect().left + wrap.scrollLeft - 124 - 30);
   });
@@ -3771,24 +4186,103 @@ function renderCell() {
     h('div', { class: 'who-cols' }, group(t('free'), free, 'free'), group(t('ifNeeded'), maybe, 'maybe'), group(t('notFree'), no, 'none'))));
 }
 
+// What best times are worked out from: the board, each answer's sections, and the people every meeting needs.
+function planCtx() {
+  const p = A.data.poll, gmap = adminGmap(), gids = pollGroups(p, gmap), byId = new Map(A.data.members.map(m => [m.id, m]));
+  const secOf = new Map(), keys = [];
+  for (const gid of gids) for (const x of gmap[gid].sections) keys.push(gid + '|' + x.id);
+  for (const r of A.data.responses) {
+    const m = r.memberId ? byId.get(r.memberId) : null;
+    if (!m) continue;
+    secOf.set(r, gids.filter(gid => inGroup(m, gid) && sectionOf(m, gmap[gid])).map(gid => gid + '|' + sectionOf(m, gmap[gid])));
+  }
+  const rs = onBoard();
+  const secKeys = keys.filter(k => rs.some(r => (secOf.get(r) || []).indexOf(k) !== -1));
+  const req = requiredIds().map(id => A.data.responses.find(r => r.memberId === id)).filter(Boolean);
+  return { rs, secOf, secKeys, req, bal: A.rank !== 'count' && secKeys.length > 1 };
+}
+const RANKS = [['balance', 'rankBalance'], ['count', 'rankCount']];
+const SET_COUNTS = [2, 3, 4, 5, 6, 7, 8], SET_GAPS = [1, 2, 3, 4, 5, 6, 7, 10, 12, 14];
 function renderBest() {
   if (!R.best) return; // the view changed while the server was answering
-  const el = clear(R.best), p = A.data.poll, on = onBoard(), N = on.length;
+  const el = clear(R.best), p = A.data.poll, ctx = planCtx(), N = ctx.rs.length;
   const durs = uniq([60, 90, 120, 150, 180, 210, 240, 270, 300, p.duration, A.duration].filter(Boolean)).sort((a, b) => a - b);
   el.append(h('div', { class: 'best-head' },
     h('h3', null, t('bestTitle')),
     h('label', { class: 'inline-field', for: 'a-dur' }, t('length'),
-      selectEl('a-dur', durs.map(v => [v, durText(v)]), A.duration, v => { A.duration = +v; A.hl = null; markScore(); renderBest(); }))));
+      selectEl('a-dur', durs.map(v => [v, durText(v)]), A.duration, v => { A.duration = +v; A.hl = null; markScore(); renderBest(); })),
+    ctx.secKeys.length > 1 ? h('label', { class: 'inline-field', for: 'a-rank' }, t('rankLabel'),
+      selectEl('a-rank', RANKS.map(x => [x[0], t(x[1])]), A.rank, v => { A.rank = v === 'count' ? 'count' : 'balance'; store.set('tutti-org-rank', A.rank); A.hl = null; markScore(); renderBest(); })) : null));
+  if (acan('required')) el.append(buildRequired());
   if (!N) { el.append(h('p', { class: 'muted' }, t('boardEmpty'))); return; }
-  const wins = bestWindows(pollDates(p), on, p, A.duration);
+  const wins = bestWindows(openDates(p), ctx, p, A.duration);
   if (!wins.length) { el.append(h('p', { class: 'muted' }, t('noWindows'))); return; }
-  el.append(h('ol', { class: 'wins' }, wins.slice(0, 8).map(w => winItem(w, N))));
+  if (ctx.bal) el.append(h('p', { class: 'hint' }, t('rankBalanceHint')));
+  el.append(h('ol', { class: 'wins' }, wins.slice(0, 8).map(w => winItem(w, N, ctx))));
   el.append(h('div', { class: 'best-head' },
-    h('h3', null, t('pairsTitle')),
+    h('h3', null, t('setsTitle')),
+    h('label', { class: 'inline-field', for: 'a-count' }, t('setsCount'),
+      selectEl('a-count', SET_COUNTS.map(v => [v, t('meetingsN', { n: v })]), A.sets.n, v => setSets(+v, 0))),
     h('label', { class: 'inline-field', for: 'a-gap' }, t('minGapLabel'),
-      selectEl('a-gap', [7, 10, 12, 14].map(v => [v, t('daysN', { n: v })]), A.minGap, v => { A.minGap = +v; renderBest(); }))));
-  const pairs = bestPairs(wins, A.minGap);
-  el.append(pairs.length ? h('div', { class: 'pairs' }, pairs.map(pr => pairItem(pr, N))) : h('p', { class: 'muted' }, t('pairsNone')));
+      selectEl('a-gap', SET_GAPS.map(v => [v, t('daysN', { n: v })]), A.sets.gap, v => setSets(0, +v)))));
+  const sets = bestSets(wins, A.sets.n, A.sets.gap, ctx.bal);
+  el.append(sets.length ? h('div', { class: 'pairs' }, sets.map(x => setItem(x, N))) : h('p', { class: 'muted' }, t('setsNone', { n: A.sets.n })));
+}
+function setSets(n, gap) {
+  // More meetings than fit in a month with this gap: a shorter gap, so there's still something to show.
+  if (n) { A.sets.n = n; if ((n - 1) * A.sets.gap > 28) A.sets.gap = SET_GAPS.filter(g => (n - 1) * g <= 28).pop() || 1; }
+  if (gap) A.sets.gap = gap;
+  store.set('tutti-org-sets', JSON.stringify(A.sets));
+  renderBest();
+}
+
+/* ---------- The people every meeting needs (the accompanist, a soloist): only the planner knows. */
+function requiredIds() {
+  const ms = new Set(pollMembers().map(m => m.id));
+  return (A.data.poll.required || []).filter(id => ms.has(id));
+}
+function buildRequired() {
+  const ids = requiredIds(), byId = new Map(A.data.members.map(m => [m.id, m]));
+  const answered = new Set(A.data.responses.map(r => r.memberId).filter(Boolean));
+  const others = pollMembers().filter(m => ids.indexOf(m.id) === -1).sort((a, b) => a.name.localeCompare(b.name, LOC[S.lang]));
+  return h('div', { class: 'req' },
+    h('span', { class: 'req-label' }, t('reqLabel')),
+    ids.map(id => {
+      const m = byId.get(id);
+      return h('span', { class: 'chip-s req-chip' }, h('span', { 'aria-hidden': 'true' }, '★ '), m.name,
+        answered.has(id) ? null : h('span', { class: 'req-none' }, ' · ' + t('reqNoAnswer')),
+        h('button', { type: 'button', class: 'req-x', id: 'a-req-x-' + id, 'aria-label': t('reqRemove', { name: m.name }), title: t('reqRemove', { name: m.name }),
+          onclick: () => saveRequired(ids.filter(x => x !== id), true) }, '✕'));
+    }),
+    others.length ? [h('label', { class: 'visually-hidden', for: 'a-req' }, t('reqAddLabel')),
+      selectEl('a-req', [['', t('reqAdd')]].concat(others.map(m => [m.id, m.name])), '', v => { if (v) saveRequired(ids.concat([v])); })] : null,
+    ids.length ? null : h('span', { class: 'hint' }, t('reqHint')));
+}
+// Shown at once, saved behind it (and put back if that fails).
+async function saveRequired(list, removed) {
+  const id = A.pollId, before = A.data.poll.required;
+  A.data.poll.required = list;
+  redrawKeepingFocus(renderBest);
+  // Focus stays in the list: on the picker, or on the ✕ of the person just added once nobody is left to pick.
+  if (removed || !document.getElementById('a-req')) focusReq(removed ? '' : list[list.length - 1]);
+  try {
+    const r = await api.admin(A.key, 'setRequired', { pollId: id, required: list });
+    if (!A.data || A.pollId !== id) return;
+    A.data.poll.required = r.poll.required || [];
+    const listed = A.polls.find(x => x.id === id);
+    if (listed) listed.required = r.poll.required || [];
+  } catch (e) {
+    if (A.data && A.pollId === id) {
+      A.data.poll.required = before;
+      redrawKeepingFocus(renderBest);
+      if (document.activeElement === document.body) focusReq('');
+    }
+    toast(errText(e), { error: true });
+  }
+}
+function focusReq(added) {
+  const el = (added && document.getElementById('a-req-x-' + added)) || document.getElementById('a-req');
+  if (el) el.focus({ preventScroll: true });
 }
 function badgeFor(w, N) {
   if (w.a === N) return h('span', { class: 'badge all', title: t('legendAll') }, t('allIn'));
@@ -3798,40 +4292,68 @@ function badgeFor(w, N) {
 function whoList(list, d) {
   return list.map((r, i) => [i ? ', ' : '', r.name, r.notes && r.notes[d] ? h('span', { class: 'who-note' }, ' (' + r.notes[d] + ')') : null]);
 }
-function winItem(w, N) {
+function winItem(w, N, ctx) {
   const p = A.data.poll, start = p.dayStart + w.s * p.slot, end = Math.min(start + A.duration, 1440);
   const hl = () => { A.hl = { d: w.d, s: w.s, e: w.e }; markScore(); };
+  const hol = holidayOn(w.d);
   return h('li', { class: 'win', onmouseenter: hl, onfocusin: hl },
     badgeFor(w, N),
     h('div', { class: 'win-main' },
-      h('p', null, h('strong', null, dLong(w.d)), ' ', h('span', { class: 'mono' }, hm(start) + '–' + hm(end))),
+      h('p', null, h('strong', null, dLong(w.d)), ' ', h('span', { class: 'mono' }, hm(start) + '–' + hm(end)), hol ? h('span', { class: 'chip-s hol' }, holText(hol)) : null),
       w.s2 > w.s ? h('p', { class: 'hint' }, t('canStart', { a: hm(start), b: hm(p.dayStart + w.s2 * p.slot) })) : null,
+      w.reqMiss.length ? h('p', { class: 'win-who req-miss' }, h('span', { class: 'lbl' }, t('reqMissing') + ': '), w.reqMiss.map(r => r.name).join(', ')) : null,
+      w.reqMaybe.length ? h('p', { class: 'win-who' }, h('span', { class: 'lbl' }, t('reqMaybe') + ': '), whoList(w.reqMaybe, w.d)) : null,
+      ctx.secKeys.length > 1 ? secLine(w) : null,
       w.maybe.length ? h('p', { class: 'win-who' }, h('span', { class: 'lbl' }, t('ifNeeded') + ': '), whoList(w.maybe, w.d)) : null,
       w.miss.length ? h('p', { class: 'win-who' }, h('span', { class: 'lbl' }, t('missing') + ': '), whoList(w.miss, w.d)) : null),
     h('button', { type: 'button', class: 'btn small', onclick: () => addEvent(w.d, start, end) }, t('add')));
 }
-function pairItem(pr, N) {
+// "Soprano 4/5 · Alto 2/4 (+1) · Tenor 1/3": how much of each section can come; the weakest is marked.
+function secLine(w) {
+  const gmap = adminGmap(), many = pollGroups(A.data.poll, gmap).length > 1;
+  return h('p', { class: 'win-who win-secs' }, h('span', { class: 'lbl' }, t('bySection') + ': '), w.secs.map((x, i) => {
+    const cut = x.key.indexOf('|'), g = gmap[x.key.slice(0, cut)], sid = x.key.slice(cut + 1);
+    return [i ? ' · ' : '', h('span', { class: 'sec-n' + (x.key === w.weak && x.v < 1 ? ' weak' : '') },
+      (many ? groupName(g) + ' ' : '') + sectionLabel(g, sid) + ' ' + x.a + '/' + x.n + (x.m ? ' (+' + x.m + ')' : ''))];
+  }));
+}
+function setItem(x, N) {
   const p = A.data.poll;
-  const one = w => h('span', { class: 'pair-one' }, badgeFor(w, N), h('strong', null, dShort(w.d)), h('span', { class: 'mono' }, hm(p.dayStart + w.s * p.slot)));
+  const one = w => {
+    const hol = holidayOn(w.d);
+    return h('span', { class: 'pair-one' }, badgeFor(w, N), h('strong', null, dShort(w.d)), h('span', { class: 'mono' }, hm(p.dayStart + w.s * p.slot)),
+      hol ? h('span', { class: 'hol-mk', title: holText(hol) }, '✦', h('span', { class: 'visually-hidden' }, ', ' + holText(hol))) : null);
+  };
   return h('div', { class: 'pair' },
-    h('span', { class: 'pair-month' }, dMonth(pr.month + '-01')), one(pr.a), one(pr.b),
+    h('span', { class: 'pair-month' }, dMonth(x.month + '-01')), x.list.map(one),
     h('button', { type: 'button', class: 'btn small', onclick: () => {
-      for (const w of [pr.a, pr.b]) { const s = p.dayStart + w.s * p.slot; addEvent(w.d, s, Math.min(s + A.duration, 1440), true); }
-      toastAdded();
-    } }, t('addBoth')));
+      let call = null;
+      for (const w of x.list) { const s = p.dayStart + w.s * p.slot; call = addEvent(w.d, s, Math.min(s + A.duration, 1440), true); }
+      toastAdded(call);
+    } }, x.list.length === 2 ? t('addBoth') : t('addThem')));
 }
 
-function addEvent(d, start, end, quiet) {
+// Adds a meeting to the draft; from the Plan tab with the board filtered to some sections, a sectional for them.
+// Gives its call.
+function addEvent(d, start, end, quiet, forAll) {
   end = end || Math.min(start + A.duration, 1440);
+  const call = acan('call') && !forAll ? callFromSecs() : null;
+  // The place of the last meeting, and the title of the last one for the same people (a sectional's title isn't a
+  // full rehearsal's).
   const last = A.draft.events[A.draft.events.length - 1];
-  A.draft.events.push({ id: 'e' + rnd(8), date: d, start, end, title: last ? last.title : t('defaultEventTitle'), place: last ? last.place : '', note: '' });
+  const like = A.draft.events.filter(x => stable(callOf(x, A.data.poll, adminGmap())) === stable(call)).pop();
+  const ev = { id: 'e' + rnd(8), date: d, start, end, title: like ? like.title : t('defaultEventTitle'), place: last ? last.place : '', note: '' };
+  if (call) ev.call = call;
+  A.draft.events.push(ev);
   A.draft.events.sort((x, y) => (x.date === y.date ? x.start - y.start : x.date < y.date ? -1 : 1));
   A.draftDirty = true;
   refreshTabs();
-  if (!quiet) toastAdded();
+  if (!quiet) toastAdded(call);
+  return call;
 }
-function toastAdded() {
-  toast(t('addedToDraft'), { action: { label: t('viewDraft'), fn: () => { A.tab = 'schedule'; refreshTabs(); renderTab(); window.scrollTo({ top: 0, behavior: smooth() }); } } });
+function toastAdded(call) {
+  toast(call ? t('addedSectional', { who: callText(call, A.data.poll, adminGmap()) }) : t('addedToDraft'),
+    { action: { label: t('viewDraft'), fn: () => { A.tab = 'schedule'; refreshTabs(); renderTab(); window.scrollTo({ top: 0, behavior: smooth() }); } } });
 }
 
 /* ---------- People */
@@ -4233,7 +4755,7 @@ function personCard(r, p) {
   const actions = h('div', { class: 'actions' });
   const fillActions = () => {
     clear(actions).append(
-      h('button', { type: 'button', class: 'btn small', onclick: () => { A.board = new Set([r.id]); A.tab = 'plan'; A.cell = null; A.hl = null; refreshTabs(); renderTab(); } }, t('onlyThis')),
+      h('button', { type: 'button', class: 'btn small', onclick: () => { A.board = new Set([r.id]); A.secs.clear(); A.tab = 'plan'; A.cell = null; A.hl = null; refreshTabs(); renderTab(); } }, t('onlyThis')),
       h('button', { type: 'button', class: 'btn small danger', onclick: () => {
         clear(actions).append(h('div', { class: 'confirm' },
           h('span', null, t('confirmDeleteAnswer', { name: r.name })),
@@ -4266,10 +4788,10 @@ function miniCal(r, p) {
     const g = h('div', { class: 'minical' });
     for (let k = 0; k < (D.wd(md[0]) + 6) % 7; k++) g.append(h('span', { class: 'md x', 'aria-hidden': 'true' }));
     for (const d of md) {
-      const s = r.avail[d], ok = allowed(p, d), note = r.notes && r.notes[d];
+      const shut = allowed(p, d) && isClosed(p, d), s = shut ? '' : r.avail[d], ok = isOpen(p, d), note = r.notes && r.notes[d], hol = holidayOn(d);
       const free = rangesText(s, '2', p), maybe = rangesText(s, '1', p);
-      const tip = dShort(d) + (free.length ? ': ' + free.join(', ') : '') + (maybe.length ? ' · ' + t('ifNeededShort') + ' ' + maybe.join(', ') : '') + (note ? ' — ' + note : '');
-      g.append(h('span', { class: 'md' + (ok ? '' : ' x') + (note ? ' n' : ''), title: tip }, h('b', null, String(+d.slice(8))), h('i', { style: s ? 'background:' + barGradient(s) : null })));
+      const tip = dShort(d) + (hol ? ' (' + holText(hol) + ')' : '') + (shut ? ' · ' + t('closedDay') : '') + (free.length ? ': ' + free.join(', ') : '') + (maybe.length ? ' · ' + t('ifNeededShort') + ' ' + maybe.join(', ') : '') + (note ? ' — ' + note : '');
+      g.append(h('span', { class: 'md' + (ok ? '' : ' x') + (shut ? ' shut' : '') + (hol ? ' hol' : '') + (note ? ' n' : ''), title: tip }, h('b', null, String(+d.slice(8))), h('i', { style: s ? 'background:' + barGradient(s) : null })));
     }
     box.append(h('div', null, h('p', { class: 'mini-name' }, dMonth(mk + '-01')), g));
   }
@@ -4280,7 +4802,7 @@ function miniCal(r, p) {
 function scheduleChanged() {
   if (!A.data) return false;
   const pub = A.data.schedule && A.data.schedule.published;
-  const flat = s => JSON.stringify({ e: (s.events || []).map(e => [e.date, e.start, e.end, (e.title || '').trim(), (e.place || '').trim(), (e.note || '').trim()]), n: (s.note || '').trim() });
+  const flat = s => JSON.stringify({ e: (s.events || []).map(e => [e.date, e.start, e.end, (e.title || '').trim(), (e.place || '').trim(), (e.note || '').trim(), stable(e.call || null)]), n: (s.note || '').trim() });
   if (!pub) return A.draft.events.length > 0 || !!(A.draft.note || '').trim();
   return flat(A.draft) !== flat(pub);
 }
@@ -4301,7 +4823,7 @@ function renderSched() {
   R.draftBtn = h('button', { type: 'button', class: 'btn', disabled: A.busy || !A.draftDirty, onclick: () => saveSched(false) }, t('saveDraft'));
   const hasEvents = A.draft.events.length > 0;
   el.append(R.schedStatus, list,
-    h('div', { class: 'actions' }, h('button', { type: 'button', class: 'btn', onclick: () => { const d = pollDates(p)[0] || p.start; addEvent(d, Math.max(p.dayStart, Math.min(1140, p.dayEnd - 60)), 0, true); renderSched(); } }, t('addMeeting'))),
+    h('div', { class: 'actions' }, h('button', { type: 'button', class: 'btn', onclick: () => { const d = openDates(p)[0] || pollDates(p)[0] || p.start; addEvent(d, Math.max(p.dayStart, Math.min(1140, p.dayEnd - 60)), 0, true, true); renderSched(); } }, t('addMeeting'))),
     h('div', { class: 'field' },
       h('label', { class: 'label', for: 's-note' }, t('generalNote')),
       h('textarea', { id: 's-note', class: 'input', rows: '3', maxlength: '2000', value: A.draft.note || '', oninput: e => { A.draft.note = e.target.value; draftChanged(); } })),
@@ -4326,11 +4848,16 @@ function draftChanged() {
   refreshTabs();
 }
 function attendanceText(ev) {
-  const p = A.data.poll, rs = A.data.responses, N = rs.length;
-  if (!N) return '';
-  if (!allowed(p, ev.date) || ev.start < p.dayStart || ev.end > p.dayEnd) return t('attOutside');
+  const p = A.data.poll, gmap = adminGmap();
+  // A sectional: the answers of those it calls.
+  const called = callOf(ev, p, gmap) ? new Set(A.data.members.filter(m => isCalled(m, ev, p, gmap)).map(m => m.id)) : null;
+  const rs = A.data.responses.filter(r => !called || called.has(r.memberId)), N = rs.length;
+  const hol = holidayOn(ev.date), pre = hol ? holText(hol) + ' · ' : '';
+  if (allowed(p, ev.date) && isClosed(p, ev.date)) return pre + t('attClosedDay');
+  if (!N) return hol ? holText(hol) : '';
+  if (!allowed(p, ev.date) || ev.start < p.dayStart || ev.end > p.dayEnd) return pre + t('attOutside');
   const w = windowStatus(rs, ev.date, Math.floor((ev.start - p.dayStart) / p.slot), Math.ceil((ev.end - p.dayStart) / p.slot));
-  return t('attendance', { a: w.a, n: N })
+  return pre + t('attendance', { a: w.a, n: N })
     + (w.maybe.length ? ' · ' + t('ifNeeded') + ': ' + w.maybe.map(r => r.name).join(', ') : '')
     + (w.miss.length ? ' · ' + t('missing') + ': ' + w.miss.map(r => r.name).join(', ') : '');
 }
@@ -4381,9 +4908,45 @@ function eventRow(ev) {
     f('f-place', id + '-place', t('fPlace'), h('input', { id: id + '-place', class: 'input', type: 'text', maxlength: '160', value: ev.place || '', oninput: e => { ev.place = e.target.value; draftChanged(); } })),
     h('button', { type: 'button', class: 'btn small quiet f-del', 'aria-label': t('remove') + ': ' + dShort(ev.date), onclick: () => { A.draft.events = A.draft.events.filter(x => x !== ev); draftChanged(); renderSched(); } }, t('remove')),
     f('f-note', id + '-note', t('fNote'), h('input', { id: id + '-note', class: 'input', type: 'text', maxlength: '500', value: ev.note || '', oninput: e => { ev.note = e.target.value; draftChanged(); } })),
+    acan('call') ? callField(ev, id, () => { draftChanged(); updAtt(); }) : null,
     att);
   updAtt();
   return row;
+}
+// Who a meeting is for: everyone, or some sections (a sectional: only they are asked to reply, and only their
+// numbers show). Each group's sections; a group without sections, as a whole.
+function callField(ev, id, changed) {
+  const p = A.data.poll, gmap = adminGmap(), gids = pollGroups(p, gmap), many = gids.length > 1, opts = [];
+  for (const gid of gids) {
+    const g = gmap[gid];
+    if (g.sections.length) for (const x of g.sections) opts.push({ gid, sid: x.id, label: (many ? groupName(g) + ' · ' : '') + secName(x) });
+    else opts.push({ gid, sid: '', label: groupName(g) });
+  }
+  if (opts.length < 2) return null;
+  const key = o => o.gid + '|' + o.sid;
+  const isOn = o => { const c = callOf(ev, p, gmap); return !c || (own(c, o.gid) && (c[o.gid] === true || (!!o.sid && c[o.gid].indexOf(o.sid) !== -1))); };
+  const sum = h('span', { class: 'call-sum' }, callText(callOf(ev, p, gmap), p, gmap));
+  const toggle = (o, box) => {
+    const on = new Set(opts.filter(isOn).map(key));
+    if (box.checked) on.add(key(o)); else on.delete(key(o));
+    if (!on.size) { box.checked = true; toast(t('callNone'), { error: true }); return; }
+    const out = {};
+    let whole = 0;
+    for (const gid of gids) {
+      const g = gmap[gid];
+      if (!g.sections.length) { if (on.has(gid + '|')) { out[gid] = true; whole++; } continue; }
+      const ids = g.sections.map(x => x.id).filter(sid => on.has(gid + '|' + sid));
+      if (ids.length === g.sections.length) { out[gid] = true; whole++; } else if (ids.length) out[gid] = ids;
+    }
+    if (whole === gids.length) delete ev.call; else ev.call = out;
+    sum.textContent = callText(callOf(ev, p, gmap), p, gmap);
+    changed();
+  };
+  return h('details', { class: 'field f-call', open: A.openCall.has(ev.id), ontoggle: e => { if (e.target.open) A.openCall.add(ev.id); else A.openCall.delete(ev.id); } },
+    h('summary', null, t('callLabel') + ': ', sum),
+    h('div', { class: 'call-opts', role: 'group', 'aria-label': t('callLabel') }, opts.map((o, i) => h('label', null,
+      h('input', { type: 'checkbox', id: id + '-call-' + i, checked: isOn(o), onchange: e => toggle(o, e.target) }), o.label))),
+    h('p', { class: 'hint' }, t('callHint')));
 }
 async function saveSched(publish, unpublish) {
   A.busy = true; renderSched();
@@ -4404,8 +4967,10 @@ function scheduleMessage(lang) {
   const p = A.data.poll;
   const lines = [loc(p.title, lang), ''];
   for (const ev of A.draft.events) {
+    const call = callOf(ev, p, adminGmap());
     lines.push('• ' + fmt(ev.date, { weekday: 'long', day: 'numeric', month: 'long' }, lang) + ', ' + hm(ev.start) + '–' + hm(ev.end)
-      + (ev.title ? ' · ' + ev.title.trim() : '') + (ev.place ? ' · ' + ev.place.trim() : '') + (ev.note && ev.note.trim() ? ' (' + ev.note.trim() + ')' : ''));
+      + (ev.title ? ' · ' + ev.title.trim() : '') + (ev.place ? ' · ' + ev.place.trim() : '') + (ev.note && ev.note.trim() ? ' (' + ev.note.trim() + ')' : '')
+      + (call ? ' — ' + t('msgOnly', { who: callText(call, p, adminGmap(), lang) }, lang) : ''));
   }
   if ((A.draft.note || '').trim()) lines.push('', A.draft.note.trim());
   if (!isDemo) lines.push('', t('msgLink', { url: memberUrl(p.id) + '#schedule' }, lang));
@@ -4436,7 +5001,7 @@ const repWord = s => t({ yes: 'repYes', part: 'repPart', no: 'repNo' }[s] || 're
 function meetingReplies(ev) {
   const fp = fpOf(ev), out = { yes: [], part: [], no: [], none: [] };
   const by = new Map((A.data.replies || []).map(x => [x.memberId, x.replies || {}]));
-  for (const m of pollMembers()) {
+  for (const m of pollMembers().filter(x => isCalled(x, ev, A.data.poll, adminGmap()))) {
     const r = (by.get(m.id) || {})[ev.id];
     const known = !!(r && own(REPLY_S, r.s));
     if (known && r.fp === fp) out[r.s].push({ m, r });
@@ -4475,7 +5040,11 @@ function buildErrorsNotice() {
 // Ready-made messages for whoever hasn't answered: one for the group chat, or one per person.
 const firstName = name => String(name || '').split(' ')[0];
 const evWhen = (ev, lang) => fmt(ev.date, { weekday: 'long', day: 'numeric', month: 'long' }, lang) + ', ' + hm(ev.start);
-const evWhat = (ev, lang) => (ev.title || '').trim() || t('defaultEventTitle', null, lang);
+// The meeting's title, and for a sectional whom it's for ("Prova (yalnız Tenor ve Bas)").
+function evWhat(ev, lang) {
+  const call = callOf(ev, A.data.poll, adminGmap());
+  return ((ev.title || '').trim() || t('defaultEventTitle', null, lang)) + (call ? ' (' + t('msgOnly', { who: callText(call, A.data.poll, adminGmap(), lang) }, lang) + ')' : '');
+}
 const schedUrl = () => memberUrl(A.pollId) + '#schedule';
 const meetMsgAll = (ev, lang) => t('remMeetAll', { what: evWhat(ev, lang), when: evWhen(ev, lang), url: schedUrl() }, lang);
 const meetMsgOne = (ev, m, lang) => t('remMeetOne', { name: firstName(m.name), what: evWhat(ev, lang), when: evWhen(ev, lang), url: schedUrl() }, lang);
@@ -4532,7 +5101,8 @@ function attCard(ev, now) {
   const card = h('article', { class: 'att-card', 'aria-labelledby': id + '-h' },
     h('div', { class: 'att-card-head' },
       h('h3', { id: id + '-h' }, dLong(ev.date) + ', ' + hm(ev.start) + '–' + hm(ev.end)),
-      ev.title || ev.place ? h('span', { class: 'muted' }, [ev.title, ev.place].filter(Boolean).join(' · ')) : null));
+      ev.title || ev.place ? h('span', { class: 'muted' }, [ev.title, ev.place].filter(Boolean).join(' · ')) : null,
+      callOf(ev, A.data.poll, adminGmap()) ? h('span', { class: 'chip-s call' }, t('sectional') + ': ' + callText(callOf(ev, A.data.poll, adminGmap()), A.data.poll, adminGmap())) : null));
   if (acan('replies')) {
     const g = meetingReplies(ev);
     card.append(h('p', { class: 'rep-sum' }, t('repSum', { y: g.yes.length, p: g.part.length, n: g.no.length, w: g.none.length })),
@@ -4608,7 +5178,9 @@ function openAttendance(ev) {
   const prev = document.activeElement;
   const rec = (A.data.attendance || []).find(a => a.eventId === ev.id);
   const marks = Object.assign({}, rec ? rec.marks : {});
-  const ms = pollMembers(), gmap = adminGmap(), pgs = pollGroups(A.data.poll, gmap);
+  const gmap = adminGmap(), pgs = pollGroups(A.data.poll, gmap);
+  // A sectional's own members; the rest of the poll's members (one of them may have come anyway) apart, folded.
+  const ms = pollMembers().filter(m => isCalled(m, ev, A.data.poll, gmap)), rest = pollMembers().filter(m => !isCalled(m, ev, A.data.poll, gmap));
   // What each member replied, shown beside their name; the replies are fetched again behind the open dialog.
   let said = {};
   const tags = new Map();
@@ -4639,9 +5211,10 @@ function openAttendance(ev) {
       if (people.length) lists.push({ title: (pgs.length > 1 ? groupName(g) + ' · ' : '') + sectionLabel(g, sec, !anySec), people });
     }
   }
-  for (const { title, people } of lists) {
-    groups.append(h('section', { class: 'att-group' },
-      h('h3', null, title + ' (' + people.length + ')'),
+  if (rest.length) lists.push({ title: t('attNotCalled'), people: rest, folded: true });
+  for (const { title, people, folded } of lists) {
+    const sec = h(folded ? 'details' : 'section', { class: 'att-group' + (folded ? ' att-rest' : '') },
+      h(folded ? 'summary' : 'h3', null, title + ' (' + people.length + ')'),
       h('ul', { class: 'att-people' }, people.map(m => {
         const bs = MARKS.map(k => h('button', {
           type: 'button', class: 'mark-btn', 'data-m': k, 'aria-pressed': String(marks[m.id] === k),
@@ -4654,7 +5227,9 @@ function openAttendance(ev) {
         return h('li', null,
           h('span', { class: 'att-who-name', id: 'am-' + m.id }, m.name, tag),
           h('span', { class: 'marks', role: 'group', 'aria-labelledby': 'am-' + m.id }, bs));
-      }))));
+      })));
+    if (folded && rest.some(m => marks[m.id])) sec.open = true;
+    groups.append(sec);
   }
   const guests = h('input', { id: 'att-guests', class: 'input', type: 'number', min: '0', max: '500', inputmode: 'numeric', value: String(rec ? rec.guests || 0 : 0) });
   const err = h('p', { class: 'err', role: 'alert', hidden: true });
@@ -4671,9 +5246,9 @@ function openAttendance(ev) {
     h('div', { class: 'actions' },
       acan('replies') ? h('button', { type: 'button', class: 'btn small', onclick: () => setAll(m => { const k = said[m.id] && said[m.id].s; return k === 'yes' ? 'p' : k === 'no' ? 'e' : undefined; }) }, t('attFill')) : null,
       h('button', { type: 'button', class: 'btn small', onclick: () => setAll(m => (marks[m.id] ? undefined : 'p')) }, t('attRest')),
-      h('button', { type: 'button', class: 'btn small quiet', onclick: () => { for (const k of Object.keys(marks)) delete marks[k]; for (const m of ms) paint(m.id); count(); } }, t('attClear'))),
+      h('button', { type: 'button', class: 'btn small quiet', onclick: () => { for (const k of Object.keys(marks)) delete marks[k]; for (const m of ms.concat(rest)) paint(m.id); count(); } }, t('attClear'))),
     acan('replies') ? h('p', { class: 'hint' }, t('attFillHint')) : null,
-    ms.length ? groups : h('p', { class: 'muted' }, t('noMembersText')),
+    ms.length || rest.length ? groups : h('p', { class: 'muted' }, t('noMembersText')),
     h('div', { class: 'field att-guests' }, h('label', { class: 'label', for: 'att-guests' }, t('attGuests')), guests),
     status, err, ask,
     h('div', { class: 'modal-foot' }, h('div', { class: 'end' }, h('button', { type: 'button', class: 'btn', onclick: () => close() }, t('cancel')), save)));
@@ -4726,11 +5301,13 @@ const pctText = n => (S.lang === 'tr' ? '%' + n : n + '%');
 function seasonStats(sz, gid) {
   const of = x => !gid || (Array.isArray(x.groups) ? x.groups : [MAIN]).indexOf(gid) !== -1;
   const taken = (sz.meetings || []).filter(x => x.marks && Object.keys(x.marks).length && of(x));
-  const last2 = taken.slice(-2);
+  const gmap = gmapOf(sz.groups || A.groups);
+  // Whom a meeting called: its groups (as kept with its attendance), or some of their sections for a sectional.
+  const called = (m, x) => isCalled(m, { call: x.call || null }, { groups: Array.isArray(x.groups) && x.groups.length ? x.groups : [MAIN] }, gmap);
   const rows = (sz.members || []).filter(m => !gid || inGroup(m, gid)).map(m => {
     const c = { p: 0, l: 0, e: 0, a: 0 };
     for (const x of taken) { const k = x.marks[m.id]; if (own(c, k)) c[k]++; }
-    const of = c.p + c.l + c.a;
+    const of = c.p + c.l + c.a, last2 = taken.filter(x => called(m, x)).slice(-2);
     return { m, c, pct: of ? Math.round((c.p + c.l) * 100 / of) : null, risk: last2.length === 2 && last2.every(x => x.marks[m.id] === 'a') };
   });
   return { taken, rows };
@@ -4807,11 +5384,13 @@ function newPollDefaults(groups) {
     days: latest ? latest.days.slice() : [0, 1, 2, 3, 4, 5, 6],
     dayStart: latest ? latest.dayStart : 660, dayEnd: latest ? latest.dayEnd : 1440, slot: latest ? latest.slot : 30,
     duration: latest ? latest.duration : 120, deadline: '', open: true,
-    tz: (latest && latest.tz) || Intl.DateTimeFormat().resolvedOptions().timeZone || 'Europe/Istanbul', groups
+    tz: (latest && latest.tz) || Intl.DateTimeFormat().resolvedOptions().timeZone || 'Europe/Istanbul', groups,
+    required: latest && Array.isArray(latest.required) ? latest.required.slice() : [], closed: {}
   };
 }
 
-function openPollEditor(poll) {
+// focus 'closed': opens at the holidays and closed days.
+function openPollEditor(poll, focus) {
   const isNew = !poll;
   const answered = !isNew && ((poll.answers || 0) > 0 || (A.data && A.data.poll.id === poll.id && A.data.responses.length > 0));
   const f = isNew ? newPollDefaults(A.data ? pollGroups(A.data.poll, adminGmap()) : [MAIN]) : clone(poll);
@@ -4823,6 +5402,9 @@ function openPollEditor(poll) {
   for (let m = 0; m <= 1440; m += 30) times.push([m, m === 1440 ? hm(m) + ' (' + t('midnight') + ')' : hm(m)]);
   const fld = (cls, id, label, control) => h('div', { class: 'field ' + (cls || '') }, h('label', { class: 'label', for: id }, label), control);
   const submitBtn = h('button', { type: 'submit', class: 'btn primary' }, isNew ? t('createPoll') : t('savePoll'));
+  // Closed days (date -> note): holidays stay open unless ticked; other days can be closed with a reason.
+  const closed = Object.assign({}, closedOf(f));
+  const closedBox = h('div', { class: 'closed-box' });
   const form = h('form', { novalidate: true, onsubmit: submit },
     h('h2', { id: 'pe-title' }, isNew ? t('editNew') : t('editTitle')),
     h('div', { class: 'form-grid' },
@@ -4842,6 +5424,7 @@ function openPollEditor(poll) {
       answered ? h('p', { class: 'hint full' }, t('gridLocked')) : null,
       fld('', 'pe-deadline', t('fDeadline'), h('input', { id: 'pe-deadline', class: 'input', type: 'date', value: f.deadline || '' })),
       fld('', 'pe-tz', t('fTz'), h('input', { id: 'pe-tz', class: 'input', maxlength: '60', value: f.tz || '', disabled: answered })),
+      acan('closed') ? h('fieldset', { class: 'full closed-pick' }, h('legend', { class: 'label' }, t('fClosed')), closedBox) : null,
       h('label', { class: 'full switch-row' }, h('input', { id: 'pe-open', type: 'checkbox', checked: f.open !== false }), t('fOpen')),
       fld('full', 'pe-mtr', t('fMsgTr'), h('textarea', { id: 'pe-mtr', class: 'input', rows: '3', maxlength: '1500', value: (f.message && f.message.tr) || '' })),
       fld('full', 'pe-men', t('fMsgEn'), h('textarea', { id: 'pe-men', class: 'input', rows: '3', maxlength: '1500', value: (f.message && f.message.en) || '' }))),
@@ -4852,10 +5435,61 @@ function openPollEditor(poll) {
   const back = h('div', { class: 'backdrop', onkeydown: e => { if (e.key === 'Escape') close(); }, onmousedown: e => { if (e.target === back) close(); } },
     h('div', { class: 'modal', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'pe-title' }, form));
   document.body.append(back);
-  form.querySelector('#pe-ttr').focus();
+  if (acan('closed')) {
+    fillClosed();
+    for (const x of form.querySelectorAll('#pe-start, #pe-end, input[name="pe-day"]')) x.addEventListener('change', () => fillClosed());
+  }
+  const at = focus === 'closed' ? closedBox.querySelector('input') : null;
+  if (at) { at.focus(); closedBox.scrollIntoView({ block: 'center' }); } else form.querySelector('#pe-ttr').focus();
 
   function close() { back.remove(); if (prev && prev.focus && prev.isConnected) prev.focus(); }
   function fail(msg) { errBox.textContent = msg; errBox.hidden = false; }
+  // The poll's days as the form has them now.
+  function formDays() {
+    const start = form.querySelector('#pe-start').value, end = form.querySelector('#pe-end').value;
+    const days = Array.from(form.querySelectorAll('input[name="pe-day"]:checked')).map(x => +x.value);
+    const ok = /^\d{4}-\d{2}-\d{2}$/.test(start) && /^\d{4}-\d{2}-\d{2}$/.test(end) && start <= end && D.diff(start, end) < 93;
+    return { ok, start, end, days, has: d => ok && d >= start && d <= end && days.indexOf(D.wd(d)) !== -1 };
+  }
+  function fillClosed(focusId) {
+    const c = formDays();
+    clear(closedBox);
+    if (!c.ok) { closedBox.append(h('p', { class: 'muted' }, t('closedPickDates'))); return; }
+    const hols = D.range(c.start, c.end).filter(d => c.has(d) && holidayOn(d));
+    closedBox.append(h('p', { class: 'hint' }, t('closedHint')),
+      hols.length ? h('ul', { class: 'hol-list' }, hols.map(d => {
+        // Seen: the day as it is now (open, or closed). Heard: what ticking it does, with the box's own state.
+        const state = h('span', { class: own(closed, d) ? 'hol-state shut' : 'hol-state', 'aria-hidden': 'true' }, own(closed, d) ? t('closedTick') : t('closedOpen'));
+        return h('li', null, h('label', { class: 'switch-row' },
+          h('input', { type: 'checkbox', id: 'pe-hol-' + d, checked: own(closed, d), 'aria-label': dLong(d) + ' · ' + holText(holidayOn(d)) + ' · ' + t('closedTick'), onchange: e => {
+            if (e.target.checked) closed[d] = closed[d] || ''; else delete closed[d];
+            state.textContent = e.target.checked ? t('closedTick') : t('closedOpen');
+            state.className = e.target.checked ? 'hol-state shut' : 'hol-state';
+          } }),
+          h('span', null, h('strong', null, dLong(d)), ' · ' + holText(holidayOn(d)) + ' · ', state)));
+      })) :
+        h('p', { class: 'muted' }, t('closedNoHol')));
+    // Other closed days, each with its reason, and a way to add one.
+    const mine = Object.keys(closed).filter(d => !holidayOn(d) && c.has(d)).sort();
+    if (mine.length) closedBox.append(h('ul', { class: 'hol-list own' }, mine.map(d => h('li', null,
+      h('span', null, h('strong', null, dLong(d)), closed[d] ? ' — ' + closed[d] : ''),
+      h('button', { type: 'button', class: 'btn small quiet', id: 'pe-cdel-' + d, 'aria-label': t('closedRemove', { day: dLong(d) }), onclick: () => { delete closed[d]; fillClosed('pe-cday'); } }, t('remove'))))));
+    const day = h('input', { id: 'pe-cday', class: 'input', type: 'date', min: c.start, max: c.end });
+    const note = h('input', { id: 'pe-cnote', class: 'input', type: 'text', maxlength: '80', placeholder: t('closedNotePh') });
+    const err = h('p', { class: 'err', role: 'alert', hidden: true });
+    const addDay = () => {
+      const d = day.value;
+      if (!c.has(d)) { err.textContent = t('closedNotInPoll'); err.hidden = false; day.focus(); return; }
+      closed[d] = note.value.replace(/\s+/g, ' ').trim().slice(0, 80);
+      fillClosed(holidayOn(d) ? 'pe-hol-' + d : 'pe-cday');
+    };
+    closedBox.append(h('div', { class: 'closed-add' },
+      h('div', { class: 'field' }, h('label', { class: 'label', for: 'pe-cday' }, t('closedDayLabel')), day),
+      h('div', { class: 'field' }, h('label', { class: 'label', for: 'pe-cnote' }, t('closedNoteLabel')), note),
+      h('button', { type: 'button', class: 'btn small', onclick: addDay }, t('closedAdd'))), err);
+    for (const x of [day, note]) x.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); addDay(); } });
+    if (focusId) { const el = document.getElementById(focusId); if (el) el.focus(); }
+  }
   async function submit(e) {
     e.preventDefault();
     const v = id => form.querySelector('#' + id).value;
@@ -4868,6 +5502,8 @@ function openPollEditor(poll) {
       deadline: v('pe-deadline'), open: form.querySelector('#pe-open').checked, tz: v('pe-tz').trim()
     };
     if (acan('groups')) out.groups = manyAdminGroups() ? Array.from(form.querySelectorAll('input[name="pe-group"]:checked')).map(x => x.value) : fGroups;
+    if (acan('closed')) { const c = formDays(); out.closed = {}; for (const d of Object.keys(closed)) if (c.has(d)) out.closed[d] = closed[d]; }
+    if (isNew && acan('required') && f.required && f.required.length) out.required = f.required;
     const problem = !out.title.tr && !out.title.en ? 'vTitle'
       : out.groups && !out.groups.length ? 'vGroups'
       : !out.start || !out.end || out.end < out.start ? 'vDates'
