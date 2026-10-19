@@ -5,7 +5,8 @@ A free availability planner for a group that meets regularly. Members mark the d
 - **Only your members can use it.** You add them in the planner and each person gets their own username and password. Without signing in, the link shows a sign-in screen and nothing else: no titles, no dates, no names, and no way to answer.
 - **Members** sign in once on their phone or computer and stay signed in there. They tap a day (or a weekday name like *Tue* for every Tuesday) and mark its half hours as *Available* or *If needed*, add notes for specific days and a general comment, and send. *If needed* asks for a short reason, either in that day's note or in the general comment. They can come back any time, from any device, to change their answers. They never see anyone else's answers.
 - **You (the organizer)** sign in to the planner with a private key. You get a timetable that shows how many people are free at each half hour, a board you drag people onto to see the overlaps of any group, a ranked list of the best times (marked *tam kadro* when everyone can come), a "two meetings a month" suggestion, a list of who hasn't answered yet, and a schedule you publish to members. You can copy the schedule as a ready-made message for WhatsApp in Turkish or English, and members can add the dates to their calendars.
-- **After you publish**, members answer each rehearsal with *Geliyorum*, *Kısmen* or *Gelemiyorum*, with a note only you see. You see the replies per rehearsal, copy ready-made reminders for whoever hasn't answered, take attendance on the day, and keep a season record. Members can subscribe to the dates from their phone's calendar, and see their own attendance.
+- **After you publish**, members answer each rehearsal with *Geliyorum*, *Kısmen* or *Gelemiyorum*. *Kısmen* asks when they'll arrive or leave and why, *Gelemiyorum* asks why, unless they tick that you already know. Only you see any of it; other members only see how many of each voice part (or instrument) are coming. You see the replies per rehearsal, copy ready-made reminders for whoever hasn't answered, take attendance on the day, and keep a season record. Members can subscribe to the dates from their phone's calendar, and see their own attendance.
+- **Several groups** (a choir, a chamber choir, an orchestra…) can share one planner and one organizer key. Each group has its own sections (voice parts or instruments) and its own polls; a member can be in several groups, and only sees their own groups' polls and meetings.
 - The page switches between Turkish and English (TR / EN in the header), and between day and night (the moon and sun button). Every page opens in Turkish, whatever language the phone is set to; someone who presses EN keeps English on that device until they press TR. Day or night starts out matching the device's own setting.
 
 ## What goes where
@@ -78,7 +79,7 @@ You don't need to upload `Code.gs` to GitHub. It contains no secrets (the key an
 4. Each person gets a username (from their first name, like `ayse`) and an easy password (like `kiraz-tempo-mavi-47`). Next to each name, click **Message (TR)** or **Message (EN)**. That copies a ready-to-send message with the link, their username and their password. Paste it into a private chat with that person, not the group chat.
 5. The passwords are shown only now. The sheet keeps them in a scrambled form that can't be turned back into the password. If someone loses theirs, click **New password** next to their name and send them the new message.
 
-6. Next to each name, pick their **voice part** (Soprano, Alto, Tenor, Bas). It's saved at once. Members then see, for each rehearsal you publish, who can come part by part (see "What members see of each other" below). You can leave someone without a part.
+6. Next to each name, pick their **voice part** (Soprano, Alto, Tenor, Bas). It's saved at once. Members then see, for each rehearsal you publish, how many of each part can come (numbers only, no names; see "What members see of each other" below). You can leave someone without a part. With more than one group (see "Groups" below), each member has a picker for each group.
 
 Members can change their password after signing in (**Change password** under the title). Usernames don't care about capital letters or Turkish characters: `Ayşe`, `AYSE` and `ayse` all work.
 
@@ -90,16 +91,21 @@ Members can change their password after signing in (**Change password** under th
    - **The board.** Everyone starts on it. Drag names off to the "Not on the board" tray, or drag them back, to see the overlaps for any group (for example, only one section). Tapping a name also moves it.
    - **Best times.** One line per day, best first, for the meeting length you choose, with who is missing and why. **Two meetings a month** suggests the best pair of dates at least 10 days apart (you can change the gap).
 3. The **People** tab shows how many members have answered and who hasn't yet, then each person's month at a glance with their comment and day notes. You can delete an answer there, or show only that person on the board. While the poll takes answers, **Copy reminder (TR / EN)** gives you a message for the group chat, and **Messages one by one** a short personal one for each person who hasn't answered.
-4. Click **Add** next to a time (or **Add both**), then open the **Schedule** tab. Adjust times, add a place and notes, and click **Publish to members**. Signed-in members see the dates under **Schedule** with buttons to add them to Google Calendar or any calendar app, and who can come by voice part. Under each meeting in the editor you see the same part counts (like `Tenor 1/3`) before you publish, so you can spot a part nobody covers.
+4. Click **Add** next to a time (or **Add both**), then open the **Schedule** tab. Adjust times, add a place and notes, and click **Publish to members**. Signed-in members see the dates under **Schedule** with buttons to add them to Google Calendar or any calendar app, and how many of each voice part can come. Under each meeting in the editor you see the same counts (like `Tenor 1/3`) before you publish, so you can spot a part nobody covers.
 5. Publishing doesn't send anything. Click **Copy as message (TR)** or **(EN)** and paste the dates into your group chat.
 
 ## Rehearsals: replies, attendance, the season
 
 Once a schedule is published:
 
-- **Members reply to each rehearsal.** Under every meeting (and in a box at the top of their page for the next one) they press **Geliyorum**, **Kısmen** or **Gelemiyorum**, and can add a short note for you, like "19.30'da gelebilirim". They can change or take back a reply until the end of that day. If you change a meeting's day or time, earlier replies to it stop counting and members are asked again.
-- **Who can come.** A reply counts before the poll answer: *Geliyorum* puts the person in the list with a ✓, *Kısmen* and *Gelemiyorum* take them out of it. People who haven't replied are listed if their poll answer says they're free for the whole meeting. For a meeting outside the poll's days or hours there are no answers to go by, so its list shows only those who said *Geliyorum*, once someone has.
-- **The Attendance tab** (*Katılım*) shows, for each published meeting, how many said what. Open **Who said what** for the names and notes, and for those who haven't replied yet, with a reminder for the group chat or one message per person.
+- **Members reply to each rehearsal.** Under every meeting (and in a box at the top of their page for the next one) they press **Geliyorum**, **Kısmen** or **Gelemiyorum**.
+  - **Geliyorum** is sent at once; they can add a note for you afterwards (like "10 dakika gecikebilirim").
+  - **Kısmen** opens a short form: when they'll arrive (*Geliş*) or leave (*Ayrılış*), in quarter hours within the meeting, and the reason. Both are needed.
+  - **Gelemiyorum** opens the same form with just the reason, which is needed.
+  - Either form has a tick box for when they've already told you in person: *Şef, kısmen katılma nedenimi biliyor.* or *Şef, katılamama nedenimi biliyor.* With it ticked, the reason (and, for *Kısmen*, the time) can be left out.
+  - They can change (**Düzenle**) or take back a reply until the end of that day. If you change a meeting's day or time, earlier replies to it stop counting and members are asked again.
+- **Who can come.** Members see numbers only: for each voice part (or instrument), how many can come for the whole meeting and how many members the part has (like `Tenor 2/3`), plus how many come partly (`+1 kısmen`). Names are for you alone. A reply counts before the poll answer: *Geliyorum* counts the person in, *Kısmen* counts them as partly, *Gelemiyorum* leaves them out. People who haven't replied are counted if their poll answer says they're free for the whole meeting. For a meeting outside the poll's days or hours there are no answers to go by, so its numbers appear only once someone has said *Geliyorum* or *Kısmen*.
+- **The Attendance tab** (*Katılım*) shows, for each published meeting, how many said what. Open **Who said what** for the names, reasons and times (a tick you know about shows as *Nedenini biliyorsunuz*), and for those who haven't replied yet, with a reminder for the group chat or one message per person. In the attendance dialog, each name shows what they replied, with their time for a *Kısmen*.
 - **Taking attendance.** From the day of a meeting, press **Take attendance**. Mark each member *Came*, *Late*, *Excused* or *Absent* (press again to clear), add guests, and save. **Fill in from replies** marks those who said *Geliyorum* as came and *Gelemiyorum* as excused; **Mark the rest as came** fills in everyone still unmarked. Members left unmarked simply aren't recorded for that meeting. You can edit it later.
 - **The season record**, under the meetings: everyone's attendance since 1 September across all polls, with a percentage (came and late, out of came, late and absent; excused doesn't count) and a flag for anyone who missed the last two meetings with attendance. **Download CSV** has every meeting as a column. Attendance stays as you took it: moving or removing a meeting afterwards, or deleting its poll, doesn't change the record. To correct one, take that meeting's attendance again; to remove one, save it with nobody marked, or, for a meeting no longer on the schedule, press **Delete this attendance** on the Attendance tab. When you delete a poll, you can tick a box to delete its attendance too (handy for a test poll).
 - **Members see their own attendance** this season on their Schedule page, never anyone else's.
@@ -107,10 +113,23 @@ Once a schedule is published:
 - **Last month stays in reach.** When next month's poll becomes current, the meetings still to come from earlier polls stay on members' Schedule page, so they can still see and answer them. This holds for every poll with a published schedule, so if you try things out in a test poll, unpublish its schedule (or delete the poll) afterwards.
 - **What's new.** When you open the planner, a line under the poll says what's new since your last visit on that device (new or changed answers, replies to meetings), and new ones are marked *new*.
 
+## Groups: a choir, a chamber choir, an orchestra…
+
+You don't need groups: until you add one, everything works as one choir. When you do:
+
+- **Members tab → Groups → New group.** Give it a name, then its **sections**: type them, or start from a ready list (*Karma koro (SATB)*, *Kadınlar korosu (SSAA)*, *Erkekler korosu (TTBB)*, *Sekiz partili*, *Yaylılar*, *Orkestra*, or none). Below, choose who is in it and each person's section. Everything is saved together with **Create group**.
+- **Your existing choir is the first group** (*Koro*), with everyone who was a member before and every earlier poll. You can rename it and change its sections, but not delete it. Left unnamed, it shows as *Koro* in Turkish and *Choir* in English; sections from the ready lists also show in each reader's language.
+- **A member can be in several groups**, with a different section in each. With more than one group, the member list has a picker per group (*Grupta değil* takes them out of it) and a **Show** filter by group. New members join the group you choose under **Add members**.
+- **Each poll is for one or more groups**: pick them in the poll's settings (*Hangi gruplar için?*). Only those groups' members see the poll and its meetings, can answer it, reply to its meetings, and get them in their calendar link. A poll for two groups (a joint rehearsal, say) shows each group's numbers by its own sections.
+- **Each group has its own current poll.** A group's first poll becomes its current one by itself; **Make current** shows a poll to all of its groups. A member of two groups gets a switch at the top of their page between their groups' polls, and their Schedule page has both groups' meetings, each marked with its group.
+- **Attendance and the season** go by the poll's members. The season record has a **Group** filter: that group's meetings and members.
+- **Removing a section** leaves its members in the group without a section (the planner asks first). **Deleting a group** is possible once no poll is for it; its members keep their accounts and other groups.
+- The **Groups** sheet in your data spreadsheet lists every group with its sections and who is in which. It appears with your first group.
+
 ## Every month after that
 
-1. In the planner, click **New poll**. It copies your last settings and picks the following month.
-2. Click **Make current**. Members see the new month the next time they open the link. Old polls stay in the list, and members stay the same. Meetings still to come from the earlier poll stay on members' Schedule page.
+1. In the planner, click **New poll**. It copies the settings of the last poll for the same groups and picks the following month.
+2. Click **Make current**. The poll's groups see the new month the next time they open the link. Old polls stay in the list, and members stay the same. Meetings still to come from the earlier poll stay on members' Schedule page.
 
 ## Where your data is
 
@@ -120,11 +139,12 @@ Open the **Provala data** spreadsheet (link in the Apps Script log, or search yo
 - **Polls**: one row per poll.
 - **Responses**: one row per member per poll, with readable columns for name, comment, availability (times in brackets are "only if needed") and day notes.
 - **Schedules**: what you published.
-- **Replies**: one row per member per poll, with their replies to the meetings and their notes.
+- **Replies**: one row per member per poll, with their replies to the meetings, their times (*geliş* / *ayrılış*), reasons, and *[şef biliyor]* where they ticked that you know.
 - **Attendance**: one row per meeting where you took attendance: who came (late ones marked), guests, and who was absent.
 - **Errors**: problems the page ran into on members' devices (see below).
+- **Groups**: each group with its sections and who is in which (once you add or edit a group).
 
-The last three appear by themselves the first time something goes into them.
+These last four appear by themselves the first time something goes into them.
 The last column of each sheet, **Data**, is what the app reads. Make changes through the app rather than in that column. **Export CSV** in the planner gives you one row per person per day.
 
 ## Changing things later
@@ -140,6 +160,16 @@ The last column of each sheet, **Data**, is what the app reads. Make changes thr
 - **Want a new organizer key** (for example after sharing your screen)? Run `newOrganizerKey`. The old one stops working, and so does every planner sign-in made with it.
 - **Want a co-organizer?** Give them the organizer key; they can then do everything you can in the planner. To take it back, run `newOrganizerKey`.
 - **Want to choose your own organizer key?** In Apps Script, open **Project Settings** (the gear on the left) → **Script properties** → edit `ADMIN_KEY`. Use something long, like four or five unrelated words.
+
+### Updating to version 2026-10-r2 (reasons for Kısmen and Gelemiyorum, numbers only, groups)
+
+1. Open the **Provala data** sheet and choose **File → Make a copy**, as before.
+2. In Apps Script, replace all of `Code.gs` with the new one, save, and deploy a **New version**. You don't need to run `setup`.
+3. Upload the new `index.html` to GitHub (your `API_URL` is already in it).
+
+Everything stays as it is: members, passwords, sign-ins, polls, answers, replies, attendance and calendar links. Your choir becomes the first group, with everyone in it and every poll for it, so nothing changes for anyone until you add a group. Members stay signed in. The order of steps 2 and 3 doesn't matter: the new page works with the previous `Code.gs` (without groups; a *Kısmen*'s time and the tick then go into its note), and the previous page with the new one.
+
+From the moment the new `Code.gs` is live, no member's page gets other members' names any more, only the numbers. A phone that still has the earlier page open keeps working: it shows a tick for each person instead of their name, and its replies are taken without a reason until it loads the new page (a reload, or opening the link again). Going back to the previous `Code.gs` works on the same sheet, also after you've added groups: it then sees one choir again (members only in another group appear in it without a part) and ignores the rest. Keep in mind that it also works as it did before: members see names on each rehearsal's list again, and every poll, whichever group it's for. Coming forward again, voice parts you changed in the meantime are kept.
 
 ### Updating to the October 2026 version (replies, attendance, calendar links)
 
@@ -163,12 +193,13 @@ Paste the new `Code.gs` and deploy a **New version** (see above), then upload th
   - They update once a day, at midnight in the poll's time zone: an answer sent or changed today counts from tomorrow (until then, the earlier version counts). So nobody can work out someone's times by watching the numbers change right after they press send. If only one person answers on a given day, someone comparing the numbers from one day to the next could still work out that person's times; that's the price of exact numbers.
   - Answers from removed members don't count. Removing a member or deleting an answer changes the numbers right away, not the next day.
   - Once a poll has answers, its time zone is fixed, like its hours (it decides when "today" ends).
-- **Who can come to a published rehearsal.** Under each published meeting: per voice part, the names of the people whose answers say they can come for the whole meeting, and how many members the part has (like `Tenor 1/3`). Nobody is named as missing, and "only if needed" isn't shown. In a part with one or two people, `0/1` does show that person can't come for all of it; that's what makes the list useful. The list follows the answers as they are now.
-- **Replies to rehearsals.** Someone's name is on a rehearsal's list when they said *Geliyorum*, or, without a reply, when their answer says they can come. If they say *Kısmen* or *Gelemiyorum*, their name leaves the list; others can notice that it's gone (as before, when someone's answer changed), but what they said, and every note, only you see. The page tells members this next to the reply buttons.
+- **How many can come to a published rehearsal.** Under each published meeting: per voice part (or instrument), how many can come for the whole meeting, how many come partly, and how many members the part has (like `Tenor 1/3 +1 kısmen`). No names: those only you see. Nobody is counted as missing, and "only if needed" isn't shown. In a part with one or two people, `0/1` does show that person can't come for all of it (and `+1 kısmen` that they come for part of it); that's what makes the numbers useful. They follow the answers and replies as they are now.
+- **Replies to rehearsals.** What someone replied, their reason and their times, only you see. Others only see the numbers change. The page tells members this next to the reply buttons.
+- **Groups.** A member only ever gets the polls and meetings of their own groups (asking for another group's poll by its link gets them their own instead), and the names and sections of the groups those polls are for.
 - The page tells members this right under their answers and on the Schedule page. Before your first poll with this version, tell the group in your chat too: people may have answered expecting nobody to see anything.
 
 **What protects your members' answers.**
-- Only members you add can sign in, and each member only ever loads their own answers, plus the numbers and rehearsal lists above, which `Code.gs` works out on the server. Other people's answers never reach a member's phone. So that the page opens at once on a return visit, it keeps a copy of the member's page (the poll, their own answers, the numbers and lists above) on their device, next to the sign-in; signing out removes both. Names, notes and schedules are shown as plain text, so nothing a member types can run as code in anyone's browser.
+- Only members you add can sign in, and each member only ever loads their own answers, plus the numbers above, which `Code.gs` works out on the server. Other people's answers never reach a member's phone. So that the page opens at once on a return visit, it keeps a copy of the member's page (the poll, their own answers and replies, the numbers above) on their device, next to the sign-in; signing out removes both. Names, notes and schedules are shown as plain text, so nothing a member types can run as code in anyone's browser.
 - Passwords are stored only as salted, keyed hashes. The secrets for those hashes and for sign-ins live in the script's properties, not in the sheet, so even a copy of the sheet doesn't reveal passwords.
 - After 8 wrong passwords in a row, that username is paused for 15 minutes. After 10 wrong organizer keys, the planner is paused for 15 minutes.
 - Sign-ins are signed and expire: 180 days for members, 30 days for the planner. A password change, a new password from you, or `signOutEveryone` ends them early.
@@ -194,8 +225,9 @@ Paste the new `Code.gs` and deploy a **New version** (see above), then upload th
 - **The page says "The page couldn't open" / "Sayfa açılamadı"**: press **Reload** first. If it comes back, press **Clear the copy and reload**: it removes only the copy of the page kept on that phone or computer; the person stays signed in and unsent answers are kept. The line under the buttons says what went wrong, which is useful in a screenshot.
 - **The textures are missing (flat colours)**: the `tex-…webp` files aren't next to `index.html` on GitHub. Upload them; the page works without them, it just looks plainer.
 - **A calendar app won't take the subscription link**: try the other button (or **Copy the link** and add it in the app as a calendar "from URL"). If it still won't, the **Calendar file** buttons under each meeting always work, they just don't update by themselves. A meeting you change shows up in subscribed calendars within a few hours (Google can take up to a day).
-- **No Attendance tab, no reply buttons**: the live web app is still running an older `Code.gs`. Deploy a **New version**.
+- **No Attendance tab, no reply buttons, no Groups**: the live web app is still running an older `Code.gs`. Deploy a **New version**.
+- **A member sees "no poll"**: they may be in no group, or the current poll may be for another group. Check their pickers in the Members tab (the **Show** filter has *In no group*) and the poll's groups in its settings.
 
 ## Try it first
 
-The demo is a separate copy of the page with eight sample people, in which the real `Code.gs` runs inside the page, on a stand-in for the sheet kept in your browser (Claude builds it from these files; `index.html` itself always talks to your Apps Script, and with `API_URL` empty it says the address is missing). It comes with November's rehearsals published (with some replies), and October's with attendance taken. Sign in with the username `deneme` and the password `demo`. Open the demo with `#admin` at the end and use the key `demo` to see the planner; pick *Ekim 2026* in the poll list to try taking attendance.
+The demo is a separate copy of the page with eight sample people, in which the real `Code.gs` runs inside the page, on a stand-in for the sheet kept in your browser (Claude builds it from these files; `index.html` itself always talks to your Apps Script, and with `API_URL` empty it says the address is missing). It comes with November's rehearsals published (with some replies, reasons and times), October's with attendance taken, and a second group, a chamber orchestra by instrument, with its own poll. Sign in with the username `deneme` and the password `demo`: that sample member sings in the choir and plays the viola, so their page has both groups' polls to switch between. Open the demo with `#admin` at the end and use the key `demo` to see the planner; pick *Ekim 2026* in the poll list to try taking attendance, and see the groups in the Members tab.

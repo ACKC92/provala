@@ -509,7 +509,7 @@ textarea.input { min-height: 88px; resize: vertical; line-height: 1.5; }
 .event.past .event-day, .event.past .event-mon { color: var(--ink-3); }
 /* Replies to a meeting: the three buttons take the colours of the answers (free, if needed, not free) */
 .reply { grid-column: 1 / -1; display: grid; gap: 8px; padding-top: 12px; border-top: 1px solid var(--rule); }
-.reply-q { font-weight: 700; font-size: 14.5px; color: var(--ink-2); }
+.reply-q, .reply-form-q { font-weight: 700; font-size: 14.5px; color: var(--ink-2); }
 .reply-btns .tool { min-height: 42px; }
 .reply-btn:disabled { opacity: 0.6; cursor: progress; }
 .reply-btn[aria-pressed="true"][data-s="yes"] { background: var(--free); border-color: var(--free); color: var(--free-ink); }
@@ -528,6 +528,28 @@ textarea.input { min-height: 88px; resize: vertical; line-height: 1.5; }
 .reply-note-row .input { flex: 1; min-width: 0; min-height: 42px; }
 @media (max-width: 480px) { .reply-note-row { flex-wrap: wrap; } .reply-note-row .input { flex-basis: 100%; } .reply-note-row .btn { flex: 1; } }
 .reply-past { grid-column: 1 / -1; color: var(--ink-3); font-size: 14px; }
+/* A Kısmen or Gelemiyorum picked but not sent yet: outlined in its colour until the form goes */
+.reply-btn.pending[aria-pressed="true"] { background: var(--field); color: var(--ink); border: 2px dashed var(--maybe); box-shadow: none; }
+.reply-btn.pending[aria-pressed="true"][data-s="no"] { border-color: var(--rubric-ink); }
+.reply-btn.pending .sw { position: static; }
+.reply-btn.pending[aria-pressed="true"] .sw::after { content: none; }
+.reply-form { display: grid; gap: 10px; padding: 12px; border: 1px solid var(--rule); border-radius: var(--r); background: var(--paper); }
+.reply-times { display: flex; flex-wrap: wrap; gap: 10px 14px; }
+.reply-times .field { min-width: 9.5em; }
+.reply-times .select { min-height: 42px; }
+.reply-known { font-weight: 450; align-items: flex-start; }
+.reply-known input { margin-top: 3px; flex: none; }
+.rep-times { flex-basis: 100%; font-size: 14px; color: var(--ink-2); font-weight: 600; }
+.chip-s.known { min-height: 19px; padding: 0 7px; font-size: 12px; }
+/* Groups, for a member of several: the polls to switch between, and which group a meeting is for */
+.poll-switch { display: flex; flex-wrap: wrap; gap: 6px; }
+.switch-btn { display: grid; gap: 1px; min-height: 48px; padding: 6px 14px; border: 1px solid var(--rule-strong); border-radius: var(--r); background: var(--btn-face); box-shadow: var(--bevel); text-align: left; color: var(--ink-2); }
+.switch-btn[aria-current="page"] { border-color: var(--ink); background: var(--field); box-shadow: inset 0 0 0 1px var(--ink); color: var(--ink); }
+.switch-group { font: 700 12px/1.3 var(--font-body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--rubric-ink); }
+.switch-title { font-weight: 700; }
+.grp-tag { display: inline-block; margin-right: 8px; padding: 0 8px; border-radius: 999px; background: var(--sunk); color: var(--ink-2); font: 700 12px/1.6 var(--font-body); letter-spacing: 0.06em; text-transform: uppercase; vertical-align: 0.15em; }
+.att-head { font-weight: 700; font-size: 14px; color: var(--ink-2); margin-bottom: 4px; }
+.att .att-table + .att-table { margin-top: 8px; }
 /* The next meeting, on top of the member page */
 .next .eyebrow { margin-bottom: 2px; }
 .next-title { font: 700 21px/1.2 var(--font-display); }
@@ -541,8 +563,6 @@ textarea.input { min-height: 88px; resize: vertical; line-height: 1.5; }
 .next.compact .reply-btns .tool { min-height: 38px; }
 /* A tick after the name of someone who said they're coming */
 .att-person { white-space: nowrap; }
-.sure { display: inline-block; width: 11px; height: 6px; margin: 0 2px 4px 5px; border: solid var(--heat-5); border-width: 0 0 2px 2px; transform: rotate(-45deg); vertical-align: middle; }
-.att-hint .sure { margin-left: 2px; }
 /* Calendar subscription and the member's own attendance */
 .feed, .hist { display: grid; gap: 10px; max-width: 760px; }
 .feed h3, .hist h3 { font-size: 18px; font-weight: 700; }
@@ -685,6 +705,41 @@ summary:hover { text-decoration: underline; text-underline-offset: 2px; }
 .parts-sum { color: var(--ink-2); font-size: 14px; margin-bottom: 6px; }
 .f-parts { font-weight: 600; }
 .member .actions { justify-content: flex-end; }
+.members-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 8px 16px; }
+.members-filter { min-width: min(14em, 100%); max-width: 100%; }
+.parts-sum { white-space: pre-line; }
+.grp-sel { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 2px 6px; max-width: 100%; min-width: 0; }
+.grp-sel-name { color: var(--ink-3); font-size: 13px; font-weight: 600; min-width: 0; overflow-wrap: anywhere; }
+.member-meta, .member-who { min-width: 0; }
+.member-list, .group-list, .members-tab { grid-template-columns: minmax(0, 1fr); }
+.members-filter .select, .add-into .select, .season-group .select, #a-poll { max-width: 100%; }
+.part-sel { max-width: 100%; }
+.group-who strong, .switch-group, .switch-title, .gm-name { overflow-wrap: anywhere; }
+.switch-btn { max-width: 100%; }
+.chip-s.grp { max-width: 100%; white-space: normal; overflow-wrap: anywhere; }
+.grp-tag { max-width: 100%; overflow-wrap: anywhere; }
+.btn[aria-disabled="true"] { opacity: 0.75; cursor: progress; }
+.switch-group .spin { width: 11px; height: 11px; margin-right: 6px; vertical-align: -1px; }
+.add-into { max-width: 22em; }
+.chip-s.grp { background: var(--sunk); color: var(--ink); }
+.groups { display: grid; gap: 10px; }
+.groups-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
+.groups-head h3 { font-size: 18px; font-weight: 700; }
+.group-list { list-style: none; margin: 0; padding: 0; display: grid; border-top: 1px solid var(--rule); }
+.group-item { display: grid; grid-template-columns: minmax(9em, 1fr) minmax(0, 2fr) auto; align-items: center; gap: 4px 16px; padding: 10px 0; border-bottom: 1px solid var(--rule); }
+.group-who { display: grid; gap: 1px; }
+.group-secs { color: var(--ink-2); font-size: 14px; }
+@media (max-width: 760px) { .group-item { grid-template-columns: minmax(0, 1fr) auto; } .group-secs { grid-column: 1 / -1; grid-row: 2; } }
+.group-modal { width: min(100%, 760px); }
+.ge-secs, .ge-mem { display: grid; gap: 8px; }
+.presets { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.sec-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; }
+.sec-row { display: grid; grid-template-columns: minmax(0, 1fr) auto auto auto; align-items: center; gap: 6px; }
+.gm-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(17em, 1fr)); gap: 2px 18px; max-height: 360px; overflow-y: auto; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+.gm-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 5px 0; border-bottom: 1px solid var(--rule); }
+.gm-row.out .gm-name { color: var(--ink-3); }
+.gm-name { font-weight: 600; min-width: 0; overflow-wrap: anywhere; }
+.season-group { max-width: 18em; margin-bottom: 8px; }
 @media (max-width: 760px) { .member { grid-template-columns: minmax(0, 1fr); } .member .actions { justify-content: flex-start; } }
 .person { display: grid; gap: 12px; align-content: start; padding: 16px; background: var(--sheet); border: 1px solid var(--rule); border-radius: var(--r); box-shadow: var(--card-drop); }
 .person-head { display: grid; gap: 2px; }
@@ -845,7 +900,7 @@ var API_URL = 'https://script.google.com/macros/s/AKfycbzjxxXx_t5JqctCYV3iDAjsd-
   // What went wrong on a member's device is sent to the backend, so it can be fixed without anyone having to
   // describe it: the error and the browser, never names, answers or anything typed. At most three per page load,
   // and nothing at all without a backend address (as in the demo).
-  var VERSION = '2026-10-r1', sent = 0, seen = {};
+  var VERSION = '2026-10-r2', sent = 0, seen = {};
   window.provalaReport = function (err, where) {
     try {
       var url = typeof window.API_URL === 'string' ? window.API_URL.replace(/^\s+|\s+$/g, '') : '';
@@ -991,17 +1046,46 @@ const T = {
     offline: "Couldn't connect. This is the page as it was last time on this device.",
     pageUpdated: 'Your conductor changed the poll, so the page has been updated.',
     restored: "Your changes are still here, but they haven't been sent yet. Don't forget to send them.",
-    privacy: 'Only your conductor sees your notes and comment. Other members see, without names, how many people are free or free if needed at each time (new and changed answers are added once a day). For each published rehearsal, the names of those who can come for all of it are listed by voice part.',
+    privacy: 'Only your conductor sees your notes and comment. Other members see, without names, how many people are free or free if needed at each time (new and changed answers are added once a day), and for each published rehearsal, how many of each voice part (or instrument) can come. Names only your conductor sees.',
     groupHint: ({ dur, n }) => "The number in a day's corner: how many people can come at that day's best time, for a rehearsal of " + dur + '. From ' + (n === 1 ? '1 person’s answer' : n + ' people’s answers') + "; the numbers update each night, so today's answers show up tomorrow.",
     groupWait: ({ min, n }) => 'Once answers from at least ' + min + " people besides you are counted, you'll see here how many are free each day (" + n + ' so far). The numbers update each night.',
     slotsHint: 'The person sign and number beside a time show how many people are free then; the one with + is how many could come if needed. From answers up to last night.',
     dayCount: ({ n }) => (n === 1 ? '1 person' : n + ' people') + ' at the best time',
     slotFree: ({ n }) => (n === 1 ? '1 person' : n + ' people') + ' free', slotMaybe: '{n} if needed',
-    attTitle: 'Who can come, from the answers', attNobody: 'nobody yet',
+    attTitle: 'How many can come, from the answers', attNobody: 'nobody yet',
     attHint: "Worked out from the poll answers. If you can't come, let your conductor know.",
-    partS: 'Soprano', partA: 'Alto', partT: 'Tenor', partB: 'Bass', partNone: 'No voice part', partAll: 'Everyone',
-    partLabel: 'Voice part of {name}', partSaved: 'Voice part saved',
-    partsHint: "Set each person's voice part: for every published rehearsal, members then see who can come, part by part.",
+    secS: 'Soprano', secMS: 'Mezzo-soprano', secA: 'Alto', secT: 'Tenor', secBar: 'Baritone', secB: 'Bass',
+    secS1: 'Soprano 1', secS2: 'Soprano 2', secA1: 'Alto 1', secA2: 'Alto 2', secT1: 'Tenor 1', secT2: 'Tenor 2', secB1: 'Bass 1', secB2: 'Bass 2',
+    secvn1: 'Violin I', secvn2: 'Violin II', secva: 'Viola', secvc: 'Cello', seccb: 'Double bass', secfl: 'Flute', secob: 'Oboe',
+    seccl: 'Clarinet', secbn: 'Bassoon', sechn: 'Horn', sectp: 'Trumpet', sectb: 'Trombone', secperc: 'Percussion', secpf: 'Piano',
+    partNone: 'No section', partAll: 'Everyone', attOther: 'Others',
+    partLabel: 'Voice part of {name}', partSaved: 'Voice part saved', secSaved: 'Saved',
+    partsHint: "Set each person's voice part: for every published rehearsal, members then see how many of each part can come.",
+    partsHintGroups: "Choose each person's groups, and their section in each. Members only see their own groups' polls and meetings.",
+    secLabelIn: "{name}'s section in {group}", membersShow: 'Show', allMembers: 'Everyone ({n})', noGroupMembers: 'In no group ({n})',
+    addInto: 'Add them to', groupMain: 'Choir', switchLabel: "Your groups' polls",
+    groupsTitle: 'Groups', groupNew: 'New group', groupEdit: 'Edit', groupEditFor: 'Edit {name}',
+    groupsHint: "Each group has its own sections: voice parts like soprano and alto, or instruments like violin and cello. A member can be in several groups. You choose the groups each poll is for in its settings, and only their members see it.",
+    groupCount: ({ n }) => (n === 1 ? '1 member' : n + ' members'), groupNoSections: 'No sections',
+    groupNewTitle: 'New group', groupEditTitle: 'Edit group', groupNameLabel: 'Name', groupNamePh: 'For example: Chamber choir',
+    groupMainHint: 'Everyone who was a member before groups is in this group, and so is every earlier poll. Left as it is, its name shows as “Choir” (“Koro” in Turkish).',
+    groupSections: 'Sections', groupSectionsHint: 'Voice parts like soprano and alto, or instruments. For each published rehearsal, members see how many of each section can come.',
+    groupPresets: 'Ready lists:', presetSATB: 'Mixed choir (SATB)', presetSSAA: 'Upper voices (SSAA)', presetTTBB: 'Lower voices (TTBB)',
+    presetDouble: 'Eight parts (SSAATTBB)', presetStrings: 'Strings', presetOrchestra: 'Orchestra', presetNone: 'No sections',
+    groupSecName: 'Name of section {n}', moveUp: 'Move up', moveDown: 'Move down', groupAddSection: 'Add a section',
+    groupNoSectionsHint: 'No sections: the group is counted as one.',
+    groupMembers: 'Members', groupMembersN: '({n} of {of})', groupMembersHint: "Who is in this group, and their section in it. Their accounts don't change.",
+    groupFind: 'Find a member', groupFindPh: 'Find a member…', notInGroup: 'Not in this group', inGroupNoSec: 'In it, no section',
+    groupCreate: 'Create group', groupSave: 'Save group', groupSaveAnyway: 'Save anyway', groupKeepEditing: 'Keep editing', groupCreated: 'Group created', groupSaved: 'Group saved',
+    groupDelete: 'Delete group', groupDeleted: 'Group deleted', groupDeleteAlone: ({ n }) => (n === 1 ? '1 member is only in this group and will be in none.' : n + ' members are only in this group and will be in none.'),
+    groupDiscardAsk: 'You have changes that aren’t saved.', groupDiscard: 'Close without saving',
+    errInUse: 'This group still has polls.', errNotFound: 'That isn’t there any more. Reload the page and try again.',
+    groupDeleteAsk: 'Delete “{name}”? Its members keep their accounts and their other groups.',
+    groupInUse: 'This group has polls: {list}. First delete them, or choose other groups for them in their settings.',
+    groupDropAsk: 'Members of the sections you took away will have no section in this group: {list}.',
+    vGroupName: 'Give the group a name.', vGroupDup: 'There is already a group with this name.', vSecName: 'Give every section a name (or remove it).', vSecDup: 'Two sections have the same name.',
+    vGroups: 'Choose at least one group.', fGroups: 'Which groups is it for?', fGroupsHint: 'Only their members see this poll and its meetings.',
+    seasonGroup: 'Group', allGroups: 'All groups', colSection: 'Section',
     errOldBackend: 'This needs the new Code.gs: paste it into Apps Script and deploy a new version.',
     signInTitle: 'Sign in',
     username: 'Username', password: 'Password', showPassword: 'Show', hidePassword: 'Hide', signIn: 'Sign in',
@@ -1126,12 +1210,19 @@ const T = {
     replyMine: 'Your reply: {s}', replySending: 'Sending…', replySaved: 'Reply sent', replyTaken: 'Reply taken back', replyNoteSaved: 'Note sent',
     replyStale: 'The day or time changed after you replied (you said: {s}). Please reply again.',
     replyUndo: 'Take back', replyNoteAdd: 'Add a note for your conductor', replyNoteEdit: 'Edit note',
-    replyNoteLabel: 'Note for your conductor (optional)', replyNoteSend: 'Send note', replyYourNote: 'Your note: {note}',
-    replyPhYes: 'For example: I may be 10 minutes late.', replyPhPart: 'For example: I can come from 19:30.', replyPhNo: "For example: I'm away that week.",
-    replyPrivacy: 'Your name is on a meeting’s list when you say you’re coming, or when your poll answer says you can come. Say “Partly” or “Can’t come” and it leaves the list; what you said and your notes only your conductor sees.',
+    replyNoteLabel: 'Note for your conductor (optional)', replyYourNote: 'Your note: {note}',
+    replyPhYes: 'For example: I may be 10 minutes late.', replyPhPart: 'For example: I finish work at 19:00.', replyPhNo: "For example: I'm away that week.",
+    replyEdit: 'Edit', replySend: 'Send', replyTimesQ: 'When will you arrive, or leave?',
+    replyFromLabel: 'Arriving', replyUntilLabel: 'Leaving', replyFromStart: 'From the start', replyUntilEnd: 'Until the end',
+    replyFrom: 'arriving {t}', replyUntil: 'leaving {t}', replyReasonLabel: 'Reason', replyReasonOptional: 'Reason (optional)',
+    replyKnownPart: 'My conductor already knows why I can only come for part of it.', replyKnownNo: 'My conductor already knows why I can’t come.', replyKnownShort: 'conductor knows',
+    replyNeedReason: 'Please write the reason, or tick that your conductor already knows.',
+    replyNeedTime: 'Choose when you’ll arrive or leave (or tick that your conductor already knows).', replyErrTimes: 'Arriving has to be before leaving.',
+    replyPrivacy: "Other members see no names, only how many of each voice part (or instrument) are coming; in a section of one, that number shows that person's reply too. Your reason and times only your conductor sees.",
+    replyNotSent: ' (not sent yet)', switchWait: 'Your answers are on their way; one moment.',
     errPast: 'This meeting is over, so replies are closed.', errNoEvent: 'This meeting is no longer on the schedule.',
     errNoUrl: 'This page doesn’t have the planner’s address yet: paste the Apps Script web app URL into the API_URL line of index.html.',
-    attHint2: 'Worked out from the poll answers and from the replies to each meeting.', sureLegend: ': said they’re coming.', sureTitle: 'Said they’re coming',
+    attHint2: 'Worked out from the poll answers and from the replies to each meeting. Only your conductor sees names.', attPartly: '+{n} partly',
     nextTitle: 'Next meeting', today: 'Today', tomorrow: 'Tomorrow', allMeetings: 'All dates',
     histTitle: 'Your attendance this season', histLine: 'Came {p} · Late {l} · Excused {e} · Absent {a}', histMore: 'Show the meetings',
     markP: 'Came', markL: 'Came late', markE: 'Excused', markA: 'Absent',
@@ -1147,7 +1238,7 @@ const T = {
     tabAtt: 'Attendance',
     attNoSchedTitle: 'Nothing published yet', attNoSched: 'Once you publish the schedule, members can reply to each meeting, and you can take attendance here.',
     repSum: 'Coming {y} · Partly {p} · Can’t come {n} · No reply {w}', repDetails: 'Who said what',
-    repYes: 'Coming', repPart: 'Partly', repNo: "Can't come", repNone: 'No reply yet', repStale: 'before the day or time changed: {s}', repNobody: 'nobody',
+    repKnown: 'You know why', repYes: 'Coming', repPart: 'Partly', repNo: "Can't come", repNone: 'No reply yet', repStale: 'before the day or time changed: {s}', repNobody: 'nobody',
     remindTr: 'Copy reminder (TR)', remindEn: 'Copy reminder (EN)', remindEach: 'Messages one by one', remindOne: 'Message', remindOneFor: 'Copy a message for {name}',
     remPollAll: ({ title, date, url }) => 'Hi all! A quick reminder for anyone who hasn’t filled in the ' + title + ' poll yet' + (date ? ': please answer by ' + date : '') + '. Here’s the link:\n' + url,
     remPollOne: ({ name, title, date, url }) => 'Hi ' + name + '! Don’t forget to fill in the ' + title + ' poll' + (date ? ' by ' + date : '') + ':\n' + url,
@@ -1191,17 +1282,46 @@ const T = {
     offline: 'İnternete bağlanılamadı. Sayfa, bu cihazdaki son haliyle açık.',
     pageUpdated: 'Şefiniz anketi değiştirdi, sayfa güncellendi.',
     restored: 'Değişiklikleriniz duruyor ama henüz gönderilmedi. Göndermeyi unutmayın.',
-    privacy: 'Notlarınızı ve yorumunuzu yalnızca şefiniz görür. Diğer üyeler isim görmeden, her saatte kaç kişinin uygun ya da gerekirse uygun olduğunu görür (yeni ve değişen yanıtlar günde bir kez eklenir). Yayımlanan her provada da provanın tamamına gelebilecek kişilerin adları ses gruplarına göre listelenir.',
+    privacy: 'Notlarınızı ve yorumunuzu yalnızca şefiniz görür. Diğer üyeler isim görmeden, her saatte kaç kişinin uygun ya da gerekirse uygun olduğunu (yeni ve değişen yanıtlar günde bir kez eklenir) ve yayımlanan her provaya her ses grubundan (ya da çalgıdan) kaç kişinin gelebileceğini görür. İsimleri yalnızca şefiniz görür.',
     groupHint: 'Günlerin köşesindeki sayı: o gün {dur} sürecek bir prova için en uygun saatte kaç kişinin gelebildiği. {n} kişinin yanıtına göre; sayılar her gece güncellenir, bugünkü yanıtlar yarın eklenir.',
     groupWait: 'Sizden başka en az {min} kişinin yanıtı sayılınca, her gün kaç kişinin uygun olduğu burada görünecek (şu an {n}). Sayılar her gece güncellenir.',
     slotsHint: 'Saatlerin yanındaki kişi işareti ve sayı, o saatte kaç kişinin uygun olduğunu gösterir; + ile yazılan, gerekirse gelebilecekler. Dün geceye kadarki yanıtlara göre.',
     dayCount: 'en uygun saatte {n} kişi',
     slotFree: '{n} kişi uygun', slotMaybe: '{n} kişi gerekirse',
-    attTitle: 'Yanıtlara göre gelebilecekler', attNobody: 'henüz kimse yok',
-    attHint: 'Liste anket yanıtlarına göre hazırlanır. Gelemeyecekseniz şefinize haber verin.',
-    partS: 'Soprano', partA: 'Alto', partT: 'Tenor', partB: 'Bas', partNone: 'Ses grubu girilmemiş', partAll: 'Herkes',
-    partLabel: '{name} için ses grubu', partSaved: 'Ses grubu kaydedildi',
-    partsHint: 'Her üyenin ses grubunu seçin: yayımladığınız her provada üyeler, kimlerin gelebildiğini partilere göre görür.',
+    attTitle: 'Yanıtlara göre gelebilecek kişi sayısı', attNobody: 'henüz kimse yok',
+    attHint: 'Sayılar anket yanıtlarına göre hesaplanır. Gelemeyecekseniz şefinize haber verin.',
+    secS: 'Soprano', secMS: 'Mezzosoprano', secA: 'Alto', secT: 'Tenor', secBar: 'Bariton', secB: 'Bas',
+    secS1: 'Soprano 1', secS2: 'Soprano 2', secA1: 'Alto 1', secA2: 'Alto 2', secT1: 'Tenor 1', secT2: 'Tenor 2', secB1: 'Bas 1', secB2: 'Bas 2',
+    secvn1: 'Keman I', secvn2: 'Keman II', secva: 'Viyola', secvc: 'Çello', seccb: 'Kontrbas', secfl: 'Flüt', secob: 'Obua',
+    seccl: 'Klarnet', secbn: 'Fagot', sechn: 'Korno', sectp: 'Trompet', sectb: 'Trombon', secperc: 'Vurmalılar', secpf: 'Piyano',
+    partNone: 'Bölümsüz', partAll: 'Herkes', attOther: 'Diğer',
+    partLabel: '{name} için ses grubu', partSaved: 'Ses grubu kaydedildi', secSaved: 'Kaydedildi',
+    partsHint: 'Her üyenin ses grubunu seçin: yayımladığınız her provada üyeler, her ses grubundan kaç kişinin gelebileceğini görür.',
+    partsHintGroups: 'Her üyenin gruplarını ve her gruptaki bölümünü seçin. Üyeler yalnızca kendi gruplarının anketlerini ve buluşmalarını görür.',
+    secLabelIn: '{name}: {group} grubundaki bölümü', membersShow: 'Göster', allMembers: 'Tüm üyeler ({n})', noGroupMembers: 'Hiçbir grupta olmayanlar ({n})',
+    addInto: 'Eklenecekleri grup', groupMain: 'Koro', switchLabel: 'Gruplarınızın anketleri',
+    groupsTitle: 'Gruplar', groupNew: 'Yeni grup', groupEdit: 'Düzenle', groupEditFor: '{name} grubunu düzenle',
+    groupsHint: 'Her grubun kendi bölümleri olur: soprano, alto gibi partiler ya da keman, çello gibi çalgılar. Bir üye birden fazla grupta olabilir. Her anketin hangi gruplar için olduğunu anketin ayarlarında seçersiniz; anketi yalnızca o grupların üyeleri görür.',
+    groupCount: ({ n }) => n + ' üye', groupNoSections: 'Bölüm yok',
+    groupNewTitle: 'Yeni grup', groupEditTitle: 'Grubu düzenle', groupNameLabel: 'Grubun adı', groupNamePh: 'Örneğin: Oda Korosu',
+    groupMainHint: 'Gruplardan önceki tüm üyeler ve tüm anketler bu gruptadır. Adını olduğu gibi bırakırsanız Türkçede “Koro”, İngilizcede “Choir” görünür.',
+    groupSections: 'Bölümler', groupSectionsHint: 'Soprano, alto gibi partiler ya da çalgılar. Yayımladığınız her provada üyeler, her bölümden kaç kişinin gelebileceğini görür.',
+    groupPresets: 'Hazır listeler:', presetSATB: 'Karma koro (SATB)', presetSSAA: 'Kadınlar korosu (SSAA)', presetTTBB: 'Erkekler korosu (TTBB)',
+    presetDouble: 'Sekiz partili (SSAATTBB)', presetStrings: 'Yaylılar', presetOrchestra: 'Orkestra', presetNone: 'Bölümsüz',
+    groupSecName: '{n}. bölümün adı', moveUp: 'Yukarı taşı', moveDown: 'Aşağı taşı', groupAddSection: 'Bölüm ekle',
+    groupNoSectionsHint: 'Bölüm yok: grup tek bir sayıyla gösterilir.',
+    groupMembers: 'Üyeler', groupMembersN: '({n}/{of})', groupMembersHint: 'Bu grupta kimlerin olduğu ve gruptaki bölümleri. Hesapları değişmez.',
+    groupFind: 'Üye ara', groupFindPh: 'Üye arayın…', notInGroup: 'Grupta değil', inGroupNoSec: 'Grupta, bölümsüz',
+    groupCreate: 'Grubu oluştur', groupSave: 'Grubu kaydet', groupSaveAnyway: 'Yine de kaydet', groupKeepEditing: 'Düzenlemeye devam et', groupCreated: 'Grup oluşturuldu', groupSaved: 'Grup kaydedildi',
+    groupDelete: 'Grubu sil', groupDeleted: 'Grup silindi', groupDeleteAlone: ({ n }) => 'Yalnızca bu grupta olan ' + n + ' üye hiçbir grupta kalmayacak.',
+    groupDiscardAsk: 'Kaydedilmemiş değişiklikleriniz var.', groupDiscard: 'Kaydetmeden kapat',
+    errInUse: 'Bu grubun hâlâ anketleri var.', errNotFound: 'Bu artık yok. Sayfayı yenileyip yeniden deneyin.',
+    groupDeleteAsk: '“{name}” silinsin mi? Üyelerin hesapları ve diğer grupları olduğu gibi kalır.',
+    groupInUse: 'Bu grubun anketleri var: {list}. Önce o anketleri silin ya da ayarlarından onlar için başka gruplar seçin.',
+    groupDropAsk: 'Kaldırdığınız bölümlerdeki üyelerin bu gruptaki bölümü boşalacak: {list}.',
+    vGroupName: 'Gruba bir ad verin.', vGroupDup: 'Bu adda bir grup zaten var.', vSecName: 'Her bölüme bir ad verin (ya da bölümü kaldırın).', vSecDup: 'İki bölümün adı aynı.',
+    vGroups: 'En az bir grup seçin.', fGroups: 'Hangi gruplar için?', fGroupsHint: 'Bu anketi ve buluşmalarını yalnızca bu grupların üyeleri görür.',
+    seasonGroup: 'Grup', allGroups: 'Tüm gruplar', colSection: 'Bölüm',
     errOldBackend: "Bunun için Code.gs'in yeni sürümü gerekiyor: Apps Script'e yapıştırıp yeni sürüm olarak dağıtın.",
     signInTitle: 'Giriş yapın',
     username: 'Kullanıcı adı', password: 'Şifre', showPassword: 'Göster', hidePassword: 'Gizle', signIn: 'Giriş yap',
@@ -1326,12 +1446,19 @@ const T = {
     replyMine: 'Yanıtınız: {s}', replySending: 'Gönderiliyor…', replySaved: 'Yanıtınız iletildi', replyTaken: 'Yanıtınız geri alındı', replyNoteSaved: 'Notunuz iletildi',
     replyStale: 'Yanıtınızdan sonra buluşmanın günü ya da saati değişti (önceki yanıtınız: {s}). Lütfen yeniden yanıtlayın.',
     replyUndo: 'Yanıtı geri al', replyNoteAdd: 'Şefinize not ekleyin', replyNoteEdit: 'Notu düzenle',
-    replyNoteLabel: 'Şefinize not (isteğe bağlı)', replyNoteSend: 'Notu gönder', replyYourNote: 'Notunuz: {note}',
-    replyPhYes: 'Örneğin: 10 dakika gecikebilirim.', replyPhPart: 'Örneğin: 19.30’dan itibaren gelebilirim.', replyPhNo: 'Örneğin: O hafta şehir dışındayım.',
-    replyPrivacy: 'Adınız, “Geliyorum” dediğinizde ya da anket yanıtınıza göre gelebildiğinizde buluşmanın listesinde görünür. “Kısmen” ya da “Gelemiyorum” derseniz listeden çıkar; ne dediğinizi ve notlarınızı yalnızca şefiniz görür.',
+    replyNoteLabel: 'Şefinize not (isteğe bağlı)', replyYourNote: 'Notunuz: {note}',
+    replyPhYes: 'Örneğin: 10 dakika gecikebilirim.', replyPhPart: 'Örneğin: İşten 19.00’da çıkıyorum.', replyPhNo: 'Örneğin: O hafta şehir dışındayım.',
+    replyEdit: 'Düzenle', replySend: 'Gönder', replyTimesQ: 'Kaçta geleceksiniz ya da ayrılacaksınız?',
+    replyFromLabel: 'Geliş', replyUntilLabel: 'Ayrılış', replyFromStart: 'Başından itibaren', replyUntilEnd: 'Sonuna kadar',
+    replyFrom: 'geliş {t}', replyUntil: 'ayrılış {t}', replyReasonLabel: 'Nedeni', replyReasonOptional: 'Nedeni (isteğe bağlı)',
+    replyKnownPart: 'Şef, kısmen katılma nedenimi biliyor.', replyKnownNo: 'Şef, katılamama nedenimi biliyor.', replyKnownShort: 'şef biliyor',
+    replyNeedReason: 'Lütfen nedenini yazın ya da şefin bildiğini işaretleyin.',
+    replyNeedTime: 'Kaçta geleceğinizi ya da ayrılacağınızı seçin (ya da şefin bildiğini işaretleyin).', replyErrTimes: 'Geliş saati ayrılıştan önce olmalı.',
+    replyPrivacy: 'Diğer üyeler isim görmez, yalnızca her ses grubundan (ya da çalgıdan) kaç kişinin geleceğini görür; tek kişilik bir bölümde bu sayı o kişinin yanıtını da gösterir. Nedeninizi ve saatlerinizi yalnızca şefiniz görür.',
+    replyNotSent: ' (henüz gönderilmedi)', switchWait: 'Yanıtlarınız gönderiliyor, bir saniye.',
     errPast: 'Bu buluşma geçti, artık yanıt verilemiyor.', errNoEvent: 'Bu buluşma artık takvimde yok.',
     errNoUrl: 'Bu sayfaya planlayıcının adresi henüz yazılmamış: index.html’deki API_URL satırına Apps Script’in Web uygulaması adresini yapıştırın.',
-    attHint2: 'Liste anket yanıtlarına ve buluşmalara verilen yanıtlara göre hazırlanır.', sureLegend: ': “Geliyorum” dedi.', sureTitle: '“Geliyorum” dedi',
+    attHint2: 'Sayılar anket yanıtlarına ve buluşmalara verilen yanıtlara göre hesaplanır. İsimleri yalnızca şefiniz görür.', attPartly: '+{n} kısmen',
     nextTitle: 'Sıradaki buluşma', today: 'Bugün', tomorrow: 'Yarın', allMeetings: 'Tüm tarihler',
     histTitle: 'Bu sezon katılımınız', histLine: 'Geldi {p} · Geç {l} · İzinli {e} · Gelmedi {a}', histMore: 'Buluşmaları göster',
     markP: 'Geldi', markL: 'Geç geldi', markE: 'İzinli', markA: 'Gelmedi',
@@ -1347,7 +1474,7 @@ const T = {
     tabAtt: 'Katılım',
     attNoSchedTitle: 'Henüz yayımlanan bir şey yok', attNoSched: 'Takvimi yayımladığınızda üyeler her buluşmaya yanıt verebilir, siz de yoklamayı buradan alırsınız.',
     repSum: 'Geliyor {y} · Kısmen {p} · Gelemiyor {n} · Yanıtsız {w}', repDetails: 'Kim ne dedi',
-    repYes: 'Geliyor', repPart: 'Kısmen', repNo: 'Gelemiyor', repNone: 'Henüz yanıt vermeyenler', repStale: 'gün ya da saat değişmeden önce: {s}', repNobody: 'kimse yok',
+    repKnown: 'Nedenini biliyorsunuz', repYes: 'Geliyor', repPart: 'Kısmen', repNo: 'Gelemiyor', repNone: 'Henüz yanıt vermeyenler', repStale: 'gün ya da saat değişmeden önce: {s}', repNobody: 'kimse yok',
     remindTr: 'Hatırlatmayı kopyala (TR)', remindEn: 'Hatırlatmayı kopyala (EN)', remindEach: 'Kişiye özel mesajlar', remindOne: 'Mesaj', remindOneFor: '{name} için mesajı kopyala',
     remPollAll: ({ title, date, url }) => 'Merhaba! ' + title + ' anketini henüz doldurmayanlar için küçük bir hatırlatma' + (date ? ': son gün ' + date : '') + '. Buradan doldurabilirsiniz:\n' + url,
     remPollOne: ({ name, title, date, url }) => 'Merhaba ' + name + '! ' + title + ' anketini doldurmayı unutma' + (date ? ', son gün ' + date : '') + ':\n' + url,
@@ -1402,6 +1529,8 @@ const S = {
   // Release 1: the member's own replies to the shown poll's meetings, other polls' meetings still to come, and
   // what the backend can do (an older Code.gs sends none of these, and the page then shows none of it).
   replies: {}, more: [], caps: [], history: null, feed: '',
+  // Release 2: the polls the member's groups are shown (to switch between) and those groups' names and sections.
+  polls: [], groups: [],
   pollParam: new URLSearchParams(location.search).get('p') || '',
   // Members sign in; the sign-in is remembered on this device until they sign out.
   session: store.get('tutti-session') || '', member: null, needLogin: false, loginErr: '', loginUser: ''
@@ -1562,18 +1691,39 @@ function bestPairs(wins, gap) {
   return out;
 }
 
-/* ---------- Who can come to a meeting, by voice part: the same rule as Code.gs's attendFor_, so the planner's
-   schedule editor shows the part counts members will see once the meeting is published. */
+/* ---------- Groups, their sections, and who can come to a meeting: the same rules as Code.gs (groupsOf_,
+   attendFor_ and the rest), so the planner's schedule editor shows the numbers members will see once the meeting
+   is published. A member from before groups (or from an older Code.gs) is in the main group, with their voice
+   part as its section; a poll from before groups is for the main group. */
 const PARTS = ['S', 'A', 'T', 'B'];
+const MAIN = 'main';
+const own = (o, k) => typeof k === 'string' && Object.prototype.hasOwnProperty.call(o, k);
 const partOf = m => (m && PARTS.indexOf(m.part) !== -1 ? m.part : '');
-const partName = (part, all) => t(part ? 'part' + part : all ? 'partAll' : 'partNone');
-// This poll's answers from people who are still members: names, parts and times only.
-function answersOf(p, responses, ms) {
-  const byId = new Map(ms.map(x => [x.id, x]));
+const MAIN_GROUP = () => ({ id: MAIN, name: '', sections: PARTS.map(k => ({ id: k, name: '' })) });
+const gmapOf = groups => { const o = {}; for (const g of groups || []) o[g.id] = g; if (!own(o, MAIN) && !(groups || []).length) o[MAIN] = MAIN_GROUP(); return o; };
+function groupsOf(m) {
+  const g = m && m.groups;
+  if (!(g && typeof g === 'object' && !Array.isArray(g))) return { [MAIN]: partOf(m) };
+  const part = typeof m.part === 'string' ? m.part : '', main = own(g, MAIN) && typeof g[MAIN] === 'string' ? g[MAIN] : '';
+  if (part === main) return g;
+  const o = Object.assign({}, g);
+  if (part || own(o, MAIN)) o[MAIN] = part;
+  return o;
+}
+const inGroup = (m, gid) => own(groupsOf(m), gid);
+function sectionOf(m, g) {
+  const gs = groupsOf(m), s = own(gs, g.id) ? gs[g.id] : '';
+  return typeof s === 'string' && s && g.sections.some(x => x.id === s) ? s : '';
+}
+const pollGroups = (p, gmap) => (p && Array.isArray(p.groups) && p.groups.length ? p.groups : [MAIN]).filter(id => own(gmap, id));
+const canSee = (m, p, gmap) => pollGroups(p, gmap).some(id => inGroup(m, id));
+// This poll's answers from people still in its groups: names and times only.
+function answersOf(p, responses, ms, gmap) {
+  const byId = new Map(ms.filter(x => canSee(x, p, gmap)).map(x => [x.id, x]));
   const out = [];
   for (const d of responses) {
     const who = d.pollId === p.id && d.memberId ? byId.get(d.memberId) : null;
-    if (who) out.push({ id: who.id, name: who.name, part: partOf(who), avail: d.avail || {} });
+    if (who) out.push({ id: who.id, name: who.name, avail: d.avail || {} });
   }
   return out;
 }
@@ -1586,37 +1736,57 @@ function windowState(str, s, e, n) {
 // A reply belongs to the meeting as it was when given: a changed day or time asks again (as in Code.gs).
 const fpOf = ev => ev.date + '|' + ev.start + '|' + ev.end;
 const REPLY_S = { yes: 1, part: 1, no: 1 };
-const own = (o, k) => typeof k === 'string' && Object.prototype.hasOwnProperty.call(o, k);
 const validReply = (r, ev) => (r && own(REPLY_S, r.s) && r.fp === fpOf(ev) ? r : null);
-// rp: memberId -> { eventId: reply } for this poll.
-function attendOf(p, events, rs, ms, rp) {
+// For each meeting, each of the poll's groups by section. rp: memberId -> { eventId: reply } for this poll.
+function attendOf(p, events, rs, ms, rp, gmap) {
   rp = rp || {};
   const n = slotCount(p);
-  const used = PARTS.filter(pt => ms.some(x => partOf(x) === pt));
-  const keys = used.concat(['']), keyOf = part => (used.length ? part : '');
   const avail = {};
   for (const r of rs) avail[r.id] = r.avail;
+  const gs = pollGroups(p, gmap).map(gid => {
+    const g = gmap[gid], members = ms.filter(x => inGroup(x, gid));
+    const used = g.sections.map(x => x.id).filter(id => members.some(x => sectionOf(x, g) === id));
+    return { g, members, keys: used.concat(['']), keyOf: x => (used.length ? sectionOf(x, g) : '') };
+  });
+  const byName = (a, b) => a.localeCompare(b, 'tr');
   return (events || []).map(ev => {
     const inside = allowed(p, ev.date) && ev.start >= p.dayStart && ev.end <= p.dayEnd;
     const s = Math.floor((ev.start - p.dayStart) / p.slot), e = Math.ceil((ev.end - p.dayStart) / p.slot);
-    const groups = {};
     let replied = false;
-    for (const k of keys) groups[k] = { part: k, yes: [], sure: [], of: 0 };
-    for (const x of ms) {
-      const g = groups[keyOf(partOf(x))];
-      g.of++;
-      const r = validReply(rp[x.id] && rp[x.id][ev.id], ev);
-      if (r) { if (r.s === 'yes') { g.yes.push(x.name); g.sure.push(x.name); replied = true; } continue; }
-      if (inside && windowState(avail[x.id] && avail[x.id][ev.date], s, e, n) === 2) g.yes.push(x.name);
-    }
-    if (!inside && !replied) return { id: ev.id, parts: null };
-    const byName = (a, b) => a.localeCompare(b, 'tr');
-    return {
-      id: ev.id,
-      parts: keys.map(k => groups[k]).filter(g => g.part || g.of || g.yes.length)
-        .map(g => { g.yes.sort(byName); g.sure.sort(byName); return g; })
-    };
+    const per = gs.map(x => {
+      const parts = {};
+      for (const k of x.keys) parts[k] = { part: k, yes: [], partly: [], of: 0 };
+      for (const mm of x.members) {
+        const g = parts[x.keyOf(mm)];
+        g.of++;
+        const r = validReply(rp[mm.id] && rp[mm.id][ev.id], ev);
+        if (r) {
+          if (r.s === 'yes') { g.yes.push(mm.name); replied = true; }
+          if (r.s === 'part') { g.partly.push(mm.name); replied = true; }
+          continue;
+        }
+        if (inside && windowState(avail[mm.id] && avail[mm.id][ev.date], s, e, n) === 2) g.yes.push(mm.name);
+      }
+      return {
+        id: x.g.id,
+        parts: x.keys.map(k => parts[k]).filter(g => g.part || g.of || g.yes.length)
+          .map(g => { g.yes.sort(byName); g.partly.sort(byName); return g; })
+      };
+    });
+    return { id: ev.id, groups: inside || replied ? per : null };
   });
+}
+// Names: a section or group stored without a name is one the page names in the reader's language.
+const SECTION_IDS = ['S', 'MS', 'A', 'T', 'Bar', 'B', 'S1', 'S2', 'A1', 'A2', 'T1', 'T2', 'B1', 'B2',
+  'vn1', 'vn2', 'va', 'vc', 'cb', 'fl', 'ob', 'cl', 'bn', 'hn', 'tp', 'tb', 'perc', 'pf'];
+const builtIn = id => SECTION_IDS.indexOf(id) !== -1;
+const secName = (x, lang) => (x.name || (builtIn(x.id) ? t('sec' + x.id, null, lang) : x.id));
+const groupName = (g, lang) => (g ? g.name || (g.id === MAIN ? t('groupMain', null, lang) : '') : '');
+// The name of section `id` in group g; '' is "no section" (or, for a group without sections, everyone).
+function sectionLabel(g, id, all) {
+  if (!id) return t(all ? 'partAll' : 'partNone');
+  const x = g && g.sections.find(y => y.id === id);
+  return x ? secName(x) : builtIn(id) ? t('sec' + id) : id;
 }
 
 /* ---------------------------------------------------------------- the API */
@@ -1669,7 +1839,7 @@ function errText(e) {
     closed: 'errClosed', busy: 'errBusy', network: 'errNetwork', not_set_up: 'errNotSetUp', no_poll: 'errNoPoll', bad_key: 'badKey',
     too_large: 'errTooLarge', full: 'errFull', invalid: 'errInvalid', bad_login: 'badLogin', locked: 'locked',
     bad_password: 'errBadPassword', weak_password: 'errWeakPassword', auth_required: 'errSignedOut', unknown_action: 'errOldBackend',
-    past: 'errPast', no_event: 'errNoEvent', no_url: 'errNoUrl'
+    past: 'errPast', no_event: 'errNoEvent', no_url: 'errNoUrl', reason_needed: 'replyNeedReason', in_use: 'errInUse', not_found: 'errNotFound'
   };
   return t(map[e && e.code] || 'errGeneric');
 }
@@ -1819,13 +1989,16 @@ function markDirty() {
 // who can come to each rehearsal), and signing out removes it (like unsent changes).
 const PAGE_KEY = 'tutti-page';
 const pageOf = st => ({ member: st.member, poll: st.poll, schedule: st.schedule, mine: st.mine, group: st.group || null, attend: st.attend || null,
-  replies: st.replies || {}, more: st.more || [], caps: st.caps || [] });
+  replies: st.replies || {}, more: st.more || [], caps: st.caps || [], polls: st.polls || [], groups: st.groups || [] });
 // The parts of a page copy that don't depend on answering: taken as they are.
 function takePage(st) {
   S.member = st.member; S.poll = st.poll; S.schedule = st.schedule; S.group = st.group || null; S.attend = st.attend || null;
-  S.replies = st.replies || {}; S.more = st.more || []; S.caps = st.caps || [];
+  S.replies = st.replies || {}; S.more = st.more || []; S.caps = st.caps || []; S.polls = st.polls || []; S.groups = st.groups || [];
   S.page = pageOf(st);
 }
+// The groups this member's page knows (with an older Code.gs: the one choir).
+const memberGmap = () => gmapOf(S.groups);
+const groupsLabel = ids => (ids || []).map(id => groupName(memberGmap()[id])).filter(Boolean).join(' + ');
 function keepPage(st, session, param) {
   session = session || S.session;
   if (session && st && st.member) store.set(PAGE_KEY, JSON.stringify({ s: session.slice(-16), p: param === undefined ? S.pollParam : param, st: pageOf(st) }));
@@ -1880,10 +2053,10 @@ function refreshPage() {
         return;
       }
       if (job.gen !== pageGen || S.session !== session) return;
-      if (seq !== replySeq || replyBusy.size) {
+      if (seq !== replySeq || repliesBusy()) {
         // A reply went out while this copy was on its way, so it may be older than the reply: ask again (once
         // the replies are done), rather than show it and lose the reply on screen.
-        if (replyBusy.size) refetchAfterReplies = true;
+        if (repliesBusy()) refetchAfterReplies = true;
         else setTimeout(() => { if (S.session === session && job.gen === pageGen) refreshPage(); }, 0);
         return;
       }
@@ -1971,10 +2144,10 @@ function endSession() {
   store.del('tutti-session');
   store.del(PAGE_KEY);
   Object.assign(S, { session: '', member: null, needLogin: true, poll: null, schedule: null, group: null, attend: null, page: null,
-    replies: {}, more: [], caps: [], history: null, feed: '' });
-  historyJob = null; feedUi.ask = false; replyOpen.clear(); refetchAfterReplies = false;
+    replies: {}, more: [], caps: [], polls: [], groups: [], history: null, feed: '' });
+  historyJob = null; feedUi.ask = false; refetchAfterReplies = false;
   for (const k of Object.keys(replyQueue)) delete replyQueue[k];
-  for (const k of Object.keys(replyDrafts)) delete replyDrafts[k];
+  for (const k of Object.keys(replyForm)) delete replyForm[k];
   resetMember();
 }
 function memberSignOut() {
@@ -2104,7 +2277,7 @@ function buildHero(p, compact) {
     compact || !S.member ? null : buildAccount());
   if (!compact) R.heroMeta = meta;
   return h('section', { class: 'hero' },
-    h('p', { class: 'eyebrow' }, dRange(p.start, p.end)),
+    h('p', { class: 'eyebrow' }, [manyGroups() ? groupsLabel(p.groups) : '', dRange(p.start, p.end)].filter(Boolean).join(' · ')),
     h('h1', { class: 'display hero-title' }, loc(p.title)),
     !compact && msg ? h('p', { class: 'hero-msg' }, msg) : null,
     meta);
@@ -2129,6 +2302,7 @@ function renderMember(main) {
   if (!p) { main.append(h('div', { class: 'stack member-stack' }, h('h1', { class: 'visually-hidden' }, APP_NAME), R.next, stateBlock(t('noPollTitle'), t('noPollText')))); return; }
   const ro = !p.open;
   main.append(h('div', { class: 'stack member-stack' },
+    buildSwitcher(),
     buildHero(p),
     R.next,
     buildNotices(p),
@@ -2146,6 +2320,64 @@ function renderMember(main) {
   }
   syncSentChip();
   fitStick();
+}
+
+// A member of several groups switches here between the polls their groups are shown.
+const manyGroups = () => (S.groups || []).length > 1;
+function switchList() {
+  const list = (S.polls || []).slice();
+  if (S.poll && !list.some(x => x.id === S.poll.id)) list.push({ id: S.poll.id, title: S.poll.title, groups: S.poll.groups || [] });
+  return list;
+}
+let switching = '';
+function buildSwitcher() {
+  const list = switchList();
+  if (list.length < 2) return null;
+  return h('nav', { class: 'poll-switch', 'aria-label': t('switchLabel') },
+    list.map(x => h('button', {
+      type: 'button', class: 'switch-btn', id: 'sw-' + x.id, 'aria-current': S.poll && x.id === S.poll.id ? 'page' : null,
+      'aria-busy': switching === x.id ? 'true' : null, onclick: () => switchPoll(x.id)
+    }, h('span', { class: 'switch-group' }, switching === x.id ? h('span', { class: 'spin', 'aria-hidden': 'true' }) : null, groupsLabel(x.groups) || loc(x.title)),
+      h('span', { class: 'switch-title' }, loc(x.title)))));
+}
+function redrawSwitcher() {
+  const old = document.querySelector('.poll-switch'), fresh = buildSwitcher();
+  if (old && fresh) redrawKeepingFocus(() => old.replaceWith(fresh));
+}
+// The other poll is fetched while this one stays on screen; only once it's here does it replace it, with its
+// own address (?p=…, so a reload or a shared link opens the same one). Offline, nothing changes but a message.
+// Unsent changes stay as a draft of their own poll, and come back with it.
+async function switchPoll(id) {
+  if (!S.poll || S.poll.id === id || switching) return;
+  if (M.saving) { toast(t('switchWait')); return; }
+  const first = (S.polls || [])[0];
+  const param = first && first.id === id ? '' : id;
+  const session = S.session, gen = pageGen;
+  switching = id;
+  redrawSwitcher();
+  try {
+    const st = pageOf(await api.state(session, param));
+    if (S.session !== session || gen !== pageGen) return;
+    flushDraft();
+    pageGen++; pageFetch = null; refetchAfterReplies = false;
+    for (const k of Object.keys(replyQueue)) delete replyQueue[k];
+    S.pollParam = param;
+    try { history.replaceState(null, '', location.pathname + (param ? '?p=' + encodeURIComponent(param) : '') + location.hash); } catch (e) { /* a sandboxed frame */ }
+    S.fetchedAt = Date.now();
+    keepPage(st, session, param);
+    applyState(st);
+    Object.assign(S, { loaded: true, loading: false, error: null });
+    switching = '';
+    render();
+    const b = document.getElementById('sw-' + id);
+    if (b) b.focus({ preventScroll: true });
+  } catch (e) {
+    if (S.session !== session || gen !== pageGen) return;
+    if (e.code === 'auth_required') { switching = ''; endSession(); render(); return; }
+    toast(e.code === 'network' ? t('offline') : errText(e), { error: true });
+  } finally {
+    if (switching === id) { switching = ''; redrawSwitcher(); }
+  }
 }
 
 function step(mark, title, body) {
@@ -2685,98 +2917,203 @@ function schedBlocks() {
 }
 const hasMeetings = () => schedBlocks().some(b => b.s && b.s.events && b.s.events.length);
 
-/* ---------- Replies: Geliyorum / Kısmen / Gelemiyorum, with an optional note only the conductor sees */
-const replyBusy = new Set(), replyOpen = new Set(), replyDrafts = {};
+/* ---------- Replies: Geliyorum / Kısmen / Gelemiyorum. Kısmen asks why and from when or until when, Gelemiyorum
+   asks why, unless the member ticks that the conductor already knows. Only the conductor sees any of it. */
+// Replies on their way, by meeting (poll|meeting), with the page they were sent from (pageGen): only the shown
+// page's own replies hold up a fresh copy of it, not one sent before switching polls or signing out.
+const replyBusy = new Map();
+const repliesBusy = () => { for (const g of replyBusy.values()) if (g === pageGen) return true; return false; };
+// The reply form open for a meeting (key: poll|meeting): the answer picked and what's been filled in, kept across redraws.
+const replyForm = {};
 // Counts replies sent and answered, so a copy of the page asked for meanwhile is known to be possibly older.
 let replySeq = 0, refetchAfterReplies = false;
-// A note sent (Enter) while the reply before it was still on its way: it goes as soon as that reply is through.
+// A form sent while the reply before it was still on its way: it goes as soon as that reply is through.
 const replyQueue = {};
-// The member's own reply to a meeting, as the page has it now.
-function ownReply(pollId, evId) {
-  const pg = S.page;
-  if (!pg) return null;
-  const x = pg.poll && pg.poll.id === pollId ? pg : (pg.more || []).find(y => y.poll && y.poll.id === pollId);
-  return x && x.replies && own(x.replies, evId) ? x.replies[evId] : null;
+const TIME_STEP = 15;
+// "geliş 19:30 · ayrılış 20:30" for a Kısmen.
+function replyTimes(r) {
+  if (!r || r.s !== 'part') return '';
+  return [r.from ? t('replyFrom', { t: hm(r.from) }) : '', r.until ? t('replyUntil', { t: hm(r.until) }) : ''].filter(Boolean).join(' · ');
 }
-// where: 'nx' (the next-meeting card) or 'rp' (the schedule), so ids stay unique and focus can come back after a redraw.
+// What a reply form still needs ('' when it can go). The same rules as Code.gs.
+function replyProblem(f, ev) {
+  if (f.s === 'part') {
+    const from = f.from || ev.start, until = f.until || ev.end;
+    if (from >= until) return t('replyErrTimes');
+    if (!f.known && from <= ev.start && until >= ev.end) return t('replyNeedTime');
+  }
+  if ((f.s === 'part' || f.s === 'no') && !f.known && !String(f.note || '').trim()) return t('replyNeedReason');
+  return '';
+}
+
+// where: 'nx' (the next-meeting box) or 'rp' (the schedule), so ids stay unique and focus can come back after a redraw.
 function replyBox(p, ev, own, where) {
   const key = p.id + '|' + ev.id, id = where + '-' + ev.id;
   const live = own && !own.stale ? own : null;
   // Over: what they said stays in view, but replies are closed (as in Code.gs, after the meeting's day).
-  if (ev.date < nowIn(p.tz).day) return live ? h('p', { class: 'reply-past' }, t('replyMine', { s: replyWord(live.s) })) : null;
+  if (ev.date < nowIn(p.tz).day) return live ? h('p', { class: 'reply-past' }, [t('replyMine', { s: replyWord(live.s) }), replyTimes(live)].filter(Boolean).join(' · ')) : null;
   const busy = replyBusy.has(key);
+  const form = replyForm[key] || null;
+  const shown = form ? form.s : live ? live.s : '';
+  const open = s => {
+    // An answer of the same kind is edited from what was given (with an older Code.gs, the times and the tick are
+    // read back out of the note they were put in); another starts empty.
+    const base = live && live.s === s ? (can('reasons') ? live : Object.assign({}, live, unfoldNote(live.note))) : null;
+    replyForm[key] = { s, note: base ? base.note || '' : '', known: !!(base && base.known), from: (base && base.from) || 0, until: (base && base.until) || 0, err: '' };
+    redrawReplies(id + (s === 'part' ? '-from' : '-note'));
+  };
   const pick = s => {
-    if (busy || (live && live.s === s)) return;
-    if (s === 'part' && !(live && live.note)) replyOpen.add(key);   // "partly" usually needs a word: from when, until when
-    sendReply(p, ev, s, live ? live.note : '', null, null, id + '-' + s);
+    if (busy) return;
+    if (s === 'yes') {
+      // With the Geliyorum note being edited, the button sends it, as Gönder would.
+      if (form && form.s === 'yes') { sendForm(p, ev, form, key, id); return; }
+      if (live && live.s === 'yes' && !form) return;
+      delete replyForm[key];
+      sendReply(p, ev, 'yes', { note: live && live.s === 'yes' ? live.note : '' }, null, null, id + '-yes');
+      return;
+    }
+    if (form && form.s === s) return;
+    open(s);
   };
   const box = h('div', { class: 'reply', role: 'group', 'aria-labelledby': id + '-q' },
     h('p', { class: 'reply-q', id: id + '-q' }, t('replyAsk')),
-    h('div', { class: 'tools reply-btns' }, REPLIES.map(s => h('button', {
-      type: 'button', class: 'tool reply-btn', id: id + '-' + s, 'data-s': s, 'aria-pressed': String(!!live && live.s === s), disabled: busy, onclick: () => pick(s)
-    }, h('span', { class: 'sw ' + REPLY_SW[s], 'aria-hidden': 'true' }), replyWord(s)))));
-  if (own && own.stale) box.append(h('p', { class: 'reply-stale' }, t('replyStale', { s: replyWord(own.s) })));
+    h('div', { class: 'tools reply-btns' }, REPLIES.map(s => {
+      const pending = !!(form && form.s === s && !(live && live.s === s));
+      return h('button', {
+        type: 'button', class: 'tool reply-btn' + (pending ? ' pending' : ''), id: id + '-' + s, 'data-s': s,
+        'aria-pressed': String(shown === s), disabled: busy, onclick: () => pick(s)
+      }, h('span', { class: 'sw ' + REPLY_SW[s], 'aria-hidden': 'true' }), replyWord(s), pending ? h('span', { class: 'visually-hidden' }, t('replyNotSent')) : null);
+    })));
+  if (own && own.stale && !form) box.append(h('p', { class: 'reply-stale' }, t('replyStale', { s: replyWord(own.s) })));
+  if (form) { box.append(replyFormEl(p, ev, form, key, id, busy, live)); return box; }
   if (!live) return box;
-  const open = replyOpen.has(key);
+  const extra = [replyTimes(live), live.known ? t('replyKnownShort') : ''].filter(Boolean);
   box.append(h('div', { class: 'reply-status' },
-    h('span', { class: 'reply-said' }, busy ? t('replySending') : t('replyMine', { s: replyWord(live.s) }) + (live.at ? ' · ' + ago(live.at) : '')),
-    live.note && !open ? h('span', { class: 'reply-note-text' }, t('replyYourNote', { note: live.note })) : null,
+    h('span', { class: 'reply-said' }, busy ? t('replySending') : [t('replyMine', { s: replyWord(live.s) })].concat(extra, live.at ? [ago(live.at)] : []).join(' · ')),
+    live.note ? h('span', { class: 'reply-note-text' }, t('replyYourNote', { note: live.note })) : null,
     h('span', { class: 'reply-acts' },
-      open ? null : h('button', { type: 'button', class: 'btn small quiet', id: id + '-note-open', disabled: busy, onclick: () => { replyOpen.add(key); redrawReplies(id + '-note'); } }, live.note ? t('replyNoteEdit') : t('replyNoteAdd')),
-      h('button', { type: 'button', class: 'btn small quiet', id: id + '-undo', disabled: busy, onclick: () => { replyOpen.delete(key); delete replyDrafts[key]; sendReply(p, ev, '', '', null, null, id + '-yes'); } }, t('replyUndo')))));
-  if (open) {
-    const done = () => { replyOpen.delete(key); delete replyDrafts[key]; };
-    const send = () => {
-      if (replyBusy.has(key)) { replyQueue[key] = { note: input.value, after: done, focusAfter: id + '-note-open' }; return; }
-      sendReply(p, ev, live.s, input.value, done, 'replyNoteSaved', id + '-note-open');
-    };
-    const input = h('input', {
-      id: id + '-note', class: 'input', type: 'text', maxlength: '300', autocomplete: 'off',
-      value: key in replyDrafts ? replyDrafts[key] : live.note || '', placeholder: t({ yes: 'replyPhYes', part: 'replyPhPart', no: 'replyPhNo' }[live.s]),
-      oninput: e => { replyDrafts[key] = e.target.value; },
-      onkeydown: e => { if (e.key === 'Enter') { e.preventDefault(); send(); } }
-    });
-    box.append(h('div', { class: 'reply-note' },
-      h('label', { class: 'label', for: id + '-note' }, t('replyNoteLabel')),
-      h('div', { class: 'reply-note-row' }, input,
-        h('button', { type: 'button', class: 'btn', id: id + '-note-send', disabled: busy, onclick: send }, t('replyNoteSend')))));
-  }
+      h('button', { type: 'button', class: 'btn small quiet', id: id + '-edit', disabled: busy, onclick: () => open(live.s) },
+        live.s === 'yes' ? (live.note ? t('replyNoteEdit') : t('replyNoteAdd')) : t('replyEdit')),
+      h('button', { type: 'button', class: 'btn small quiet', id: id + '-undo', disabled: busy, onclick: () => { delete replyForm[key]; sendReply(p, ev, '', {}, null, null, id + '-yes'); } }, t('replyUndo')))));
   return box;
 }
 
-// Sends a reply (s '' takes it back). It belongs to the sign-in that sent it, like everything else here.
-// focusAfter: where the keyboard focus goes once it's done (the buttons are redrawn); after a failure, back where it was.
-async function sendReply(p, ev, s, note, after, okKey, focusAfter) {
+// A note an older Code.gs kept with the times and the tick put in front of it ("geliş 19:30 · şef biliyor · …"),
+// read back into them, in either language.
+function unfoldNote(note) {
+  const out = { note: String(note || ''), from: 0, until: 0, known: false };
+  const parts = out.note.split(' · '), known = [T.tr.replyKnownShort, T.en.replyKnownShort];
+  while (parts.length > 0) {
+    const m = /^(geliş|arriving|ayrılış|leaving) (\d\d):(\d\d)$/.exec(parts[0]);
+    if (m) { out[m[1] === 'geliş' || m[1] === 'arriving' ? 'from' : 'until'] = +m[2] * 60 + +m[3]; parts.shift(); }
+    else if (known.indexOf(parts[0]) !== -1) { out.known = true; parts.shift(); }
+    else break;
+  }
+  out.note = parts.join(' · ');
+  return out;
+}
+// Checks the form and sends it; what's missing is said in the form, with the focus where it's missing.
+function sendForm(p, ev, f, key, id) {
+  const problem = replyProblem(f, ev);
+  if (problem) {
+    f.err = problem;
+    redrawReplies(id + (f.s === 'part' && (problem === t('replyNeedTime') || problem === t('replyErrTimes')) ? '-from' : '-note'));
+    return;
+  }
+  const needsWhy = f.s === 'part' || f.s === 'no';
+  const fields = { note: String(f.note || '').trim(), known: needsWhy && f.known, from: f.s === 'part' ? f.from || '' : '', until: f.s === 'part' ? f.until || '' : '' };
+  if (replyBusy.has(key)) { replyQueue[key] = { s: f.s, fields, focusAfter: id + '-edit' }; return; }
+  sendReply(p, ev, f.s, fields, () => { delete replyForm[key]; }, f.s === 'yes' ? 'replyNoteSaved' : 'replySaved', id + '-edit');
+}
+// The form under the buttons: for Kısmen when they'll arrive or leave, the reason, and the "conductor knows" tick.
+function replyFormEl(p, ev, f, key, id, busy, live) {
+  // Times from before the meeting moved, if they're no longer inside it, go back to "from the start" / "until the end".
+  for (const k of ['from', 'until']) if (f[k] && !(f[k] > ev.start && f[k] < ev.end)) f[k] = 0;
+  const err = h('p', { class: 'err', role: 'alert', id: id + '-err', hidden: !f.err }, f.err || '');
+  const clearErr = () => { if (f.err) { f.err = ''; err.hidden = true; err.textContent = ''; } };
+  const kids = [];
+  if (f.s === 'part') {
+    // Every quarter hour inside the meeting, after "from the start" or before "until the end".
+    const steps = [];
+    for (let m = Math.floor(ev.start / TIME_STEP) * TIME_STEP + TIME_STEP; m < ev.end; m += TIME_STEP) steps.push([m, hm(m)]);
+    const sel = (k, label, edge, edgeLabel) => h('div', { class: 'field' },
+      h('label', { class: 'label', for: id + '-' + k }, label),
+      h('select', {
+        id: id + '-' + k, class: 'select', disabled: busy, 'aria-describedby': id + '-err',
+        onchange: e => { const v = +e.target.value; f[k] = v === edge ? 0 : v; clearErr(); }
+      }, [[edge, edgeLabel]].concat(steps).map(o => h('option', { value: String(o[0]), selected: o[0] === (f[k] || edge) }, o[1]))));
+    kids.push(h('p', { class: 'reply-form-q' }, t('replyTimesQ')),
+      h('div', { class: 'reply-times' }, sel('from', t('replyFromLabel'), ev.start, t('replyFromStart')), sel('until', t('replyUntilLabel'), ev.end, t('replyUntilEnd'))));
+  }
+  const needsWhy = f.s === 'part' || f.s === 'no';
+  const noteLabel = h('label', { class: 'label', for: id + '-note' }, !needsWhy ? t('replyNoteLabel') : f.known ? t('replyReasonOptional') : t('replyReasonLabel'));
+  kids.push(h('div', { class: 'field' }, noteLabel,
+    h('textarea', {
+      id: id + '-note', class: 'input', rows: '2', maxlength: '300', value: f.note || '', disabled: busy, 'aria-describedby': id + '-err',
+      placeholder: t({ yes: 'replyPhYes', part: 'replyPhPart', no: 'replyPhNo' }[f.s]),
+      oninput: e => { f.note = e.target.value; clearErr(); }
+    })));
+  if (needsWhy) {
+    kids.push(h('label', { class: 'switch-row reply-known' },
+      h('input', {
+        type: 'checkbox', id: id + '-known', checked: f.known, disabled: busy,
+        onchange: e => { f.known = e.target.checked; noteLabel.textContent = f.known ? t('replyReasonOptional') : t('replyReasonLabel'); clearErr(); }
+      }), t(f.s === 'part' ? 'replyKnownPart' : 'replyKnownNo')));
+  }
+  const cancel = () => { delete replyForm[key]; redrawReplies(id + '-' + (live ? live.s : f.s)); };
+  // While it's being sent, Gönder keeps the keyboard focus (it only waits); the rest of the form is locked.
+  kids.push(err, h('div', { class: 'actions' },
+    h('button', { type: 'button', class: 'btn primary', id: id + '-send', 'aria-disabled': busy ? 'true' : null, onclick: () => sendForm(p, ev, f, key, id) },
+      busy ? h('span', { class: 'spin', 'aria-hidden': 'true' }) : null, t('replySend')),
+    h('button', { type: 'button', class: 'btn quiet', id: id + '-cancel', disabled: busy, onclick: cancel }, t('cancel'))));
+  return h('div', { class: 'reply-form', onkeydown: e => { if (e.key === 'Escape' && !busy) { e.preventDefault(); e.stopPropagation(); cancel(); } } }, kids);
+}
+
+// Sends a reply (s '' takes it back) with its fields (note, known, from, until). It belongs to the sign-in that sent
+// it, like everything else here. focusAfter: where the keyboard focus goes once it's done (the buttons are redrawn);
+// after a failure, back where it was.
+async function sendReply(p, ev, s, fields, after, okKey, focusAfter) {
   const key = p.id + '|' + ev.id, gen = pageGen, session = S.session;
   const was = document.activeElement && document.activeElement.id;
   if (replyBusy.has(key)) return;
-  replyBusy.add(key);
+  fields = fields || {};
+  replyBusy.set(key, gen);
   replySeq++;
   redrawReplies();
-  let ok = false;
+  let ok = false, moved = false;
   try {
-    const r = await api.reply(session, { pollId: p.id, eventId: ev.id, s: s || '', note: String(note || '').trim() });
-    if (gen !== pageGen || S.session !== session) return;
-    applyReply(p.id, ev.id, r);
-    if (after) after();
-    ok = true;
-    toast(t(okKey || (s ? 'replySaved' : 'replyTaken')));
+    // An older Code.gs keeps only the note: the times and the tick go into it, so the conductor still gets them.
+    let note = String(fields.note || '').trim();
+    if (!can('reasons')) note = [replyTimes({ s, from: fields.from, until: fields.until }), fields.known ? t('replyKnownShort') : '', note].filter(Boolean).join(' · ').slice(0, 300);
+    const r = await api.reply(session, { pollId: p.id, eventId: ev.id, s: s || '', note, known: !!fields.known, from: fields.from || '', until: fields.until || '' });
+    if (gen !== pageGen || S.session !== session) moved = true;
+    else {
+      applyReply(p.id, ev.id, r);
+      if (after) after();
+      ok = true;
+      toast(t(okKey || (s ? 'replySaved' : 'replyTaken')));
+    }
   } catch (e) {
-    if (gen !== pageGen || S.session !== session) return;
-    if (e.code === 'auth_required') { replyBusy.delete(key); endSession(); toast(t('errSignedOut'), { error: true }); render(); return; }
-    toast(errText(e), { error: true });
-    if (e.code === 'past' || e.code === 'no_event' || e.code === 'no_poll') refreshPage();
-  } finally { replyBusy.delete(key); replySeq++; }
-  // Focus goes where it belongs after the redraw, unless the member has moved on (into the note, say).
-  const now = document.activeElement && document.activeElement !== document.body ? document.activeElement.id : '';
-  redrawReplies(now && now !== was ? null : ok && focusAfter ? focusAfter : was);
-  const q = replyQueue[key];
-  if (q) {
-    delete replyQueue[key];
-    const cur = ownReply(p.id, ev.id);
-    if (ok && cur && !cur.stale && gen === pageGen && S.session === session) { sendReply(p, ev, cur.s, q.note, q.after, 'replyNoteSaved', q.focusAfter); return; }
+    if (gen !== pageGen || S.session !== session) moved = true;
+    else if (e.code === 'auth_required') { replyBusy.delete(key); endSession(); toast(t('errSignedOut'), { error: true }); render(); return; }
+    else {
+      toast(errText(e), { error: true });
+      if (e.code === 'past' || e.code === 'no_event' || e.code === 'no_poll') refreshPage();
+    }
+  } finally { if (replyBusy.get(key) === gen) replyBusy.delete(key); replySeq++; }
+  // (Sent from a page that's no longer shown: what it did is in the fresh copy; nothing here to redraw.)
+  if (!moved) {
+    // Focus goes where it belongs after the redraw, unless the member has moved on (into the form, say).
+    const now = document.activeElement && document.activeElement !== document.body ? document.activeElement.id : '';
+    redrawReplies(now && now !== was ? null : ok && focusAfter ? focusAfter : was);
+    const q = replyQueue[key];
+    if (q) {
+      delete replyQueue[key];
+      sendReply(p, ev, q.s, q.fields, () => { delete replyForm[key]; }, 'replySaved', q.focusAfter);
+      return;
+    }
   }
-  if (refetchAfterReplies && !replyBusy.size) { refetchAfterReplies = false; refreshPage(); }
+  if (refetchAfterReplies && !repliesBusy()) { refetchAfterReplies = false; refreshPage(); }
 }
 
 // The answer to a reply goes into the page and into the copy kept on this device, so the next visit opens with it.
@@ -2848,7 +3185,7 @@ function buildNext() {
       h('div', { class: 'next-line' },
         h('h2', { class: 'eyebrow', id: 'next-h' }, t('nextTitle')),
         h('a', { class: 'next-all', href: '#schedule' }, t('allMeetings'))),
-      h('p', { class: 'next-when' }, h('strong', null, ev.title || t('meeting')),
+      h('p', { class: 'next-when' }, groupTag(b.p), h('strong', null, ev.title || t('meeting')),
         ' · ' + (near ? near + ', ' : '') + dLong(ev.date) + ', ' + hm(ev.start) + '–' + hm(ev.end) + (ev.place ? ' · ' + ev.place : '')),
       can('replies') ? replyBox(b.p, ev, b.replies[ev.id], 'nx') : null);
   }
@@ -2858,12 +3195,15 @@ function buildNext() {
     eventDate(ev),
     h('div', { class: 'event-body' },
       h('h2', { class: 'eyebrow', id: 'next-h' }, t('nextTitle')),
-      h('p', { class: 'next-title' }, ev.title || t('meeting')),
+      h('p', { class: 'next-title' }, groupTag(b.p), ev.title || t('meeting')),
       h('p', { class: 'event-time' }, day + hm(ev.start) + '–' + hm(ev.end)),
       ev.place ? h('p', { class: 'event-place' }, ev.place) : null),
     can('replies') ? replyBox(b.p, ev, b.replies[ev.id], 'nx') : null,
     h('a', { class: 'next-all', href: '#schedule' }, t('allMeetings')));
 }
+
+// "Orkestra" before a meeting or poll title, for a member of several groups.
+const groupTag = p => (manyGroups() && p && groupsLabel(p.groups) ? h('span', { class: 'grp-tag' }, groupsLabel(p.groups)) : null);
 
 /* ---------- The schedule page */
 function renderSchedule(main) {
@@ -2876,7 +3216,7 @@ function renderSchedule(main) {
   let anyAtt = false, anyOpen = false;
   for (const b of blocks) {
     const evs = (b.s && b.s.events) || [];
-    const sec = h('section', { class: 'sched-block', 'aria-label': several ? loc(b.p.title) : null }, several ? h('h3', { class: 'sched-poll' }, loc(b.p.title)) : null);
+    const sec = h('section', { class: 'sched-block', 'aria-label': several ? loc(b.p.title) : null }, several ? h('h3', { class: 'sched-poll' }, groupTag(b.p), loc(b.p.title)) : null);
     if (!evs.length) sec.append(h('p', { class: 'muted' }, t('schedEmpty')));
     else {
       const now = nowIn(b.p.tz);
@@ -2919,26 +3259,37 @@ function eventCard(b, ev, now, nested) {
     buildAttend(ev, b.attend));
 }
 
-// Who can come for all of a meeting, by voice part: names of those who can (✓ for those who said "Geliyorum"),
-// and nobody named as missing, partly or "if needed". Worked out by Code.gs; nothing with an older one.
-const attendIn = (attend, ev) => { const a = attend && attend.find(x => x.id === ev.id); return a && a.parts && a.parts.length ? a.parts : null; };
-const sureMark = () => h('span', { class: 'sure', role: 'img', 'aria-label': t('sureTitle'), title: t('sureTitle') });
+// Who can come to a meeting, as members see it: per voice part only how many come for all of it and how many
+// partly, never a name (an older Code.gs still sends names: only how many is shown). Nothing with a much older one.
+// A meeting's numbers: for each of its poll's groups, by section (an older Code.gs sends the one choir's, as parts).
+function attendIn(attend, ev) {
+  const a = attend && attend.find(x => x.id === ev.id);
+  if (!a) return null;
+  const list = (a.groups || (a.parts ? [{ id: MAIN, parts: a.parts }] : [])).filter(x => x.parts && x.parts.length);
+  return list.length ? list : null;
+}
+const countOf = g => (typeof g.n === 'number' ? g.n : (g.yes || []).length);
+const partlyOf = g => (typeof g.partly === 'number' ? g.partly : 0);
 function buildAttend(ev, attend) {
-  const parts = attendIn(attend, ev);
-  if (!parts) return null;
-  const single = parts.length === 1 && !parts[0].part;
-  const who = g => { const sure = new Set(g.sure || []); return g.yes.map((n, i) => [i ? ', ' : '', h('span', { class: 'att-person' }, n, sure.has(n) ? sureMark() : null)]); };
-  return h('div', { class: 'att' },
-    h('table', { class: 'att-table' },
-      h('caption', null, t('attTitle')),
-      // People without a voice part are listed only when someone among them can come; only real parts are flagged as uncovered.
-      h('tbody', null, parts.filter(g => g.part || single || g.yes.length).map(g => h('tr', { class: 'att-part' + (!g.yes.length && (g.part || single) ? ' none' : '') },
-        h('th', { scope: 'row', class: 'att-name' }, partName(g.part, single)),
-        h('td', { class: 'att-n' }, g.yes.length + '/' + g.of),
-        h('td', { class: 'att-who' }, g.yes.length ? who(g) : t('attNobody')))))));
+  const list = attendIn(attend, ev);
+  if (!list) return null;
+  const gmap = memberGmap(), many = list.length > 1;
+  return h('div', { class: 'att' }, many ? h('p', { class: 'att-head' }, t('attTitle')) : null, list.map(x => {
+    const parts = x.parts, single = parts.length === 1 && !parts[0].part, g = gmap[x.id];
+    return h('table', { class: 'att-table' },
+      h('caption', null, many ? groupName(g) || t('attTitle') : t('attTitle')),
+      // Members without a section get a row only when some of them come; only real sections are flagged as uncovered.
+      h('tbody', null, parts.filter(p => p.part || single || countOf(p) || partlyOf(p)).map(p => {
+        const n = countOf(p), k = partlyOf(p);
+        return h('tr', { class: 'att-part' + (!n && !k && (p.part || single) ? ' none' : '') },
+          h('th', { scope: 'row', class: 'att-name' }, p.part ? sectionLabel(g, p.part) : t(single ? 'partAll' : 'attOther')),
+          h('td', { class: 'att-n' }, n + '/' + p.of),
+          h('td', { class: 'att-who' }, k ? t('attPartly', { n: k }) : n ? '' : t('attNobody')));
+      })));
+  }));
 }
 function attLegend() {
-  return h('p', { class: 'hint att-hint' }, can('replies') ? [t('attHint2'), ' ', h('span', { class: 'sure', 'aria-hidden': 'true' }), t('sureLegend')] : t('attHint'));
+  return h('p', { class: 'hint att-hint' }, can('replies') ? t('attHint2') : t('attHint'));
 }
 
 /* ---------- Calendar subscription: a private link per member to the published meetings */
@@ -3033,8 +3384,32 @@ const A = {
   board: new Set(), tab: 'plan', duration: 120, minGap: 10, cell: null, hl: null, scrollX: null,
   draft: { events: [], note: '' }, draftDirty: false, busy: false,
   creds: [],   // sign-in details just created; shown once, never stored
-  caps: [], errors: null, since: {}, openEv: new Set(), season: null, seasonBusy: false
+  caps: [], errors: null, since: {}, openEv: new Set(), season: null, seasonBusy: false,
+  // Release 2: the groups (with an older Code.gs, the one choir), which poll each group is shown, and the
+  // group the Members tab shows (and new members join) and the season is seen for ('' = all).
+  groups: [], current: {}, memberGroup: '', seasonGroup: ''
 };
+const adminGmap = () => gmapOf(A.groups);
+const manyAdminGroups = () => (A.groups || []).length > 1;
+// The members of the open poll's groups: who it asks, whose replies and attendance it has.
+const pollMembers = () => (A.data ? A.data.members.filter(m => canSee(m, A.data.poll, adminGmap())) : []);
+// Shown to the members of all of its groups / of some of them.
+const shownToAll = p => { const gs = pollGroups(p, adminGmap()); return gs.length > 0 && gs.every(g => A.current[g] === p.id); };
+const shownAnywhere = p => Object.keys(A.current || {}).some(g => A.current[g] === p.id);
+// The groups of the planner's poll, by name: "Koro + Orkestra".
+const adminGroupsLabel = p => pollGroups(p, adminGmap()).map(id => groupName(adminGmap()[id])).join(' + ');
+// A member's sections in the poll's groups ("Tenor", or "Koro: Tenor · Orkestra: Çello" for a joint poll).
+function memberSecs(m, p) {
+  const gmap = adminGmap(), gs = pollGroups(p, gmap).filter(id => inGroup(m, id));
+  if (gs.length === 1) { const sec = sectionOf(m, gmap[gs[0]]); return sec ? sectionLabel(gmap[gs[0]], sec) : ''; }
+  return gs.map(id => { const sec = sectionOf(m, gmap[id]); return sec ? groupName(gmap[id]) + ': ' + sectionLabel(gmap[id], sec) : ''; }).filter(Boolean).join(' · ');
+}
+function takeGroups(r) {
+  if (r.groups) A.groups = r.groups;
+  if (r.current) A.current = r.current;
+  else if (r.currentId !== undefined) A.current = r.currentId ? { [MAIN]: r.currentId } : {};
+  if (r.currentId !== undefined) A.currentId = r.currentId;
+}
 
 async function adminEnter() {
   if (!A.key) { render(); return; }
@@ -3047,10 +3422,12 @@ async function adminEnter() {
     store.set('tutti-org', A.key);
     store.del('tutti-admin-key');
     A.polls = st.polls; A.currentId = st.currentId;
+    A.groups = st.groups || [MAIN_GROUP()];
+    takeGroups(st);
     A.caps = st.caps || []; A.errors = st.errors || null;
     if (st.pollData) applyAdminPoll(st.pollData);
     else {
-      if (!A.polls.some(x => x.id === A.pollId)) A.pollId = A.currentId || (A.polls[0] ? A.polls[0].id : '');
+      if (!A.polls.some(x => x.id === A.pollId)) A.pollId = A.currentId || Object.values(A.current)[0] || (A.polls[0] ? A.polls[0].id : '');
       if (A.pollId) await loadAdminPoll(A.pollId); else A.data = null;
     }
   } catch (e) {
@@ -3075,7 +3452,7 @@ function applyAdminPoll(r) {
   store.set('tutti-admin-poll', id);
   A.data = { poll: r.poll, responses: r.responses, members: r.members || [], schedule: r.schedule || { draft: null, published: null },
     replies: r.replies || [], attendance: r.attendance || [] };
-  A.currentId = r.currentId;
+  takeGroups(r);
   // What's new since this device last opened this poll here: the earlier visit is noted once per page load.
   if (!(id in A.since)) { A.since[id] = store.get('tutti-org-seen-' + id) || ''; store.set('tutti-org-seen-' + id, new Date().toISOString()); }
   A.board = new Set(r.responses.map(x => x.id));
@@ -3088,7 +3465,13 @@ function applyAdminPoll(r) {
 }
 
 const memberBase = () => location.origin + location.pathname;
-const memberUrl = id => memberBase() + (id && id !== A.currentId ? '?p=' + encodeURIComponent(id) : '');
+// A link to a poll: the main group's own poll on show needs nothing more; any other (one for other groups too,
+// say) is named in it, or a member of another group would land on their own group's poll.
+function memberUrl(id) {
+  const p = A.polls.find(x => x.id === id) || (A.data && A.data.poll.id === id ? A.data.poll : null);
+  const plain = !!id && id === A.current[MAIN] && !!p && pollGroups(p, adminGmap()).join() === MAIN;
+  return memberBase() + (id && !plain ? '?p=' + encodeURIComponent(id) : '');
+}
 const people = () => A.data.responses.slice().sort((a, b) => a.name.localeCompare(b.name, LOC[S.lang]));
 const onBoard = () => people().filter(r => A.board.has(r.id));
 
@@ -3115,7 +3498,8 @@ function renderAdmin(main) {
     main.append(stateBlock(t('noPolls'), t('noPollsText'), h('button', { type: 'button', class: 'btn primary', onclick: () => openPollEditor(null) }, t('newPoll'))));
     return;
   }
-  main.append(h('h1', { class: 'visually-hidden' }, t('planner')), buildAdminBar());
+  R.adminBar = buildAdminBar();
+  main.append(h('h1', { class: 'visually-hidden' }, t('planner')), R.adminBar);
   R.atabs = buildAdminTabs();
   R.atab = h('div', { id: 'atab-panel', role: 'tabpanel' });
   main.append(R.atabs, R.atab);
@@ -3125,14 +3509,15 @@ function renderAdmin(main) {
 function buildAdminBar() {
   const poll = A.data.poll, n = A.data.responses.length;
   const last = A.data.responses.reduce((m, r) => (r.updated > m ? r.updated : m), '');
-  const isCurrent = poll.id === A.currentId;
+  const isCurrent = shownToAll(poll), many = manyAdminGroups();
   const select = h('select', {
     id: 'a-poll', class: 'input',
     onchange: async e => {
       try { await loadAdminPoll(e.target.value); } catch (x) { toast(errText(x), { error: true }); }
       render();
     }
-  }, A.polls.map(p => h('option', { value: p.id, selected: p.id === A.pollId }, loc(p.title) + (p.id === A.currentId ? ' ★' : ''))));
+  }, A.polls.map(p => h('option', { value: p.id, selected: p.id === A.pollId },
+    (many ? adminGroupsLabel(p) + ' · ' : '') + loc(p.title) + (shownAnywhere(p) ? ' ★' : ''))));
   return h('section', { class: 'admin-bar' },
     h('div', { class: 'poll-row' },
       h('div', { class: 'field' }, h('label', { class: 'label', for: 'a-poll' }, t('poll')), select),
@@ -3142,6 +3527,7 @@ function buildAdminBar() {
         h('button', { type: 'button', class: 'btn', onclick: () => copyText(memberUrl(poll.id), t('linkCopied')) }, t('copyMemberLink')),
         framed ? null : h('button', { type: 'button', class: 'btn', disabled: !n, onclick: exportCsv }, t('exportCsv')))),
     h('div', { class: 'status' },
+      many ? h('span', { class: 'chip-s grp' }, adminGroupsLabel(poll)) : null,
       isCurrent ? h('span', { class: 'chip-s cur' }, t('current')) : h('button', { type: 'button', class: 'btn small', onclick: makeCurrent }, t('makeCurrent')),
       h('span', { class: 'chip-s' + (poll.open ? ' ok' : '') }, poll.open ? t('openChip') : t('closedAdminChip')),
       h('button', { type: 'button', class: 'btn small quiet', onclick: toggleOpen }, poll.open ? t('closeAnswers') : t('openAnswers')),
@@ -3154,7 +3540,7 @@ function buildAdminBar() {
 async function makeCurrent() {
   try {
     const r = await api.admin(A.key, 'setCurrent', { pollId: A.pollId });
-    A.currentId = r.currentId; S.loaded = false;
+    takeGroups(r); S.loaded = false;
     toast(t('nowCurrent'));
   } catch (e) { toast(errText(e), { error: true }); }
   render();
@@ -3209,7 +3595,7 @@ function renderTab() {
 const goMembersTab = () => { A.tab = 'members'; refreshTabs(); renderTab(); };
 function buildPlan() {
   const poll = A.data.poll;
-  if (!A.data.responses.length && !A.data.members.length) {
+  if (!A.data.responses.length && !pollMembers().length) {
     return stateBlock(t('noMembers'), t('noMembersText'), h('button', { type: 'button', class: 'btn primary', onclick: goMembersTab }, t('goMembers')));
   }
   if (!A.data.responses.length) {
@@ -3450,7 +3836,7 @@ function toastAdded() {
 
 /* ---------- People */
 function buildPeople() {
-  const p = A.data.poll, list = people(), ms = A.data.members;
+  const p = A.data.poll, list = people(), ms = pollMembers();
   const did = new Set(list.map(r => r.memberId).filter(Boolean));
   const waiting = ms.filter(m => !did.has(m.id));
   const head = ms.length ? h('div', { class: 'people-head' },
@@ -3461,30 +3847,49 @@ function buildPeople() {
   return h('div', { class: 'stack-s' }, head, h('div', { class: 'people' }, list.map(r => personCard(r, p))));
 }
 
-/* ---------- Members: who can sign in */
+/* ---------- Members: who can sign in, and the groups they're in */
 function buildMembers() {
   R.creds = h('div');
   R.memberList = h('div');
-  const wrap = h('div', { class: 'members-tab' }, buildAddMembers(), R.creds, R.memberList);
+  const wrap = h('div', { class: 'members-tab' }, buildGroups(), buildAddMembers(), R.creds, R.memberList);
   renderCreds();
   renderMemberList();
   return wrap;
 }
+// After members or groups change: the lists and numbers that show them (and group names wherever they appear).
+function membersChanged() {
+  refreshTabs(); fillGroups(); fillAddInto(); renderMemberList();
+  if (R.adminBar && R.adminBar.isConnected) redrawKeepingFocus(() => { const fresh = buildAdminBar(); R.adminBar.replaceWith(fresh); R.adminBar = fresh; });
+}
+// With several groups, new members join the one chosen here (the one the list below shows, at first).
+function fillAddInto() {
+  if (!R.addInto) return;
+  const was = document.getElementById('mm-group');
+  const pickedId = was ? was.value : A.memberGroup && A.memberGroup !== '-' ? A.memberGroup : MAIN;
+  clear(R.addInto);
+  R.addInto.hidden = !manyAdminGroups();
+  if (R.addInto.hidden) return;
+  R.addInto.append(h('label', { class: 'label', for: 'mm-group' }, t('addInto')),
+    selectEl('mm-group', A.groups.map(g => [g.id, groupName(g)]), A.groups.some(g => g.id === pickedId) ? pickedId : MAIN, () => {}, { class: 'select' }));
+}
 function buildAddMembers() {
   const ta = h('textarea', { id: 'mm-names', class: 'input', rows: '4', placeholder: t('addMembersPh'), 'aria-describedby': 'mm-hint' });
+  R.addInto = h('div', { class: 'field add-into' });
+  fillAddInto();
   const btn = h('button', {
     type: 'button', class: 'btn primary',
     onclick: async () => {
       const names = ta.value.split(/\r?\n/).map(x => x.trim()).filter(Boolean);
       if (!names.length) { ta.focus(); return; }
       btn.disabled = true;
+      const into = !R.addInto.hidden && document.getElementById('mm-group');
       try {
-        const r = await api.admin(A.key, 'addMembers', { names });
+        const r = await api.admin(A.key, 'addMembers', into ? { names, group: into.value } : { names });
         A.data.members = r.members;
         A.creds = r.created.concat(A.creds);
         ta.value = '';
         toast(t('membersAdded', { n: r.created.length }));
-        refreshTabs(); renderCreds(); renderMemberList();
+        renderCreds(); membersChanged();
       } catch (e) { toast(errText(e), { error: true }); }
       btn.disabled = false;
     }
@@ -3492,7 +3897,221 @@ function buildAddMembers() {
   return h('section', { class: 'sheet add-members' },
     h('h3', null, h('label', { for: 'mm-names' }, t('addMembersTitle'))),
     h('p', { class: 'hint', id: 'mm-hint' }, t('addMembersHint')),
-    ta, h('div', { class: 'actions' }, btn));
+    ta, R.addInto,
+    h('div', { class: 'actions' }, btn));
+}
+
+/* ---------- Groups: each with its own sections (voice parts or instruments) */
+const countIn = gid => A.data.members.filter(m => inGroup(m, gid)).length;
+function buildGroups() {
+  if (!acan('groups')) return null;
+  R.groupsBox = h('section', { class: 'sheet groups', 'aria-labelledby': 'groups-h' });
+  fillGroups();
+  return R.groupsBox;
+}
+function fillGroups() {
+  if (!R.groupsBox || !R.groupsBox.isConnected && R.groupsBox.childNodes.length) return;
+  clear(R.groupsBox).append(
+    h('div', { class: 'groups-head' }, h('h3', { id: 'groups-h' }, t('groupsTitle')),
+      h('button', { type: 'button', class: 'btn small', id: 'grp-new', disabled: A.groups.length >= 20, onclick: () => openGroupEditor(null) }, t('groupNew'))),
+    h('p', { class: 'hint' }, t('groupsHint')),
+    h('ul', { class: 'group-list' }, A.groups.map(g => h('li', { class: 'group-item' },
+      h('div', { class: 'group-who' }, h('strong', null, groupName(g)), h('span', { class: 'muted' }, t('groupCount', { n: countIn(g.id) }))),
+      h('span', { class: 'group-secs' }, g.sections.length ? g.sections.map(x => secName(x)).join(' · ') : t('groupNoSections')),
+      h('button', { type: 'button', class: 'btn small', id: 'grp-edit-' + g.id, 'aria-label': t('groupEditFor', { name: groupName(g) }), onclick: () => openGroupEditor(g) }, t('groupEdit'))))));
+}
+
+// Ready-made section lists, by their known ids (named in the reader's language).
+const PRESETS = [
+  ['presetSATB', ['S', 'A', 'T', 'B']], ['presetSSAA', ['S1', 'S2', 'A1', 'A2']], ['presetTTBB', ['T1', 'T2', 'B1', 'B2']],
+  ['presetDouble', ['S1', 'S2', 'A1', 'A2', 'T1', 'T2', 'B1', 'B2']], ['presetStrings', ['vn1', 'vn2', 'va', 'vc', 'cb']],
+  ['presetOrchestra', ['vn1', 'vn2', 'va', 'vc', 'cb', 'fl', 'ob', 'cl', 'bn', 'hn', 'tp', 'tb', 'perc']], ['presetNone', []]];
+const newSectionId = () => 'x' + Math.random().toString(36).slice(2, 8).padEnd(6, '0');
+
+// A group's name, its sections, and who is in it with which section, all saved together.
+function openGroupEditor(g) {
+  const isNew = !g, isMain = !!g && g.id === MAIN;
+  const prev = document.activeElement;
+  // Sections as edited: { id, name } with the name as shown (a known section in the reader's language).
+  let secs = g ? g.sections.map(x => ({ id: x.id, name: secName(x) })) : [];
+  const before = new Map((g ? g.sections : []).map(x => [x.id, true]));
+  // Who's in it: memberId -> section id, '' (no section), or null (not in it).
+  const start = {}, mem = {};
+  for (const m of A.data.members) start[m.id] = mem[m.id] = g && inGroup(m, g.id) ? sectionOf(m, g) : null;
+  const err = h('p', { class: 'err', role: 'alert', hidden: true });
+  const ask = h('div', { class: 'confirm', hidden: true });
+  const name = h('input', { id: 'ge-name', class: 'input', maxlength: '60', value: g ? groupName(g) : '', placeholder: t('groupNamePh') });
+  const list = h('ol', { class: 'sec-list' });
+  const memBox = h('ul', { class: 'gm-list' });
+  const memCount = h('span', { class: 'muted' });
+  const find = h('input', { id: 'ge-find', class: 'input', type: 'search', placeholder: t('groupFindPh'), 'aria-label': t('groupFind'), oninput: () => renderMem() });
+  const fail = msg => { err.textContent = msg; err.hidden = false; };
+  // focusId: where the keyboard focus goes after the list is drawn again (a moved section's own arrow, say).
+  function renderSecs(focusId) {
+    clear(list);
+    secs.forEach((x, i) => {
+      const inp = h('input', { class: 'input', id: 'ge-sec-' + i, maxlength: '40', value: x.name, 'aria-label': t('groupSecName', { n: i + 1 }), oninput: e => { x.name = e.target.value; renderMem(); } });
+      const move = d => {
+        const j = i + d;
+        if (j < 0 || j >= secs.length) return;
+        [secs[i], secs[j]] = [secs[j], secs[i]];
+        const same = d < 0 ? (j > 0 ? 'ge-up-' : 'ge-down-') : (j < secs.length - 1 ? 'ge-down-' : 'ge-up-');
+        renderSecs(same + j); renderMem();
+      };
+      list.append(h('li', { class: 'sec-row' }, inp,
+        h('button', { type: 'button', class: 'btn small quiet', id: 'ge-up-' + i, 'aria-label': t('moveUp') + ': ' + (x.name || i + 1), disabled: i === 0, onclick: () => move(-1) }, '↑'),
+        h('button', { type: 'button', class: 'btn small quiet', id: 'ge-down-' + i, 'aria-label': t('moveDown') + ': ' + (x.name || i + 1), disabled: i === secs.length - 1, onclick: () => move(1) }, '↓'),
+        h('button', { type: 'button', class: 'btn small quiet', 'aria-label': t('remove') + ': ' + (x.name || i + 1), onclick: () => {
+          secs.splice(i, 1);
+          renderSecs(secs.length ? 'ge-sec-' + Math.min(i, secs.length - 1) : 'ge-add'); renderMem();
+        } }, t('remove'))));
+    });
+    if (!secs.length) list.append(h('li', { class: 'muted' }, t('groupNoSectionsHint')));
+    const f = focusId && document.getElementById(focusId);
+    if (f && !f.disabled) f.focus();
+  }
+  function renderMem() {
+    const q = find.value.trim().toLocaleLowerCase(LOC[S.lang]);
+    const opts = [['-', t('notInGroup')], ['', t('inGroupNoSec')]].concat(secs.map(x => [x.id, x.name.trim() || '…']));
+    clear(memBox);
+    for (const m of A.data.members) {
+      if (q && m.name.toLocaleLowerCase(LOC[S.lang]).indexOf(q) === -1) continue;
+      const v = mem[m.id] === null ? '-' : secs.some(x => x.id === mem[m.id]) ? mem[m.id] : '';
+      memBox.append(h('li', { class: 'gm-row' + (mem[m.id] === null ? ' out' : '') },
+        h('label', { class: 'gm-name', for: 'ge-m-' + m.id }, m.name),
+        selectEl('ge-m-' + m.id, opts, v, val => { mem[m.id] = val === '-' ? null : val; renderMem(); }, { class: 'select part-sel' })));
+    }
+    memCount.textContent = t('groupMembersN', { n: Object.values(mem).filter(v => v !== null).length, of: A.data.members.length });
+  }
+  const presetBtns = PRESETS.map(([k, ids]) => h('button', {
+    type: 'button', class: 'btn small', onclick: () => {
+      // The section list becomes the preset's; sections that are kept keep their members.
+      secs = ids.map(id => secs.find(x => x.id === id) || { id, name: t('sec' + id) });
+      renderSecs(); renderMem();
+    }
+  }, t(k)));
+  const save = h('button', { type: 'submit', class: 'btn primary' }, isNew ? t('groupCreate') : t('groupSave'));
+  const form = h('form', { novalidate: true, onsubmit: submit },
+    h('h2', { id: 'ge-title' }, isNew ? t('groupNewTitle') : t('groupEditTitle')),
+    h('div', { class: 'field' }, h('label', { class: 'label', for: 'ge-name' }, t('groupNameLabel')), name,
+      isMain ? h('p', { class: 'hint' }, t('groupMainHint')) : null),
+    h('fieldset', { class: 'ge-secs' }, h('legend', { class: 'label' }, t('groupSections')),
+      h('p', { class: 'hint' }, t('groupSectionsHint')),
+      h('div', { class: 'presets' }, h('span', { class: 'muted' }, t('groupPresets')), presetBtns),
+      list,
+      h('div', { class: 'actions' }, h('button', { type: 'button', class: 'btn small', id: 'ge-add', onclick: () => { secs.push({ id: newSectionId(), name: '' }); renderSecs('ge-sec-' + (secs.length - 1)); renderMem(); } }, t('groupAddSection')))),
+    h('fieldset', { class: 'ge-mem' }, h('legend', { class: 'label' }, t('groupMembers'), ' ', memCount),
+      h('p', { class: 'hint' }, t('groupMembersHint')),
+      A.data.members.length > 8 ? find : null,
+      memBox),
+    err, ask,
+    h('div', { class: 'modal-foot' },
+      isNew || isMain ? null : h('button', { type: 'button', class: 'btn danger', id: 'ge-del', onclick: askDelete }, t('groupDelete')),
+      h('div', { class: 'end' }, h('button', { type: 'button', class: 'btn', onclick: () => close() }, t('cancel')), save)));
+  // A tap beside the dialog does nothing: it's a lot to fill in. Escape (wherever the focus is) closes it, after
+  // asking if something was changed; in the member search, it first empties the search.
+  const back = h('div', { class: 'backdrop' },
+    h('div', { class: 'modal group-modal', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'ge-title' }, form));
+  const snap = () => JSON.stringify([name.value.trim(), secs.map(x => [x.id, x.name.trim()]), mem]);
+  let startSnap = '';
+  const onKey = e => {
+    if (e.key !== 'Escape' || !back.isConnected) return;
+    e.preventDefault();
+    if (e.target === find && find.value) { find.value = ''; renderMem(); return; }
+    close();
+  };
+  document.addEventListener('keydown', onKey);
+  function close(force, focusId) {
+    if (!force && snap() !== startSnap) {
+      clear(ask).append(h('span', null, t('groupDiscardAsk')),
+        h('button', { type: 'button', class: 'btn small danger solid', onclick: () => close(true) }, t('groupDiscard')),
+        h('button', { type: 'button', class: 'btn small', onclick: () => { ask.hidden = true; save.focus(); } }, t('groupKeepEditing')));
+      ask.hidden = false;
+      ask.querySelectorAll('button')[1].focus();
+      return;
+    }
+    back.remove();
+    document.removeEventListener('keydown', onKey);
+    const to = (focusId && document.getElementById(focusId)) || (prev && prev.isConnected ? prev : document.getElementById('grp-new'));
+    if (to && to.focus) to.focus();
+  }
+  function payload() {
+    // A known section left with its own name is stored without one, so each reader sees it in their language.
+    const sections = secs.map(x => { const nm = x.name.trim(); return { id: x.id, name: builtIn(x.id) && (nm === t('sec' + x.id, null, 'tr') || nm === t('sec' + x.id, null, 'en')) ? '' : nm }; });
+    const nm = name.value.trim();
+    const gname = isMain && (nm === t('groupMain', null, 'tr') || nm === t('groupMain', null, 'en')) ? '' : nm;
+    const members = {};
+    for (const id of Object.keys(mem)) if (mem[id] !== start[id]) members[id] = mem[id];
+    return { group: { id: g ? g.id : undefined, name: gname, sections }, members };
+  }
+  async function submit(e, sure) {
+    if (e) e.preventDefault();
+    err.hidden = true;
+    const out = payload();
+    if (!out.group.name && !isMain) { fail(t('vGroupName')); name.focus(); return; }
+    const lower = x => x.toLocaleLowerCase(LOC[S.lang]);
+    const others = A.groups.filter(x => !g || x.id !== g.id).flatMap(x => (x.id === MAIN && !x.name ? [t('groupMain', null, 'tr'), t('groupMain', null, 'en')] : [groupName(x)]).map(lower));
+    if (out.group.name && others.indexOf(lower(out.group.name)) !== -1) { fail(t('vGroupDup')); name.focus(); return; }
+    const blank = secs.findIndex(x => !x.name.trim());
+    if (blank !== -1) { fail(t('vSecName')); document.getElementById('ge-sec-' + blank).focus(); return; }
+    // The same name twice, in either language (a known section is named in both): Code.gs refuses it too.
+    const namesOf = x => { const nm = x.name.trim(); return builtIn(x.id) && (nm === t('sec' + x.id, null, 'tr') || nm === t('sec' + x.id, null, 'en')) ? [t('sec' + x.id, null, 'tr'), t('sec' + x.id, null, 'en')] : [nm]; };
+    const seen = new Map();
+    const dup = secs.findIndex((x, i) => namesOf(x).map(lower).some(k => { const o = seen.has(k) && seen.get(k) !== i; seen.set(k, i); return o; }));
+    if (dup !== -1) { fail(t('vSecDup')); document.getElementById('ge-sec-' + dup).focus(); return; }
+    // Sections taken away while members are still in them: say so first.
+    const dropped = Array.from(before.keys()).filter(id => !secs.some(x => x.id === id))
+      .map(id => ({ id, n: Object.values(mem).filter(v => v === id).length })).filter(x => x.n);
+    if (dropped.length && !sure) {
+      const was = new Map(g.sections.map(x => [x.id, secName(x)]));
+      clear(ask).append(h('span', null, t('groupDropAsk', { list: dropped.map(x => was.get(x.id) + ' (' + x.n + ')').join(', ') })),
+        h('button', { type: 'button', class: 'btn small danger solid', onclick: () => submit(null, true) }, t('groupSaveAnyway')),
+        h('button', { type: 'button', class: 'btn small', onclick: () => { ask.hidden = true; save.focus(); } }, t('groupKeepEditing')));
+      ask.hidden = false;
+      ask.querySelector('button').focus();
+      return;
+    }
+    save.disabled = true;
+    try {
+      const r = await api.admin(A.key, 'saveGroup', out);
+      A.groups = r.groups; A.data.members = r.members;
+      membersChanged();
+      close(true, 'grp-edit-' + r.group.id);
+      toast(t(isNew ? 'groupCreated' : 'groupSaved'));
+    } catch (x) { fail(errText(x)); save.disabled = false; }
+  }
+  function askDelete() {
+    const used = A.polls.filter(p => pollGroups(p, adminGmap()).indexOf(g.id) !== -1);
+    clear(ask);
+    if (used.length) {
+      ask.append(h('span', null, t('groupInUse', { list: used.map(p => loc(p.title)).join(', ') })),
+        h('button', { type: 'button', class: 'btn small', onclick: () => { ask.hidden = true; document.getElementById('ge-del').focus(); } }, t('dismiss')));
+    } else {
+      // Members only in this group would be in none: said here, so nobody is left out unnoticed.
+      const alone = A.data.members.filter(m => inGroup(m, g.id) && A.groups.every(x => x.id === g.id || !inGroup(m, x.id))).length;
+      ask.append(h('span', null, t('groupDeleteAsk', { name: groupName(g) }) + (alone ? ' ' + t('groupDeleteAlone', { n: alone }) : '')),
+        h('button', { type: 'button', class: 'btn small danger solid', onclick: doDelete }, t('yesDelete')),
+        h('button', { type: 'button', class: 'btn small', onclick: () => { ask.hidden = true; document.getElementById('ge-del').focus(); } }, t('keep')));
+    }
+    ask.hidden = false;
+    ask.querySelector('button').focus();
+  }
+  async function doDelete() {
+    try {
+      const r = await api.admin(A.key, 'deleteGroup', { id: g.id });
+      A.groups = r.groups; A.data.members = r.members;
+      delete A.current[g.id];
+      if (A.memberGroup === g.id) A.memberGroup = '';
+      if (A.seasonGroup === g.id) A.seasonGroup = '';
+      membersChanged();
+      close(true, 'grp-new');
+      toast(t('groupDeleted'));
+    } catch (x) { fail(errText(x)); }
+  }
+  renderSecs(); renderMem();
+  startSnap = snap();
+  document.body.append(back);
+  name.focus();
 }
 // The message each person gets: link, username, password. Copied one at a time so nobody gets someone else's.
 const credMessage = (c, lang) => t('credMsg', { name: c.name.split(' ')[0], url: memberBase(), username: c.username, password: c.password }, lang);
@@ -3514,40 +4133,63 @@ function renderCreds() {
 }
 function renderMemberList() {
   if (!R.memberList) return; // the view changed while the server was answering
-  const el = clear(R.memberList), ms = A.data.members;
-  if (!ms.length) { el.append(stateBlock(t('noMembers'), t('noMembersText'))); return; }
+  const el = clear(R.memberList), all = A.data.members, gmap = adminGmap(), many = manyAdminGroups();
+  if (!all.length) { el.append(stateBlock(t('noMembers'), t('noMembersText'))); return; }
+  // With several groups: everyone, one group, or those in no group (who are shown apart even with one group).
+  const nowhere = all.filter(m => !A.groups.some(g => inGroup(m, g.id)));
+  if (A.memberGroup === '-' ? !nowhere.length : A.memberGroup && (!many || !own(gmap, A.memberGroup))) A.memberGroup = '';
+  const gid = A.memberGroup;
+  const ms = gid === '-' ? nowhere : gid ? all.filter(m => inGroup(m, gid)) : all;
   const did = new Set(A.data.responses.map(r => r.memberId).filter(Boolean));
   R.partsSum = h('p', { class: 'parts-sum' });
-  el.append(h('h3', { class: 'sub members-count' }, t('membersN', { n: ms.length })),
-    h('p', { class: 'hint' }, t('partsHint')), R.partsSum,
+  const filter = many || nowhere.length ? h('div', { class: 'field members-filter' }, h('label', { class: 'label', for: 'mm-show' }, t('membersShow')),
+    selectEl('mm-show', [['', t('allMembers', { n: all.length })]].concat(many ? A.groups.map(g => [g.id, groupName(g) + ' (' + countIn(g.id) + ')']) : [],
+      nowhere.length ? [['-', t('noGroupMembers', { n: nowhere.length })]] : []), gid,
+    v => { A.memberGroup = v; redrawKeepingFocus(renderMemberList); }, { class: 'select' })) : null;
+  el.append(h('div', { class: 'members-head' }, h('h3', { class: 'sub members-count' }, t('membersN', { n: ms.length })), filter),
+    h('p', { class: 'hint' }, many ? t('partsHintGroups') : t('partsHint')), R.partsSum,
     h('ul', { class: 'member-list' }, ms.map(m => memberRow(m, did.has(m.id)))));
   fillPartsSum();
 }
-// "Soprano 5 · Alto 4 · Tenor 3 · Bas 4", plus how many have no part yet.
+// "Soprano 5 · Alto 4 · Tenor 3 · Bas 4", plus how many have no section yet; for each group shown.
 function fillPartsSum() {
   if (!R.partsSum || !R.partsSum.isConnected) return;
-  const ms = A.data.members, n = k => ms.filter(m => partOf(m) === k).length;
-  const list = PARTS.map(k => partName(k) + ' ' + n(k));
-  if (n('')) list.push(partName('') + ' ' + n(''));
-  R.partsSum.textContent = list.join(' · ');
+  const gid = A.memberGroup, many = manyAdminGroups();
+  const groups = gid === '-' ? [] : gid ? A.groups.filter(g => g.id === gid) : A.groups;
+  const nowhere = A.data.members.filter(m => !A.groups.some(g => inGroup(m, g.id))).length;
+  R.partsSum.textContent = groups.map(g => {
+    const ms = A.data.members.filter(m => inGroup(m, g.id)), n = k => ms.filter(m => sectionOf(m, g) === k).length;
+    const list = g.sections.map(x => secName(x) + ' ' + n(x.id));
+    if (n('') && g.sections.length) list.push(t('partNone') + ' ' + n(''));
+    if (!g.sections.length) list.push(t('groupCount', { n: ms.length }));
+    return (many && !gid ? groupName(g) + ': ' : '') + list.join(' · ');
+  }).concat(!gid && nowhere ? [t('noGroupMembers', { n: nowhere })] : []).join('\n');
 }
-function partSelect(m) {
+// A member's section in one group, or (with several groups, or for someone not in it) whether they're in it at all.
+function sectionSelect(m, g) {
+  const many = manyAdminGroups(), cur = inGroup(m, g.id) ? sectionOf(m, g) : '-';
+  const opts = (many || cur === '-' ? [['-', t('notInGroup')]] : []).concat([['', many ? t('inGroupNoSec') : '—']], g.sections.map(x => [x.id, secName(x)]));
   const sel = h('select', {
-    class: 'select part-sel', 'aria-label': t('partLabel', { name: m.name }),
+    class: 'select part-sel', id: 'ms-' + m.id + '-' + g.id, 'aria-label': many ? t('secLabelIn', { name: m.name, group: groupName(g) }) : t('partLabel', { name: m.name }),
     onchange: async () => {
-      const v = sel.value, was = partOf(m);
-      sel.disabled = true;
+      const v = sel.value, was = { groups: groupsOf(m), part: m.part };
+      const gs = Object.assign({}, groupsOf(m));
+      if (v === '-') delete gs[g.id]; else gs[g.id] = v;
+      // One change at a time for a member: each sends all of their groups, so their other pickers wait for it.
+      const row = Array.from(document.querySelectorAll('select[id^="ms-' + m.id + '-"]'));
+      row.forEach(x => { x.disabled = true; });
+      m.groups = gs; m.part = own(gs, MAIN) ? gs[MAIN] : '';
       try {
-        const r = await api.admin(A.key, 'setPart', { id: m.id, part: v });
+        const r = acan('groups') ? await api.admin(A.key, 'setGroups', { id: m.id, groups: gs }) : await api.admin(A.key, 'setPart', { id: m.id, part: v });
         A.data.members = r.members;
-        m.part = v;
-        fillPartsSum();
-        toast(t('partSaved'));
-      } catch (e) { sel.value = was; toast(errText(e), { error: true }); }
-      sel.disabled = false;
+        toast(t(many ? 'secSaved' : 'partSaved'));
+      } catch (e) { Object.assign(m, was); toast(errText(e), { error: true }); }
+      // The list, its numbers and its filter follow (someone taken out of the group shown leaves it).
+      redrawKeepingFocus(() => { fillGroups(); refreshTabs(); renderMemberList(); });
+      if (!document.activeElement || document.activeElement === document.body) { const f = document.getElementById('mm-show'); if (f) f.focus(); }
     }
-  }, [['', '—']].concat(PARTS.map(k => [k, partName(k)])).map(o => h('option', { value: o[0], selected: o[0] === partOf(m) }, o[1])));
-  return sel;
+  }, opts.map(o => h('option', { value: o[0], selected: o[0] === cur }, o[1])));
+  return many ? h('label', { class: 'grp-sel' }, h('span', { class: 'grp-sel-name' }, groupName(g)), sel) : sel;
 }
 function memberRow(m, did) {
   const actions = h('div', { class: 'actions' });
@@ -3565,15 +4207,15 @@ function memberRow(m, did) {
       A.data.members = r.members;
       A.creds = A.creds.filter(c => c.id !== m.id);
       toast(t('memberRemoved'));
-      refreshTabs(); renderCreds(); renderMemberList();
+      renderCreds(); membersChanged();
     } catch (e) { toast(errText(e), { error: true }); }
   }
   idle();
   return h('li', { class: 'member' },
     h('div', { class: 'member-who' }, h('strong', null, m.name), h('span', { class: 'mono muted' }, m.username)),
     h('div', { class: 'member-meta' },
-      partSelect(m),
-      h('span', { class: 'chip-s' + (did ? ' ok' : '') }, did ? t('answered') : t('notAnswered')),
+      (A.memberGroup && A.memberGroup !== '-' ? A.groups.filter(g => g.id === A.memberGroup) : A.groups).map(g => sectionSelect(m, g)),
+      did || canSee(m, A.data.poll, adminGmap()) ? h('span', { class: 'chip-s' + (did ? ' ok' : '') }, did ? t('answered') : t('notAnswered')) : null,
       h('span', { class: 'muted' }, m.lastLogin ? t('lastSignIn', { ago: ago(m.lastLogin) }) : t('neverSignedIn'))),
     actions);
 }
@@ -3692,14 +4334,20 @@ function attendanceText(ev) {
     + (w.maybe.length ? ' · ' + t('ifNeeded') + ': ' + w.maybe.map(r => r.name).join(', ') : '')
     + (w.miss.length ? ' · ' + t('missing') + ': ' + w.miss.map(r => r.name).join(', ') : '');
 }
-// "Soprano 2/5 · Alto 3/4 · …": the same part counts members see for this meeting once it's published.
+// "Soprano 2/5 · Alto 3/4 · …" (for a joint poll, "Koro: … · Orkestra: …"): the numbers members see for this
+// meeting once it's published.
 function partsText(ev) {
-  const p = A.data.poll, ms = A.data.members || [];
+  const p = A.data.poll, ms = A.data.members || [], gmap = adminGmap();
   const rp = {};
   for (const x of A.data.replies || []) rp[x.memberId] = x.replies || {};
-  const a = attendOf(p, [ev], answersOf(p, A.data.responses.map(r => Object.assign({ pollId: p.id }, r)), ms), ms, rp)[0];
-  if (!a.parts || !a.parts.some(g => g.part)) return '';
-  return a.parts.map(g => partName(g.part) + ' ' + g.yes.length + '/' + g.of).join(' · ');
+  const a = attendOf(p, [ev], answersOf(p, A.data.responses.map(r => Object.assign({ pollId: p.id }, r)), ms, gmap), ms, rp, gmap)[0];
+  if (!a.groups) return '';
+  const many = a.groups.length > 1;
+  return a.groups.filter(x => x.parts.some(g => g.part) || many).map(x => {
+    const g = gmap[x.id], single = x.parts.length === 1 && !x.parts[0].part;
+    const nums = x.parts.map(q => sectionLabel(g, q.part, single) + ' ' + q.yes.length + '/' + q.of).join(' · ');
+    return many ? groupName(g) + ': ' + nums : nums;
+  }).join(' — ');
 }
 function eventRow(ev) {
   const p = A.data.poll, id = 'ev-' + ev.id;
@@ -3788,7 +4436,7 @@ const repWord = s => t({ yes: 'repYes', part: 'repPart', no: 'repNo' }[s] || 're
 function meetingReplies(ev) {
   const fp = fpOf(ev), out = { yes: [], part: [], no: [], none: [] };
   const by = new Map((A.data.replies || []).map(x => [x.memberId, x.replies || {}]));
-  for (const m of A.data.members) {
+  for (const m of pollMembers()) {
     const r = (by.get(m.id) || {})[ev.id];
     const known = !!(r && own(REPLY_S, r.s));
     if (known && r.fp === fp) out[r.s].push({ m, r });
@@ -3933,15 +4581,17 @@ function repCol(key, list) {
   return h('div', { class: 'rep-col' },
     h('h4', null, t(key) + ' (' + list.length + ')'),
     list.length ? h('ul', null, list.map(({ m, r }) => h('li', null,
-      h('span', { class: 'rep-name' }, m.name), partOf(m) ? h('span', { class: 'muted' }, ' · ' + partName(partOf(m))) : null,
+      h('span', { class: 'rep-name' }, m.name), memberSecs(m, A.data.poll) ? h('span', { class: 'muted' }, ' · ' + memberSecs(m, A.data.poll)) : null,
       isNewSince(r.at) ? h('span', { class: 'chip-s new' }, t('newBadge')) : null,
+      replyTimes(r) ? h('span', { class: 'rep-times' }, replyTimes(r)) : null,
+      r.known ? h('span', { class: 'chip-s known' }, t('repKnown')) : null,
       r.note ? h('span', { class: 'rep-note' }, r.note) : null))) : h('p', { class: 'muted' }, t('repNobody')));
 }
 function repWaiting(list, ev, now) {
   const col = h('div', { class: 'rep-col' }, h('h4', null, t('repNone') + ' (' + list.length + ')'));
   if (!list.length) { col.append(h('p', { class: 'muted' }, t('repNobody'))); return col; }
   col.append(h('ul', null, list.map(({ m, r }) => h('li', null,
-    h('span', { class: 'rep-name' }, m.name), partOf(m) ? h('span', { class: 'muted' }, ' · ' + partName(partOf(m))) : null,
+    h('span', { class: 'rep-name' }, m.name), memberSecs(m, A.data.poll) ? h('span', { class: 'muted' }, ' · ' + memberSecs(m, A.data.poll)) : null,
     r ? h('span', { class: 'rep-note' }, t('repStale', { s: repWord(r.s) })) : null))));
   if (ev.date >= now.day) col.append(remindBlock(list.map(x => x.m), lang => meetMsgAll(ev, lang), m => meetMsgOne(ev, m, S.lang)));
   return col;
@@ -3958,12 +4608,18 @@ function openAttendance(ev) {
   const prev = document.activeElement;
   const rec = (A.data.attendance || []).find(a => a.eventId === ev.id);
   const marks = Object.assign({}, rec ? rec.marks : {});
-  const ms = A.data.members, anyPart = ms.some(m => partOf(m));
+  const ms = pollMembers(), gmap = adminGmap(), pgs = pollGroups(A.data.poll, gmap);
   // What each member replied, shown beside their name; the replies are fetched again behind the open dialog.
   let said = {};
   const tags = new Map();
-  const computeSaid = () => { said = {}; if (acan('replies')) { const g = meetingReplies(ev); for (const k of REPLIES) for (const x of g[k]) said[x.m.id] = k; } };
-  const paintTag = id => { const tg = tags.get(id); if (!tg) return; const k = said[id]; tg.className = 'said' + (k ? ' said-' + k : ''); tg.textContent = k ? repWord(k) : ''; };
+  const computeSaid = () => { said = {}; if (acan('replies')) { const g = meetingReplies(ev); for (const k of REPLIES) for (const x of g[k]) said[x.m.id] = x.r; } };
+  const paintTag = id => {
+    const tg = tags.get(id);
+    if (!tg) return;
+    const k = said[id] && said[id].s, times = said[id] ? replyTimes(said[id]) : '';
+    tg.className = 'said' + (k ? ' said-' + k : '');
+    tg.textContent = k ? repWord(k) + (times ? ' · ' + times : '') : '';
+  };
   computeSaid();
   const rows = new Map();
   const status = h('p', { class: 'hint att-status', 'aria-live': 'polite' });
@@ -3972,11 +4628,20 @@ function openAttendance(ev) {
   // fn gives a mark to set, null to clear, or undefined to leave as it is.
   const setAll = fn => { for (const m of ms) { const v = fn(m); if (v === null) delete marks[m.id]; else if (v) marks[m.id] = v; paint(m.id); } count(); };
   const groups = h('div', { class: 'att-groups' });
-  for (const part of PARTS.concat([''])) {
-    const people = ms.filter(m => partOf(m) === part);
-    if (!people.length) continue;
+  // Each member once: under the first of the poll's groups they're in, by its sections.
+  const placed = new Set(), lists = [];
+  for (const gid of pgs) {
+    const g = gmap[gid], inIt = ms.filter(m => !placed.has(m.id) && inGroup(m, gid));
+    inIt.forEach(m => placed.add(m.id));
+    const anySec = inIt.some(m => sectionOf(m, g));
+    for (const sec of g.sections.map(x => x.id).concat([''])) {
+      const people = inIt.filter(m => sectionOf(m, g) === sec);
+      if (people.length) lists.push({ title: (pgs.length > 1 ? groupName(g) + ' · ' : '') + sectionLabel(g, sec, !anySec), people });
+    }
+  }
+  for (const { title, people } of lists) {
     groups.append(h('section', { class: 'att-group' },
-      h('h3', null, partName(part, !anyPart) + ' (' + people.length + ')'),
+      h('h3', null, title + ' (' + people.length + ')'),
       h('ul', { class: 'att-people' }, people.map(m => {
         const bs = MARKS.map(k => h('button', {
           type: 'button', class: 'mark-btn', 'data-m': k, 'aria-pressed': String(marks[m.id] === k),
@@ -4004,9 +4669,9 @@ function openAttendance(ev) {
   const form = h('form', { novalidate: true, onsubmit: submit },
     h('h2', { id: 'att-title' }, t('attDialog', { when: dLong(ev.date) + ', ' + hm(ev.start) })),
     h('div', { class: 'actions' },
-      acan('replies') ? h('button', { type: 'button', class: 'btn small', onclick: () => setAll(m => (said[m.id] === 'yes' ? 'p' : said[m.id] === 'no' ? 'e' : undefined)) }, t('attFill')) : null,
+      acan('replies') ? h('button', { type: 'button', class: 'btn small', onclick: () => setAll(m => { const k = said[m.id] && said[m.id].s; return k === 'yes' ? 'p' : k === 'no' ? 'e' : undefined; }) }, t('attFill')) : null,
       h('button', { type: 'button', class: 'btn small', onclick: () => setAll(m => (marks[m.id] ? undefined : 'p')) }, t('attRest')),
-      h('button', { type: 'button', class: 'btn small quiet', onclick: () => setAll(() => null) }, t('attClear'))),
+      h('button', { type: 'button', class: 'btn small quiet', onclick: () => { for (const k of Object.keys(marks)) delete marks[k]; for (const m of ms) paint(m.id); count(); } }, t('attClear'))),
     acan('replies') ? h('p', { class: 'hint' }, t('attFillHint')) : null,
     ms.length ? groups : h('p', { class: 'muted' }, t('noMembersText')),
     h('div', { class: 'field att-guests' }, h('label', { class: 'label', for: 'att-guests' }, t('attGuests')), guests),
@@ -4058,10 +4723,11 @@ async function loadSeason() {
   redrawKeepingFocus(fillSeason);
 }
 const pctText = n => (S.lang === 'tr' ? '%' + n : n + '%');
-function seasonStats(sz) {
-  const taken = (sz.meetings || []).filter(x => x.marks && Object.keys(x.marks).length);
+function seasonStats(sz, gid) {
+  const of = x => !gid || (Array.isArray(x.groups) ? x.groups : [MAIN]).indexOf(gid) !== -1;
+  const taken = (sz.meetings || []).filter(x => x.marks && Object.keys(x.marks).length && of(x));
   const last2 = taken.slice(-2);
-  const rows = (sz.members || []).map(m => {
+  const rows = (sz.members || []).filter(m => !gid || inGroup(m, gid)).map(m => {
     const c = { p: 0, l: 0, e: 0, a: 0 };
     for (const x of taken) { const k = x.marks[m.id]; if (own(c, k)) c[k]++; }
     const of = c.p + c.l + c.a;
@@ -4084,30 +4750,46 @@ function fillSeason() {
       A.seasonBusy ? h('span', { class: 'spin', 'aria-hidden': 'true' }) : null, t('seasonShow'))));
     return;
   }
-  const st = seasonStats(A.season);
+  // With several groups, the season of one of them: its meetings, its members.
+  const sgroups = A.season.groups || A.groups;
+  if (A.seasonGroup && !sgroups.some(g => g.id === A.seasonGroup)) A.seasonGroup = '';
+  if (sgroups.length > 1) {
+    box.append(h('div', { class: 'field season-group' }, h('label', { class: 'label', for: 'season-g' }, t('seasonGroup')),
+      selectEl('season-g', [['', t('allGroups')]].concat(sgroups.map(g => [g.id, groupName(g)])), A.seasonGroup,
+        v => { A.seasonGroup = v; redrawKeepingFocus(fillSeason); }, { class: 'select' })));
+  }
+  const st = seasonStats(A.season, A.seasonGroup);
   if (!st.taken.length) { box.append(h('p', { class: 'muted' }, t('seasonNone'))); return; }
-  const cols = [t('colName'), t('colPart'), t('colPct')].concat(MARKS.map(k => t(MARK_SHORT[k])));
+  const cols = [t('colName'), t(sgroups.length > 1 ? 'colSection' : 'colPart'), t('colPct')].concat(MARKS.map(k => t(MARK_SHORT[k])));
   box.append(h('p', { class: 'season-count' }, t('seasonCount', { n: st.taken.length }) + ' · ' + dRange(A.season.from, A.season.to)),
     h('div', { class: 'season-wrap', tabindex: '0', role: 'region', 'aria-labelledby': 'season-h' }, h('table', { class: 'season-table' },
       h('thead', null, h('tr', null, cols.map((x, i) => h('th', { scope: 'col', class: i > 1 ? 'num' : null }, x)))),
       h('tbody', null, st.rows.map(r => h('tr', { class: r.risk ? 'risk' : null },
         h('th', { scope: 'row' }, r.m.name, r.risk ? h('span', { class: 'risk-tag' }, t('seasonRisk')) : null),
-        h('td', null, partOf(r.m) ? partName(partOf(r.m)) : '—'),
+        h('td', null, seasonSecs(r.m, sgroups) || '—'),
         h('td', { class: 'num' }, r.pct === null ? '—' : pctText(r.pct)),
         MARKS.map(k => h('td', { class: 'num' }, String(r.c[k])))))))),
     framed ? null : h('div', { class: 'actions' }, h('button', { type: 'button', class: 'btn small', onclick: () => seasonCsv(st) }, t('seasonCsv'))));
 }
+// A member's section in the season's group, or in each of their groups: "Tenor · Çello".
+function seasonSecs(m, sgroups) {
+  const gs = sgroups.filter(g => (!A.seasonGroup || g.id === A.seasonGroup) && inGroup(m, g.id));
+  return gs.map(g => { const sec = sectionOf(m, g); return sec ? sectionLabel(g, sec) : ''; }).filter(Boolean).join(' · ');
+}
 function seasonCsv(st) {
-  const head = [t('colName'), t('colPart'), t('colPct')].concat(MARKS.map(k => t(MARK_WORD[k])),
+  const sgroups = A.season.groups || A.groups;
+  const head = [t('colName'), t(sgroups.length > 1 ? 'colSection' : 'colPart'), t('colPct')].concat(MARKS.map(k => t(MARK_WORD[k])),
     st.taken.map(x => dShort(x.date) + ' ' + hm(x.start) + (x.title ? ' ' + x.title : '')));
-  const rows = [head].concat(st.rows.map(r => [r.m.name, partOf(r.m) ? partName(partOf(r.m)) : '', r.pct === null ? '' : r.pct]
+  const rows = [head].concat(st.rows.map(r => [r.m.name, seasonSecs(r.m, sgroups), r.pct === null ? '' : r.pct]
     .concat(MARKS.map(k => r.c[k]), st.taken.map(x => (x.marks[r.m.id] ? t(MARK_WORD[x.marks[r.m.id]]) : '')))));
   download('provala-sezon-' + A.season.from.slice(0, 4) + '.csv', '﻿' + rows.map(row => row.map(csvCell).join(',')).join('\r\n'), 'text/csv;charset=utf-8');
 }
 
 /* ---------- Poll settings dialog */
-function newPollDefaults() {
-  const latest = A.polls[0];
+function newPollDefaults(groups) {
+  // Like the latest poll of the same groups, if there is one.
+  const same = p => stable(pollGroups(p, adminGmap()).slice().sort()) === stable(groups.slice().sort());
+  const latest = A.polls.find(same) || A.polls[0];
   let mk;
   if (latest) {
     const n = D.add(D.lastOfMonth(latest.end.slice(0, 7)), 1);
@@ -4125,14 +4807,15 @@ function newPollDefaults() {
     days: latest ? latest.days.slice() : [0, 1, 2, 3, 4, 5, 6],
     dayStart: latest ? latest.dayStart : 660, dayEnd: latest ? latest.dayEnd : 1440, slot: latest ? latest.slot : 30,
     duration: latest ? latest.duration : 120, deadline: '', open: true,
-    tz: (latest && latest.tz) || Intl.DateTimeFormat().resolvedOptions().timeZone || 'Europe/Istanbul'
+    tz: (latest && latest.tz) || Intl.DateTimeFormat().resolvedOptions().timeZone || 'Europe/Istanbul', groups
   };
 }
 
 function openPollEditor(poll) {
   const isNew = !poll;
   const answered = !isNew && ((poll.answers || 0) > 0 || (A.data && A.data.poll.id === poll.id && A.data.responses.length > 0));
-  const f = isNew ? newPollDefaults() : clone(poll);
+  const f = isNew ? newPollDefaults(A.data ? pollGroups(A.data.poll, adminGmap()) : [MAIN]) : clone(poll);
+  const fGroups = pollGroups(f, adminGmap());
   const prev = document.activeElement;
   const errBox = h('p', { class: 'err', role: 'alert', hidden: true });
   const confirmBox = h('div', { class: 'confirm', hidden: true });
@@ -4145,6 +4828,9 @@ function openPollEditor(poll) {
     h('div', { class: 'form-grid' },
       fld('', 'pe-ttr', t('fTitleTr'), h('input', { id: 'pe-ttr', class: 'input', maxlength: '120', value: (f.title && f.title.tr) || '' })),
       fld('', 'pe-ten', t('fTitleEn'), h('input', { id: 'pe-ten', class: 'input', maxlength: '120', value: (f.title && f.title.en) || '' })),
+      manyAdminGroups() ? h('fieldset', { class: 'full' }, h('legend', { class: 'label' }, t('fGroups')),
+        h('div', { class: 'daypick grouppick' }, A.groups.map(g => h('label', null, h('input', { type: 'checkbox', name: 'pe-group', value: g.id, checked: fGroups.indexOf(g.id) !== -1 }), groupName(g)))),
+        h('p', { class: 'hint' }, t('fGroupsHint'))) : null,
       fld('', 'pe-start', t('fFirst'), h('input', { id: 'pe-start', class: 'input', type: 'date', value: f.start })),
       fld('', 'pe-end', t('fLast'), h('input', { id: 'pe-end', class: 'input', type: 'date', value: f.end })),
       h('fieldset', { class: 'full' }, h('legend', { class: 'label' }, t('fDays')),
@@ -4181,7 +4867,9 @@ function openPollEditor(poll) {
       dayStart: +v('pe-from'), dayEnd: +v('pe-to'), slot: +v('pe-slot'), duration: +v('pe-dur'),
       deadline: v('pe-deadline'), open: form.querySelector('#pe-open').checked, tz: v('pe-tz').trim()
     };
+    if (acan('groups')) out.groups = manyAdminGroups() ? Array.from(form.querySelectorAll('input[name="pe-group"]:checked')).map(x => x.value) : fGroups;
     const problem = !out.title.tr && !out.title.en ? 'vTitle'
+      : out.groups && !out.groups.length ? 'vGroups'
       : !out.start || !out.end || out.end < out.start ? 'vDates'
       : D.diff(out.start, out.end) >= 93 ? 'vRange'
       : !out.days.length ? 'vDays'
@@ -4194,9 +4882,9 @@ function openPollEditor(poll) {
       const i = A.polls.findIndex(x => x.id === r.poll.id);
       if (i === -1) A.polls.push(r.poll); else A.polls[i] = r.poll;
       A.polls.sort((x, y) => (x.start < y.start ? 1 : x.start > y.start ? -1 : 0));
-      A.currentId = r.currentId;
+      takeGroups(r);
       if (A.data && A.data.poll.id === r.poll.id) { A.data.poll = r.poll; A.duration = r.poll.duration || A.duration; A.cell = null; A.hl = null; }
-      else if (isNew && A.data) applyAdminPoll({ poll: r.poll, responses: [], members: A.data.members, schedule: { draft: null, published: null }, currentId: r.currentId });
+      else if (isNew && A.data) applyAdminPoll({ poll: r.poll, responses: [], members: A.data.members, schedule: { draft: null, published: null }, currentId: r.currentId, current: r.current });
       else await loadAdminPoll(r.poll.id);
       S.loaded = false;
       close();
@@ -4219,8 +4907,8 @@ function openPollEditor(poll) {
     try {
       const st = await api.admin(A.key, 'deletePoll', { pollId: f.id, attendance: !!(alsoAtt && alsoAtt.checked) });
       A.season = null;
-      A.polls = st.polls; A.currentId = st.currentId;
-      A.pollId = A.currentId || (A.polls[0] ? A.polls[0].id : '');
+      A.polls = st.polls; takeGroups(st);
+      A.pollId = A.currentId || Object.values(A.current)[0] || (A.polls[0] ? A.polls[0].id : '');
       if (A.pollId) await loadAdminPoll(A.pollId); else A.data = null;
       S.loaded = false;
       close();
