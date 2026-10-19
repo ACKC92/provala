@@ -130,6 +130,7 @@ You don't need groups: until you add one, everything works as one choir. When yo
 - **Each group has its own current poll.** A group's first poll becomes its current one by itself; **Make current** shows a poll to all of its groups. A member of two groups gets a switch at the top of their page between their groups' polls, and their Schedule page has both groups' meetings, each marked with its group.
 - **Attendance and the season** go by the poll's members. The season record has a **Group** filter: that group's meetings and members.
 - **Removing a section** leaves its members in the group without a section (the planner asks first). **Deleting a group** is possible once no poll is for it; its members keep their accounts and other groups.
+- **The conductor.** Tick **Şef** under a member's name in the Members tab (once, not per group). The conductor has no section in any group and their pickers only say whether they're in each group, so you don't make a "Şef" section in every group. They aren't in any section's numbers, nobody waits for their reply or reminds them, and every meeting of their groups, sectionals too, is in their calendar. Untick it and the sections they had before come back. If you already made a "Şef" section in your groups, tick **Şef** for yourself and then remove those sections.
 - The **Groups** sheet in your data spreadsheet lists every group with its sections and who is in which. It appears with your first group.
 
 ## Holidays, closed days and sectionals
@@ -180,6 +181,14 @@ The last column of each sheet, **Data**, is what the app reads. Make changes thr
 - **Want a co-organizer?** Give them the organizer key; they can then do everything you can in the planner. To take it back, run `newOrganizerKey`.
 - **Want to choose your own organizer key?** In Apps Script, open **Project Settings** (the gear on the left) → **Script properties** → edit `ADMIN_KEY`. Use something long, like four or five unrelated words.
 
+### Updating to version 2026-10-r3.1 (the conductor tick)
+
+1. Open the **Provala data** sheet and choose **File → Make a copy**, as before.
+2. In Apps Script, replace all of `Code.gs` with the new one, save, and deploy a **New version**.
+3. Upload the new `index.html` to GitHub.
+
+Nothing changes until you tick someone as the conductor. The order of steps 2 and 3 doesn't matter: the new page with the previous `Code.gs` just doesn't offer the tick, and the previous page works with the new `Code.gs` (it shows the conductor as a member without a section). Going back to the previous `Code.gs` gives the conductor their earlier sections again.
+
 ### Updating to version 2026-10-r3 (holidays and closed days, needed people, sectionals, like last month)
 
 1. Open the **Provala data** sheet and choose **File → Make a copy**, as before.
@@ -219,7 +228,7 @@ Paste the new `Code.gs` and deploy a **New version** (see above), then upload th
 **What is public.** The page's code on GitHub, including the address of your Apps Script. That's by design: the address only leads to a sign-in, and the script gives nothing out without a member's sign-in or the organizer key. Neither file contains a password or key.
 
 **What members see of each other.** Only you see anyone's notes and comment, and anyone's full answer. Members see:
-- **How many people are free, without names.** In the calendar, each day has a small number: how many people can come at that day's best time for a meeting of your usual length. With one day picked, each time shows how many are free then (and, with +, how many only if needed).
+- **How many people are free, without names.** The calendar itself stays plain. When a member opens a day, a line says how many people can come at that day's best time for a meeting of your usual length, and each time shows how many are free then (and, with +, how many only if needed).
   - The numbers appear only once answers with times from at least 5 people *besides the person looking* are counted, so a number can't simply be one person's answer.
   - They update once a day, at midnight in the poll's time zone: an answer sent or changed today counts from tomorrow (until then, the earlier version counts). So nobody can work out someone's times by watching the numbers change right after they press send. If only one person answers on a given day, someone comparing the numbers from one day to the next could still work out that person's times; that's the price of exact numbers.
   - Answers from removed members don't count. Removing a member or deleting an answer changes the numbers right away, not the next day.

@@ -27,7 +27,7 @@
 @font-face { font-family: "Vollkorn"; src: url("vollkorn.woff2") format("woff2"); font-weight: 400 900; font-style: normal; font-display: swap; }
 @font-face { font-family: "Vollkorn"; src: url("vollkorn-italic.woff2") format("woff2"); font-weight: 400 900; font-style: italic; font-display: swap; }
 /* Look: the banner's world. A dark, mottled ground with gold trim; each page is a sheet of parchment
-   in a gold double frame with corner ornaments, and the banner sits at the top of the sheet.
+   in a gold double frame with corner ornaments, and the banner sits at the top of the sign-in and schedule sheets.
    Day: light parchment and dark ink. Night: dark leather and light ink, same gold.
    The villager's blue marks anything you pick or press; the priest's red is for the step initials,
    red-letter days and warnings. One sturdy book face, Vollkorn, for everything.
@@ -257,27 +257,11 @@ q { quotes: "\201C" "\201D"; }
 .folio:has(> .banner-wrap) { padding-top: min(var(--fp), 22px); }
 .banner-wrap { margin-bottom: 14px; }
 .banner { display: block; width: 100%; height: auto; aspect-ratio: 3 / 1; box-shadow: 0 2px 8px rgb(30 18 6 / 45%); }
-/* The banner hides behind a small parchment box; a press shows it. */
-.banner-toggle {
-  display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; min-height: 36px; padding: 5px 14px;
-  border: 1px solid var(--gold); border-radius: var(--r); background: var(--sheet); color: var(--ink);
-  box-shadow: inset 0 0 0 1px var(--paper-edge), var(--bevel), var(--btn-drop);
-  font: italic 600 16.5px/1.2 var(--font-display); letter-spacing: 0.01em;
-}
-.banner-toggle:hover { border-color: var(--gold-hi); background: var(--btn-face-hover); }
-.banner-toggle::after { content: ""; width: 7px; height: 7px; border: solid var(--ink-3); border-width: 0 2px 2px 0; transform: translateY(-2px) rotate(45deg); transition: transform 0.2s; }
-.banner-toggle[aria-expanded="true"] { font-style: normal; font-weight: 700; }
-.banner-toggle[aria-expanded="true"]::after { transform: translateY(2px) rotate(-135deg); }
-.banner-toggle:not([hidden]) + .banner-pic { margin-top: 12px; }
-.banner-toggle:not([hidden]) + .banner-pic:not([hidden]) { animation: banner-in 0.35s ease-out; }
-@keyframes banner-in { from { opacity: 0; transform: translateY(-6px); } }
-@media (prefers-reduced-motion: reduce) { .banner-pic:not([hidden]) { animation: none; } .banner-toggle::after { transition: none; } }
 @media (max-width: 520px) {
   .main.wrap { padding-left: max(10px, env(safe-area-inset-left, 0px)); padding-right: max(10px, env(safe-area-inset-right, 0px)); }
   .main { padding-top: 12px; }
   .folio { --fp: 12px; padding-top: 22px; }
   .banner-wrap { margin-bottom: 12px; }
-  .banner-toggle { font-size: 15.5px; }
   .hero-msg { font-size: 15.5px; line-height: 1.45; }
   .step-head .mark { width: 28px; height: 28px; font-size: 16px; }
   .step-head h2 { font-size: 19px; }
@@ -388,11 +372,6 @@ textarea.input { min-height: 88px; resize: vertical; line-height: 1.5; }
 .wdh:disabled, .wk:disabled { opacity: 0.35; cursor: default; }
 .day { position: relative; display: grid; grid-template-rows: 1fr auto; justify-items: start; gap: 5px; min-height: 40px; padding: 5px 6px; border: 1px solid var(--rule); border-radius: var(--r); background: var(--sheet); text-align: left; }
 .day .num { font: 600 15.5px/1 var(--font-body); }
-/* How many people can come at the day's best time: a small badge on the corner (the note pin moves down to make room) */
-.day .cnt { position: absolute; top: -5px; right: -4px; z-index: 1; display: grid; place-items: center; min-width: 16px; height: 15px; padding: 0 4px;
-  border-radius: 8px; background: var(--free); color: var(--free-ink); box-shadow: 0 0 0 1.5px var(--paper);
-  font: 700 11px/1 var(--font-body); font-variant-numeric: lining-nums tabular-nums !important; }
-.day .cnt ~ .pin { top: auto; bottom: 13px; }
 .group-hint { margin-top: 10px; }
 .day .bar { width: 100%; height: 5px; border-radius: 3px; background: var(--empty); }
 .day .pin { position: absolute; top: 6px; right: 6px; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
@@ -708,13 +687,20 @@ summary:hover { text-decoration: underline; text-underline-offset: 2px; }
 .members-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 8px 16px; }
 .members-filter { min-width: min(14em, 100%); max-width: 100%; }
 .parts-sum { white-space: pre-line; }
-.grp-sel { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 2px 6px; max-width: 100%; min-width: 0; }
-.grp-sel-name { color: var(--ink-3); font-size: 13px; font-weight: 600; min-width: 0; overflow-wrap: anywhere; }
+/* Several groups: a grid of group name and picker, so the pickers line up whatever the names' lengths. */
+.grp-sels { flex: 1 1 100%; display: grid; grid-template-columns: fit-content(14em) minmax(0, 15em); align-items: center; gap: 4px 10px; min-width: 0; }
+.grp-sels .part-sel { width: 100%; }
+.grp-sel { color: var(--ink-3); font-size: 13px; font-weight: 600; min-width: 0; overflow-wrap: break-word; }
+.lead-tick { display: inline-flex; align-items: center; gap: 6px; margin-top: 4px; font-size: 14px; font-weight: 600; color: var(--ink-2); cursor: pointer; }
+.lead-tick input { width: 16px; height: 16px; margin: 0; accent-color: var(--accent); }
+@media (max-width: 520px) { .grp-sels { grid-template-columns: fit-content(42%) minmax(0, 1fr); } }
+/* A long section name is cut short in a closed picker instead of pushing everything else aside. */
+.part-sel { text-overflow: ellipsis; }
 .member-meta, .member-who { min-width: 0; }
 .member-list, .group-list, .members-tab { grid-template-columns: minmax(0, 1fr); }
 .members-filter .select, .add-into .select, .season-group .select, #a-poll { max-width: 100%; }
 .part-sel { max-width: 100%; }
-.group-who strong, .switch-group, .switch-title, .gm-name { overflow-wrap: anywhere; }
+.group-who strong, .switch-group, .switch-title { overflow-wrap: anywhere; }
 .switch-btn { max-width: 100%; }
 .chip-s.grp { max-width: 100%; white-space: normal; overflow-wrap: anywhere; }
 .grp-tag { max-width: 100%; overflow-wrap: anywhere; }
@@ -736,9 +722,10 @@ summary:hover { text-decoration: underline; text-underline-offset: 2px; }
 .sec-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; }
 .sec-row { display: grid; grid-template-columns: minmax(0, 1fr) auto auto auto; align-items: center; gap: 6px; }
 .gm-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(17em, 1fr)); gap: 2px 18px; max-height: 360px; overflow-y: auto; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
-.gm-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 5px 0; border-bottom: 1px solid var(--rule); }
+.gm-row { display: grid; grid-template-columns: minmax(7em, 1fr) minmax(0, 11em); align-items: center; gap: 8px; padding: 5px 0; border-bottom: 1px solid var(--rule); }
+.gm-row .part-sel { width: 100%; }
 .gm-row.out .gm-name { color: var(--ink-3); }
-.gm-name { font-weight: 600; min-width: 0; overflow-wrap: anywhere; }
+.gm-name { font-weight: 600; min-width: 0; overflow-wrap: break-word; }
 .season-group { max-width: 18em; margin-bottom: 8px; }
 @media (max-width: 760px) { .member { grid-template-columns: minmax(0, 1fr); } .member .actions { justify-content: flex-start; } }
 .person { display: grid; gap: 12px; align-content: start; padding: 16px; background: var(--sheet); border: 1px solid var(--rule); border-radius: var(--r); box-shadow: var(--card-drop); }
@@ -868,6 +855,7 @@ fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
 .mk-shut { display: inline-block; width: 22px; height: 18px; border: 1px dashed var(--rule-strong); border-radius: 3px; vertical-align: -4px;
   background: repeating-linear-gradient(135deg, transparent 0 5px, var(--rule) 5px 6px); }
 .prev-box { margin-bottom: 12px; }
+.day-best { margin: -2px 0 8px; }
 .hol-line { margin: -2px 0 8px; color: var(--rubric-ink); font-weight: 700; font-size: 14.5px; }
 .chip-s.hol { margin-left: 8px; min-height: 22px; padding: 0 8px; background: transparent; border: 1px solid var(--rubric-ink); color: var(--rubric-ink); font-size: 12.5px; vertical-align: 1px; }
 .chip-s.call { min-height: 22px; padding: 0 9px; background: var(--accent-soft); color: var(--ink); font-size: 12.5px; box-shadow: inset 0 0 0 1px var(--notice-edge); }
@@ -954,7 +942,7 @@ var API_URL = 'https://script.google.com/macros/s/AKfycbzjxxXx_t5JqctCYV3iDAjsd-
   // What went wrong on a member's device is sent to the backend, so it can be fixed without anyone having to
   // describe it: the error and the browser, never names, answers or anything typed. At most three per page load,
   // and nothing at all without a backend address (as in the demo).
-  var VERSION = '2026-10-r3', sent = 0, seen = {};
+  var VERSION = '2026-10-r3.1', sent = 0, seen = {};
   window.provalaReport = function (err, where) {
     try {
       var url = typeof window.API_URL === 'string' ? window.API_URL.replace(/^\s+|\s+$/g, '') : '';
@@ -1128,7 +1116,6 @@ const holText = (list, lang) => (list || []).map(x => t(x.k, { n: x.n }, lang)).
 const T = {
   en: {
     docTitle: 'Provala',
-    bannerShow: 'Click to get Provala’d', bannerShown: 'P r o v a l a ’ d !',
     bannerAlt: 'A priest raises his hand and chants “Provayoyo!” to call a villager to rehearsal. The villager answers “Yaparım” (I’m in).',
     modeNight: 'Switch to night mode', modeDay: 'Switch to day mode',
     tabAvailability: 'Availability', tabSchedule: 'Schedule', planner: 'Planner', sections: 'Sections', language: 'Language',
@@ -1145,10 +1132,10 @@ const T = {
     pageUpdated: 'Your conductor changed the poll, so the page has been updated.',
     restored: "Your changes are still here, but they haven't been sent yet. Don't forget to send them.",
     privacy: 'Only your conductor sees your notes and comment. Other members see, without names, how many people are free or free if needed at each time (new and changed answers are added once a day), and for each published rehearsal, how many of each voice part (or instrument) can come. Names only your conductor sees.',
-    groupHint: ({ dur, n }) => "The number in a day's corner: how many people can come at that day's best time, for a rehearsal of " + dur + '. From ' + (n === 1 ? '1 person’s answer' : n + ' people’s answers') + "; the numbers update each night, so today's answers show up tomorrow.",
-    groupWait: ({ min, n }) => 'Once answers from at least ' + min + " people besides you are counted, you'll see here how many are free each day (" + n + ' so far). The numbers update each night.',
+    groupHint: ({ n }) => 'Open a day to see how many people are free at each time. From ' + (n === 1 ? '1 person’s answer' : n + ' people’s answers') + "; the numbers update each night, so today's answers show up tomorrow.",
+    groupWait: ({ min, n }) => 'Once answers from at least ' + min + " people besides you are counted, a day you open will show how many are free at each time (" + n + ' so far). The numbers update each night.',
     slotsHint: 'The person sign and number beside a time show how many people are free then; the one with + is how many could come if needed. From answers up to last night.',
-    dayCount: ({ n }) => (n === 1 ? '1 person' : n + ' people') + ' at the best time',
+    dayBest: ({ n, dur }) => 'At this day’s best time, ' + (n === 1 ? '1 person' : n + ' people') + ' can come for ' + dur + '.',
     slotFree: ({ n }) => (n === 1 ? '1 person' : n + ' people') + ' free', slotMaybe: '{n} if needed',
     attTitle: 'How many can come, from the answers', attNobody: 'nobody yet',
     attHint: "Worked out from the poll answers. If you can't come, let your conductor know.",
@@ -1174,6 +1161,8 @@ const T = {
     groupNoSectionsHint: 'No sections: the group is counted as one.',
     groupMembers: 'Members', groupMembersN: '({n} of {of})', groupMembersHint: "Who is in this group, and their section in it. Their accounts don't change.",
     groupFind: 'Find a member', groupFindPh: 'Find a member…', notInGroup: 'Not in this group', inGroupNoSec: 'In it, no section',
+    leadLabel: 'Conductor', inGroupLead: 'In it', leadOn: '{name} is now the conductor.', leadOff: '{name} is no longer the conductor.',
+    leadHint: 'Tick Conductor for whoever leads the groups: they have no section in any group and aren’t in any section’s numbers, and every meeting of their groups, sectionals too, is in their calendar.',
     groupCreate: 'Create group', groupSave: 'Save group', groupSaveAnyway: 'Save anyway', groupKeepEditing: 'Keep editing', groupCreated: 'Group created', groupSaved: 'Group saved',
     groupDelete: 'Delete group', groupDeleted: 'Group deleted', groupDeleteAlone: ({ n }) => (n === 1 ? '1 member is only in this group and will be in none.' : n + ' members are only in this group and will be in none.'),
     groupDiscardAsk: 'You have changes that aren’t saved.', groupDiscard: 'Close without saving',
@@ -1223,7 +1212,7 @@ const T = {
     noteMixed: 'The selected days have different notes. Whatever you write here replaces all of them.',
     stateFree: 'available', stateMaybe: 'if needed', stateNone: 'not available', stateMix: 'differs between days',
     stepComment: 'Anything else?',
-    commentPh: "Anything else I should know? For example: I'm away the last week of the month. Or: I finish work late on Tuesdays, but with a bit of notice I can make it.",
+    commentPh: "Anything else I should know? For example: I'm away the last week of the month. I rehearse with the XYZ choir on Tuesdays. Or: I'm free every Wednesday.",
     commentNeed: 'You can explain your “if needed” days here instead of in the day notes.',
     summary: 'Your answers', summaryEmpty: "You haven't marked any days yet.", noTimes: 'note only', ifNeededShort: 'if needed', needTag: 'note needed',
     save: 'Send my answers', saveChanges: 'Send changes', saving: 'Sending…', saved: 'Sent. Thank you!',
@@ -1395,7 +1384,6 @@ const T = {
   },
   tr: {
     docTitle: 'Provala',
-    bannerShow: 'Provalanmak için tıkla', bannerShown: 'P r o v a l a n d ı n!',
     bannerAlt: 'Elini kaldırmış bir rahip “Provayoyo!” diye köylüyü provaya çağırıyor, köylü “Yaparım” diye cevap veriyor.',
     modeNight: 'Gece moduna geç', modeDay: 'Gündüz moduna geç',
     tabAvailability: 'Uygunluk', tabSchedule: 'Takvim', planner: 'Planlayıcı', sections: 'Bölümler', language: 'Dil',
@@ -1412,10 +1400,10 @@ const T = {
     pageUpdated: 'Şefiniz anketi değiştirdi, sayfa güncellendi.',
     restored: 'Değişiklikleriniz duruyor ama henüz gönderilmedi. Göndermeyi unutmayın.',
     privacy: 'Notlarınızı ve yorumunuzu yalnızca şefiniz görür. Diğer üyeler isim görmeden, her saatte kaç kişinin uygun ya da gerekirse uygun olduğunu (yeni ve değişen yanıtlar günde bir kez eklenir) ve yayımlanan her provaya her ses grubundan (ya da çalgıdan) kaç kişinin gelebileceğini görür. İsimleri yalnızca şefiniz görür.',
-    groupHint: 'Günlerin köşesindeki sayı: o gün {dur} sürecek bir prova için en uygun saatte kaç kişinin gelebildiği. {n} kişinin yanıtına göre; sayılar her gece güncellenir, bugünkü yanıtlar yarın eklenir.',
-    groupWait: 'Sizden başka en az {min} kişinin yanıtı sayılınca, her gün kaç kişinin uygun olduğu burada görünecek (şu an {n}). Sayılar her gece güncellenir.',
+    groupHint: 'Bir günü açınca, her saatte kaç kişinin uygun olduğunu görürsünüz. {n} kişinin yanıtına göre; sayılar her gece güncellenir, bugünkü yanıtlar yarın eklenir.',
+    groupWait: 'Sizden başka en az {min} kişinin yanıtı sayılınca, açtığınız günde her saatte kaç kişinin uygun olduğu görünecek (şu an {n}). Sayılar her gece güncellenir.',
     slotsHint: 'Saatlerin yanındaki kişi işareti ve sayı, o saatte kaç kişinin uygun olduğunu gösterir; + ile yazılan, gerekirse gelebilecekler. Dün geceye kadarki yanıtlara göre.',
-    dayCount: 'en uygun saatte {n} kişi',
+    dayBest: 'Bu günün en uygun saatinde {dur} sürecek bir prova için {n} kişi gelebilir.',
     slotFree: '{n} kişi uygun', slotMaybe: '{n} kişi gerekirse',
     attTitle: 'Yanıtlara göre gelebilecek kişi sayısı', attNobody: 'henüz kimse yok',
     attHint: 'Sayılar anket yanıtlarına göre hesaplanır. Gelemeyecekseniz şefinize haber verin.',
@@ -1441,6 +1429,8 @@ const T = {
     groupNoSectionsHint: 'Bölüm yok: grup tek bir sayıyla gösterilir.',
     groupMembers: 'Üyeler', groupMembersN: '({n}/{of})', groupMembersHint: 'Bu grupta kimlerin olduğu ve gruptaki bölümleri. Hesapları değişmez.',
     groupFind: 'Üye ara', groupFindPh: 'Üye arayın…', notInGroup: 'Grupta değil', inGroupNoSec: 'Grupta, bölümsüz',
+    leadLabel: 'Şef', inGroupLead: 'Grupta', leadOn: '{name} şef olarak işaretlendi.', leadOff: '{name} artık şef değil.',
+    leadHint: 'Grupları yöneten kişi için Şef kutusunu işaretleyin: hiçbir grupta bölümü olmaz, bölüm sayılarına girmez ve gruplarının bütün buluşmaları, bölüm provaları da, onun takviminde görünür.',
     groupCreate: 'Grubu oluştur', groupSave: 'Grubu kaydet', groupSaveAnyway: 'Yine de kaydet', groupKeepEditing: 'Düzenlemeye devam et', groupCreated: 'Grup oluşturuldu', groupSaved: 'Grup kaydedildi',
     groupDelete: 'Grubu sil', groupDeleted: 'Grup silindi', groupDeleteAlone: ({ n }) => 'Yalnızca bu grupta olan ' + n + ' üye hiçbir grupta kalmayacak.',
     groupDiscardAsk: 'Kaydedilmemiş değişiklikleriniz var.', groupDiscard: 'Kaydetmeden kapat',
@@ -1490,7 +1480,7 @@ const T = {
     noteMixed: 'Seçili günlerin notları farklı. Buraya ne yazarsanız hepsinin notu o olur.',
     stateFree: 'uygun', stateMaybe: 'gerekirse', stateNone: 'uygun değil', stateMix: 'günlere göre farklı',
     stepComment: 'Eklemek istedikleriniz',
-    commentPh: 'Bilmem gereken başka bir şey varsa buraya yazın. Örneğin: Ayın son haftası şehir dışındayım. Ya da salıları işten geç çıkıyorum ama erken haber olursa ayarlayabilirim.',
+    commentPh: 'Bilmem gereken başka bir şey varsa buraya yazın. Örneğin: Ayın son haftası şehir dışındayım. Salı günleri XYZ korosuyla provalarım var. Ya da bütün çarşambaları uygunum.',
     commentNeed: '“Gerekirse” dediğiniz günlerin açıklamasını gün notları yerine buraya da yazabilirsiniz.',
     summary: 'Yanıtlarınız', summaryEmpty: 'Henüz bir gün işaretlemediniz.', noTimes: 'yalnızca not', ifNeededShort: 'gerekirse', needTag: 'açıklama gerekli',
     save: 'Yanıtlarımı gönder', saveChanges: 'Değişiklikleri gönder', saving: 'Gönderiliyor…', saved: 'Gönderildi. Teşekkürler!',
@@ -1940,7 +1930,10 @@ function groupsOf(m) {
   return o;
 }
 const inGroup = (m, gid) => own(groupsOf(m), gid);
+// The conductor (as in Code.gs): in no section anywhere, in nobody's numbers, and called to every meeting of their groups.
+const isLead = m => !!(m && m.lead === true);
 function sectionOf(m, g) {
+  if (isLead(m)) return '';
   const gs = groupsOf(m), s = own(gs, g.id) ? gs[g.id] : '';
   return typeof s === 'string' && s && g.sections.some(x => x.id === s) ? s : '';
 }
@@ -1986,7 +1979,7 @@ function callOf(ev, p, gmap) {
 }
 function isCalled(m, ev, p, gmap) {
   const c = callOf(ev, p, gmap);
-  if (!c) return canSee(m, p, gmap);
+  if (!c || isLead(m)) return canSee(m, p, gmap);
   return Object.keys(c).some(gid => inGroup(m, gid) && (c[gid] === true || c[gid].indexOf(sectionOf(m, gmap[gid])) !== -1));
 }
 // A reply belongs to the meeting as it was when given: a changed day or time asks again (as in Code.gs).
@@ -2000,7 +1993,7 @@ function attendOf(p, events, rs, ms, rp, gmap) {
   const avail = {};
   for (const r of rs) avail[r.id] = r.avail;
   const gs = pollGroups(p, gmap).map(gid => {
-    const g = gmap[gid], members = ms.filter(x => inGroup(x, gid));
+    const g = gmap[gid], members = ms.filter(x => inGroup(x, gid) && !isLead(x));
     const used = g.sections.map(x => x.id).filter(id => members.some(x => sectionOf(x, g) === id));
     return { g, members, keys: used.concat(['']), keyOf: x => (used.length ? sectionOf(x, g) : '') };
   });
@@ -2809,12 +2802,12 @@ function calMarks(p) {
     hols.length ? h('p', { class: 'hint' }, h('span', { class: 'mk-hol', 'aria-hidden': 'true' }, '12'), ' ', t('marksHol') + ' ' + hols.map(d => dShort(d) + ' (' + holText(holidayOn(d)) + ')').join(', ')) : null,
     shut.length ? h('p', { class: 'hint' }, h('span', { class: 'mk-shut', 'aria-hidden': 'true' }), ' ', t('marksShut') + ' ' + shut.map(d => dShort(d) + (why(d) ? ' (' + why(d) + ')' : '')).join(', ')) : null);
 }
-// What the numbers in the days' corners mean, or when they'll appear. (Nothing with an older Code.gs.)
+// Where to find how many people are free (in a day, once it's opened), or when that will appear. (Nothing with an older Code.gs.)
 function groupLegend(p) {
   const g = S.group;
   if (!g) return null;
   return h('p', { class: 'hint group-hint' }, g.days
-    ? t('groupHint', { dur: durWords(p.duration || 120), n: g.answered })
+    ? t('groupHint', { n: g.answered })
     : t('groupWait', { min: g.min || 5, n: typeof g.others === 'number' ? g.others : g.answered }));
 }
 // On wide screens the calendar stays in view beside the long list of times, when it fits on the screen.
@@ -2830,13 +2823,11 @@ window.addEventListener('resize', fitStick);
 function dayCell(p, d, needsNote) {
   const ok = isOpen(p, d), shut = allowed(p, d) && isClosed(p, d), hol = holidayOn(d);
   const s = ok ? M.avail[d] : '', note = ok ? (M.notes[d] || '').trim() : '', on = M.sel.has(d);
-  // How many people can come at this day's best time (the group's numbers; no names).
-  const g = ok && S.group && S.group.days ? S.group.days[d] : null, best = g ? g.best : 0;
   const why = shut ? closedOf(p)[d] : '';
   return h('button', {
     type: 'button', class: 'day' + (on ? ' sel' : '') + (hol ? ' hol' : '') + (shut ? ' shut' : ''), disabled: !ok, 'aria-pressed': ok ? String(on) : null,
     title: [hol ? holText(hol) : '', shut ? t('closedDay') + (why ? ': ' + why : '') : ''].filter(Boolean).join(' · ') || null,
-    'aria-label': dLong(d) + (hol ? ', ' + holText(hol) : '') + (shut ? ', ' + t('closedDay') + (why ? ': ' + why : '') : '') + (s ? ', ' + t('hasTimes') : '') + (note ? ', ' + t('hasNote') : '') + (needsNote ? ', ' + t('needTag') : '') + (best ? ', ' + t('dayCount', { n: best }) : ''),
+    'aria-label': dLong(d) + (hol ? ', ' + holText(hol) : '') + (shut ? ', ' + t('closedDay') + (why ? ': ' + why : '') : '') + (s ? ', ' + t('hasTimes') : '') + (note ? ', ' + t('hasNote') : '') + (needsNote ? ', ' + t('needTag') : ''),
     dataset: { k: 'd' + d },
     onclick: e => {
       if (M.multi || e.ctrlKey || e.metaKey || e.shiftKey) { on ? M.sel.delete(d) : M.sel.add(d); M.selBy = M.sel.size ? 'group' : ''; afterSelect(); return; }
@@ -2845,7 +2836,6 @@ function dayCell(p, d, needsNote) {
     }
   },
     h('span', { class: 'num' }, String(+d.slice(8))),
-    best ? h('span', { class: 'cnt', 'aria-hidden': 'true' }, String(best)) : null,
     note || needsNote ? h('span', { class: 'pin' + (needsNote ? ' need' : ''), 'aria-hidden': 'true' }) : null,
     h('span', { class: 'bar', 'aria-hidden': 'true', style: s ? 'background:' + barGradient(s) : null }));
 }
@@ -2916,6 +2906,7 @@ function renderTimes() {
   }
   // With one day picked, each time also shows how many people are free then (the group's numbers).
   const counts = sel.length === 1 && S.group && S.group.days ? S.group.days[sel[0]] || { free: [], maybe: [] } : null;
+  if (counts && counts.best) el.append(h('p', { class: 'day-best' }, t('dayBest', { n: counts.best, dur: durWords(p.duration || 120) })));
   if (counts) el.append(h('p', { class: 'hint slots-hint' }, t('slotsHint')));
   el.append(buildSlots(p, common, ro, counts));
   if (common.indexOf('mix') !== -1) el.append(h('p', { class: 'hint mixed-legend' }, t('mixedLegend')));
@@ -4358,7 +4349,7 @@ function toastAdded(call) {
 
 /* ---------- People */
 function buildPeople() {
-  const p = A.data.poll, list = people(), ms = pollMembers();
+  const p = A.data.poll, list = people(), ms = pollMembers().filter(m => !isLead(m));
   const did = new Set(list.map(r => r.memberId).filter(Boolean));
   const waiting = ms.filter(m => !did.has(m.id));
   const head = ms.length ? h('div', { class: 'people-head' },
@@ -4495,13 +4486,16 @@ function openGroupEditor(g) {
   function renderMem() {
     const q = find.value.trim().toLocaleLowerCase(LOC[S.lang]);
     const opts = [['-', t('notInGroup')], ['', t('inGroupNoSec')]].concat(secs.map(x => [x.id, x.name.trim() || '…']));
+    const leadOpts = [['-', t('notInGroup')], ['', t('inGroupLead')]];
     clear(memBox);
     for (const m of A.data.members) {
       if (q && m.name.toLocaleLowerCase(LOC[S.lang]).indexOf(q) === -1) continue;
-      const v = mem[m.id] === null ? '-' : secs.some(x => x.id === mem[m.id]) ? mem[m.id] : '';
+      const lead = isLead(m), o = lead ? leadOpts : opts;
+      const v = mem[m.id] === null ? '-' : !lead && secs.some(x => x.id === mem[m.id]) ? mem[m.id] : '';
+      const sel = selectEl('ge-m-' + m.id, o, v, val => { mem[m.id] = val === '-' ? null : val; renderMem(); }, { class: 'select part-sel' });
+      sel.title = (o.find(x => x[0] === v) || o[0])[1];
       memBox.append(h('li', { class: 'gm-row' + (mem[m.id] === null ? ' out' : '') },
-        h('label', { class: 'gm-name', for: 'ge-m-' + m.id }, m.name),
-        selectEl('ge-m-' + m.id, opts, v, val => { mem[m.id] = val === '-' ? null : val; renderMem(); }, { class: 'select part-sel' })));
+        h('label', { class: 'gm-name', for: 'ge-m-' + m.id }, m.name), sel));
     }
     memCount.textContent = t('groupMembersN', { n: Object.values(mem).filter(v => v !== null).length, of: A.data.members.length });
   }
@@ -4669,7 +4663,7 @@ function renderMemberList() {
       nowhere.length ? [['-', t('noGroupMembers', { n: nowhere.length })]] : []), gid,
     v => { A.memberGroup = v; redrawKeepingFocus(renderMemberList); }, { class: 'select' })) : null;
   el.append(h('div', { class: 'members-head' }, h('h3', { class: 'sub members-count' }, t('membersN', { n: ms.length })), filter),
-    h('p', { class: 'hint' }, many ? t('partsHintGroups') : t('partsHint')), R.partsSum,
+    h('p', { class: 'hint' }, many ? t('partsHintGroups') : t('partsHint')), acan('lead') ? h('p', { class: 'hint' }, t('leadHint')) : null, R.partsSum,
     h('ul', { class: 'member-list' }, ms.map(m => memberRow(m, did.has(m.id)))));
   fillPartsSum();
 }
@@ -4680,8 +4674,9 @@ function fillPartsSum() {
   const groups = gid === '-' ? [] : gid ? A.groups.filter(g => g.id === gid) : A.groups;
   const nowhere = A.data.members.filter(m => !A.groups.some(g => inGroup(m, g.id))).length;
   R.partsSum.textContent = groups.map(g => {
-    const ms = A.data.members.filter(m => inGroup(m, g.id)), n = k => ms.filter(m => sectionOf(m, g) === k).length;
-    const list = g.sections.map(x => secName(x) + ' ' + n(x.id));
+    const lead = A.data.members.filter(m => inGroup(m, g.id) && isLead(m)).map(m => m.name);
+    const ms = A.data.members.filter(m => inGroup(m, g.id) && !isLead(m)), n = k => ms.filter(m => sectionOf(m, g) === k).length;
+    const list = (lead.length ? [t('leadLabel') + ': ' + lead.join(', ')] : []).concat(g.sections.map(x => secName(x) + ' ' + n(x.id)));
     if (n('') && g.sections.length) list.push(t('partNone') + ' ' + n(''));
     if (!g.sections.length) list.push(t('groupCount', { n: ms.length }));
     return (many && !gid ? groupName(g) + ': ' : '') + list.join(' · ');
@@ -4690,7 +4685,9 @@ function fillPartsSum() {
 // A member's section in one group, or (with several groups, or for someone not in it) whether they're in it at all.
 function sectionSelect(m, g) {
   const many = manyAdminGroups(), cur = inGroup(m, g.id) ? sectionOf(m, g) : '-';
-  const opts = (many || cur === '-' ? [['-', t('notInGroup')]] : []).concat([['', many ? t('inGroupNoSec') : '—']], g.sections.map(x => [x.id, secName(x)]));
+  // The conductor has no section: each group is only in or out.
+  const opts = isLead(m) ? [['-', t('notInGroup')], ['', t('inGroupLead')]]
+    : (many || cur === '-' ? [['-', t('notInGroup')]] : []).concat([['', many ? t('inGroupNoSec') : '—']], g.sections.map(x => [x.id, secName(x)]));
   const sel = h('select', {
     class: 'select part-sel', id: 'ms-' + m.id + '-' + g.id, 'aria-label': many ? t('secLabelIn', { name: m.name, group: groupName(g) }) : t('partLabel', { name: m.name }),
     onchange: async () => {
@@ -4711,7 +4708,26 @@ function sectionSelect(m, g) {
       if (!document.activeElement || document.activeElement === document.body) { const f = document.getElementById('mm-show'); if (f) f.focus(); }
     }
   }, opts.map(o => h('option', { value: o[0], selected: o[0] === cur }, o[1])));
-  return many ? h('label', { class: 'grp-sel' }, h('span', { class: 'grp-sel-name' }, groupName(g)), sel) : sel;
+  // A long section name is cut short in the closed picker; the whole of it shows on hover.
+  const chosen = opts.find(o => o[0] === cur);
+  if (chosen) sel.title = chosen[1];
+  // With several groups: the group's name, then its picker, as two cells of a grid (so every row's pickers line up).
+  return many ? [h('label', { class: 'grp-sel', for: sel.id }, groupName(g)), sel] : sel;
+}
+// The conductor tick: set once for the member, for all their groups.
+function leadTick(m) {
+  const box = h('input', { type: 'checkbox', id: 'ml-' + m.id, checked: isLead(m), onchange: async () => {
+    const was = m.lead;
+    box.disabled = true;
+    m.lead = box.checked;
+    try {
+      const r = await api.admin(A.key, 'setLead', { id: m.id, lead: box.checked });
+      A.data.members = r.members;
+      toast(t(box.checked ? 'leadOn' : 'leadOff', { name: m.name }));
+    } catch (e) { m.lead = was; toast(errText(e), { error: true }); }
+    redrawKeepingFocus(() => { fillGroups(); refreshTabs(); renderMemberList(); });
+  } });
+  return h('label', { class: 'lead-tick' }, box, t('leadLabel'));
 }
 function memberRow(m, did) {
   const actions = h('div', { class: 'actions' });
@@ -4733,10 +4749,11 @@ function memberRow(m, did) {
     } catch (e) { toast(errText(e), { error: true }); }
   }
   idle();
+  const shown = A.memberGroup && A.memberGroup !== '-' ? A.groups.filter(g => g.id === A.memberGroup) : A.groups;
   return h('li', { class: 'member' },
-    h('div', { class: 'member-who' }, h('strong', null, m.name), h('span', { class: 'mono muted' }, m.username)),
+    h('div', { class: 'member-who' }, h('strong', null, m.name), h('span', { class: 'mono muted' }, m.username), acan('lead') ? leadTick(m) : null),
     h('div', { class: 'member-meta' },
-      (A.memberGroup && A.memberGroup !== '-' ? A.groups.filter(g => g.id === A.memberGroup) : A.groups).map(g => sectionSelect(m, g)),
+      manyAdminGroups() ? h('div', { class: 'grp-sels' }, shown.map(g => sectionSelect(m, g))) : shown.map(g => sectionSelect(m, g)),
       did || canSee(m, A.data.poll, adminGmap()) ? h('span', { class: 'chip-s' + (did ? ' ok' : '') }, did ? t('answered') : t('notAnswered')) : null,
       h('span', { class: 'muted' }, m.lastLogin ? t('lastSignIn', { ago: ago(m.lastLogin) }) : t('neverSignedIn'))),
     actions);
@@ -5001,7 +5018,7 @@ const repWord = s => t({ yes: 'repYes', part: 'repPart', no: 'repNo' }[s] || 're
 function meetingReplies(ev) {
   const fp = fpOf(ev), out = { yes: [], part: [], no: [], none: [] };
   const by = new Map((A.data.replies || []).map(x => [x.memberId, x.replies || {}]));
-  for (const m of pollMembers().filter(x => isCalled(x, ev, A.data.poll, adminGmap()))) {
+  for (const m of pollMembers().filter(x => !isLead(x) && isCalled(x, ev, A.data.poll, adminGmap()))) {
     const r = (by.get(m.id) || {})[ev.id];
     const known = !!(r && own(REPLY_S, r.s));
     if (known && r.fp === fp) out[r.s].push({ m, r });
@@ -5180,7 +5197,9 @@ function openAttendance(ev) {
   const marks = Object.assign({}, rec ? rec.marks : {});
   const gmap = adminGmap(), pgs = pollGroups(A.data.poll, gmap);
   // A sectional's own members; the rest of the poll's members (one of them may have come anyway) apart, folded.
-  const ms = pollMembers().filter(m => isCalled(m, ev, A.data.poll, gmap)), rest = pollMembers().filter(m => !isCalled(m, ev, A.data.poll, gmap));
+  // The conductor isn't on either list: they lead the meeting.
+  const sing = pollMembers().filter(m => !isLead(m));
+  const ms = sing.filter(m => isCalled(m, ev, A.data.poll, gmap)), rest = sing.filter(m => !isCalled(m, ev, A.data.poll, gmap));
   // What each member replied, shown beside their name; the replies are fetched again behind the open dialog.
   let said = {};
   const tags = new Map();
@@ -5304,7 +5323,7 @@ function seasonStats(sz, gid) {
   const gmap = gmapOf(sz.groups || A.groups);
   // Whom a meeting called: its groups (as kept with its attendance), or some of their sections for a sectional.
   const called = (m, x) => isCalled(m, { call: x.call || null }, { groups: Array.isArray(x.groups) && x.groups.length ? x.groups : [MAIN] }, gmap);
-  const rows = (sz.members || []).filter(m => !gid || inGroup(m, gid)).map(m => {
+  const rows = (sz.members || []).filter(m => !isLead(m) && (!gid || inGroup(m, gid))).map(m => {
     const c = { p: 0, l: 0, e: 0, a: 0 };
     for (const x of taken) { const k = x.marks[m.id]; if (own(c, k)) c[k]++; }
     const of = c.p + c.l + c.a, last2 = taken.filter(x => called(m, x)).slice(-2);
@@ -5626,8 +5645,8 @@ function drawPage() {
   // Every page sits on one framed sheet of parchment; members' pages open with the banner.
   const folio = h('div', { class: 'folio' });
   main.append(folio);
-  // On the day-picking page the banner hides behind a small box; the sign-in and schedule pages show it as is.
-  if (S.view !== 'admin') folio.append(buildBanner(!!S.session && !S.needLogin && S.view !== 'schedule'));
+  // The sign-in and schedule pages show the banner; the day-picking page has none, so the calendar comes first.
+  if (S.view !== 'admin' && !(S.session && !S.needLogin && S.view !== 'schedule')) folio.append(buildBanner());
   if (S.view === 'admin') renderAdmin(folio);
   else if (S.loading || (!S.loaded && !S.error)) folio.append(stateBlock(t('loading')));
   else if (S.error) folio.append(errorBlock(S.error, () => bootPublic()));
@@ -5638,34 +5657,16 @@ function drawPage() {
   syncTopHeight();
 }
 
-// The banner picture is the file banner.webp next to this page. It's only fetched where it shows:
-// the sign-in and schedule pages, and the day page once someone opens it.
-// One element is kept and moved between renders, so the picture never flickers.
-// On the day-picking page it starts hidden behind a small box so the calendar comes first; a press shows it until the page is reloaded.
-let bannerEl = null, bannerOpen = false, bannerBox = false;
-function buildBanner(box) {
-  bannerBox = box;
-  if (!bannerEl) {
-    const pic = h('div', { class: 'banner-pic', id: 'banner-pic', hidden: true },
-      h('img', { class: 'banner', width: '1600', height: '533', alt: '', decoding: 'async', onerror: () => { bannerEl.hidden = true; } }));
-    const btn = h('button', {
-      type: 'button', class: 'banner-toggle', 'aria-controls': 'banner-pic', 'aria-expanded': 'false',
-      onclick: () => { bannerOpen = !bannerOpen; syncBanner(); }
-    });
-    bannerEl = h('div', { class: 'banner-wrap' }, btn, pic);
-  }
-  syncBanner();
-  return bannerEl;
-}
-function syncBanner() {
-  const btn = bannerEl.firstChild, pic = bannerEl.lastChild;
-  btn.hidden = !bannerBox;
-  btn.textContent = t(bannerOpen ? 'bannerShown' : 'bannerShow');
-  btn.setAttribute('aria-expanded', String(bannerOpen));
-  pic.hidden = bannerBox && !bannerOpen;
-  const img = pic.firstChild;
+// The banner picture is the file banner.webp next to this page. It's only fetched where it shows: the sign-in and
+// schedule pages. One element is kept and moved between renders, so the picture never flickers.
+let bannerEl = null;
+function buildBanner() {
+  if (!bannerEl) bannerEl = h('div', { class: 'banner-wrap' },
+    h('img', { class: 'banner', width: '1600', height: '533', alt: '', decoding: 'async', onerror: () => { bannerEl.hidden = true; } }));
+  const img = bannerEl.firstChild;
   img.alt = t('bannerAlt');
-  if (!pic.hidden && !img.getAttribute('src')) img.src = BANNER;
+  if (!img.getAttribute('src')) img.src = BANNER;
+  return bannerEl;
 }
 
 /* ---------- Day and night */
