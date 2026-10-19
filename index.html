@@ -89,6 +89,7 @@
   --card-drop: 0 1px 2px rgb(60 36 10 / 16%);
   --quiet-hover: rgb(38 73 158 / 10%);
   --notice-edge: rgb(38 73 158 / 30%);
+  --edge-shade: rgb(60 36 10 / 30%);
   --board-tint: rgb(255 249 230 / 25%);
   --paper-shine: rgb(255 249 230 / 55%);
   --paper-burn: rgb(120 76 28 / 32%);
@@ -156,6 +157,7 @@
   --card-drop: 0 1px 2px rgb(0 0 0 / 45%);
   --quiet-hover: rgb(142 170 240 / 14%);
   --notice-edge: rgb(142 170 240 / 35%);
+  --edge-shade: rgb(255 236 200 / 16%);
   --board-tint: rgb(255 236 200 / 3%);
   --paper-shine: rgb(255 226 170 / 7%);
   --paper-burn: rgb(0 0 0 / 45%);
@@ -484,7 +486,7 @@ textarea.input { min-height: 88px; resize: vertical; line-height: 1.5; }
 .event-mon { font: 700 12px/1.2 var(--font-body); letter-spacing: 0.1em; text-transform: uppercase; color: var(--rubric-ink); }
 .event-wd { font-size: 13.5px; color: var(--ink-3); }
 .event-body { display: grid; gap: 5px; min-width: 0; }
-.event-body h3 { font-size: 19px; font-weight: 700; }
+.event-body h3, .event-body h4 { font-size: 19px; font-weight: 700; }
 .event-time { font: 600 16px/1.3 var(--font-mono); }
 .event-place, .event-note { color: var(--ink-2); }
 .event-note { white-space: pre-line; }
@@ -499,6 +501,60 @@ textarea.input { min-height: 88px; resize: vertical; line-height: 1.5; }
 .att-table .att-who { width: 100%; padding-right: 0; }
 .att-part.none .att-n, .att-part.none .att-who { color: var(--rubric-ink); font-weight: 600; }
 .sched-note { white-space: pre-line; color: var(--ink-2); max-width: 64ch; }
+.sched-head { display: grid; gap: 6px; }
+.sched-block { display: grid; gap: 12px; }
+.sched-poll { font: 700 20px/1.2 var(--font-display); }
+.pub-on { font-size: 14px; }
+.event.past { background: transparent; box-shadow: none; }
+.event.past .event-day, .event.past .event-mon { color: var(--ink-3); }
+/* Replies to a meeting: the three buttons take the colours of the answers (free, if needed, not free) */
+.reply { grid-column: 1 / -1; display: grid; gap: 8px; padding-top: 12px; border-top: 1px solid var(--rule); }
+.reply-q { font-weight: 700; font-size: 14.5px; color: var(--ink-2); }
+.reply-btns .tool { min-height: 42px; }
+.reply-btn:disabled { opacity: 0.6; cursor: progress; }
+.reply-btn[aria-pressed="true"][data-s="yes"] { background: var(--free); border-color: var(--free); color: var(--free-ink); }
+.reply-btn[aria-pressed="true"][data-s="part"] { background: var(--maybe); border-color: var(--maybe); color: var(--maybe-ink); }
+.reply-btn[aria-pressed="true"][data-s="no"] { background: var(--rubric); border-color: var(--rubric); color: #f8eed6; }
+.reply-btn[aria-pressed="true"] .sw { position: relative; background: none; border: 0; }
+.reply-btn[aria-pressed="true"] .sw::after { content: ""; position: absolute; left: 2px; top: 2px; width: 9px; height: 5px; border: solid currentColor; border-width: 0 0 2px 2px; transform: rotate(-45deg); }
+@media (max-width: 420px) { .reply-btn .sw { display: none; } .reply-btn[aria-pressed="true"] .sw { display: inline-block; width: 12px; } }
+.reply-status { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 12px; font-size: 14px; color: var(--ink-2); }
+.reply-note-text { font-style: italic; color: var(--ink-3); overflow-wrap: anywhere; }
+.reply-acts { display: inline-flex; flex-wrap: wrap; gap: 2px; margin-left: auto; }
+.reply-acts .btn.small { min-height: 32px; padding: 0 8px; }
+.reply-stale { padding: 8px 11px; border-radius: var(--r); background: var(--maybe-soft); color: var(--ink); font-size: 14px; }
+.reply-note { display: grid; gap: 6px; }
+.reply-note-row { display: flex; gap: 8px; }
+.reply-note-row .input { flex: 1; min-width: 0; min-height: 42px; }
+@media (max-width: 480px) { .reply-note-row { flex-wrap: wrap; } .reply-note-row .input { flex-basis: 100%; } .reply-note-row .btn { flex: 1; } }
+.reply-past { grid-column: 1 / -1; color: var(--ink-3); font-size: 14px; }
+/* The next meeting, on top of the member page */
+.next .eyebrow { margin-bottom: 2px; }
+.next-title { font: 700 21px/1.2 var(--font-display); }
+.next-all { grid-column: 1 / -1; justify-self: end; font-weight: 600; }
+.next.compact { display: grid; gap: 6px; padding: 12px 16px; background: var(--sheet); border: 1px solid var(--rule); border-radius: var(--r); box-shadow: var(--card-drop); }
+.next-line { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px 12px; }
+.next-when { color: var(--ink-2); }
+.next-when strong { color: var(--ink); }
+.next.compact .reply { padding-top: 4px; border-top: 0; }
+.next.compact .reply-q { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.next.compact .reply-btns .tool { min-height: 38px; }
+/* A tick after the name of someone who said they're coming */
+.att-person { white-space: nowrap; }
+.sure { display: inline-block; width: 11px; height: 6px; margin: 0 2px 4px 5px; border: solid var(--heat-5); border-width: 0 0 2px 2px; transform: rotate(-45deg); vertical-align: middle; }
+.att-hint .sure { margin-left: 2px; }
+/* Calendar subscription and the member's own attendance */
+.feed, .hist { display: grid; gap: 10px; max-width: 760px; }
+.feed h3, .hist h3 { font-size: 18px; font-weight: 700; }
+.hist-sum { font-weight: 600; }
+.hist-list { list-style: none; margin: 8px 0 0; padding: 0; display: grid; font-size: 14.5px; }
+.hist-list li { display: flex; justify-content: space-between; gap: 12px; padding: 5px 0; border-bottom: 1px solid var(--rule); }
+.mk { font-weight: 700; white-space: nowrap; }
+.mk-a { color: var(--rubric-ink); }
+.mk-e { color: var(--ink-3); }
+.hist-slot:empty { display: none; }
+summary { cursor: pointer; color: var(--accent); font-weight: 600; }
+summary:hover { text-decoration: underline; text-underline-offset: 2px; }
 
 /* Sign-in panels sit alone on a narrow sheet */
 .gate { max-width: 460px; margin: 0 auto; display: grid; gap: 14px; }
@@ -522,6 +578,8 @@ textarea.input { min-height: 88px; resize: vertical; line-height: 1.5; }
 .atab { display: inline-flex; align-items: center; gap: 7px; min-height: 46px; padding: 0 14px; margin-bottom: -1px; border: 0; border-bottom: 2px solid transparent; background: none; color: var(--ink-2); font-weight: 700; white-space: nowrap; }
 .atab:hover { color: var(--ink); }
 .atab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
+/* Five tabs don't fit a phone in one row: they wrap instead of hiding the last ones off to the side. */
+@media (max-width: 560px) { .atabs { flex-wrap: wrap; overflow-x: visible; } .atab { min-height: 40px; padding: 0 10px; } }
 .planner { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 24px; align-items: start; margin-top: 20px; }
 @media (max-width: 900px) { .planner { grid-template-columns: minmax(0, 1fr); } }
 .tray { display: grid; gap: 10px; padding: 14px; background: var(--sheet); border: 1px solid var(--rule); border-radius: var(--r); position: sticky; top: 78px; box-shadow: var(--card-drop); }
@@ -658,6 +716,67 @@ textarea.input { min-height: 88px; resize: vertical; line-height: 1.5; }
   .ev-row .f-del { grid-column: 1 / -1; justify-self: start; }
 }
 
+/* Attendance tab: replies per meeting, attendance taken, the season record */
+.att-tab { display: grid; gap: 26px; margin-top: 20px; }
+.att-cards { display: grid; gap: 12px; }
+.att-card { display: grid; gap: 8px; padding: 14px 16px; background: var(--sheet); border: 1px solid var(--rule); border-radius: var(--r); box-shadow: var(--card-drop); }
+.att-card-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 12px; }
+.att-card-head h3 { font-size: 17.5px; font-weight: 700; }
+.rep-sum { font-weight: 600; color: var(--ink-2); }
+.rep-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 16px; margin-top: 10px; }
+.rep-col h4 { margin-bottom: 6px; font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-2); }
+.rep-col ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; }
+.rep-col li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 6px; font-size: 14.5px; }
+.rep-name { font-weight: 600; }
+.rep-note { flex-basis: 100%; color: var(--ink-3); font-style: italic; font-size: 14px; overflow-wrap: anywhere; }
+.chip-s.new { min-height: 19px; padding: 0 7px; background: var(--accent); color: var(--accent-ink); font-size: 12px; }
+.person-head h3 .chip-s.new { margin-left: 8px; vertical-align: 2px; }
+.att-line { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; padding-top: 10px; border-top: 1px solid var(--rule); color: var(--ink-2); font-size: 14.5px; }
+.att-line .btn { margin-left: auto; }
+.att-line .actions { margin-left: auto; }
+.att-card.gone { background: transparent; box-shadow: none; border-style: dashed; }
+.remind { display: grid; gap: 8px; margin-top: 8px; }
+.remind-list { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 2px; }
+.remind-list li { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 14.5px; }
+.admin-bar > .notice { font-size: 14.5px; }
+.att-modal { width: min(100%, 760px); }
+.att-groups { display: grid; gap: 16px; }
+.att-group h3 { margin-bottom: 4px; font-size: 13.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--rubric-ink); }
+.att-people { list-style: none; margin: 0; padding: 0; display: grid; border-top: 1px solid var(--rule); }
+.att-people li { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 12px; padding: 7px 0; border-bottom: 1px solid var(--rule); }
+.att-who-name { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; min-width: 0; font-weight: 600; }
+.said { color: var(--ink-3); font-size: 12.5px; font-weight: 600; }
+.said:empty { display: none; }
+.said-no { color: var(--rubric-ink); }
+.marks { display: inline-flex; gap: 4px; }
+.mark-btn { min-height: 38px; min-width: 64px; padding: 0 8px; border: 1px solid var(--rule-strong); border-radius: var(--r); background: var(--btn-face); box-shadow: var(--bevel); color: var(--ink); font: 600 13.5px/1 var(--font-body); }
+.mark-btn:hover { border-color: var(--ink-3); }
+.mark-btn[aria-pressed="true"][data-m="p"] { background: var(--free); border-color: var(--free); color: var(--free-ink); }
+.mark-btn[aria-pressed="true"][data-m="l"] { background: var(--maybe); border-color: var(--maybe); color: var(--maybe-ink); }
+.mark-btn[aria-pressed="true"][data-m="e"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.mark-btn[aria-pressed="true"][data-m="a"] { background: var(--rubric); border-color: var(--rubric); color: #f8eed6; }
+.att-guests { max-width: 180px; }
+.att-status:empty { display: none; }
+@media (max-width: 560px) {
+  .att-people li { display: grid; justify-content: stretch; }
+  .marks { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .mark-btn { min-width: 0; padding: 0 4px; }
+}
+.season { display: grid; gap: 10px; }
+.season-count { font-weight: 600; color: var(--ink-2); }
+.season-wrap { overflow-x: auto; border: 1px solid var(--rule); border-radius: var(--r); box-shadow: var(--card-drop);
+  background: linear-gradient(to left, var(--sheet) 40%, transparent) right center / 32px 100% no-repeat local,
+    radial-gradient(farthest-side at 100% 50%, var(--edge-shade), transparent) right center / 14px 100% no-repeat scroll, var(--sheet); }
+.season-table tbody th, .season-table thead th:first-child { position: sticky; left: 0; z-index: 1; background: var(--sheet); }
+@media (max-width: 560px) { .season-table tbody th { white-space: normal; min-width: 7.5em; max-width: 10em; } .risk-tag { display: inline-block; margin: 2px 0 0; } }
+.season-table { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+.season-table th, .season-table td { padding: 7px 10px; border-bottom: 1px solid var(--rule); text-align: left; white-space: nowrap; }
+.season-table thead th { color: var(--ink-3); font-size: 12.5px; letter-spacing: 0.05em; text-transform: uppercase; }
+.season-table .num { text-align: right; font-variant-numeric: lining-nums tabular-nums !important; }
+.season-table tbody th { font-weight: 600; }
+.season-table tr.risk th { color: var(--rubric-ink); }
+.risk-tag { margin-left: 8px; padding: 1px 7px; border-radius: 999px; background: var(--danger-soft); color: var(--danger); font-size: 12px; font-weight: 700; }
+
 /* Dialogs are framed sheets too; toasts are small dark plaques */
 .backdrop { position: fixed; inset: 0; z-index: 80; display: flex; overflow-y: auto; background: var(--scrim); padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
 .modal {
@@ -667,6 +786,7 @@ textarea.input { min-height: 88px; resize: vertical; line-height: 1.5; }
   box-shadow: var(--frame), inset 0 0 0 1px var(--paper-edge), inset 0 0 44px var(--paper-burn), var(--shadow);
 }
 .modal h2 { font: 700 27px/1.15 var(--font-display); }
+.modal > form { display: grid; gap: 18px; min-width: 0; }
 .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
 .form-grid .full { grid-column: 1 / -1; }
 @media (max-width: 560px) { .form-grid { grid-template-columns: minmax(0, 1fr); } }
@@ -675,6 +795,8 @@ fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
 .daypick label { display: inline-flex; align-items: center; gap: 6px; min-height: 38px; padding: 0 12px; border: 1px solid var(--rule-strong); border-radius: var(--r); background: var(--btn-face); cursor: pointer; }
 .daypick input, .switch-row input { accent-color: var(--accent); width: 17px; height: 17px; }
 .switch-row { display: inline-flex; align-items: center; gap: 10px; font-weight: 600; }
+.del-att { flex-basis: 100%; font-weight: 450; }
+.del-att input { accent-color: var(--danger); width: 17px; height: 17px; flex: none; }
 .modal-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
 .modal-foot .end { margin-left: auto; display: flex; gap: 8px; }
 .toasts { position: fixed; left: 50%; bottom: calc(96px + env(safe-area-inset-bottom, 0px)); z-index: 90; display: grid; gap: 8px; width: min(calc(100% - 32px), 460px); transform: translateX(-50%); pointer-events: none; }
@@ -687,6 +809,13 @@ fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
 <div id="app"><p class="boot">Provala açılıyor…</p></div>
 <noscript><p class="boot">Provala'yı kullanmak için tarayıcıda JavaScript açık olmalı. / Provala needs JavaScript turned on.</p></noscript>
 <div id="toasts" class="toasts" aria-live="polite"></div>
+<script>
+/* ================================================================
+   SETUP: paste the web app URL from Apps Script here.
+   (Deploy → Manage deployments → Web app URL, it ends with /exec)
+   ================================================================ */
+var API_URL = 'https://script.google.com/macros/s/AKfycbzjxxXx_t5JqctCYV3iDAjsd-ouDi9iYZJujIihngBq23nIUydWVgRaTX37BLavh1eSBQ/exec';
+</script>
 <script>
 /* Safety net, written in old-style JavaScript so any browser runs it. If the page can't start, or drawing it
    fails, this shows what happened and two ways out instead of an empty page:
@@ -713,7 +842,25 @@ fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
     b.onclick = act;
     return b;
   }
-  window.provalaFail = function (err) {
+  // What went wrong on a member's device is sent to the backend, so it can be fixed without anyone having to
+  // describe it: the error and the browser, never names, answers or anything typed. At most three per page load,
+  // and nothing at all without a backend address (as in the demo).
+  var VERSION = '2026-10-r1', sent = 0, seen = {};
+  window.provalaReport = function (err, where) {
+    try {
+      var url = typeof window.API_URL === 'string' ? window.API_URL.replace(/^\s+|\s+$/g, '') : '';
+      var msg = String((err && err.message) || err || '').slice(0, 300);
+      if (!url || !msg || sent >= 3 || seen[msg]) return;
+      seen[msg] = true;
+      sent++;
+      var body = JSON.stringify({ action: 'report', msg: msg, stack: String((err && err.stack) || '').slice(0, 1500),
+        where: String(where || ''), ua: String(navigator.userAgent || '').slice(0, 200), v: VERSION });
+      if (window.fetch) window.fetch(url, { method: 'POST', body: body, keepalive: true, headers: { 'Content-Type': 'text/plain;charset=utf-8' } })['catch'](function () {});
+      else { var x = new XMLHttpRequest(); x.open('POST', url, true); x.setRequestHeader('Content-Type', 'text/plain;charset=utf-8'); x.send(body); }
+    } catch (e) { /* reporting must never get in the way */ }
+  };
+  window.provalaFail = function (err, where) {
+    window.provalaReport(err || 'Nothing drawn after 10 seconds', where || (window.provalaUp ? 'render' : 'start'));
     var t = T[lang()];
     var app = document.getElementById('app');
     if (!app) return;
@@ -737,11 +884,11 @@ fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
     try { console.error('Provala:', err); } catch (e) { /* no console */ }
   };
   // Before the page is up, any uncaught error (including a browser too old to read the main script) shows the message.
-  window.addEventListener('error', function (e) { if (!window.provalaUp) window.provalaFail(e.error || e.message); });
+  window.addEventListener('error', function (e) { if (!window.provalaUp) window.provalaFail(e.error || e.message, 'start'); });
   // And if, somehow, nothing has been drawn after a while, say so too.
   setTimeout(function () {
     var app = document.getElementById('app');
-    if (!window.provalaUp && app && app.querySelector('.boot')) window.provalaFail(null);
+    if (!window.provalaUp && app && app.querySelector('.boot')) window.provalaFail(null, 'stuck');
   }, 10000);
 })();
 </script>
@@ -749,15 +896,11 @@ fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
 (function () {
 'use strict';
 
-/* ================================================================
-   SETUP: paste the web app URL from Apps Script here.
-   (Deploy → Manage deployments → Web app URL, it ends with /exec)
-   While it's empty, the page runs as a demo with sample people.
-   ================================================================ */
-const API_URL = 'https://script.google.com/macros/s/AKfycbzjxxXx_t5JqctCYV3iDAjsd-ouDi9iYZJujIihngBq23nIUydWVgRaTX37BLavh1eSBQ/exec';
-
+// The backend's address is set in the small script above (SETUP). The demo build instead runs the real Code.gs
+// inside the page, on a stand-in for Google Sheets kept in this browser (window.ProvalaDemo).
+const API_URL = typeof window.API_URL === 'string' ? window.API_URL.trim() : '';
 const APP_NAME = 'Provala';
-const isDemo = !API_URL;
+const isDemo = !!window.ProvalaDemo;
 const framed = (function () { try { return window.self !== window.top; } catch (e) { return true; } })();
 
 /* ---------------------------------------------------------------- helpers */
@@ -977,7 +1120,58 @@ const T = {
     cancel: 'Cancel', savePoll: 'Save poll', createPoll: 'Create poll', deletePoll: 'Delete poll',
     confirmDeletePoll: ({ n }) => "Delete this poll and its " + n + " answers? This can't be undone.",
     pollSaved: 'Poll saved', pollDeleted: 'Poll deleted', nowCurrent: 'Members now see this poll', linkCopied: 'Member link copied',
-    csvName: 'Name', csvUpdated: 'Updated', csvDate: 'Date', csvDay: 'Day', csvFree: 'Available', csvMaybe: 'If needed', csvNote: 'Day note', csvComment: 'Comment'
+    csvName: 'Name', csvUpdated: 'Updated', csvDate: 'Date', csvDay: 'Day', csvFree: 'Available', csvMaybe: 'If needed', csvNote: 'Day note', csvComment: 'Comment',
+    // Replies to meetings (members)
+    replyAsk: 'Are you coming?', replyYes: 'Coming', replyPart: 'Partly', replyNo: "Can't come",
+    replyMine: 'Your reply: {s}', replySending: 'Sending…', replySaved: 'Reply sent', replyTaken: 'Reply taken back', replyNoteSaved: 'Note sent',
+    replyStale: 'The day or time changed after you replied (you said: {s}). Please reply again.',
+    replyUndo: 'Take back', replyNoteAdd: 'Add a note for your conductor', replyNoteEdit: 'Edit note',
+    replyNoteLabel: 'Note for your conductor (optional)', replyNoteSend: 'Send note', replyYourNote: 'Your note: {note}',
+    replyPhYes: 'For example: I may be 10 minutes late.', replyPhPart: 'For example: I can come from 19:30.', replyPhNo: "For example: I'm away that week.",
+    replyPrivacy: 'Your name is on a meeting’s list when you say you’re coming, or when your poll answer says you can come. Say “Partly” or “Can’t come” and it leaves the list; what you said and your notes only your conductor sees.',
+    errPast: 'This meeting is over, so replies are closed.', errNoEvent: 'This meeting is no longer on the schedule.',
+    errNoUrl: 'This page doesn’t have the planner’s address yet: paste the Apps Script web app URL into the API_URL line of index.html.',
+    attHint2: 'Worked out from the poll answers and from the replies to each meeting.', sureLegend: ': said they’re coming.', sureTitle: 'Said they’re coming',
+    nextTitle: 'Next meeting', today: 'Today', tomorrow: 'Tomorrow', allMeetings: 'All dates',
+    histTitle: 'Your attendance this season', histLine: 'Came {p} · Late {l} · Excused {e} · Absent {a}', histMore: 'Show the meetings',
+    markP: 'Came', markL: 'Came late', markE: 'Excused', markA: 'Absent',
+    feedTitle: 'Get the dates in your calendar',
+    feedText: 'Subscribe once and new or changed meetings show up in your phone’s calendar by themselves. Changes arrive within a few hours (Google Calendar can take up to a day).',
+    feedGet: 'Subscribe', feedApple: 'iPhone, iPad or Mac', feedGoogle: 'Google Calendar', feedCopy: 'Copy the link',
+    feedAndroid: 'If the Google Calendar button doesn’t work on your phone (often on Android): copy the link, open calendar.google.com on a computer, press + next to “Other calendars”, choose “From URL” and paste it. It then shows on your phone too.',
+    feedOther: 'Another calendar app? Add the copied link as a subscription (“from URL”).',
+    feedPrivate: 'This link is just for you (it shows your replies too), so please don’t share it.',
+    feedRenew: 'Make a new link', feedRenewAsk: 'The old link stops working, and calendars subscribed with it stop updating.',
+    feedRenewed: 'New link ready. Subscribe again with it.', feedDemo: 'This doesn’t work in the demo.',
+    // Attendance (organizer)
+    tabAtt: 'Attendance',
+    attNoSchedTitle: 'Nothing published yet', attNoSched: 'Once you publish the schedule, members can reply to each meeting, and you can take attendance here.',
+    repSum: 'Coming {y} · Partly {p} · Can’t come {n} · No reply {w}', repDetails: 'Who said what',
+    repYes: 'Coming', repPart: 'Partly', repNo: "Can't come", repNone: 'No reply yet', repStale: 'before the day or time changed: {s}', repNobody: 'nobody',
+    remindTr: 'Copy reminder (TR)', remindEn: 'Copy reminder (EN)', remindEach: 'Messages one by one', remindOne: 'Message', remindOneFor: 'Copy a message for {name}',
+    remPollAll: ({ title, date, url }) => 'Hi all! A quick reminder for anyone who hasn’t filled in the ' + title + ' poll yet' + (date ? ': please answer by ' + date : '') + '. Here’s the link:\n' + url,
+    remPollOne: ({ name, title, date, url }) => 'Hi ' + name + '! Don’t forget to fill in the ' + title + ' poll' + (date ? ' by ' + date : '') + ':\n' + url,
+    remMeetAll: ({ what, when, url }) => 'Hi all! ' + what + ', ' + when + '. If you haven’t replied yet, please say here whether you can come:\n' + url,
+    remMeetOne: ({ name, what, when, url }) => 'Hi ' + name + '! ' + what + ', ' + when + '. Can you make it? You can reply here:\n' + url,
+    attTake: 'Take attendance', attEditBtn: 'Edit attendance', attNotTaken: 'Attendance not taken yet', attLater: 'Attendance opens on the day of the meeting.',
+    attTaken: 'Came {p} · Late {l} · Excused {e} · Absent {a}', attGuestsN: '+ {n} guests',
+    attDialog: 'Attendance: {when}', attFill: 'Fill in from replies', attRest: 'Mark the rest as came', attClear: 'Clear',
+    attFillHint: '“Coming” becomes Came and “Can’t come” becomes Excused; you mark the rest.',
+    attGuests: 'Guests', attUnmarked: ({ n }) => (n === 1 ? '1 person is' : n + ' people are') + ' not marked, and won’t be recorded for this meeting.',
+    attSave: 'Save attendance', attSaved: 'Attendance saved',
+    attDiscardAsk: 'Some marks aren’t saved yet. Closing loses them.', attDiscard: 'Close without saving', attKeepMarking: 'Keep marking',
+    attCleared: 'Nothing marked, so this meeting has no attendance now',
+    attOrphan: 'This meeting is no longer on the schedule. Its attendance stays in the season record until you delete it.',
+    attDelete: 'Delete this attendance', attDeleteAsk: 'Delete this meeting’s attendance? It also leaves the season record and members’ history.', attDeleted: 'Attendance deleted',
+    delPollAtt: ({ n }) => 'Also delete its attendance (' + n + (n === 1 ? ' meeting' : ' meetings') + '). Otherwise it stays in the season record.',
+    markShortP: 'Came', markShortL: 'Late', markShortE: 'Excused', markShortA: 'Absent',
+    seasonTitle: 'Season record', seasonShow: 'Show this season',
+    seasonHint: 'Attendance from 1 September, across every poll. The percentage is the meetings someone came to (late included) out of those they came to or missed; excused ones don’t count.',
+    seasonNone: 'No attendance taken this season yet.', seasonCount: ({ n }) => n + (n === 1 ? ' meeting' : ' meetings') + ' with attendance taken',
+    seasonRisk: 'missed the last two', seasonCsv: 'Download CSV', colName: 'Name', colPart: 'Part', colPct: '%',
+    sinceTitle: 'Since your last visit ({ago}): ', sinceAnswers: ({ n }) => n + (n === 1 ? ' new or changed answer' : ' new or changed answers'),
+    sinceReplies: ({ n }) => n + (n === 1 ? ' reply to meetings' : ' replies to meetings'), newBadge: 'new',
+    errorsNotice: ({ n }) => 'The page ran into ' + (n === 1 ? 'a problem' : n + ' problems') + ' on members’ devices. The details are in the Errors sheet of your spreadsheet.', dismiss: 'OK',
   },
   tr: {
     docTitle: 'Provala',
@@ -1126,7 +1320,58 @@ const T = {
     cancel: 'Vazgeç', savePoll: 'Anketi kaydet', createPoll: 'Anketi oluştur', deletePoll: 'Anketi sil',
     confirmDeletePoll: ({ n }) => 'Bu anket ve ' + n + ' yanıtı silinsin mi? Bu işlem geri alınamaz.',
     pollSaved: 'Anket kaydedildi', pollDeleted: 'Anket silindi', nowCurrent: 'Üyeler artık bu anketi görüyor', linkCopied: 'Üye bağlantısı kopyalandı',
-    csvName: 'Ad', csvUpdated: 'Güncellendi', csvDate: 'Tarih', csvDay: 'Gün', csvFree: 'Uygun', csvMaybe: 'Gerekirse', csvNote: 'Gün notu', csvComment: 'Yorum'
+    csvName: 'Ad', csvUpdated: 'Güncellendi', csvDate: 'Tarih', csvDay: 'Gün', csvFree: 'Uygun', csvMaybe: 'Gerekirse', csvNote: 'Gün notu', csvComment: 'Yorum',
+    // Buluşmalara yanıtlar (üyeler)
+    replyAsk: 'Geliyor musunuz?', replyYes: 'Geliyorum', replyPart: 'Kısmen', replyNo: 'Gelemiyorum',
+    replyMine: 'Yanıtınız: {s}', replySending: 'Gönderiliyor…', replySaved: 'Yanıtınız iletildi', replyTaken: 'Yanıtınız geri alındı', replyNoteSaved: 'Notunuz iletildi',
+    replyStale: 'Yanıtınızdan sonra buluşmanın günü ya da saati değişti (önceki yanıtınız: {s}). Lütfen yeniden yanıtlayın.',
+    replyUndo: 'Yanıtı geri al', replyNoteAdd: 'Şefinize not ekleyin', replyNoteEdit: 'Notu düzenle',
+    replyNoteLabel: 'Şefinize not (isteğe bağlı)', replyNoteSend: 'Notu gönder', replyYourNote: 'Notunuz: {note}',
+    replyPhYes: 'Örneğin: 10 dakika gecikebilirim.', replyPhPart: 'Örneğin: 19.30’dan itibaren gelebilirim.', replyPhNo: 'Örneğin: O hafta şehir dışındayım.',
+    replyPrivacy: 'Adınız, “Geliyorum” dediğinizde ya da anket yanıtınıza göre gelebildiğinizde buluşmanın listesinde görünür. “Kısmen” ya da “Gelemiyorum” derseniz listeden çıkar; ne dediğinizi ve notlarınızı yalnızca şefiniz görür.',
+    errPast: 'Bu buluşma geçti, artık yanıt verilemiyor.', errNoEvent: 'Bu buluşma artık takvimde yok.',
+    errNoUrl: 'Bu sayfaya planlayıcının adresi henüz yazılmamış: index.html’deki API_URL satırına Apps Script’in Web uygulaması adresini yapıştırın.',
+    attHint2: 'Liste anket yanıtlarına ve buluşmalara verilen yanıtlara göre hazırlanır.', sureLegend: ': “Geliyorum” dedi.', sureTitle: '“Geliyorum” dedi',
+    nextTitle: 'Sıradaki buluşma', today: 'Bugün', tomorrow: 'Yarın', allMeetings: 'Tüm tarihler',
+    histTitle: 'Bu sezon katılımınız', histLine: 'Geldi {p} · Geç {l} · İzinli {e} · Gelmedi {a}', histMore: 'Buluşmaları göster',
+    markP: 'Geldi', markL: 'Geç geldi', markE: 'İzinli', markA: 'Gelmedi',
+    feedTitle: 'Tarihleri takviminize ekleyin',
+    feedText: 'Bir kez abone olun; yeni ya da değişen buluşmalar telefonunuzun takvimine kendiliğinden gelir. Değişiklikler birkaç saat içinde görünür (Google Takvim’de bir güne kadar sürebilir).',
+    feedGet: 'Abone ol', feedApple: 'iPhone, iPad ya da Mac', feedGoogle: 'Google Takvim', feedCopy: 'Bağlantıyı kopyala',
+    feedAndroid: 'Google Takvim düğmesi telefonunuzda işe yaramazsa (Android’de çoğu zaman böyle): bağlantıyı kopyalayın, bir bilgisayarda calendar.google.com’u açıp “Diğer takvimler”in yanındaki + düğmesinden “URL ile” deyin ve yapıştırın. Takvim telefonunuzda da görünür.',
+    feedOther: 'Başka bir takvim uygulaması mı kullanıyorsunuz? Kopyaladığınız bağlantıyı abonelik olarak (“URL ile”) ekleyin.',
+    feedPrivate: 'Bu bağlantı yalnızca size özel (yanıtlarınızı da gösterir), lütfen kimseyle paylaşmayın.',
+    feedRenew: 'Yeni bağlantı oluştur', feedRenewAsk: 'Eski bağlantı çalışmaz olur, onunla abone olunan takvimler de artık güncellenmez.',
+    feedRenewed: 'Yeni bağlantı hazır. Bununla yeniden abone olun.', feedDemo: 'Demoda bu özellik çalışmaz.',
+    // Katılım (şef)
+    tabAtt: 'Katılım',
+    attNoSchedTitle: 'Henüz yayımlanan bir şey yok', attNoSched: 'Takvimi yayımladığınızda üyeler her buluşmaya yanıt verebilir, siz de yoklamayı buradan alırsınız.',
+    repSum: 'Geliyor {y} · Kısmen {p} · Gelemiyor {n} · Yanıtsız {w}', repDetails: 'Kim ne dedi',
+    repYes: 'Geliyor', repPart: 'Kısmen', repNo: 'Gelemiyor', repNone: 'Henüz yanıt vermeyenler', repStale: 'gün ya da saat değişmeden önce: {s}', repNobody: 'kimse yok',
+    remindTr: 'Hatırlatmayı kopyala (TR)', remindEn: 'Hatırlatmayı kopyala (EN)', remindEach: 'Kişiye özel mesajlar', remindOne: 'Mesaj', remindOneFor: '{name} için mesajı kopyala',
+    remPollAll: ({ title, date, url }) => 'Merhaba! ' + title + ' anketini henüz doldurmayanlar için küçük bir hatırlatma' + (date ? ': son gün ' + date : '') + '. Buradan doldurabilirsiniz:\n' + url,
+    remPollOne: ({ name, title, date, url }) => 'Merhaba ' + name + '! ' + title + ' anketini doldurmayı unutma' + (date ? ', son gün ' + date : '') + ':\n' + url,
+    remMeetAll: ({ what, when, url }) => 'Merhaba! ' + what + ', ' + when + '. Gelip gelemeyeceğinizi henüz yazmadıysanız buradan yanıtlayabilirsiniz:\n' + url,
+    remMeetOne: ({ name, what, when, url }) => 'Merhaba ' + name + '! ' + what + ', ' + when + '. Gelebilecek misin? Buradan yanıtlayabilirsin:\n' + url,
+    attTake: 'Yoklama al', attEditBtn: 'Yoklamayı düzenle', attNotTaken: 'Yoklama henüz alınmadı', attLater: 'Yoklama buluşma günü açılır.',
+    attTaken: 'Geldi {p} · Geç {l} · İzinli {e} · Gelmedi {a}', attGuestsN: '+ {n} misafir',
+    attDialog: 'Yoklama: {when}', attFill: 'Yanıtlara göre doldur', attRest: 'Kalanları “Geldi” yap', attClear: 'Temizle',
+    attFillHint: '“Geliyorum” diyenler Geldi, “Gelemiyorum” diyenler İzinli olur; gerisini siz işaretlersiniz.',
+    attGuests: 'Misafir', attUnmarked: ({ n }) => n + ' kişi işaretlenmedi; işaretlenmeyenler bu buluşma için kayda geçmez.',
+    attSave: 'Yoklamayı kaydet', attSaved: 'Yoklama kaydedildi',
+    attDiscardAsk: 'Kaydedilmemiş işaretler var. Kapatırsanız silinir.', attDiscard: 'Kaydetmeden kapat', attKeepMarking: 'İşaretlemeye devam et',
+    attCleared: 'Kimse işaretlenmedi; bu buluşmanın yoklaması kaldırıldı',
+    attOrphan: 'Bu buluşma artık takvimde değil. Yoklaması siz silene kadar sezon kaydında kalır.',
+    attDelete: 'Yoklamayı sil', attDeleteAsk: 'Bu buluşmanın yoklaması silinsin mi? Sezon kaydından ve üyelerin geçmişinden de çıkar.', attDeleted: 'Yoklama silindi',
+    delPollAtt: ({ n }) => 'Yoklamalarını da sil (' + n + ' buluşma). İşaretlemezseniz sezon kaydında kalır.',
+    markShortP: 'Geldi', markShortL: 'Geç', markShortE: 'İzinli', markShortA: 'Gelmedi',
+    seasonTitle: 'Sezon kaydı', seasonShow: 'Bu sezonu göster',
+    seasonHint: '1 Eylül’den bu yana, bütün anketlerin yoklamaları. Yüzde: kişinin geldiği buluşmalar (geç gelinenler dahil), geldiği ve gelmediği buluşmaların toplamına bölünür; izinli olunanlar sayılmaz.',
+    seasonNone: 'Bu sezon henüz yoklama alınmadı.', seasonCount: ({ n }) => 'Yoklama alınan ' + n + ' buluşma',
+    seasonRisk: 'son ikisine gelmedi', seasonCsv: 'CSV indir', colName: 'Ad', colPart: 'Ses grubu', colPct: '%',
+    sinceTitle: 'Son ziyaretinizden ({ago}) bu yana: ', sinceAnswers: ({ n }) => n + ' yeni ya da değişen yanıt',
+    sinceReplies: ({ n }) => 'buluşmalara ' + n + ' yanıt', newBadge: 'yeni',
+    errorsNotice: ({ n }) => 'Sayfa, üyelerin cihazlarında ' + n + ' kez sorunla karşılaştı. Ayrıntılar e-tablonuzdaki Errors sayfasında.', dismiss: 'Tamam',
   }
 };
 
@@ -1154,6 +1399,9 @@ const S = {
   lang: initialLang(), mode: initialMode(), view: 'member',
   loaded: false, loading: false, error: null,
   poll: null, schedule: null, group: null, attend: null,
+  // Release 1: the member's own replies to the shown poll's meetings, other polls' meetings still to come, and
+  // what the backend can do (an older Code.gs sends none of these, and the page then shows none of it).
+  replies: {}, more: [], caps: [], history: null, feed: '',
   pollParam: new URLSearchParams(location.search).get('p') || '',
   // Members sign in; the sign-in is remembered on this device until they sign out.
   session: store.get('tutti-session') || '', member: null, needLogin: false, loginErr: '', loginUser: ''
@@ -1314,61 +1562,19 @@ function bestPairs(wins, gap) {
   return out;
 }
 
-/* ---------- What members see of each other: the same rules as Code.gs (the demo and the planner use them).
-   Never notes or comments. Without names: how many people are free (or free if needed) on each day and time,
-   once answers from GROUP_MIN other people count, updated once a day so nobody can read someone's times off
-   the change right after they send. By name: for each published rehearsal, who can come for all of it, by part. */
-const GROUP_MIN = 5;
+/* ---------- Who can come to a meeting, by voice part: the same rule as Code.gs's attendFor_, so the planner's
+   schedule editor shows the part counts members will see once the meeting is published. */
 const PARTS = ['S', 'A', 'T', 'B'];
 const partOf = m => (m && PARTS.indexOf(m.part) !== -1 ? m.part : '');
 const partName = (part, all) => t(part ? 'part' + part : all ? 'partAll' : 'partNone');
-// The answers that count: this poll's, from people who are still members. Names, parts and times only:
-// `avail` is the answer now (for rehearsal lists), `counted` as it stood at the start of `today` (for the numbers).
-function answersOf(p, responses, ms, today) {
+// This poll's answers from people who are still members: names, parts and times only.
+function answersOf(p, responses, ms) {
   const byId = new Map(ms.map(x => [x.id, x]));
   const out = [];
   for (const d of responses) {
     const who = d.pollId === p.id && d.memberId ? byId.get(d.memberId) : null;
-    if (who) out.push({ id: who.id, name: who.name, part: partOf(who), avail: d.avail || {}, counted: today ? countedAvail(d, today, p) : null });
+    if (who) out.push({ id: who.id, name: who.name, part: partOf(who), avail: d.avail || {} });
   }
-  return out;
-}
-function countedAvail(d, today, p) {
-  const changed = d.updated ? dayOf(new Date(d.updated), p) : '';
-  if (changed && changed < today) return d.avail || {};
-  if (d.base && d.base.day === today) return d.base.avail || {};
-  return null;
-}
-// The calendar day (yyyy-mm-dd) of a moment, in the poll's time zone.
-function dayOf(date, p) {
-  if (!date || isNaN(date.getTime())) return '';
-  try { return new Intl.DateTimeFormat('en-CA', { timeZone: (p && p.tz) || 'Europe/Istanbul', year: 'numeric', month: '2-digit', day: '2-digit' }).format(date); }
-  catch (e) { return date.toISOString().slice(0, 10); }
-}
-const hasTimes = (av, p) => Object.keys(av).some(d => allowed(p, d) && /^\d{4}-\d{2}-\d{2}$/.test(d) && typeof av[d] === 'string' && av[d].length === slotCount(p) && /[12]/.test(av[d]));
-function groupOf(p, rs, viewerId) {
-  const use = rs.filter(r => r.counted && hasTimes(r.counted, p));
-  const others = use.filter(r => r.id !== viewerId).length;
-  const out = { answered: use.length, others, min: GROUP_MIN, days: null };
-  if (others < GROUP_MIN) return out;
-  const n = slotCount(p), L = Math.max(1, Math.ceil((p.duration || 120) / p.slot));
-  const dates = new Set();
-  for (const r of use) for (const d of Object.keys(r.counted)) if (/^\d{4}-\d{2}-\d{2}$/.test(d) && allowed(p, d)) dates.add(d);
-  const days = {};
-  for (const d of Array.from(dates).sort()) {
-    const free = Array(n).fill(0), maybe = Array(n).fill(0), whole = Array(Math.max(0, n - L + 1)).fill(0);
-    for (const r of use) {
-      const s = r.counted[d];
-      if (typeof s !== 'string' || s.length !== n) continue;
-      let run = 0;
-      for (let i = 0; i < n; i++) {
-        if (s[i] === '2') { free[i]++; run++; } else { run = 0; if (s[i] === '1') maybe[i]++; }
-        if (run >= L) whole[i - L + 1]++;
-      }
-    }
-    days[d] = { free, maybe, best: whole.length ? Math.max(...whole) : 0 };
-  }
-  out.days = days;
   return out;
 }
 function windowState(str, s, e, n) {
@@ -1377,21 +1583,38 @@ function windowState(str, s, e, n) {
   for (let i = s; i < e; i++) { if (str[i] === '1') st = 1; else if (str[i] !== '2') return 0; }
   return st;
 }
-function attendOf(p, events, rs, ms) {
+// A reply belongs to the meeting as it was when given: a changed day or time asks again (as in Code.gs).
+const fpOf = ev => ev.date + '|' + ev.start + '|' + ev.end;
+const REPLY_S = { yes: 1, part: 1, no: 1 };
+const own = (o, k) => typeof k === 'string' && Object.prototype.hasOwnProperty.call(o, k);
+const validReply = (r, ev) => (r && own(REPLY_S, r.s) && r.fp === fpOf(ev) ? r : null);
+// rp: memberId -> { eventId: reply } for this poll.
+function attendOf(p, events, rs, ms, rp) {
+  rp = rp || {};
   const n = slotCount(p);
   const used = PARTS.filter(pt => ms.some(x => partOf(x) === pt));
   const keys = used.concat(['']), keyOf = part => (used.length ? part : '');
+  const avail = {};
+  for (const r of rs) avail[r.id] = r.avail;
   return (events || []).map(ev => {
-    if (!allowed(p, ev.date) || ev.start < p.dayStart || ev.end > p.dayEnd) return { id: ev.id, parts: null };
+    const inside = allowed(p, ev.date) && ev.start >= p.dayStart && ev.end <= p.dayEnd;
     const s = Math.floor((ev.start - p.dayStart) / p.slot), e = Math.ceil((ev.end - p.dayStart) / p.slot);
     const groups = {};
-    for (const k of keys) groups[k] = { part: k, yes: [], of: 0 };
-    for (const x of ms) groups[keyOf(partOf(x))].of++;
-    for (const r of rs) if (windowState(r.avail[ev.date], s, e, n) === 2) groups[keyOf(r.part)].yes.push(r.name);
+    let replied = false;
+    for (const k of keys) groups[k] = { part: k, yes: [], sure: [], of: 0 };
+    for (const x of ms) {
+      const g = groups[keyOf(partOf(x))];
+      g.of++;
+      const r = validReply(rp[x.id] && rp[x.id][ev.id], ev);
+      if (r) { if (r.s === 'yes') { g.yes.push(x.name); g.sure.push(x.name); replied = true; } continue; }
+      if (inside && windowState(avail[x.id] && avail[x.id][ev.date], s, e, n) === 2) g.yes.push(x.name);
+    }
+    if (!inside && !replied) return { id: ev.id, parts: null };
+    const byName = (a, b) => a.localeCompare(b, 'tr');
     return {
       id: ev.id,
       parts: keys.map(k => groups[k]).filter(g => g.part || g.of || g.yes.length)
-        .map(g => { g.yes.sort((a, b) => a.localeCompare(b, 'tr')); return g; })
+        .map(g => { g.yes.sort(byName); g.sure.sort(byName); return g; })
     };
   });
 }
@@ -1401,14 +1624,27 @@ class ApiError extends Error { constructor(code, message) { super(message || cod
 
 const Remote = {
   async call(method, body, params) {
+    if (isDemo) {
+      const data = await window.ProvalaDemo.call(method, body, params);
+      if (!data || !data.ok) throw new ApiError((data && data.error) || 'server_error', data && data.message);
+      return data;
+    }
+    if (!API_URL) throw new ApiError('no_url');
     let res;
     try {
-      if (method === 'GET') {
-        const q = new URLSearchParams(Object.assign({ _: String(Date.now()) }, params || {}));
-        res = await fetch(API_URL + (API_URL.indexOf('?') === -1 ? '?' : '&') + q.toString(), { method: 'GET', cache: 'no-store', redirect: 'follow' });
-      } else {
-        res = await fetch(API_URL, { method: 'POST', cache: 'no-store', redirect: 'follow', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(body) });
-      }
+      // A request that hangs (a stalled connection in a rehearsal hall, say) gives up after 45 seconds, more than
+      // Apps Script ever needs, even waiting for its lock.
+      const ctrl = typeof AbortController === 'function' ? new AbortController() : null;
+      const timer = ctrl ? setTimeout(() => ctrl.abort(), 45000) : 0;
+      const signal = ctrl ? ctrl.signal : undefined;
+      try {
+        if (method === 'GET') {
+          const q = new URLSearchParams(Object.assign({ _: String(Date.now()) }, params || {}));
+          res = await fetch(API_URL + (API_URL.indexOf('?') === -1 ? '?' : '&') + q.toString(), { method: 'GET', cache: 'no-store', redirect: 'follow', signal });
+        } else {
+          res = await fetch(API_URL, { method: 'POST', cache: 'no-store', redirect: 'follow', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(body), signal });
+        }
+      } finally { clearTimeout(timer); }
     } catch (e) { throw new ApiError('network'); }
     let data;
     try { data = await res.json(); } catch (e) { throw new ApiError('network'); }
@@ -1419,284 +1655,21 @@ const Remote = {
   state(session, p) { return this.call('POST', { action: 'state', session, p: p || '' }); },
   submit(session, b) { return this.call('POST', Object.assign({ action: 'submit', session }, b)); },
   password(session, old, next) { return this.call('POST', { action: 'password', session, old, next }); },
+  reply(session, b) { return this.call('POST', Object.assign({ action: 'reply', session }, b)); },
+  feed(session, renew) { return this.call('POST', { action: 'feed', session, renew: !!renew }); },
+  history(session) { return this.call('POST', { action: 'history', session }); },
   admin(key, op, args) { return this.call('POST', Object.assign({ action: 'admin', key, op }, args || {})); }
 };
 
-/* Usernames: lowercase ASCII, so "Ayşe" can sign in by typing "ayse" or "Ayşe" (same rule as Code.gs). */
-function userKey(u) {
-  const map = { 'ç': 'c', 'ğ': 'g', 'ı': 'i', 'ö': 'o', 'ş': 's', 'ü': 'u' };
-  return String(u || '').trim().toLowerCase().replace(/[çğıöşü]/g, c => map[c]).normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9]+/g, '.').replace(/^\.+|\.+$/g, '').slice(0, 40);
-}
-function usernameFor(name, taken) {
-  const parts = userKey(name).split('.').filter(Boolean);
-  const first = parts[0] || 'uye';
-  const options = [first];
-  if (parts.length > 1) options.push(first + '.' + parts[parts.length - 1][0], first + '.' + parts[parts.length - 1]);
-  for (const o of options) if (!taken.has(o)) return o;
-  for (let n = 2; ; n++) if (!taken.has(first + n)) return first + n;
-}
-
-/* Demo: the same API, kept in this browser, with sample people.
-   A rule is [weekdays, from, to, 2 = available | 1 = if needed, optional note for those days]. */
-const DEMO_PEOPLE = [
-  { name: 'Ayşe Demir', part: 'S', lang: 'tr', rules: [[[1, 2, 3, 4], '18:00', '22:00', 2], [[5], '18:00', '20:00', 1, 'Cuma iş çıkışı yetişmek zor, gerekirse gelirim.'], [[6], '11:00', '17:00', 2]],
-    off: { '2026-11-12': 'İş seyahatindeyim, gelemem.' }, comment: 'Salı ve perşembe akşamları benim için en rahatı.' },
-  { name: 'Mehmet Kaya', part: 'B', lang: 'tr', rules: [[[2, 3, 4], '19:00', '23:30', 2], [[0], '14:00', '18:00', 1, 'Pazarları ailemleyim, çok gerekirse gelirim.']],
-    off: { '2026-11-17': 'Şehir dışındayım (17–19 Kasım).', '2026-11-18': '', '2026-11-19': '' }, comment: '' },
-  { name: 'Elif Şahin', part: 'A', lang: 'tr', rules: [[[1, 2, 3, 4, 5], '17:30', '21:30', 2], [[6], '11:00', '13:00', 1, 'Cumartesi çalışıyorum, öğle arasında kaçabilirim.']],
-    off: { '2026-11-25': 'Sınavım var.' }, comment: 'Hafta sonları genelde çalışıyorum.' },
-  { name: 'Can Aydın', part: 'T', lang: 'en', rules: [[[2, 4], '18:30', '22:30', 2], [[6], '12:00', '18:00', 2], [[3], '20:00', '22:00', 1, 'Another rehearsal until 19:30, so I would be a bit tired.']],
-    comment: 'On Mondays I could join late, around 19:30, if that helps.' },
-  { name: 'Zeynep Arslan', part: 'S', lang: 'tr', rules: [[[1, 3], '18:00', '21:00', 2], [[2], '19:00', '22:00', 2], [[0], '15:00', '19:00', 2]],
-    special: { '2026-11-04': [['20:00', '21:00', 2]] }, notes: { '2026-11-04': "Bu gün ancak 20.00'den sonra gelebilirim." }, comment: '' },
-  { name: 'Deniz Öztürk', part: 'T', lang: 'tr', rules: [[[0, 1, 2, 3, 4, 6], '19:00', '23:00', 2]],
-    off: { '2026-11-10': 'Tatildeyim (10–14 Kasım).', '2026-11-11': '', '2026-11-12': '', '2026-11-13': '', '2026-11-14': '' }, comment: '' },
-  { name: 'Emre Çelik', part: 'B', lang: 'tr', rules: [[[2, 4], '18:00', '22:00', 2], [[6], '18:00', '24:00', 2]],
-    off: { '2026-11-01': '', '2026-11-02': '', '2026-11-03': 'İlk hafta çok yoğunum.', '2026-11-04': '', '2026-11-05': '', '2026-11-06': '', '2026-11-07': '' },
-    comment: 'Ayın ilk haftası çok yoğunum, sonrası rahat.' },
-  { name: 'Selin Yıldız', part: 'A', lang: 'en', rules: [[[3, 4], '18:00', '24:00', 2], [[2], '18:00', '21:00', 2], [[6], '11:00', '14:00', 2]],
-    notes: { '2026-11-26': 'Might be 15 minutes late.' }, comment: '' }
-];
-
-function demoSeed() {
-  const poll = {
-    id: 'pdemo2611b',
-    title: { tr: 'Kasım 2026 buluşmaları', en: 'November 2026 meetings' },
-    message: {
-      tr: "Kasım'da iki kez buluşacağız. Gelebileceğiniz bütün gün ve saatleri işaretleyin, gelemediğiniz günlere de kısa bir not bırakın.",
-      en: "We'll meet twice in November. Mark every day and time you could come, and leave a short note for the days you can't."
-    },
-    start: '2026-11-01', end: '2026-11-30', days: [0, 1, 2, 3, 4, 5, 6], dayStart: 660, dayEnd: 1440, slot: 30, duration: 120,
-    deadline: '2026-10-26', open: true, tz: 'Europe/Istanbul', created: '2026-10-10T09:00:00.000Z', updated: '2026-10-10T09:00:00.000Z'
-  };
-  const n = slotCount(poll);
-  const responses = DEMO_PEOPLE.map((pp, idx) => {
-    const avail = {}, notes = {};
-    for (const d of pollDates(poll)) {
-      const wd = D.wd(d);
-      let ranges;
-      if (pp.special && pp.special[d]) ranges = pp.special[d];
-      else if (pp.off && d in pp.off) ranges = [];
-      else ranges = pp.rules.filter(r => r[0].indexOf(wd) !== -1).map(r => [r[1], r[2], r[3], r[4]]);
-      if (ranges.length) {
-        const arr = Array(n).fill('0');
-        for (const r of ranges) {
-          for (let i = (toMin(r[0]) - poll.dayStart) / poll.slot; i < (toMin(r[1]) - poll.dayStart) / poll.slot; i++) if (i >= 0 && i < n) arr[i] = String(r[2]);
-          if (r[3]) notes[d] = r[3];
-        }
-        avail[d] = arr.join('');
-      }
-      if (pp.off && pp.off[d]) notes[d] = pp.off[d];
-      if (pp.notes && pp.notes[d]) notes[d] = pp.notes[d];
-    }
-    const stamp = new Date(Date.now() - (idx * 29 + 30) * 3600e3).toISOString();
-    return { id: 'rdemo' + idx, memberId: 'mdemo' + idx, pollId: poll.id, name: pp.name, lang: pp.lang, avail, notes, comment: pp.comment || '', created: stamp, updated: stamp };
-  });
-  // Every sample person has an account (password "demo"), plus "deneme" for visitors to try.
-  const taken = new Set();
-  const members = DEMO_PEOPLE.map((pp, idx) => {
-    const username = usernameFor(pp.name, taken);
-    taken.add(username);
-    return { id: 'mdemo' + idx, name: pp.name, username, part: pp.part, password: 'demo', sv: 1, created: poll.created, lastLogin: responses[idx].updated };
-  });
-  members.push({ id: 'mdemo99', name: 'Deneme Üye', username: 'deneme', part: '', password: 'demo', sv: 1, created: poll.created, lastLogin: '' });
-  return { v: 5, currentId: poll.id, polls: [poll], responses, schedules: {}, members };
-}
-
-const Demo = (function () {
-  const KEY = 'tutti-demo-v5';
-  ['tutti-demo-v1', 'tutti-demo-v2', 'tutti-demo-v3', 'tutti-demo-v4'].forEach(k => store.del(k));
-  let db = store.json(KEY);
-  if (!db || db.v !== 5) db = demoSeed();
-  const save = () => store.set(KEY, JSON.stringify(db));
-  const wait = () => sleep(150 + Math.random() * 150);
-  const find = id => db.polls.find(p => p.id === id);
-  const count = id => db.responses.filter(r => r.pollId === id).length;
-  const pub = p => ({ id: p.id, title: p.title, message: p.message, start: p.start, end: p.end, days: p.days, dayStart: p.dayStart, dayEnd: p.dayEnd, slot: p.slot, duration: p.duration, deadline: p.deadline || '', open: !!p.open, tz: p.tz || '' });
-  const state = () => ({ ok: true, polls: clone(db.polls).map(p => Object.assign(p, { answers: count(p.id) })).sort((x, y) => (x.start < y.start ? 1 : -1)), currentId: db.currentId });
-  const who = session => {
-    const m = typeof session === 'string' ? db.members.find(x => 'demo.' + x.id + '.' + x.sv === session) : null;
-    if (!m) throw new ApiError('auth_required');
-    return m;
-  };
-  const pollData = id => {
-    const p = find(id), s = db.schedules[id] || {};
-    return { ok: true, poll: clone(p), responses: clone(db.responses.filter(r => r.pollId === id)), members: memberList(), schedule: { draft: s.draft || null, published: s.published || null }, currentId: db.currentId };
-  };
-  const info = m => ({ id: m.id, name: m.name, username: m.username });
-  const stateFor = (m, pid) => {
-    const p = find(pid || db.currentId);
-    const s = p && db.schedules[p.id];
-    const mine = p ? db.responses.find(r => r.pollId === p.id && r.memberId === m.id) : null;
-    const out = { member: info(m), poll: p ? clone(pub(p)) : null, schedule: s && s.published ? clone(s.published) : null, mine: mine ? clone(mine) : null, group: null, attend: null };
-    if (!p) return out;
-    const rs = answersOf(p, db.responses, db.members, dayOf(new Date(), p));
-    out.group = groupOf(p, rs, m.id);
-    out.attend = out.schedule ? attendOf(p, out.schedule.events, rs, db.members) : null;
-    return out;
-  };
-  const memberList = () => db.members.map(m => ({ id: m.id, name: m.name, username: m.username, part: partOf(m), active: true, created: m.created || '', lastLogin: m.lastLogin || '' }))
-    .sort((x, y) => x.name.localeCompare(y.name, 'tr'));
-  const newPassword = () => {
-    const w = ['nota', 'koro', 'tempo', 'kiraz', 'limon', 'mavi', 'deniz', 'bulut', 'lale', 'vals', 'arya', 'ceviz', 'yaprak', 'fener'];
-    const r = n => crypto.getRandomValues(new Uint32Array(1))[0] % n;
-    return w[r(w.length)] + '-' + w[r(w.length)] + '-' + (10 + r(90));
-  };
-  return {
-    reset() { db = demoSeed(); save(); },
-    async login(username, password, pid) {
-      await wait();
-      const m = db.members.find(x => x.username === userKey(username));
-      if (!m || m.password !== password) throw new ApiError('bad_login');
-      m.lastLogin = new Date().toISOString();
-      save();
-      return { ok: true, session: 'demo.' + m.id + '.' + m.sv, member: info(m), state: stateFor(m, pid) };
-    },
-    async state(session, pid) {
-      await wait();
-      return Object.assign({ ok: true }, stateFor(who(session), pid));
-    },
-    async submit(session, b) {
-      await wait();
-      const m = who(session);
-      const p = find(b.pollId);
-      if (!p) throw new ApiError('no_poll');
-      if (!p.open) throw new ApiError('closed');
-      const avail = cleanAvail(b.avail, p), notes = cleanNotes(b.notes, p), comment = String(b.comment || '').trim().slice(0, 3000);
-      if (!comment && Object.keys(avail).some(d => avail[d].indexOf('1') !== -1 && !notes[d])) throw new ApiError('note_needed');
-      const now = new Date().toISOString(), today = dayOf(new Date(), p);
-      let r = db.responses.find(x => x.pollId === p.id && x.memberId === m.id);
-      if (!r) { r = { id: 'r' + rnd(10), pollId: p.id, memberId: m.id, created: now }; db.responses.push(r); }
-      else if (!r.updated || dayOf(new Date(r.updated), p) !== today) r.base = { day: today, avail: r.avail || {} };
-      Object.assign(r, { name: m.name, lang: b.lang === 'en' ? 'en' : 'tr', avail, notes, comment, updated: now });
-      save();
-      const s = db.schedules[p.id];
-      const out = { ok: true, id: r.id, updated: now };
-      if (s && s.published) out.attend = attendOf(p, s.published.events, answersOf(p, db.responses, db.members, ''), db.members);
-      return out;
-    },
-    async password(session, old, next) {
-      await wait();
-      const m = who(session);
-      if (m.password !== old) throw new ApiError('bad_password');
-      if (String(next || '').length < 6) throw new ApiError('weak_password');
-      m.password = next; m.sv++;
-      save();
-      return { ok: true, session: 'demo.' + m.id + '.' + m.sv };
-    },
-    async admin(key, op, a) {
-      await wait();
-      if (key !== 'demo') throw new ApiError('bad_key');
-      a = a || {};
-      switch (op) {
-        case 'check': return { ok: true };
-        case 'state': {
-          const out = state();
-          if (typeof a.withPoll === 'string') {
-            const pick = find(a.withPoll) ? a.withPoll : find(db.currentId) ? db.currentId : (out.polls[0] ? out.polls[0].id : '');
-            out.pollData = pick ? pollData(pick) : null;
-          }
-          return out;
-        }
-        case 'poll': {
-          if (!find(a.pollId)) throw new ApiError('no_poll');
-          return pollData(a.pollId);
-        }
-        case 'members': return { ok: true, members: memberList() };
-        case 'addMembers': {
-          const names = (a.names || []).map(x => String(x || '').trim().slice(0, 80)).filter(Boolean);
-          if (!names.length) throw new ApiError('invalid', 'names');
-          const taken = new Set(db.members.map(m => m.username));
-          const created = names.map(name => {
-            const m = { id: 'm' + rnd(10), name, username: usernameFor(name, taken), password: newPassword(), sv: 1, created: new Date().toISOString(), lastLogin: '' };
-            taken.add(m.username);
-            db.members.push(m);
-            return { id: m.id, name: m.name, username: m.username, password: m.password };
-          });
-          save();
-          return { ok: true, created, members: memberList() };
-        }
-        case 'resetMember': {
-          const m = db.members.find(x => x.id === a.id);
-          if (!m) throw new ApiError('not_found');
-          m.password = newPassword(); m.sv++;
-          save();
-          return { ok: true, created: [{ id: m.id, name: m.name, username: m.username, password: m.password }], members: memberList() };
-        }
-        case 'setPart': {
-          const m = db.members.find(x => x.id === a.id);
-          if (!m) throw new ApiError('not_found');
-          m.part = PARTS.indexOf(a.part) !== -1 ? a.part : '';
-          save();
-          return { ok: true, members: memberList() };
-        }
-        case 'removeMember': {
-          const before = db.members.length;
-          db.members = db.members.filter(m => m.id !== a.id);
-          if (db.members.length === before) throw new ApiError('not_found');
-          save();
-          return { ok: true, members: memberList() };
-        }
-        case 'savePoll': {
-          const q = a.poll || {};
-          let p = q.id ? find(q.id) : null;
-          if (q.id && !p) throw new ApiError('no_poll');
-          const answered = p && count(p.id) > 0;
-          const keep = answered ? { dayStart: p.dayStart, dayEnd: p.dayEnd, slot: p.slot, tz: p.tz } : {};
-          if (!p) { p = { id: 'p' + rnd(10), created: new Date().toISOString() }; db.polls.push(p); }
-          Object.assign(p, { title: q.title, message: q.message, start: q.start, end: q.end, days: q.days.slice().sort(), dayStart: q.dayStart, dayEnd: q.dayEnd, slot: q.slot, duration: q.duration, deadline: q.deadline || '', open: q.open !== false, tz: q.tz || 'Europe/Istanbul', updated: new Date().toISOString() }, keep);
-          if (!db.currentId) db.currentId = p.id;
-          save();
-          return { ok: true, poll: Object.assign(clone(p), { answers: count(p.id) }), currentId: db.currentId };
-        }
-        case 'setCurrent':
-          if (!find(a.pollId)) throw new ApiError('no_poll');
-          db.currentId = a.pollId; save();
-          return { ok: true, currentId: db.currentId };
-        case 'deletePoll': {
-          db.polls = db.polls.filter(p => p.id !== a.pollId);
-          db.responses = db.responses.filter(r => r.pollId !== a.pollId);
-          delete db.schedules[a.pollId];
-          if (db.currentId === a.pollId) { const rest = db.polls.slice().sort((x, y) => (x.start < y.start ? 1 : -1)); db.currentId = rest[0] ? rest[0].id : ''; }
-          save();
-          return state();
-        }
-        case 'deleteResponse': {
-          const before = db.responses.length;
-          db.responses = db.responses.filter(r => r.id !== a.id);
-          if (db.responses.length === before) throw new ApiError('not_found');
-          save();
-          return { ok: true };
-        }
-        case 'saveSchedule': {
-          const p = find(a.pollId);
-          if (!p) throw new ApiError('no_poll');
-          const s = db.schedules[p.id] || (db.schedules[p.id] = {});
-          const evs = ((a.schedule && a.schedule.events) || []).filter(e => e && e.date && e.end > e.start)
-            .map(e => ({ id: e.id || 'e' + rnd(8), date: e.date, start: e.start, end: e.end, title: e.title || '', place: e.place || '', note: e.note || '' }))
-            .sort((x, y) => (x.date === y.date ? x.start - y.start : x.date < y.date ? -1 : 1));
-          const now = new Date().toISOString();
-          s.draft = { events: evs, note: (a.schedule && a.schedule.note) || '', saved: now };
-          if (a.publish) s.published = { events: clone(evs), note: s.draft.note, at: now };
-          if (a.unpublish) s.published = null;
-          save();
-          return { ok: true, schedule: clone({ draft: s.draft, published: s.published || null }) };
-        }
-      }
-      throw new ApiError('unknown_action');
-    }
-  };
-})();
-
-const api = isDemo ? Demo : Remote;
+const api = Remote;
 
 function errText(e) {
   if (e && e.code === 'note_needed') return t('needNotes', { n: 1 });
   const map = {
     closed: 'errClosed', busy: 'errBusy', network: 'errNetwork', not_set_up: 'errNotSetUp', no_poll: 'errNoPoll', bad_key: 'badKey',
     too_large: 'errTooLarge', full: 'errFull', invalid: 'errInvalid', bad_login: 'badLogin', locked: 'locked',
-    bad_password: 'errBadPassword', weak_password: 'errWeakPassword', auth_required: 'errSignedOut', unknown_action: 'errOldBackend'
+    bad_password: 'errBadPassword', weak_password: 'errWeakPassword', auth_required: 'errSignedOut', unknown_action: 'errOldBackend',
+    past: 'errPast', no_event: 'errNoEvent', no_url: 'errNoUrl'
   };
   return t(map[e && e.code] || 'errGeneric');
 }
@@ -1782,12 +1755,14 @@ function foldLine(line) {
   out.push(cur);
   return out.join('\r\n ');
 }
-function icsText(events, p) {
+const icsText = (events, p) => icsItems(events.map(ev => [ev, p]));
+// items: [meeting, its poll] pairs, so one file can hold meetings of several polls.
+function icsItems(items) {
   const esc = s => String(s || '').replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n');
   const now = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
   const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Provala//Planner//EN', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH'];
-  for (const ev of events) {
-    lines.push('BEGIN:VEVENT', 'UID:' + ev.id + '-' + ev.date + '@provala', 'DTSTAMP:' + now, 'DTSTART:' + stamp(ev.date, ev.start), 'DTEND:' + stamp(ev.date, ev.end), 'SUMMARY:' + esc(ev.title || loc(p.title)));
+  for (const [ev, p] of items) {
+    lines.push('BEGIN:VEVENT', 'UID:' + (p && p.id ? p.id + '.' : '') + ev.id + '@provala', 'DTSTAMP:' + now, 'DTSTART:' + stamp(ev.date, ev.start), 'DTEND:' + stamp(ev.date, ev.end), 'SUMMARY:' + esc(ev.title || loc(p.title)));
     if (ev.place) lines.push('LOCATION:' + esc(ev.place));
     if (ev.note) lines.push('DESCRIPTION:' + esc(ev.note));
     lines.push('END:VEVENT');
@@ -1843,7 +1818,14 @@ function markDirty() {
 // is fetched behind it. It holds only what that member may see anyway (their own answer, the group's numbers,
 // who can come to each rehearsal), and signing out removes it (like unsent changes).
 const PAGE_KEY = 'tutti-page';
-const pageOf = st => ({ member: st.member, poll: st.poll, schedule: st.schedule, mine: st.mine, group: st.group || null, attend: st.attend || null });
+const pageOf = st => ({ member: st.member, poll: st.poll, schedule: st.schedule, mine: st.mine, group: st.group || null, attend: st.attend || null,
+  replies: st.replies || {}, more: st.more || [], caps: st.caps || [] });
+// The parts of a page copy that don't depend on answering: taken as they are.
+function takePage(st) {
+  S.member = st.member; S.poll = st.poll; S.schedule = st.schedule; S.group = st.group || null; S.attend = st.attend || null;
+  S.replies = st.replies || {}; S.more = st.more || []; S.caps = st.caps || [];
+  S.page = pageOf(st);
+}
 function keepPage(st, session, param) {
   session = session || S.session;
   if (session && st && st.member) store.set(PAGE_KEY, JSON.stringify({ s: session.slice(-16), p: param === undefined ? S.pollParam : param, st: pageOf(st) }));
@@ -1859,8 +1841,8 @@ const stable = v => JSON.stringify(v, (k, x) => (x && typeof x === 'object' && !
 function applyState(st, keepUi) {
   // A refresh of the same poll keeps the days the member has picked and the marking tool.
   const ui = keepUi && S.poll && st.poll && S.poll.id === st.poll.id ? { sel: M.sel, selBy: M.selBy, multi: M.multi, tool: M.tool } : null;
-  S.member = st.member; S.poll = st.poll; S.schedule = st.schedule; S.group = st.group || null; S.attend = st.attend || null; S.needLogin = false;
-  S.page = pageOf(st);
+  takePage(st);
+  S.needLogin = false;
   resetMember();
   if (st.mine && S.poll && st.mine.pollId === S.poll.id) applyMine(st.mine);
   if (S.poll) restoreDraft();
@@ -1889,6 +1871,7 @@ function refreshPage() {
   job.promise = (async () => {
     try {
       let st;
+      const seq = replySeq;
       try { st = pageOf(await api.state(session, param)); } catch (e) {
         if (job.gen !== pageGen) return;
         if (e.code === 'auth_required') { endSession(); S.loaded = true; S.loading = false; render(); }
@@ -1897,6 +1880,13 @@ function refreshPage() {
         return;
       }
       if (job.gen !== pageGen || S.session !== session) return;
+      if (seq !== replySeq || replyBusy.size) {
+        // A reply went out while this copy was on its way, so it may be older than the reply: ask again (once
+        // the replies are done), rather than show it and lose the reply on screen.
+        if (replyBusy.size) refetchAfterReplies = true;
+        else setTimeout(() => { if (S.session === session && job.gen === pageGen) refreshPage(); }, 0);
+        return;
+      }
       S.fetchedAt = Date.now();
       keepPage(st, session, param);
       if (!shown) { applyState(st); S.loaded = true; S.loading = false; render(); }
@@ -1915,6 +1905,11 @@ const gridOf = p => (p ? [p.id, p.dayStart, p.dayEnd, p.slot, p.open].join('|') 
 function takeFresh(st, rev) {
   if (stable(st) === stable(S.page)) return;
   const moved = gridOf(st.poll) !== gridOf(S.page.poll);
+  if (S.view === 'schedule' && M.rev === rev && !M.saving) {
+    flushDraft();
+    redrawKeepingFocus(() => { const y = window.scrollY; applyState(st, true); render(); window.scrollTo(0, y); });
+    return;
+  }
   if (idle(rev) || moved) {
     // Nothing in progress (or the poll itself changed): show the fresh copy. Unsent changes stay as a draft.
     const busy = !idle(rev);
@@ -1940,13 +1935,14 @@ function mergeFresh(st) {
   merge(M.avail, old ? old.avail : {}, now ? now.avail : {});
   merge(M.notes, old ? old.notes : {}, now ? now.notes : {});
   if (M.comment === (old ? old.comment || '' : '')) M.comment = now ? now.comment || '' : '';
-  S.member = st.member; S.poll = st.poll; S.schedule = st.schedule; S.group = st.group || null; S.attend = st.attend || null; S.page = pageOf(st);
+  takePage(st);
   M.savedAt = now ? now.updated || '' : '';
   const sameAsSent = now && stable(cleanAvail(M.avail, S.poll)) === stable(now.avail) &&
     stable(cleanNotes(M.notes, S.poll)) === stable(now.notes) && M.comment.trim() === (now.comment || '');
   if (sameAsSent) { M.dirty = false; dropDraft(); store.del(draftKey()); } else { M.dirty = true; saveDraftSoon(); }
+  if (S.view === 'schedule') { redrawKeepingFocus(() => { const y = window.scrollY; render(); window.scrollTo(0, y); }); return; }
   redrawKeepingFocus(() => {
-    renderCal(); renderTimes(); renderSummary(); refreshNeeds(); updateSaveBar();
+    renderCal(); renderTimes(); renderSummary(); refreshNeeds(); updateSaveBar(); refreshNext();
     const c = document.getElementById('m-comment');
     if (c && c.value !== M.comment) c.value = M.comment;
   });
@@ -1974,7 +1970,11 @@ function endSession() {
   pageGen++; pageFetch = null;
   store.del('tutti-session');
   store.del(PAGE_KEY);
-  Object.assign(S, { session: '', member: null, needLogin: true, poll: null, schedule: null, group: null, attend: null, page: null });
+  Object.assign(S, { session: '', member: null, needLogin: true, poll: null, schedule: null, group: null, attend: null, page: null,
+    replies: {}, more: [], caps: [], history: null, feed: '' });
+  historyJob = null; feedUi.ask = false; replyOpen.clear(); refetchAfterReplies = false;
+  for (const k of Object.keys(replyQueue)) delete replyQueue[k];
+  for (const k of Object.keys(replyDrafts)) delete replyDrafts[k];
   resetMember();
 }
 function memberSignOut() {
@@ -2064,7 +2064,7 @@ function openPasswordDialog() {
   const err = h('p', { class: 'err', role: 'alert', hidden: true });
   const save = h('button', { type: 'submit', class: 'btn primary' }, t('changePassword'));
   const form = h('form', {
-    class: 'modal narrow', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'pw-title', novalidate: true,
+    novalidate: true,
     onsubmit: async e => {
       e.preventDefault();
       if (next.value.length < 6) { err.textContent = t('errWeakPassword'); err.hidden = false; next.focus(); return; }
@@ -2087,7 +2087,8 @@ function openPasswordDialog() {
     h('div', { class: 'field' }, h('label', { class: 'label', for: 'pw-new' }, t('pwNew')), next, h('p', { class: 'hint', id: 'pw-hint' }, t('pwHint'))),
     err,
     h('div', { class: 'modal-foot' }, h('div', { class: 'end' }, h('button', { type: 'button', class: 'btn', onclick: () => close() }, t('cancel')), save)));
-  const back = h('div', { class: 'backdrop', onkeydown: e => { if (e.key === 'Escape') close(); }, onmousedown: e => { if (e.target === back) close(); } }, form);
+  const back = h('div', { class: 'backdrop', onkeydown: e => { if (e.key === 'Escape') close(); }, onmousedown: e => { if (e.target === back) close(); } },
+    h('div', { class: 'modal narrow', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'pw-title' }, form));
   function close() { back.remove(); if (prev && prev.focus && prev.isConnected) prev.focus(); }
   document.body.append(back);
   old.focus();
@@ -2123,10 +2124,13 @@ function syncSentChip() {
 
 function renderMember(main) {
   const p = S.poll;
-  if (!p) { main.append(stateBlock(t('noPollTitle'), t('noPollText'))); return; }
+  // The next meeting (from any published schedule) comes first, with its reply buttons; an empty slot otherwise.
+  R.next = buildNext() || h('div', { hidden: true });
+  if (!p) { main.append(h('div', { class: 'stack member-stack' }, h('h1', { class: 'visually-hidden' }, APP_NAME), R.next, stateBlock(t('noPollTitle'), t('noPollText')))); return; }
   const ro = !p.open;
   main.append(h('div', { class: 'stack member-stack' },
     buildHero(p),
+    R.next,
     buildNotices(p),
     h('div', { class: 'duo' },
       step('A', t('stepDays'), R.cal = h('div', { class: 'months-area' })),
@@ -2157,7 +2161,8 @@ function buildAccount() {
 
 function buildNotices(p) {
   const items = [];
-  if (S.schedule && S.schedule.events && S.schedule.events.length) items.push(h('div', { class: 'notice' }, h('strong', null, t('scheduleReady')), h('a', { href: '#schedule' }, t('seeSchedule'))));
+  const nextShown = R.next && !R.next.hidden && nextOf === (S.poll && S.poll.id);
+  if (!nextShown && S.schedule && S.schedule.events && S.schedule.events.length) items.push(h('div', { class: 'notice' }, h('strong', null, t('scheduleReady')), h('a', { href: '#schedule' }, t('seeSchedule'))));
   if (!p.open) items.push(h('div', { class: 'notice warn' }, t('closedNotice')));
   if (M.restored) items.push(h('div', { class: 'notice warn' }, t('restored')));
   return items.length ? h('div', { class: 'notices' }, items) : null;
@@ -2266,7 +2271,7 @@ function groupLegend(p) {
   if (!g) return null;
   return h('p', { class: 'hint group-hint' }, g.days
     ? t('groupHint', { dur: durWords(p.duration || 120), n: g.answered })
-    : t('groupWait', { min: g.min || GROUP_MIN, n: typeof g.others === 'number' ? g.others : g.answered }));
+    : t('groupWait', { min: g.min || 5, n: typeof g.others === 'number' ? g.others : g.answered }));
 }
 // On wide screens the calendar stays in view beside the long list of times, when it fits on the screen.
 function fitStick() {
@@ -2649,41 +2654,280 @@ async function saveMember() {
 }
 
 /* ============================================================== SCHEDULE */
-function renderSchedule(main) {
-  const p = S.poll;
-  if (!p) { main.append(stateBlock(t('noPollTitle'), t('noPollText'))); return; }
-  const s = S.schedule;
-  const wrap = h('div', { class: 'stack' }, buildHero(p, true), h('h2', { class: 'sub' }, t('schedTitle')));
-  if (!s || !s.events || !s.events.length) { wrap.append(h('p', { class: 'muted' }, t('schedEmpty'))); main.append(wrap); return; }
-  wrap.append(h('div', { class: 'events' }, s.events.map(ev => h('article', { class: 'event' },
-    h('div', { class: 'event-date' },
-      h('span', { class: 'event-mon' }, fmt(ev.date, { month: 'short' })),
-      h('span', { class: 'event-day' }, String(+ev.date.slice(8))),
-      h('span', { class: 'event-wd' }, fmt(ev.date, { weekday: 'long' }))),
+const can = c => (S.caps || []).indexOf(c) !== -1;
+const REPLIES = ['yes', 'part', 'no'];
+const REPLY_KEY = { yes: 'replyYes', part: 'replyPart', no: 'replyNo' };
+const replyWord = s => t(REPLY_KEY[s] || 'replyYes');
+const REPLY_SW = { yes: 'free', part: 'maybe', no: 'none' };
+// The date and the minute of the day now, in a poll's time zone: for which meetings are over, and what's next.
+const nowFmts = {};
+function nowIn(tz) {
+  try {
+    const k = tz || '';
+    const f = nowFmts[k] || (nowFmts[k] = new Intl.DateTimeFormat('en-GB', { timeZone: tz || undefined, hourCycle: 'h23', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }));
+    const x = {};
+    for (const part of f.formatToParts(new Date())) x[part.type] = part.value;
+    return { day: x.year + '-' + x.month + '-' + x.day, min: (+x.hour % 24) * 60 + (+x.minute) };
+  } catch (e) {
+    const d = new Date();
+    return { day: d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()), min: d.getHours() * 60 + d.getMinutes() };
+  }
+}
+const isOver = (ev, now) => ev.date < now.day || (ev.date === now.day && ev.end <= now.min);
+
+// What the member's schedule holds: the poll on show, and other polls' meetings still to come, earliest first.
+function schedBlocks() {
+  const out = [];
+  if (S.poll) out.push({ p: S.poll, s: S.schedule, attend: S.attend, replies: S.replies || {}, main: true });
+  for (const x of S.more || []) if (x && x.poll && x.schedule) out.push({ p: x.poll, s: x.schedule, attend: x.attend, replies: x.replies || {}, main: false });
+  const first = b => (b.s && b.s.events && b.s.events.length ? b.s.events[0].date : '9999');
+  return out.sort((a, b) => (first(a) < first(b) ? -1 : first(a) > first(b) ? 1 : 0));
+}
+const hasMeetings = () => schedBlocks().some(b => b.s && b.s.events && b.s.events.length);
+
+/* ---------- Replies: Geliyorum / Kısmen / Gelemiyorum, with an optional note only the conductor sees */
+const replyBusy = new Set(), replyOpen = new Set(), replyDrafts = {};
+// Counts replies sent and answered, so a copy of the page asked for meanwhile is known to be possibly older.
+let replySeq = 0, refetchAfterReplies = false;
+// A note sent (Enter) while the reply before it was still on its way: it goes as soon as that reply is through.
+const replyQueue = {};
+// The member's own reply to a meeting, as the page has it now.
+function ownReply(pollId, evId) {
+  const pg = S.page;
+  if (!pg) return null;
+  const x = pg.poll && pg.poll.id === pollId ? pg : (pg.more || []).find(y => y.poll && y.poll.id === pollId);
+  return x && x.replies && own(x.replies, evId) ? x.replies[evId] : null;
+}
+// where: 'nx' (the next-meeting card) or 'rp' (the schedule), so ids stay unique and focus can come back after a redraw.
+function replyBox(p, ev, own, where) {
+  const key = p.id + '|' + ev.id, id = where + '-' + ev.id;
+  const live = own && !own.stale ? own : null;
+  // Over: what they said stays in view, but replies are closed (as in Code.gs, after the meeting's day).
+  if (ev.date < nowIn(p.tz).day) return live ? h('p', { class: 'reply-past' }, t('replyMine', { s: replyWord(live.s) })) : null;
+  const busy = replyBusy.has(key);
+  const pick = s => {
+    if (busy || (live && live.s === s)) return;
+    if (s === 'part' && !(live && live.note)) replyOpen.add(key);   // "partly" usually needs a word: from when, until when
+    sendReply(p, ev, s, live ? live.note : '', null, null, id + '-' + s);
+  };
+  const box = h('div', { class: 'reply', role: 'group', 'aria-labelledby': id + '-q' },
+    h('p', { class: 'reply-q', id: id + '-q' }, t('replyAsk')),
+    h('div', { class: 'tools reply-btns' }, REPLIES.map(s => h('button', {
+      type: 'button', class: 'tool reply-btn', id: id + '-' + s, 'data-s': s, 'aria-pressed': String(!!live && live.s === s), disabled: busy, onclick: () => pick(s)
+    }, h('span', { class: 'sw ' + REPLY_SW[s], 'aria-hidden': 'true' }), replyWord(s)))));
+  if (own && own.stale) box.append(h('p', { class: 'reply-stale' }, t('replyStale', { s: replyWord(own.s) })));
+  if (!live) return box;
+  const open = replyOpen.has(key);
+  box.append(h('div', { class: 'reply-status' },
+    h('span', { class: 'reply-said' }, busy ? t('replySending') : t('replyMine', { s: replyWord(live.s) }) + (live.at ? ' · ' + ago(live.at) : '')),
+    live.note && !open ? h('span', { class: 'reply-note-text' }, t('replyYourNote', { note: live.note })) : null,
+    h('span', { class: 'reply-acts' },
+      open ? null : h('button', { type: 'button', class: 'btn small quiet', id: id + '-note-open', disabled: busy, onclick: () => { replyOpen.add(key); redrawReplies(id + '-note'); } }, live.note ? t('replyNoteEdit') : t('replyNoteAdd')),
+      h('button', { type: 'button', class: 'btn small quiet', id: id + '-undo', disabled: busy, onclick: () => { replyOpen.delete(key); delete replyDrafts[key]; sendReply(p, ev, '', '', null, null, id + '-yes'); } }, t('replyUndo')))));
+  if (open) {
+    const done = () => { replyOpen.delete(key); delete replyDrafts[key]; };
+    const send = () => {
+      if (replyBusy.has(key)) { replyQueue[key] = { note: input.value, after: done, focusAfter: id + '-note-open' }; return; }
+      sendReply(p, ev, live.s, input.value, done, 'replyNoteSaved', id + '-note-open');
+    };
+    const input = h('input', {
+      id: id + '-note', class: 'input', type: 'text', maxlength: '300', autocomplete: 'off',
+      value: key in replyDrafts ? replyDrafts[key] : live.note || '', placeholder: t({ yes: 'replyPhYes', part: 'replyPhPart', no: 'replyPhNo' }[live.s]),
+      oninput: e => { replyDrafts[key] = e.target.value; },
+      onkeydown: e => { if (e.key === 'Enter') { e.preventDefault(); send(); } }
+    });
+    box.append(h('div', { class: 'reply-note' },
+      h('label', { class: 'label', for: id + '-note' }, t('replyNoteLabel')),
+      h('div', { class: 'reply-note-row' }, input,
+        h('button', { type: 'button', class: 'btn', id: id + '-note-send', disabled: busy, onclick: send }, t('replyNoteSend')))));
+  }
+  return box;
+}
+
+// Sends a reply (s '' takes it back). It belongs to the sign-in that sent it, like everything else here.
+// focusAfter: where the keyboard focus goes once it's done (the buttons are redrawn); after a failure, back where it was.
+async function sendReply(p, ev, s, note, after, okKey, focusAfter) {
+  const key = p.id + '|' + ev.id, gen = pageGen, session = S.session;
+  const was = document.activeElement && document.activeElement.id;
+  if (replyBusy.has(key)) return;
+  replyBusy.add(key);
+  replySeq++;
+  redrawReplies();
+  let ok = false;
+  try {
+    const r = await api.reply(session, { pollId: p.id, eventId: ev.id, s: s || '', note: String(note || '').trim() });
+    if (gen !== pageGen || S.session !== session) return;
+    applyReply(p.id, ev.id, r);
+    if (after) after();
+    ok = true;
+    toast(t(okKey || (s ? 'replySaved' : 'replyTaken')));
+  } catch (e) {
+    if (gen !== pageGen || S.session !== session) return;
+    if (e.code === 'auth_required') { replyBusy.delete(key); endSession(); toast(t('errSignedOut'), { error: true }); render(); return; }
+    toast(errText(e), { error: true });
+    if (e.code === 'past' || e.code === 'no_event' || e.code === 'no_poll') refreshPage();
+  } finally { replyBusy.delete(key); replySeq++; }
+  // Focus goes where it belongs after the redraw, unless the member has moved on (into the note, say).
+  const now = document.activeElement && document.activeElement !== document.body ? document.activeElement.id : '';
+  redrawReplies(now && now !== was ? null : ok && focusAfter ? focusAfter : was);
+  const q = replyQueue[key];
+  if (q) {
+    delete replyQueue[key];
+    const cur = ownReply(p.id, ev.id);
+    if (ok && cur && !cur.stale && gen === pageGen && S.session === session) { sendReply(p, ev, cur.s, q.note, q.after, 'replyNoteSaved', q.focusAfter); return; }
+  }
+  if (refetchAfterReplies && !replyBusy.size) { refetchAfterReplies = false; refreshPage(); }
+}
+
+// The answer to a reply goes into the page and into the copy kept on this device, so the next visit opens with it.
+// Only what it says about that one meeting is taken: two replies sent in quick succession can come back in
+// either order, and the earlier answer mustn't undo the later reply.
+function applyReply(pollId, evId, r) {
+  const pg = S.page;
+  if (!pg) return;
+  const fresh = (r.attend || []).find(a => a.id === evId) || null;
+  const put = x => {
+    const replies = Object.assign({}, x.replies || {});
+    if (r.replies && own(r.replies, evId)) replies[evId] = r.replies[evId]; else delete replies[evId];
+    x.replies = replies;
+    if (!fresh) return;
+    const list = (x.attend || []).slice(), i = list.findIndex(a => a.id === evId);
+    if (i === -1) list.push(fresh); else list[i] = fresh;
+    x.attend = list;
+  };
+  if (pg.poll && pg.poll.id === pollId) put(pg);
+  for (const x of pg.more || []) if (x.poll && x.poll.id === pollId) put(x);
+  S.replies = pg.replies || {}; S.attend = pg.attend || null; S.more = pg.more || [];
+  keepPage(pg);
+}
+
+// Redraws what shows replies: the whole schedule page, or the next-meeting card on the member page.
+function redrawReplies(focusId) {
+  redrawKeepingFocus(() => {
+    if (S.view === 'schedule') { const y = window.scrollY; render(); window.scrollTo(0, y); }
+    else refreshNext();
+  });
+  const el = focusId && document.getElementById(focusId);
+  if (el && !el.disabled) el.focus({ preventScroll: true });
+}
+function refreshNext() {
+  if (!R.next || !R.next.isConnected) return;
+  const fresh = buildNext() || h('div', { hidden: true });
+  R.next.replaceWith(fresh);
+  R.next = fresh;
+}
+
+/* ---------- The next meeting, first thing on the member's page */
+function nextMeeting() {
+  let best = null;
+  for (const b of schedBlocks()) {
+    const now = nowIn(b.p.tz);
+    for (const ev of (b.s && b.s.events) || []) {
+      if (isOver(ev, now)) continue;
+      if (!best || ev.date < best.ev.date || (ev.date === best.ev.date && ev.start < best.ev.start)) best = { b, ev, now };
+    }
+  }
+  return best;
+}
+function eventDate(ev) {
+  return h('div', { class: 'event-date' },
+    h('span', { class: 'event-mon' }, fmt(ev.date, { month: 'short' })),
+    h('span', { class: 'event-day' }, String(+ev.date.slice(8))),
+    h('span', { class: 'event-wd' }, fmt(ev.date, { weekday: 'long' })));
+}
+// While the poll takes answers, the calendar comes first: the next meeting then takes a slim box above it.
+let nextOf = '';   // the poll whose meeting the box shows
+function buildNext() {
+  const x = nextMeeting();
+  nextOf = x ? x.b.p.id : '';
+  if (!x) return null;
+  const { b, ev, now } = x;
+  const near = ev.date === now.day ? t('today') : ev.date === D.add(now.day, 1) ? t('tomorrow') : '';
+  if (S.poll && S.poll.open) {
+    return h('section', { class: 'next compact', 'aria-labelledby': 'next-h' },
+      h('div', { class: 'next-line' },
+        h('h2', { class: 'eyebrow', id: 'next-h' }, t('nextTitle')),
+        h('a', { class: 'next-all', href: '#schedule' }, t('allMeetings'))),
+      h('p', { class: 'next-when' }, h('strong', null, ev.title || t('meeting')),
+        ' · ' + (near ? near + ', ' : '') + dLong(ev.date) + ', ' + hm(ev.start) + '–' + hm(ev.end) + (ev.place ? ' · ' + ev.place : '')),
+      can('replies') ? replyBox(b.p, ev, b.replies[ev.id], 'nx') : null);
+  }
+  // The date column already says which day; "today" and "tomorrow" are worth saying again.
+  const day = near ? near + ', ' : '';
+  return h('section', { class: 'event next', 'aria-labelledby': 'next-h' },
+    eventDate(ev),
     h('div', { class: 'event-body' },
-      h('h3', null, ev.title || t('meeting')),
-      h('p', { class: 'event-time' }, hm(ev.start) + '–' + hm(ev.end)),
-      ev.place ? h('p', { class: 'event-place' }, ev.place) : null,
-      ev.note ? h('p', { class: 'event-note' }, ev.note) : null,
-      h('div', { class: 'event-actions' },
-        h('a', { class: 'btn small', href: gcalUrl(ev, p), target: '_blank', rel: 'noopener' }, t('googleCal')),
-        framed ? null : h('button', { type: 'button', class: 'btn small', onclick: () => download('provala-' + ev.date + '.ics', icsText([ev], p), 'text/calendar') }, t('icsOne')))),
-    buildAttend(ev)))));
-  if (s.events.some(ev => attendFor(ev))) wrap.append(h('p', { class: 'hint att-hint' }, t('attHint')));
-  if (s.note) wrap.append(h('p', { class: 'sched-note' }, s.note));
-  wrap.append(h('div', { class: 'actions' },
-    framed ? null : h('button', { type: 'button', class: 'btn', onclick: () => download('provala-' + p.id + '.ics', icsText(s.events, p), 'text/calendar') }, t('icsAll')),
-    s.at ? h('span', { class: 'muted' }, t('publishedOn', { date: dFull(s.at.slice(0, 10)) })) : null));
+      h('h2', { class: 'eyebrow', id: 'next-h' }, t('nextTitle')),
+      h('p', { class: 'next-title' }, ev.title || t('meeting')),
+      h('p', { class: 'event-time' }, day + hm(ev.start) + '–' + hm(ev.end)),
+      ev.place ? h('p', { class: 'event-place' }, ev.place) : null),
+    can('replies') ? replyBox(b.p, ev, b.replies[ev.id], 'nx') : null,
+    h('a', { class: 'next-all', href: '#schedule' }, t('allMeetings')));
+}
+
+/* ---------- The schedule page */
+function renderSchedule(main) {
+  const blocks = schedBlocks().filter(b => b.main || (b.s && b.s.events && b.s.events.length));
+  if (!blocks.length) { main.append(stateBlock(t('noPollTitle'), t('noPollText'))); return; }
+  const wrap = h('div', { class: 'stack sched-page' }, S.poll ? buildHero(S.poll, true) : h('h1', { class: 'visually-hidden' }, t('schedTitle')));
+  const head = h('div', { class: 'sched-head' }, h('h2', { class: 'sub' }, t('schedTitle')));
+  wrap.append(head);
+  const several = blocks.length > 1, all = [];
+  let anyAtt = false, anyOpen = false;
+  for (const b of blocks) {
+    const evs = (b.s && b.s.events) || [];
+    const sec = h('section', { class: 'sched-block', 'aria-label': several ? loc(b.p.title) : null }, several ? h('h3', { class: 'sched-poll' }, loc(b.p.title)) : null);
+    if (!evs.length) sec.append(h('p', { class: 'muted' }, t('schedEmpty')));
+    else {
+      const now = nowIn(b.p.tz);
+      sec.append(h('div', { class: 'events' }, evs.map(ev => eventCard(b, ev, now, several))));
+      for (const ev of evs) {
+        all.push([ev, b.p]);
+        if (attendIn(b.attend, ev)) anyAtt = true;
+        if (ev.date >= now.day) anyOpen = true;
+      }
+      if (b.s.note) sec.append(h('p', { class: 'sched-note' }, b.s.note));
+      if (b.s.at) sec.append(h('p', { class: 'muted pub-on' }, t('publishedOn', { date: dFull(b.s.at.slice(0, 10)) })));
+    }
+    wrap.append(sec);
+  }
+  // Said once, before the buttons: who sees what of a reply.
+  if (anyOpen && can('replies')) head.append(h('p', { class: 'hint' }, t('replyPrivacy')));
+  if (anyAtt) wrap.append(attLegend());
+  if (all.length && !framed) wrap.append(h('div', { class: 'actions' }, h('button', { type: 'button', class: 'btn', onclick: () => download('provala.ics', icsItems(all), 'text/calendar') }, t('icsAll'))));
+  const feed = all.length ? buildFeed() : null;
+  if (feed) wrap.append(feed);
+  R.hist = h('div', { class: 'hist-slot' });
+  wrap.append(R.hist);
+  fillHistory();
   main.append(wrap);
 }
 
-// Who can come for all of a rehearsal, by voice part: names of those who can, only a number for "if needed",
-// and nobody named as missing. Worked out by Code.gs; nothing with an older one.
-const attendFor = ev => { const a = S.attend && S.attend.find(x => x.id === ev.id); return a && a.parts && a.parts.length ? a.parts : null; };
-function buildAttend(ev) {
-  const parts = attendFor(ev);
+function eventCard(b, ev, now, nested) {
+  const over = isOver(ev, now);
+  return h('article', { class: 'event' + (over ? ' past' : '') },
+    eventDate(ev),
+    h('div', { class: 'event-body' },
+      h(nested ? 'h4' : 'h3', null, ev.title || t('meeting')),
+      h('p', { class: 'event-time' }, hm(ev.start) + '–' + hm(ev.end)),
+      ev.place ? h('p', { class: 'event-place' }, ev.place) : null,
+      ev.note ? h('p', { class: 'event-note' }, ev.note) : null,
+      over ? null : h('div', { class: 'event-actions' },
+        h('a', { class: 'btn small', href: gcalUrl(ev, b.p), target: '_blank', rel: 'noopener' }, t('googleCal')),
+        framed ? null : h('button', { type: 'button', class: 'btn small', onclick: () => download('provala-' + ev.date + '.ics', icsText([ev], b.p), 'text/calendar') }, t('icsOne')))),
+    can('replies') ? replyBox(b.p, ev, b.replies[ev.id], 'rp') : null,
+    buildAttend(ev, b.attend));
+}
+
+// Who can come for all of a meeting, by voice part: names of those who can (✓ for those who said "Geliyorum"),
+// and nobody named as missing, partly or "if needed". Worked out by Code.gs; nothing with an older one.
+const attendIn = (attend, ev) => { const a = attend && attend.find(x => x.id === ev.id); return a && a.parts && a.parts.length ? a.parts : null; };
+const sureMark = () => h('span', { class: 'sure', role: 'img', 'aria-label': t('sureTitle'), title: t('sureTitle') });
+function buildAttend(ev, attend) {
+  const parts = attendIn(attend, ev);
   if (!parts) return null;
   const single = parts.length === 1 && !parts[0].part;
+  const who = g => { const sure = new Set(g.sure || []); return g.yes.map((n, i) => [i ? ', ' : '', h('span', { class: 'att-person' }, n, sure.has(n) ? sureMark() : null)]); };
   return h('div', { class: 'att' },
     h('table', { class: 'att-table' },
       h('caption', null, t('attTitle')),
@@ -2691,7 +2935,94 @@ function buildAttend(ev) {
       h('tbody', null, parts.filter(g => g.part || single || g.yes.length).map(g => h('tr', { class: 'att-part' + (!g.yes.length && (g.part || single) ? ' none' : '') },
         h('th', { scope: 'row', class: 'att-name' }, partName(g.part, single)),
         h('td', { class: 'att-n' }, g.yes.length + '/' + g.of),
-        h('td', { class: 'att-who' }, g.yes.length ? g.yes.join(', ') : t('attNobody')))))));
+        h('td', { class: 'att-who' }, g.yes.length ? who(g) : t('attNobody')))))));
+}
+function attLegend() {
+  return h('p', { class: 'hint att-hint' }, can('replies') ? [t('attHint2'), ' ', h('span', { class: 'sure', 'aria-hidden': 'true' }), t('sureLegend')] : t('attHint'));
+}
+
+/* ---------- Calendar subscription: a private link per member to the published meetings */
+const feedUi = { busy: false, ask: false };
+function feedUrls() {
+  const https = API_URL + (API_URL.indexOf('?') === -1 ? '?' : '&') + 'feed=' + encodeURIComponent(S.feed);
+  const webcal = https.replace(/^https?:/, 'webcal:');
+  return { https, webcal, google: 'https://calendar.google.com/calendar/r?cid=' + encodeURIComponent(webcal) };
+}
+function buildFeed() {
+  if (!can('feed')) return null;
+  const box = h('section', { class: 'sheet feed', 'aria-labelledby': 'feed-h' },
+    h('h3', { id: 'feed-h' }, t('feedTitle')),
+    h('p', { class: 'hint' }, t('feedText')));
+  if (isDemo || !API_URL) { box.append(h('p', { class: 'muted' }, t('feedDemo'))); return box; }
+  if (!S.feed) {
+    box.append(h('div', { class: 'actions' }, h('button', { type: 'button', class: 'btn primary', id: 'feed-get', disabled: feedUi.busy, onclick: () => getFeed(false) },
+      feedUi.busy ? h('span', { class: 'spin', 'aria-hidden': 'true' }) : null, t('feedGet'))));
+    return box;
+  }
+  const u = feedUrls();
+  box.append(
+    h('div', { class: 'actions' },
+      h('a', { class: 'btn', id: 'feed-apple', href: u.webcal }, t('feedApple')),
+      h('a', { class: 'btn', id: 'feed-google', href: u.google, target: '_blank', rel: 'noopener' }, t('feedGoogle')),
+      h('button', { type: 'button', class: 'btn', id: 'feed-copy', onclick: () => copyText(u.https, t('copied')) }, t('feedCopy'))),
+    h('p', { class: 'hint' }, t('feedAndroid')),
+    h('p', { class: 'hint' }, t('feedOther')),
+    h('p', { class: 'hint' }, t('feedPrivate')),
+    feedUi.ask
+      ? h('div', { class: 'confirm' }, h('span', null, t('feedRenewAsk')),
+        h('button', { type: 'button', class: 'btn small danger solid', id: 'feed-renew-yes', disabled: feedUi.busy, onclick: () => getFeed(true) }, t('feedRenew')),
+        h('button', { type: 'button', class: 'btn small', id: 'feed-renew-no', onclick: () => { feedUi.ask = false; redrawReplies('feed-renew'); } }, t('keep')))
+      : h('div', { class: 'actions' }, h('button', { type: 'button', class: 'btn small quiet', id: 'feed-renew', onclick: () => { feedUi.ask = true; redrawReplies('feed-renew-no'); } }, t('feedRenew'))));
+  return box;
+}
+async function getFeed(renew) {
+  const gen = pageGen, session = S.session;
+  feedUi.busy = true;
+  redrawReplies();
+  let ok = false;
+  try {
+    const r = await api.feed(session, renew);
+    if (gen !== pageGen || S.session !== session) return;
+    S.feed = r.feed;
+    feedUi.ask = false;
+    ok = true;
+    if (renew) toast(t('feedRenewed'));
+  } catch (e) {
+    if (gen !== pageGen || S.session !== session) return;
+    if (e.code === 'auth_required') { feedUi.busy = false; endSession(); toast(t('errSignedOut'), { error: true }); render(); return; }
+    toast(errText(e), { error: true });
+  } finally { feedUi.busy = false; }
+  redrawReplies(ok ? 'feed-apple' : null);
+}
+
+/* ---------- The member's own attendance this season (never anyone else's) */
+let historyJob = null, histOpen = false;
+const MARK_WORD = { p: 'markP', l: 'markL', e: 'markE', a: 'markA' };
+function fillHistory() {
+  if (!R.hist) return;
+  clear(R.hist);
+  if (!can('attendance') || !S.session) return;
+  if (S.history) { const box = buildHistory(); if (box) R.hist.append(box); return; }
+  if (historyJob) return;
+  const gen = pageGen, session = S.session;
+  const job = api.history(session).then(r => {
+    if (gen !== pageGen || S.session !== session) return;
+    S.history = r.history || { meetings: [] };
+    if (R.hist && R.hist.isConnected) fillHistory();
+  }, () => { /* nothing to show this time */ });
+  historyJob = job;
+  job.then(() => { if (historyJob === job) historyJob = null; });
+}
+function buildHistory() {
+  const hs = S.history;
+  if (!hs || !hs.meetings || !hs.meetings.length) return null;
+  return h('section', { class: 'sheet hist', 'aria-labelledby': 'hist-h' },
+    h('h3', { id: 'hist-h' }, t('histTitle')),
+    h('p', { class: 'hist-sum' }, t('histLine', hs)),
+    h('details', { class: 'hist-more', open: histOpen, ontoggle: e => { histOpen = e.target.open; } }, h('summary', null, t('histMore')),
+      h('ul', { class: 'hist-list' }, hs.meetings.map(x => h('li', null,
+        h('span', null, dShort(x.date) + ', ' + hm(x.start) + (x.title ? ' · ' + x.title : '')),
+        h('span', { class: 'mk mk-' + x.mark }, t(MARK_WORD[x.mark] || 'markP')))))));
 }
 
 /* ============================================================= ORGANIZER */
@@ -2701,7 +3032,8 @@ const A = {
   polls: [], currentId: '', pollId: store.get('tutti-admin-poll') || '', data: null,
   board: new Set(), tab: 'plan', duration: 120, minGap: 10, cell: null, hl: null, scrollX: null,
   draft: { events: [], note: '' }, draftDirty: false, busy: false,
-  creds: []   // sign-in details just created; shown once, never stored
+  creds: [],   // sign-in details just created; shown once, never stored
+  caps: [], errors: null, since: {}, openEv: new Set(), season: null, seasonBusy: false
 };
 
 async function adminEnter() {
@@ -2715,6 +3047,7 @@ async function adminEnter() {
     store.set('tutti-org', A.key);
     store.del('tutti-admin-key');
     A.polls = st.polls; A.currentId = st.currentId;
+    A.caps = st.caps || []; A.errors = st.errors || null;
     if (st.pollData) applyAdminPoll(st.pollData);
     else {
       if (!A.polls.some(x => x.id === A.pollId)) A.pollId = A.currentId || (A.polls[0] ? A.polls[0].id : '');
@@ -2740,8 +3073,11 @@ function applyAdminPoll(r) {
   const id = r.poll.id;
   A.pollId = id;
   store.set('tutti-admin-poll', id);
-  A.data = { poll: r.poll, responses: r.responses, members: r.members || [], schedule: r.schedule || { draft: null, published: null } };
+  A.data = { poll: r.poll, responses: r.responses, members: r.members || [], schedule: r.schedule || { draft: null, published: null },
+    replies: r.replies || [], attendance: r.attendance || [] };
   A.currentId = r.currentId;
+  // What's new since this device last opened this poll here: the earlier visit is noted once per page load.
+  if (!(id in A.since)) { A.since[id] = store.get('tutti-org-seen-' + id) || ''; store.set('tutti-org-seen-' + id, new Date().toISOString()); }
   A.board = new Set(r.responses.map(x => x.id));
   A.duration = r.poll.duration || 120;
   A.cell = null; A.hl = null; A.scrollX = null;
@@ -2779,7 +3115,7 @@ function renderAdmin(main) {
     main.append(stateBlock(t('noPolls'), t('noPollsText'), h('button', { type: 'button', class: 'btn primary', onclick: () => openPollEditor(null) }, t('newPoll'))));
     return;
   }
-  main.append(buildAdminBar());
+  main.append(h('h1', { class: 'visually-hidden' }, t('planner')), buildAdminBar());
   R.atabs = buildAdminTabs();
   R.atab = h('div', { id: 'atab-panel', role: 'tabpanel' });
   main.append(R.atabs, R.atab);
@@ -2811,7 +3147,8 @@ function buildAdminBar() {
       h('button', { type: 'button', class: 'btn small quiet', onclick: toggleOpen }, poll.open ? t('closeAnswers') : t('openAnswers')),
       h('span', null, dRange(poll.start, poll.end)),
       poll.deadline ? h('span', null, t('deadline', { date: dFull(poll.deadline) })) : null,
-      h('span', null, t('answersN', { n }) + (last ? ' · ' + t('lastUpdate', { ago: ago(last) }) : ''))));
+      h('span', null, t('answersN', { n }) + (last ? ' · ' + t('lastUpdate', { ago: ago(last) }) : ''))),
+    buildSince(), buildErrorsNotice());
 }
 
 async function makeCurrent() {
@@ -2836,11 +3173,17 @@ async function toggleOpen() {
 
 function buildAdminTabs() {
   const n = A.data.responses.length;
-  const tabs = [['plan', t('tabPlan')], ['people', t('tabPeople') + ' (' + n + ')'], ['schedule', t('tabSched')], ['members', t('tabMembers') + ' (' + A.data.members.length + ')']];
+  const tabs = [['plan', t('tabPlan')], ['people', t('tabPeople') + ' (' + n + ')'], ['schedule', t('tabSched')]];
+  if (acan('replies') || acan('attendance')) tabs.push(['attend', t('tabAtt')]);
+  tabs.push(['members', t('tabMembers') + ' (' + A.data.members.length + ')']);
+  const dot = k => (k === 'schedule' && scheduleChanged()) || (k === 'attend' && repliesSince() > 0);
   return h('div', { class: 'atabs', role: 'tablist' }, tabs.map(x => h('button', {
     type: 'button', role: 'tab', class: 'atab', id: 'tab-' + x[0], 'aria-selected': String(A.tab === x[0]), 'aria-controls': 'atab-panel',
-    onclick: () => { A.tab = x[0]; refreshTabs(); renderTab(); }
-  }, x[1], x[0] === 'schedule' && scheduleChanged() ? h('span', { class: 'dot', 'aria-hidden': 'true' }) : null)));
+    onclick: () => {
+      A.tab = x[0]; refreshTabs(); renderTab();
+      if (x[0] === 'attend') refreshAttend().then(ok => { if (ok && A.tab === 'attend' && !document.querySelector('.backdrop')) redrawKeepingFocus(() => { refreshTabs(); renderTab(); }); });
+    }
+  }, x[1], dot(x[0]) ? h('span', { class: 'dot', 'aria-hidden': 'true' }) : null)));
 }
 function refreshTabs() {
   if (!R.atabs || !R.atabs.isConnected) return;
@@ -2850,11 +3193,15 @@ function refreshTabs() {
 }
 function renderTab() {
   if (!R.atab) return; // the view changed while the server was answering
+  if (A.tab === 'attend' && !acan('replies') && !acan('attendance')) A.tab = 'plan';   // an older Code.gs
   const el = clear(R.atab);
   el.setAttribute('aria-labelledby', 'tab-' + A.tab);
+  // Each tab's content starts under a heading of its name (for screen readers; the tab itself shows it).
+  el.append(h('h2', { class: 'visually-hidden' }, t({ plan: 'tabPlan', people: 'tabPeople', schedule: 'tabSched', attend: 'tabAtt', members: 'tabMembers' }[A.tab] || 'tabSched')));
   if (A.tab === 'plan') el.append(buildPlan());
   else if (A.tab === 'people') el.append(buildPeople());
   else if (A.tab === 'members') el.append(buildMembers());
+  else if (A.tab === 'attend') el.append(buildAttTab());
   else el.append(buildAdminSchedule());
 }
 
@@ -3108,7 +3455,8 @@ function buildPeople() {
   const waiting = ms.filter(m => !did.has(m.id));
   const head = ms.length ? h('div', { class: 'people-head' },
     h('strong', null, t('answeredOf', { a: ms.length - waiting.length, n: ms.length })),
-    waiting.length ? h('span', { class: 'muted' }, t('notYet') + ' ' + waiting.map(m => m.name).join(', ')) : null) : null;
+    waiting.length ? h('span', { class: 'muted' }, t('notYet') + ' ' + waiting.map(m => m.name).join(', ')) : null,
+    waiting.length && p.open ? remindBlock(waiting, pollMsgAll, m => pollMsgOne(m, S.lang)) : null) : null;
   if (!list.length) return h('div', { class: 'stack-s' }, head, stateBlock(t('noAnswers'), t('noAnswersText')));
   return h('div', { class: 'stack-s' }, head, h('div', { class: 'people' }, list.map(r => personCard(r, p))));
 }
@@ -3263,7 +3611,7 @@ function personCard(r, p) {
   };
   fillActions();
   return h('article', { class: 'person' },
-    h('div', { class: 'person-head' }, h('h3', null, r.name), h('span', { class: 'muted' }, t('peopleUpdated', { ago: ago(r.updated) }) + ' · ' + t('daysMarked', { n: Object.keys(r.avail).length }))),
+    h('div', { class: 'person-head' }, h('h3', null, r.name, isNewSince(r.updated) ? h('span', { class: 'chip-s new' }, t('newBadge')) : null), h('span', { class: 'muted' }, t('peopleUpdated', { ago: ago(r.updated) }) + ' · ' + t('daysMarked', { n: Object.keys(r.avail).length }))),
     miniCal(r, p),
     r.comment ? h('blockquote', { class: 'person-comment' }, r.comment) : h('p', { class: 'muted' }, t('noComment')),
     noteDays.length ? h('ul', { class: 'notes' }, noteDays.map(d => h('li', null, h('strong', null, dShort(d) + ': '), r.notes[d]))) : null,
@@ -3347,7 +3695,9 @@ function attendanceText(ev) {
 // "Soprano 2/5 · Alto 3/4 · …": the same part counts members see for this meeting once it's published.
 function partsText(ev) {
   const p = A.data.poll, ms = A.data.members || [];
-  const a = attendOf(p, [ev], answersOf(p, A.data.responses.map(r => Object.assign({ pollId: p.id }, r)), ms, ''), ms)[0];
+  const rp = {};
+  for (const x of A.data.replies || []) rp[x.memberId] = x.replies || {};
+  const a = attendOf(p, [ev], answersOf(p, A.data.responses.map(r => Object.assign({ pollId: p.id }, r)), ms), ms, rp)[0];
   if (!a.parts || !a.parts.some(g => g.part)) return '';
   return a.parts.map(g => partName(g.part) + ' ' + g.yes.length + '/' + g.of).join(' · ');
 }
@@ -3414,9 +3764,11 @@ function scheduleMessage(lang) {
   return lines.join('\n');
 }
 
+// A CSV cell: text that a spreadsheet would read as a formula is kept as text.
+const csvCell = v => { let s = String(v === undefined || v === null ? '' : v); if (/^[=+\-@]/.test(s)) s = "'" + s; return /[",\r\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
 function exportCsv() {
   const p = A.data.poll;
-  const cell = v => { let s = String(v === undefined || v === null ? '' : v); if (/^[=+\-@]/.test(s)) s = "'" + s; return /[",\r\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
+  const cell = csvCell;
   const rows = [[t('csvName'), t('csvUpdated'), t('csvDate'), t('csvDay'), t('csvFree'), t('csvMaybe'), t('csvNote'), t('csvComment')]];
   for (const r of people()) {
     const days = uniq(Object.keys(r.avail).concat(Object.keys(r.notes || {}))).sort();
@@ -3424,6 +3776,333 @@ function exportCsv() {
     for (const d of days) rows.push([r.name, r.updated, d, wdName(D.wd(d), 'short'), rangesText(r.avail[d], '2', p).join(', '), rangesText(r.avail[d], '1', p).join(', '), (r.notes || {})[d] || '', r.comment]);
   }
   download('provala-' + p.id + '.csv', '\ufeff' + rows.map(row => row.map(cell).join(',')).join('\r\n'), 'text/csv;charset=utf-8');
+}
+
+/* ---------- Attendance: replies to each published meeting, attendance taken, and the season record */
+const acan = c => (A.caps || []).indexOf(c) !== -1;
+const MARKS = ['p', 'l', 'e', 'a'];
+const MARK_SHORT = { p: 'markShortP', l: 'markShortL', e: 'markShortE', a: 'markShortA' };
+// A reply as the organizer reads it (Geliyor / Kısmen / Gelemiyor), rather than in the member's own words.
+const repWord = s => t({ yes: 'repYes', part: 'repPart', no: 'repNo' }[s] || 'repYes');
+// Each current member's reply to a meeting: yes, part, no, or none (with the reply from before the time changed, if any).
+function meetingReplies(ev) {
+  const fp = fpOf(ev), out = { yes: [], part: [], no: [], none: [] };
+  const by = new Map((A.data.replies || []).map(x => [x.memberId, x.replies || {}]));
+  for (const m of A.data.members) {
+    const r = (by.get(m.id) || {})[ev.id];
+    const known = !!(r && own(REPLY_S, r.s));
+    if (known && r.fp === fp) out[r.s].push({ m, r });
+    else out.none.push({ m, r: known ? r : null });
+  }
+  return out;
+}
+// What changed since this device last opened the poll in the planner (noted once per page load).
+const sinceOf = () => (A.since && A.since[A.pollId]) || '';
+const isNewSince = ts => { const s = sinceOf(); return !!(s && ts && ts > s); };
+function repliesSince() {
+  const s = sinceOf(), cur = new Set(A.data.members.map(m => m.id));
+  let n = 0;
+  if (!s) return 0;
+  for (const x of A.data.replies || []) if (cur.has(x.memberId)) for (const k of Object.keys(x.replies || {})) if ((x.replies[k].at || '') > s) n++;
+  return n;
+}
+function buildSince() {
+  const s = sinceOf();
+  if (!s) return null;
+  const cur = new Set(A.data.members.map(m => m.id));
+  const nA = A.data.responses.filter(r => (!r.memberId || cur.has(r.memberId)) && r.updated > s).length, nR = repliesSince();
+  if (!nA && !nR) return null;
+  return h('p', { class: 'notice since' }, h('strong', null, t('sinceTitle', { ago: ago(s) })),
+    [nA ? t('sinceAnswers', { n: nA }) : '', nR ? t('sinceReplies', { n: nR }) : ''].filter(Boolean).join(' · '));
+}
+// Problems the page met on members' devices (the backend counts them; details are in the Errors sheet).
+function buildErrorsNotice() {
+  const n = (A.errors && A.errors.n) || 0, seen = Number(store.get('tutti-org-errors')) || 0;
+  if (n <= seen) return null;
+  const box = h('div', { class: 'notice warn' }, h('span', null, t('errorsNotice', { n: n - seen })),
+    h('button', { type: 'button', class: 'btn small', onclick: () => { store.set('tutti-org-errors', String(n)); box.remove(); } }, t('dismiss')));
+  return box;
+}
+
+// Ready-made messages for whoever hasn't answered: one for the group chat, or one per person.
+const firstName = name => String(name || '').split(' ')[0];
+const evWhen = (ev, lang) => fmt(ev.date, { weekday: 'long', day: 'numeric', month: 'long' }, lang) + ', ' + hm(ev.start);
+const evWhat = (ev, lang) => (ev.title || '').trim() || t('defaultEventTitle', null, lang);
+const schedUrl = () => memberUrl(A.pollId) + '#schedule';
+const meetMsgAll = (ev, lang) => t('remMeetAll', { what: evWhat(ev, lang), when: evWhen(ev, lang), url: schedUrl() }, lang);
+const meetMsgOne = (ev, m, lang) => t('remMeetOne', { name: firstName(m.name), what: evWhat(ev, lang), when: evWhen(ev, lang), url: schedUrl() }, lang);
+const pollVars = lang => ({ title: loc(A.data.poll.title, lang), date: A.data.poll.deadline ? dFull(A.data.poll.deadline, lang) : '', url: memberUrl(A.pollId) });
+const pollMsgAll = lang => t('remPollAll', pollVars(lang), lang);
+const pollMsgOne = (m, lang) => t('remPollOne', Object.assign(pollVars(lang), { name: firstName(m.name) }), lang);
+function remindBlock(list, all, one) {
+  return h('div', { class: 'remind' },
+    h('div', { class: 'actions' },
+      h('button', { type: 'button', class: 'btn small', onclick: () => copyText(all('tr'), t('copied')) }, t('remindTr')),
+      h('button', { type: 'button', class: 'btn small', onclick: () => copyText(all('en'), t('copied')) }, t('remindEn'))),
+    h('details', { class: 'remind-each' }, h('summary', null, t('remindEach')),
+      h('ul', { class: 'remind-list' }, list.map(m => h('li', null, h('span', null, m.name),
+        h('button', { type: 'button', class: 'btn small quiet', 'aria-label': t('remindOneFor', { name: m.name }), onclick: () => copyText(one(m), t('copied')) }, t('remindOne')))))));
+}
+
+// Replies keep coming in while the planner is open: the Attendance tab asks for them again when it opens, and
+// before attendance is taken. Only replies, attendance, members and the published schedule are taken in, so
+// nothing being edited elsewhere in the planner (the schedule draft, the board) is touched.
+async function refreshAttend() {
+  const id = A.pollId;
+  try {
+    const r = await api.admin(A.key, 'poll', { pollId: id });
+    if (!A.data || A.pollId !== id || !r.poll || r.poll.id !== id) return false;
+    A.data.replies = r.replies || [];
+    A.data.attendance = r.attendance || [];
+    A.data.members = r.members || A.data.members;
+    if (A.data.schedule && r.schedule) A.data.schedule.published = r.schedule.published || null;
+    return true;
+  } catch (e) { return false; }
+}
+
+function buildAttTab() {
+  const pub = A.data.schedule && A.data.schedule.published;
+  const wrap = h('div', { class: 'att-tab' });
+  if (!pub || !pub.events || !pub.events.length) {
+    wrap.append(stateBlock(t('attNoSchedTitle'), t('attNoSched'),
+      h('button', { type: 'button', class: 'btn primary', onclick: () => { A.tab = 'schedule'; refreshTabs(); renderTab(); } }, t('viewDraft'))));
+  } else {
+    const now = nowIn(A.data.poll.tz);
+    wrap.append(h('div', { class: 'att-cards' }, pub.events.map(ev => attCard(ev, now))));
+  }
+  // Attendance taken for meetings that are no longer on the schedule stays in the season record; here it can go.
+  const ids = new Set(((pub && pub.events) || []).map(ev => ev.id));
+  const gone = (A.data.attendance || []).filter(a => !ids.has(a.eventId));
+  if (gone.length) wrap.append(h('div', { class: 'att-cards' }, gone.map(goneCard)));
+  const season = buildSeason();
+  if (season) wrap.append(season);
+  return wrap;
+}
+function attCard(ev, now) {
+  const id = 'ac-' + ev.id;
+  const rec = (A.data.attendance || []).find(a => a.eventId === ev.id);
+  const card = h('article', { class: 'att-card', 'aria-labelledby': id + '-h' },
+    h('div', { class: 'att-card-head' },
+      h('h3', { id: id + '-h' }, dLong(ev.date) + ', ' + hm(ev.start) + '–' + hm(ev.end)),
+      ev.title || ev.place ? h('span', { class: 'muted' }, [ev.title, ev.place].filter(Boolean).join(' · ')) : null));
+  if (acan('replies')) {
+    const g = meetingReplies(ev);
+    card.append(h('p', { class: 'rep-sum' }, t('repSum', { y: g.yes.length, p: g.part.length, n: g.no.length, w: g.none.length })),
+      h('details', { class: 'rep-details', open: A.openEv.has(ev.id), ontoggle: e => { if (e.target.open) A.openEv.add(ev.id); else A.openEv.delete(ev.id); } },
+        h('summary', null, t('repDetails')),
+        h('div', { class: 'rep-cols' },
+          repCol('repYes', g.yes), repCol('repPart', g.part), repCol('repNo', g.no), repWaiting(g.none, ev, now))));
+  }
+  if (acan('attendance')) {
+    const open = ev.date <= now.day;
+    card.append(h('div', { class: 'att-line' },
+      h('span', null, rec ? attSummary(rec) : open ? t('attNotTaken') : t('attLater')),
+      open ? h('button', { type: 'button', class: 'btn small' + (rec ? '' : ' primary'), id: id + '-take', onclick: () => openAttendance(ev) },
+        rec ? t('attEditBtn') : t('attTake')) : null));
+  }
+  return card;
+}
+function goneCard(rec) {
+  const id = 'ag-' + rec.eventId;
+  const acts = h('div', { class: 'actions' });
+  const idle = () => clear(acts).append(h('button', { type: 'button', class: 'btn small danger', id: id + '-del', onclick: ask }, t('attDelete')));
+  function ask() {
+    clear(acts).append(h('div', { class: 'confirm' }, h('span', null, t('attDeleteAsk')),
+      h('button', { type: 'button', class: 'btn small danger solid', id: id + '-yes', onclick: remove }, t('yesDelete')),
+      h('button', { type: 'button', class: 'btn small', onclick: () => { idle(); document.getElementById(id + '-del').focus(); } }, t('keep'))));
+    document.getElementById(id + '-yes').focus();
+  }
+  async function remove() {
+    try {
+      await api.admin(A.key, 'deleteAttendance', { pollId: rec.pollId, eventId: rec.eventId });
+      A.data.attendance = (A.data.attendance || []).filter(a => a.eventId !== rec.eventId);
+      A.season = null;
+      toast(t('attDeleted'));
+      renderTab();
+    } catch (e) { toast(errText(e), { error: true }); }
+  }
+  idle();
+  return h('article', { class: 'att-card gone', 'aria-labelledby': id + '-h' },
+    h('div', { class: 'att-card-head' },
+      h('h3', { id: id + '-h' }, dLong(rec.date) + ', ' + hm(rec.start) + '–' + hm(rec.end)),
+      rec.title ? h('span', { class: 'muted' }, rec.title) : null),
+    h('p', { class: 'hint' }, t('attOrphan')),
+    h('div', { class: 'att-line' }, h('span', null, attSummary(rec)), acts));
+}
+function repCol(key, list) {
+  return h('div', { class: 'rep-col' },
+    h('h4', null, t(key) + ' (' + list.length + ')'),
+    list.length ? h('ul', null, list.map(({ m, r }) => h('li', null,
+      h('span', { class: 'rep-name' }, m.name), partOf(m) ? h('span', { class: 'muted' }, ' · ' + partName(partOf(m))) : null,
+      isNewSince(r.at) ? h('span', { class: 'chip-s new' }, t('newBadge')) : null,
+      r.note ? h('span', { class: 'rep-note' }, r.note) : null))) : h('p', { class: 'muted' }, t('repNobody')));
+}
+function repWaiting(list, ev, now) {
+  const col = h('div', { class: 'rep-col' }, h('h4', null, t('repNone') + ' (' + list.length + ')'));
+  if (!list.length) { col.append(h('p', { class: 'muted' }, t('repNobody'))); return col; }
+  col.append(h('ul', null, list.map(({ m, r }) => h('li', null,
+    h('span', { class: 'rep-name' }, m.name), partOf(m) ? h('span', { class: 'muted' }, ' · ' + partName(partOf(m))) : null,
+    r ? h('span', { class: 'rep-note' }, t('repStale', { s: repWord(r.s) })) : null))));
+  if (ev.date >= now.day) col.append(remindBlock(list.map(x => x.m), lang => meetMsgAll(ev, lang), m => meetMsgOne(ev, m, S.lang)));
+  return col;
+}
+function attSummary(rec) {
+  const c = { p: 0, l: 0, e: 0, a: 0 };
+  for (const k of Object.values(rec.marks || {})) if (own(c, k)) c[k]++;
+  return t('attTaken', c) + (rec.guests ? ' ' + t('attGuestsN', { n: rec.guests }) : '');
+}
+
+// Taking attendance: Geldi / Geç / İzinli / Gelmedi for each member, by voice part. A second press clears a mark;
+// members left unmarked aren't recorded for this meeting.
+function openAttendance(ev) {
+  const prev = document.activeElement;
+  const rec = (A.data.attendance || []).find(a => a.eventId === ev.id);
+  const marks = Object.assign({}, rec ? rec.marks : {});
+  const ms = A.data.members, anyPart = ms.some(m => partOf(m));
+  // What each member replied, shown beside their name; the replies are fetched again behind the open dialog.
+  let said = {};
+  const tags = new Map();
+  const computeSaid = () => { said = {}; if (acan('replies')) { const g = meetingReplies(ev); for (const k of REPLIES) for (const x of g[k]) said[x.m.id] = k; } };
+  const paintTag = id => { const tg = tags.get(id); if (!tg) return; const k = said[id]; tg.className = 'said' + (k ? ' said-' + k : ''); tg.textContent = k ? repWord(k) : ''; };
+  computeSaid();
+  const rows = new Map();
+  const status = h('p', { class: 'hint att-status', 'aria-live': 'polite' });
+  const paint = id => { for (const b of rows.get(id) || []) b.setAttribute('aria-pressed', String(marks[id] === b.dataset.m)); };
+  const count = () => { const n = ms.filter(m => !marks[m.id]).length; status.textContent = n ? t('attUnmarked', { n }) : ''; };
+  // fn gives a mark to set, null to clear, or undefined to leave as it is.
+  const setAll = fn => { for (const m of ms) { const v = fn(m); if (v === null) delete marks[m.id]; else if (v) marks[m.id] = v; paint(m.id); } count(); };
+  const groups = h('div', { class: 'att-groups' });
+  for (const part of PARTS.concat([''])) {
+    const people = ms.filter(m => partOf(m) === part);
+    if (!people.length) continue;
+    groups.append(h('section', { class: 'att-group' },
+      h('h3', null, partName(part, !anyPart) + ' (' + people.length + ')'),
+      h('ul', { class: 'att-people' }, people.map(m => {
+        const bs = MARKS.map(k => h('button', {
+          type: 'button', class: 'mark-btn', 'data-m': k, 'aria-pressed': String(marks[m.id] === k),
+          onclick: () => { if (marks[m.id] === k) delete marks[m.id]; else marks[m.id] = k; paint(m.id); count(); }
+        }, t(MARK_SHORT[k])));
+        rows.set(m.id, bs);
+        const tag = h('span', { class: 'said' });
+        tags.set(m.id, tag);
+        paintTag(m.id);
+        return h('li', null,
+          h('span', { class: 'att-who-name', id: 'am-' + m.id }, m.name, tag),
+          h('span', { class: 'marks', role: 'group', 'aria-labelledby': 'am-' + m.id }, bs));
+      }))));
+  }
+  const guests = h('input', { id: 'att-guests', class: 'input', type: 'number', min: '0', max: '500', inputmode: 'numeric', value: String(rec ? rec.guests || 0 : 0) });
+  const err = h('p', { class: 'err', role: 'alert', hidden: true });
+  const save = h('button', { type: 'submit', class: 'btn primary' }, t('attSave'));
+  // Closing with marks not saved asks first.
+  const startMarks = JSON.stringify(marks), startGuests = rec ? rec.guests || 0 : 0;
+  const dirty = () => JSON.stringify(marks) !== startMarks || (parseInt(guests.value, 10) || 0) !== startGuests;
+  const ask = h('div', { class: 'confirm', hidden: true },
+    h('span', null, t('attDiscardAsk')),
+    h('button', { type: 'button', class: 'btn small danger solid', onclick: () => close(true) }, t('attDiscard')),
+    h('button', { type: 'button', class: 'btn small', onclick: () => { ask.hidden = true; save.focus(); } }, t('attKeepMarking')));
+  const form = h('form', { novalidate: true, onsubmit: submit },
+    h('h2', { id: 'att-title' }, t('attDialog', { when: dLong(ev.date) + ', ' + hm(ev.start) })),
+    h('div', { class: 'actions' },
+      acan('replies') ? h('button', { type: 'button', class: 'btn small', onclick: () => setAll(m => (said[m.id] === 'yes' ? 'p' : said[m.id] === 'no' ? 'e' : undefined)) }, t('attFill')) : null,
+      h('button', { type: 'button', class: 'btn small', onclick: () => setAll(m => (marks[m.id] ? undefined : 'p')) }, t('attRest')),
+      h('button', { type: 'button', class: 'btn small quiet', onclick: () => setAll(() => null) }, t('attClear'))),
+    acan('replies') ? h('p', { class: 'hint' }, t('attFillHint')) : null,
+    ms.length ? groups : h('p', { class: 'muted' }, t('noMembersText')),
+    h('div', { class: 'field att-guests' }, h('label', { class: 'label', for: 'att-guests' }, t('attGuests')), guests),
+    status, err, ask,
+    h('div', { class: 'modal-foot' }, h('div', { class: 'end' }, h('button', { type: 'button', class: 'btn', onclick: () => close() }, t('cancel')), save)));
+  // A tap beside the dialog does nothing here: it's a list being filled in, often on a phone. Escape works
+  // wherever the focus is (after such a tap it's on the page, not in the dialog).
+  const back = h('div', { class: 'backdrop' },
+    h('div', { class: 'modal att-modal', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'att-title' }, form));
+  const onKey = e => { if (e.key === 'Escape' && back.isConnected) { e.preventDefault(); close(); } };
+  document.addEventListener('keydown', onKey);
+  function close(force) {
+    if (!force && dirty()) { ask.hidden = false; ask.querySelectorAll('button')[1].focus(); return; }
+    back.remove();
+    document.removeEventListener('keydown', onKey);
+    if (prev && prev.focus && prev.isConnected) prev.focus();
+  }
+  async function submit(e) {
+    e.preventDefault();
+    save.disabled = true;
+    err.hidden = true;
+    try {
+      const r = await api.admin(A.key, 'saveAttendance', { pollId: A.pollId, eventId: ev.id, marks, guests: Math.max(0, Math.min(500, parseInt(guests.value, 10) || 0)) });
+      // Saved with nothing marked, the meeting has no attendance any more.
+      A.data.attendance = (A.data.attendance || []).filter(a => a.eventId !== ev.id).concat(r.attendance ? [r.attendance] : []);
+      A.season = null;   // the record changed: it's fetched again when asked for
+      close(true);
+      toast(t(r.attendance ? 'attSaved' : 'attCleared'));
+      redrawKeepingFocus(renderTab);
+    } catch (x) { err.textContent = errText(x); err.hidden = false; save.disabled = false; }
+  }
+  document.body.append(back);
+  count();
+  (form.querySelector('.mark-btn') || save).focus();
+  refreshAttend().then(ok => { if (ok && back.isConnected) { computeSaid(); for (const id of tags.keys()) paintTag(id); } });
+}
+
+// The season (from 1 September) across every poll: per member, how often they came; who missed the last two.
+function seasonRange() {
+  const today = nowIn(A.data.poll.tz).day;
+  const y = +today.slice(0, 4) - (today.slice(5) < '09-01' ? 1 : 0);
+  return { from: y + '-09-01', to: (y + 1) + '-08-31' };
+}
+async function loadSeason() {
+  A.seasonBusy = true; fillSeason();
+  try { A.season = await api.admin(A.key, 'season', seasonRange()); }
+  catch (e) { toast(errText(e), { error: true }); }
+  A.seasonBusy = false;
+  redrawKeepingFocus(fillSeason);
+}
+const pctText = n => (S.lang === 'tr' ? '%' + n : n + '%');
+function seasonStats(sz) {
+  const taken = (sz.meetings || []).filter(x => x.marks && Object.keys(x.marks).length);
+  const last2 = taken.slice(-2);
+  const rows = (sz.members || []).map(m => {
+    const c = { p: 0, l: 0, e: 0, a: 0 };
+    for (const x of taken) { const k = x.marks[m.id]; if (own(c, k)) c[k]++; }
+    const of = c.p + c.l + c.a;
+    return { m, c, pct: of ? Math.round((c.p + c.l) * 100 / of) : null, risk: last2.length === 2 && last2.every(x => x.marks[m.id] === 'a') };
+  });
+  return { taken, rows };
+}
+function buildSeason() {
+  if (!acan('attendance')) return null;
+  R.season = h('div', { class: 'season' });
+  fillSeason();
+  return R.season;
+}
+function fillSeason() {
+  if (!R.season) return;
+  const box = clear(R.season);
+  box.append(h('h3', { id: 'season-h', class: 'sub' }, t('seasonTitle')), h('p', { class: 'hint' }, t('seasonHint')));
+  if (!A.season) {
+    box.append(h('div', { class: 'actions' }, h('button', { type: 'button', class: 'btn', id: 'season-show', disabled: A.seasonBusy, onclick: loadSeason },
+      A.seasonBusy ? h('span', { class: 'spin', 'aria-hidden': 'true' }) : null, t('seasonShow'))));
+    return;
+  }
+  const st = seasonStats(A.season);
+  if (!st.taken.length) { box.append(h('p', { class: 'muted' }, t('seasonNone'))); return; }
+  const cols = [t('colName'), t('colPart'), t('colPct')].concat(MARKS.map(k => t(MARK_SHORT[k])));
+  box.append(h('p', { class: 'season-count' }, t('seasonCount', { n: st.taken.length }) + ' · ' + dRange(A.season.from, A.season.to)),
+    h('div', { class: 'season-wrap', tabindex: '0', role: 'region', 'aria-labelledby': 'season-h' }, h('table', { class: 'season-table' },
+      h('thead', null, h('tr', null, cols.map((x, i) => h('th', { scope: 'col', class: i > 1 ? 'num' : null }, x)))),
+      h('tbody', null, st.rows.map(r => h('tr', { class: r.risk ? 'risk' : null },
+        h('th', { scope: 'row' }, r.m.name, r.risk ? h('span', { class: 'risk-tag' }, t('seasonRisk')) : null),
+        h('td', null, partOf(r.m) ? partName(partOf(r.m)) : '—'),
+        h('td', { class: 'num' }, r.pct === null ? '—' : pctText(r.pct)),
+        MARKS.map(k => h('td', { class: 'num' }, String(r.c[k])))))))),
+    framed ? null : h('div', { class: 'actions' }, h('button', { type: 'button', class: 'btn small', onclick: () => seasonCsv(st) }, t('seasonCsv'))));
+}
+function seasonCsv(st) {
+  const head = [t('colName'), t('colPart'), t('colPct')].concat(MARKS.map(k => t(MARK_WORD[k])),
+    st.taken.map(x => dShort(x.date) + ' ' + hm(x.start) + (x.title ? ' ' + x.title : '')));
+  const rows = [head].concat(st.rows.map(r => [r.m.name, partOf(r.m) ? partName(partOf(r.m)) : '', r.pct === null ? '' : r.pct]
+    .concat(MARKS.map(k => r.c[k]), st.taken.map(x => (x.marks[r.m.id] ? t(MARK_WORD[x.marks[r.m.id]]) : '')))));
+  download('provala-sezon-' + A.season.from.slice(0, 4) + '.csv', '﻿' + rows.map(row => row.map(csvCell).join(',')).join('\r\n'), 'text/csv;charset=utf-8');
 }
 
 /* ---------- Poll settings dialog */
@@ -3461,7 +4140,7 @@ function openPollEditor(poll) {
   for (let m = 0; m <= 1440; m += 30) times.push([m, m === 1440 ? hm(m) + ' (' + t('midnight') + ')' : hm(m)]);
   const fld = (cls, id, label, control) => h('div', { class: 'field ' + (cls || '') }, h('label', { class: 'label', for: id }, label), control);
   const submitBtn = h('button', { type: 'submit', class: 'btn primary' }, isNew ? t('createPoll') : t('savePoll'));
-  const form = h('form', { class: 'modal', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'pe-title', novalidate: true, onsubmit: submit },
+  const form = h('form', { novalidate: true, onsubmit: submit },
     h('h2', { id: 'pe-title' }, isNew ? t('editNew') : t('editTitle')),
     h('div', { class: 'form-grid' },
       fld('', 'pe-ttr', t('fTitleTr'), h('input', { id: 'pe-ttr', class: 'input', maxlength: '120', value: (f.title && f.title.tr) || '' })),
@@ -3484,7 +4163,8 @@ function openPollEditor(poll) {
     h('div', { class: 'modal-foot' },
       isNew ? null : h('button', { type: 'button', class: 'btn danger', onclick: askDelete }, t('deletePoll')),
       h('div', { class: 'end' }, h('button', { type: 'button', class: 'btn', onclick: close }, t('cancel')), submitBtn)));
-  const back = h('div', { class: 'backdrop', onkeydown: e => { if (e.key === 'Escape') close(); }, onmousedown: e => { if (e.target === back) close(); } }, form);
+  const back = h('div', { class: 'backdrop', onkeydown: e => { if (e.key === 'Escape') close(); }, onmousedown: e => { if (e.target === back) close(); } },
+    h('div', { class: 'modal', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'pe-title' }, form));
   document.body.append(back);
   form.querySelector('#pe-ttr').focus();
 
@@ -3524,16 +4204,21 @@ function openPollEditor(poll) {
       render();
     } catch (x) { fail(errText(x)); submitBtn.disabled = false; }
   }
+  let alsoAtt = null;
   function askDelete() {
     const n = (A.data && A.data.poll.id === f.id) ? A.data.responses.length : (f.answers || 0);
+    const nAtt = (A.data && A.data.poll.id === f.id) ? (A.data.attendance || []).length : 0;
+    alsoAtt = nAtt ? h('input', { type: 'checkbox', id: 'pe-del-att' }) : null;
     clear(confirmBox).append(h('span', null, t('confirmDeletePoll', { n })),
+      alsoAtt ? h('label', { class: 'switch-row del-att' }, alsoAtt, t('delPollAtt', { n: nAtt })) : null,
       h('button', { type: 'button', class: 'btn small danger solid', onclick: doDelete }, t('yesDelete')),
       h('button', { type: 'button', class: 'btn small', onclick: () => { confirmBox.hidden = true; } }, t('keep')));
     confirmBox.hidden = false;
   }
   async function doDelete() {
     try {
-      const st = await api.admin(A.key, 'deletePoll', { pollId: f.id });
+      const st = await api.admin(A.key, 'deletePoll', { pollId: f.id, attendance: !!(alsoAtt && alsoAtt.checked) });
+      A.season = null;
       A.polls = st.polls; A.currentId = st.currentId;
       A.pollId = A.currentId || (A.polls[0] ? A.polls[0].id : '');
       if (A.pollId) await loadAdminPoll(A.pollId); else A.data = null;
@@ -3548,14 +4233,14 @@ function openPollEditor(poll) {
 function signOut() {
   store.del('tutti-org');
   store.del('tutti-admin-key');
-  Object.assign(A, { key: '', authed: false, data: null, polls: [], keyErr: '', error: null });
+  Object.assign(A, { key: '', authed: false, data: null, polls: [], keyErr: '', error: null, caps: [], errors: null, season: null });
   render();
 }
 
 /* ================================================================ SHELL */
 function buildHeader() {
   const v = S.view;
-  const hasSchedule = S.schedule && S.schedule.events && S.schedule.events.length;
+  const hasSchedule = !!S.member && hasMeetings();
   return h('header', { class: 'top' }, h('div', { class: 'wrap top-in' },
     h('a', { class: 'brand', href: '#' }, APP_NAME),
     v === 'admin'
@@ -3574,13 +4259,13 @@ function buildHeader() {
 }
 
 function buildDemoBand() {
-  return h('div', { class: 'demo-band' }, h('div', { class: 'wrap demo-in' },
+  return h('aside', { class: 'demo-band', 'aria-label': t('demoBanner') }, h('div', { class: 'wrap demo-in' },
     h('span', null, t('demoBanner')),
     S.view === 'admin' ? h('a', { href: '#' }, t('demoMember')) : h('a', { href: '#admin' }, t('demoOrganizer')),
     h('button', { type: 'button', class: 'btn small quiet', onclick: () => {
-      Demo.reset();
+      window.ProvalaDemo.reset();
       store.keys().filter(k => /^tutti-(token|draft|admin|session|org|page)/.test(k)).forEach(k => store.del(k));
-      Object.assign(A, { key: '', authed: false, data: null, polls: [], pollId: '', keyErr: '', error: null, tab: 'plan', creds: [] });
+      Object.assign(A, { key: '', authed: false, data: null, polls: [], pollId: '', keyErr: '', error: null, tab: 'plan', creds: [], caps: [], errors: null, since: {}, season: null });
       endSession();
       S.loaded = false;
       toast(t('demoResetDone'));
@@ -3723,6 +4408,20 @@ function onRoute() {
 
 // The Provayoyo banner, next to this page on GitHub.
 const BANNER = 'banner.webp';
+
+// Problems after start-up are reported too (see the safety net at the top): uncaught errors from this page's own
+// code, and failed promises other than the backend's ordinary answers (those are already shown to the person).
+const reportWhere = () => (S.view === 'admin' ? 'admin' : S.needLogin ? 'login' : S.view);
+window.addEventListener('error', e => {
+  if (!window.provalaUp || !window.provalaReport) return;
+  const file = (e.filename || '').split('#')[0];
+  if (file && file !== location.href.split('#')[0]) return;   // a browser extension, say
+  if (!e.error && /^Script error/i.test(e.message || '')) return;
+  window.provalaReport(e.error || e.message, reportWhere());
+});
+window.addEventListener('unhandledrejection', e => {
+  if (window.provalaReport && !(e.reason instanceof ApiError)) window.provalaReport(e.reason, reportWhere());
+});
 
 window.addEventListener('hashchange', onRoute);
 window.addEventListener('beforeunload', e => {

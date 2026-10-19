@@ -5,6 +5,7 @@ A free availability planner for a group that meets regularly. Members mark the d
 - **Only your members can use it.** You add them in the planner and each person gets their own username and password. Without signing in, the link shows a sign-in screen and nothing else: no titles, no dates, no names, and no way to answer.
 - **Members** sign in once on their phone or computer and stay signed in there. They tap a day (or a weekday name like *Tue* for every Tuesday) and mark its half hours as *Available* or *If needed*, add notes for specific days and a general comment, and send. *If needed* asks for a short reason, either in that day's note or in the general comment. They can come back any time, from any device, to change their answers. They never see anyone else's answers.
 - **You (the organizer)** sign in to the planner with a private key. You get a timetable that shows how many people are free at each half hour, a board you drag people onto to see the overlaps of any group, a ranked list of the best times (marked *tam kadro* when everyone can come), a "two meetings a month" suggestion, a list of who hasn't answered yet, and a schedule you publish to members. You can copy the schedule as a ready-made message for WhatsApp in Turkish or English, and members can add the dates to their calendars.
+- **After you publish**, members answer each rehearsal with *Geliyorum*, *Kısmen* or *Gelemiyorum*, with a note only you see. You see the replies per rehearsal, copy ready-made reminders for whoever hasn't answered, take attendance on the day, and keep a season record. Members can subscribe to the dates from their phone's calendar, and see their own attendance.
 - The page switches between Turkish and English (TR / EN in the header), and between day and night (the moon and sun button). Every page opens in Turkish, whatever language the phone is set to; someone who presses EN keeps English on that device until they press TR. Day or night starts out matching the device's own setting.
 
 ## What goes where
@@ -18,7 +19,7 @@ A free availability planner for a group that meets regularly. Members mark the d
 | `icon.png` | GitHub, next to `index.html` | The icon in the browser tab and on a phone's home screen. |
 | `preview.jpg` | GitHub, next to `index.html` | The picture WhatsApp shows when you share the link. |
 | `Code.gs` | Google Apps Script, in your Google account | The small backend the page talks to. It checks every sign-in. |
-| Your data | A private Google Sheet called **Provala data** in your Google Drive | Members, polls, every answer, notes, comments, the schedule. |
+| Your data | A private Google Sheet called **Provala data** in your Google Drive | Members, polls, every answer, notes, comments, the schedule, replies to rehearsals, attendance. |
 
 The banner, font, icon and preview picture rarely change, so after the first upload you normally only replace `index.html`.
 
@@ -50,16 +51,16 @@ To check it works, open that URL in your browser. You should see a short line of
 
 ## Step 2: Put the page online with GitHub Pages
 
-1. Open `index.html` in a text editor. Near the top of the script you'll find:
+1. Open `index.html` in a text editor. Near the top you'll find a short block marked **SETUP** with this line:
 
    ```js
-   const API_URL = '';
+   var API_URL = '';
    ```
 
    Paste your Web app URL between the quotes and save:
 
    ```js
-   const API_URL = 'https://script.google.com/macros/s/AKfy.../exec';
+   var API_URL = 'https://script.google.com/macros/s/AKfy.../exec';
    ```
 
 2. On GitHub, create a new **public** repository, for example `provala`.
@@ -88,24 +89,42 @@ Members can change their password after signing in (**Change password** under th
    - **The timetable.** Darker green means more people are free. A dot means everyone on the board is free (*tam kadro*). An amber line means everyone could come, but some only if needed. Tap a square to see who is free, who is "if needed" and why, who isn't, and their notes for that day.
    - **The board.** Everyone starts on it. Drag names off to the "Not on the board" tray, or drag them back, to see the overlaps for any group (for example, only one section). Tapping a name also moves it.
    - **Best times.** One line per day, best first, for the meeting length you choose, with who is missing and why. **Two meetings a month** suggests the best pair of dates at least 10 days apart (you can change the gap).
-3. The **People** tab shows how many members have answered and who hasn't yet, then each person's month at a glance with their comment and day notes. You can delete an answer there, or show only that person on the board.
+3. The **People** tab shows how many members have answered and who hasn't yet, then each person's month at a glance with their comment and day notes. You can delete an answer there, or show only that person on the board. While the poll takes answers, **Copy reminder (TR / EN)** gives you a message for the group chat, and **Messages one by one** a short personal one for each person who hasn't answered.
 4. Click **Add** next to a time (or **Add both**), then open the **Schedule** tab. Adjust times, add a place and notes, and click **Publish to members**. Signed-in members see the dates under **Schedule** with buttons to add them to Google Calendar or any calendar app, and who can come by voice part. Under each meeting in the editor you see the same part counts (like `Tenor 1/3`) before you publish, so you can spot a part nobody covers.
 5. Publishing doesn't send anything. Click **Copy as message (TR)** or **(EN)** and paste the dates into your group chat.
+
+## Rehearsals: replies, attendance, the season
+
+Once a schedule is published:
+
+- **Members reply to each rehearsal.** Under every meeting (and in a box at the top of their page for the next one) they press **Geliyorum**, **Kısmen** or **Gelemiyorum**, and can add a short note for you, like "19.30'da gelebilirim". They can change or take back a reply until the end of that day. If you change a meeting's day or time, earlier replies to it stop counting and members are asked again.
+- **Who can come.** A reply counts before the poll answer: *Geliyorum* puts the person in the list with a ✓, *Kısmen* and *Gelemiyorum* take them out of it. People who haven't replied are listed if their poll answer says they're free for the whole meeting. For a meeting outside the poll's days or hours there are no answers to go by, so its list shows only those who said *Geliyorum*, once someone has.
+- **The Attendance tab** (*Katılım*) shows, for each published meeting, how many said what. Open **Who said what** for the names and notes, and for those who haven't replied yet, with a reminder for the group chat or one message per person.
+- **Taking attendance.** From the day of a meeting, press **Take attendance**. Mark each member *Came*, *Late*, *Excused* or *Absent* (press again to clear), add guests, and save. **Fill in from replies** marks those who said *Geliyorum* as came and *Gelemiyorum* as excused; **Mark the rest as came** fills in everyone still unmarked. Members left unmarked simply aren't recorded for that meeting. You can edit it later.
+- **The season record**, under the meetings: everyone's attendance since 1 September across all polls, with a percentage (came and late, out of came, late and absent; excused doesn't count) and a flag for anyone who missed the last two meetings with attendance. **Download CSV** has every meeting as a column. Attendance stays as you took it: moving or removing a meeting afterwards, or deleting its poll, doesn't change the record. To correct one, take that meeting's attendance again; to remove one, save it with nobody marked, or, for a meeting no longer on the schedule, press **Delete this attendance** on the Attendance tab. When you delete a poll, you can tick a box to delete its attendance too (handy for a test poll).
+- **Members see their own attendance** this season on their Schedule page, never anyone else's.
+- **Their calendar.** On the Schedule page, **Subscribe** gives each member a private calendar link (for iPhone, iPad and Mac, Google Calendar, or any calendar app that takes a link; on Android, Google Calendar only takes it from calendar.google.com on a computer, and the page explains how). New and changed meetings then appear by themselves; calendar apps check every few hours, Google sometimes only once a day. The link shows the meeting times and that member's own replies, nothing about anyone else. **Make a new link** stops the old one working.
+- **Last month stays in reach.** When next month's poll becomes current, the meetings still to come from earlier polls stay on members' Schedule page, so they can still see and answer them. This holds for every poll with a published schedule, so if you try things out in a test poll, unpublish its schedule (or delete the poll) afterwards.
+- **What's new.** When you open the planner, a line under the poll says what's new since your last visit on that device (new or changed answers, replies to meetings), and new ones are marked *new*.
 
 ## Every month after that
 
 1. In the planner, click **New poll**. It copies your last settings and picks the following month.
-2. Click **Make current**. Members see the new month the next time they open the link. Old polls stay in the list, and members stay the same.
+2. Click **Make current**. Members see the new month the next time they open the link. Old polls stay in the list, and members stay the same. Meetings still to come from the earlier poll stay on members' Schedule page.
 
 ## Where your data is
 
-Open the **Provala data** spreadsheet (link in the Apps Script log, or search your Drive). It has four sheets:
+Open the **Provala data** spreadsheet (link in the Apps Script log, or search your Drive). It has these sheets:
 
 - **Members**: one row per member, with their name, username and when they last signed in. Passwords are only stored scrambled.
 - **Polls**: one row per poll.
 - **Responses**: one row per member per poll, with readable columns for name, comment, availability (times in brackets are "only if needed") and day notes.
 - **Schedules**: what you published.
+- **Replies**: one row per member per poll, with their replies to the meetings and their notes.
+- **Attendance**: one row per meeting where you took attendance: who came (late ones marked), guests, and who was absent.
+- **Errors**: problems the page ran into on members' devices (see below).
 
+The last three appear by themselves the first time something goes into them.
 The last column of each sheet, **Data**, is what the app reads. Make changes through the app rather than in that column. **Export CSV** in the planner gives you one row per person per day.
 
 ## Changing things later
@@ -113,7 +132,7 @@ The last column of each sheet, **Data**, is what the app reads. Make changes thr
 - **Changed `index.html`?** Upload it to the GitHub repository again (with your `API_URL` filled in). Pages updates within a minute or two.
 - **Set up earlier under the old name Tutti?** Nothing breaks. The page finds your sheet by its ID, so you can rename the sheet and the Apps Script project to Provala whenever you like. If you also rename the GitHub repository, the link changes to `https://<your-username>.github.io/provala/`. Send members the new link; they stay signed in, because it's still the same github.io address.
 - **Want a different banner?** Replace `banner.webp` in the repository with the new picture (same name, about 3 times as wide as it is tall). The link-preview picture is the separate `preview.jpg` (1200 × 630); replace that file too. WhatsApp keeps old previews for a while, so the new picture can take a day or so to show in chats where the link was already shared.
-- **Changed `Code.gs`?** Paste the new code, save it, then **Deploy → Manage deployments**, click the pencil icon, set Version to **New version**, and click **Deploy**. The URL stays the same. Without this step, the live web app keeps running the old code. The page works with an older `Code.gs` too, but without voice parts, the numbers in the calendar and the who-can-come lists (setting a voice part then says the new `Code.gs` is needed), and a little slower: signing in and opening the planner then take two requests instead of one.
+- **Changed `Code.gs`?** Paste the new code, save it, then **Deploy → Manage deployments**, click the pencil icon, set Version to **New version**, and click **Deploy**. The URL stays the same. Without this step, the live web app keeps running the old code. The page works with an older `Code.gs` too, just without what that version can't do (replies, the Attendance tab, calendar links, error reports, and with a much older one also voice parts and the numbers), and it shows only what works.
 - **Someone forgot their password?** Members tab → **New password** next to their name. Their old password and sign-ins stop working.
 - **Someone left the group?** Members tab → **Remove**. They can't sign in any more; answers they already gave stay.
 - **Want everyone to sign in again** (for example, after a phone was lost)? Run `signOutEveryone` in the Apps Script editor (pick it in the same dropdown as `setup`, then **▶ Run**). Passwords keep working. A phone that is offline can still show its last copy of that member's own page, but it can't load anything new or send anything until someone signs in again.
@@ -121,6 +140,14 @@ The last column of each sheet, **Data**, is what the app reads. Make changes thr
 - **Want a new organizer key** (for example after sharing your screen)? Run `newOrganizerKey`. The old one stops working, and so does every planner sign-in made with it.
 - **Want a co-organizer?** Give them the organizer key; they can then do everything you can in the planner. To take it back, run `newOrganizerKey`.
 - **Want to choose your own organizer key?** In Apps Script, open **Project Settings** (the gear on the left) → **Script properties** → edit `ADMIN_KEY`. Use something long, like four or five unrelated words.
+
+### Updating to the October 2026 version (replies, attendance, calendar links)
+
+1. Open the **Provala data** sheet and choose **File → Make a copy**. Nothing should go wrong, but this way you have every answer and member exactly as they are now.
+2. In Apps Script, replace all of `Code.gs` with the new one, save, and deploy a **New version** (see "Changed `Code.gs`?" above). You don't need to run `setup`.
+3. Upload the new `index.html` to GitHub (your `API_URL` is already in it).
+
+Every member, password, sign-in, poll, answer and schedule stays as it is: the new version reads them unchanged and keeps its new things in new sheets. Members stay signed in. If you ever want to go back, paste the previous `Code.gs` and deploy it the same way; it keeps working on the same sheet and simply ignores the new ones (calendars subscribed to a member's link then stop updating, and keep the meetings as they last were). The order of steps 2 and 3 doesn't matter: the old page works with the new `Code.gs`, and the new page with the old one (without the new parts) in the meantime.
 
 ### Updating from the version without sign-in
 
@@ -137,13 +164,16 @@ Paste the new `Code.gs` and deploy a **New version** (see above), then upload th
   - Answers from removed members don't count. Removing a member or deleting an answer changes the numbers right away, not the next day.
   - Once a poll has answers, its time zone is fixed, like its hours (it decides when "today" ends).
 - **Who can come to a published rehearsal.** Under each published meeting: per voice part, the names of the people whose answers say they can come for the whole meeting, and how many members the part has (like `Tenor 1/3`). Nobody is named as missing, and "only if needed" isn't shown. In a part with one or two people, `0/1` does show that person can't come for all of it; that's what makes the list useful. The list follows the answers as they are now.
-- The page tells members this right under their answers. Before your first poll with this version, tell the group in your chat too: people may have answered expecting nobody to see anything.
+- **Replies to rehearsals.** Someone's name is on a rehearsal's list when they said *Geliyorum*, or, without a reply, when their answer says they can come. If they say *Kısmen* or *Gelemiyorum*, their name leaves the list; others can notice that it's gone (as before, when someone's answer changed), but what they said, and every note, only you see. The page tells members this next to the reply buttons.
+- The page tells members this right under their answers and on the Schedule page. Before your first poll with this version, tell the group in your chat too: people may have answered expecting nobody to see anything.
 
 **What protects your members' answers.**
 - Only members you add can sign in, and each member only ever loads their own answers, plus the numbers and rehearsal lists above, which `Code.gs` works out on the server. Other people's answers never reach a member's phone. So that the page opens at once on a return visit, it keeps a copy of the member's page (the poll, their own answers, the numbers and lists above) on their device, next to the sign-in; signing out removes both. Names, notes and schedules are shown as plain text, so nothing a member types can run as code in anyone's browser.
 - Passwords are stored only as salted, keyed hashes. The secrets for those hashes and for sign-ins live in the script's properties, not in the sheet, so even a copy of the sheet doesn't reveal passwords.
 - After 8 wrong passwords in a row, that username is paused for 15 minutes. After 10 wrong organizer keys, the planner is paused for 15 minutes.
 - Sign-ins are signed and expire: 180 days for members, 30 days for the planner. A password change, a new password from you, or `signOutEveryone` ends them early.
+- A member's calendar link is a long random code that only works for the published meeting times and that member's own replies. Removing the member, or **Make a new link** on their Schedule page, stops it. A new password or `signOutEveryone` doesn't, so a forgotten password doesn't quietly break the member's calendar; if a phone is lost, the member can make a new link from another device.
+- **Error reports.** When the page runs into a problem on someone's phone, it tells the script: the error message, where in the page it happened, and the browser name. Never names, answers or anything typed. At most three per visit and thirty an hour reach the **Errors** sheet, which keeps the latest 500; the planner tells you when new ones arrive. If you want a problem fixed, those rows are what to pass on. Anyone with the page's address could send such a report (apart from trying to sign in, it's the only thing possible without a sign-in), which is why they're capped and kept apart from your members' data: at worst, made-up reports could fill that hour's thirty and crowd out real ones.
 
 **What you should do.**
 - Turn on 2-Step Verification for the Google account that owns the script and the sheet. Everything is only as safe as that account.
@@ -163,7 +193,9 @@ Paste the new `Code.gs` and deploy a **New version** (see above), then upload th
 - **The organizer key isn't accepted**: run `showOrganizerKey` and copy it again, without extra spaces.
 - **The page says "The page couldn't open" / "Sayfa açılamadı"**: press **Reload** first. If it comes back, press **Clear the copy and reload**: it removes only the copy of the page kept on that phone or computer; the person stays signed in and unsent answers are kept. The line under the buttons says what went wrong, which is useful in a screenshot.
 - **The textures are missing (flat colours)**: the `tex-…webp` files aren't next to `index.html` on GitHub. Upload them; the page works without them, it just looks plainer.
+- **A calendar app won't take the subscription link**: try the other button (or **Copy the link** and add it in the app as a calendar "from URL"). If it still won't, the **Calendar file** buttons under each meeting always work, they just don't update by themselves. A meeting you change shows up in subscribed calendars within a few hours (Google can take up to a day).
+- **No Attendance tab, no reply buttons**: the live web app is still running an older `Code.gs`. Deploy a **New version**.
 
 ## Try it first
 
-With `API_URL` left empty, the page runs as a demo with eight sample people. Everything stays in your browser. Sign in with the username `deneme` and the password `demo`. Open the page with `#admin` at the end and use the key `demo` to see the planner and the Members tab.
+The demo is a separate copy of the page with eight sample people, in which the real `Code.gs` runs inside the page, on a stand-in for the sheet kept in your browser (Claude builds it from these files; `index.html` itself always talks to your Apps Script, and with `API_URL` empty it says the address is missing). It comes with November's rehearsals published (with some replies), and October's with attendance taken. Sign in with the username `deneme` and the password `demo`. Open the demo with `#admin` at the end and use the key `demo` to see the planner; pick *Ekim 2026* in the poll list to try taking attendance.
