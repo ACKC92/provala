@@ -349,13 +349,15 @@ textarea.input { min-height: 88px; resize: vertical; line-height: 1.5; }
 .chip-s.ok { background: var(--free); color: var(--free-ink); }
 .chip-s.cur { background: var(--accent); color: var(--accent-ink); }
 .chip-s.warn { background: var(--maybe-soft); color: var(--ink); }
-/* The answer-by date: the priest's red with a gold edge, so nobody misses it. */
-.chip-s.due { background: var(--rubric); color: #f8eed6; font-weight: 700; box-shadow: inset 0 0 0 1px var(--gold), 0 1px 2px rgb(30 10 4 / 35%); }
+/* The answer-by date: red ink with a gold edge; the priest's red itself once it's today or tomorrow, or past (from
+   version 2026-10-r5.3; before, always the red, which then said nothing about how soon). */
+.chip-s.due { background: var(--sunk); color: var(--rubric-ink); font-weight: 700; box-shadow: inset 0 0 0 1px var(--gold); }
+.chip-s.due.soon, .chip-s.due.past { background: var(--rubric); color: #f8eed6; box-shadow: inset 0 0 0 1px var(--gold), 0 1px 2px rgb(30 10 4 / 35%); }
 .sent-chip::before { content: ""; width: 9px; height: 5px; margin-top: -3px; border: solid currentColor; border-width: 0 0 2px 2px; transform: rotate(-45deg); }
 .state { display: grid; justify-items: start; gap: 12px; padding-top: 36px; padding-bottom: 36px; max-width: 580px; }
 .state h1, .state h2 { font: 700 30px/1.15 var(--font-display); }
 /* Shown until the script draws the page, and the safety net's message if it can't */
-.boot { padding: 56px 16px; text-align: center; color: var(--ground-ink-2); font: italic 17px/1.4 var(--font-body); }
+.boot { padding: 56px 16px; text-align: center; color: var(--ground-ink-2); font: 17px/1.4 var(--font-body); }   /* (not italic: the italic face isn't fetched before it's needed) */
 .fail-actions { display: flex; flex-wrap: wrap; gap: 10px; }
 .fail-detail { font-size: 13px; overflow-wrap: anywhere; }
 
@@ -389,6 +391,9 @@ textarea.input { min-height: 88px; resize: vertical; line-height: 1.5; }
 .times-area { display: grid; gap: 12px; min-width: 0; }
 .cal-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
 .cal-count { margin-left: auto; color: var(--ink-2); font-size: 14.5px; }
+.cal-help-fold { margin-top: 14px; color: var(--ink-2); font-size: 14px; }
+.cal-help-fold > summary { cursor: pointer; font-weight: 600; }
+.cal-help-fold .cal-help { margin-top: 6px; }
 .cal-help { margin: 14px 0 0; padding: 0; list-style: none; display: grid; gap: 4px; color: var(--ink-2); font-size: 14px; line-height: 1.45; }
 .btn.toggle { gap: 8px; }
 .btn.toggle .tick { display: inline-grid; place-items: center; width: 16px; height: 16px; border: 1.5px solid var(--ink-3); border-radius: 3px; flex: none; background: var(--field); }
@@ -489,8 +494,10 @@ textarea.input { min-height: 88px; resize: vertical; line-height: 1.5; }
 .savebar-in { display: flex; align-items: center; gap: 12px; padding-top: 10px; padding-bottom: 10px; }
 .save-status { display: grid; gap: 1px; min-width: 0; }
 .save-status strong { font-weight: 700; }
-.save-status span { color: var(--ground-ink-2); font-size: 13.5px; }
+.save-status > span { color: var(--ground-ink-2); font-size: 13.5px; }
 .savebar .btn { margin-left: auto; }
+.sb-short { display: none; }
+@media (max-width: 379px) { .savebar .sb-long { display: none; } .savebar .sb-short { display: inline; } }
 
 /* Schedule (members) */
 .events { display: grid; gap: 12px; }
@@ -505,6 +512,8 @@ textarea.input { min-height: 88px; resize: vertical; line-height: 1.5; }
 .event-place, .event-note { color: var(--ink-2); }
 .event-note { white-space: pre-line; }
 .event-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+.cal-add { grid-column: 1 / -1; font-size: 14px; }
+.cal-add > summary { color: var(--ink-2); }
 /* Who can come, by voice part */
 .att { grid-column: 1 / -1; padding-top: 12px; border-top: 1px solid var(--rule); }
 .att-table { width: 100%; border-collapse: collapse; font-size: 14.5px; line-height: 1.35; }
@@ -723,6 +732,8 @@ summary:hover { text-decoration: underline; text-underline-offset: 2px; }
 .member .actions { justify-content: flex-end; }
 .members-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 8px 16px; }
 .members-filter { min-width: min(14em, 100%); max-width: 100%; }
+.members-find { min-width: min(14em, 100%); max-width: 100%; }
+.member-list > li[hidden] { display: none; }
 .parts-sum { white-space: pre-line; }
 /* Several groups: a grid of group name and picker, so the pickers line up whatever the names' lengths. */
 .grp-sels { flex: 1 1 100%; display: grid; grid-template-columns: fit-content(14em) minmax(0, 15em); align-items: center; gap: 4px 10px; min-width: 0; }
@@ -820,6 +831,11 @@ summary:hover { text-decoration: underline; text-underline-offset: 2px; }
 .remind-list li { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 14.5px; }
 .admin-bar > .notice { font-size: 14.5px; }
 .att-modal { max-width: 760px; }
+.att-today { display: grid; gap: 8px; padding: 14px 16px; background: var(--accent-soft); border: 1px solid var(--accent); border-radius: var(--r); }
+.att-today-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.att-today-list li { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 12px; }
+.att-foot { position: -webkit-sticky; position: sticky; bottom: 0; z-index: 2; display: grid; gap: 8px; margin: 0 -24px -24px; padding: 12px 24px 16px; background-color: var(--paper); background-image: var(--parchment); border-top: 1px solid var(--gold); box-shadow: 0 -8px 16px -10px rgb(30 10 4 / 35%); }
+.att-foot > * { margin: 0; }
 .att-groups { display: grid; gap: 16px; }
 .att-group h3 { margin-bottom: 4px; font-size: 13.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--rubric-ink); }
 .att-people { list-style: none; margin: 0; padding: 0; display: grid; border-top: 1px solid var(--rule); }
@@ -877,6 +893,7 @@ fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
 .daypick input, .switch-row input { accent-color: var(--accent); width: 17px; height: 17px; }
 .switch-row { display: inline-flex; align-items: center; gap: 10px; font-weight: 600; }
 .del-att { flex-basis: 100%; font-weight: 450; }
+.del-soon { flex-basis: 100%; color: var(--danger); font-weight: 600; }
 .del-att input { accent-color: var(--danger); width: 17px; height: 17px; flex: none; }
 .modal-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
 .modal-foot .end { margin-left: auto; display: flex; gap: 8px; }
@@ -886,6 +903,7 @@ fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
 /* A notice with nothing to press never gets in the way of a tap on what's under it. */
 .toast:not(:has(button)) { pointer-events: none; }
 .toast button { margin-left: auto; padding: 0; border: 0; background: none; color: inherit; font-weight: 700; text-decoration: underline; }
+.toast .toast-no { margin-left: 14px; font-weight: 600; }
 /* Release 3. Holidays are red-letter days (the rubric red); closed days are hatched and can't be picked. */
 .day.hol .num { color: var(--rubric-ink); font-weight: 700; }
 .day.shut, .md.shut { background: repeating-linear-gradient(135deg, transparent 0 5px, var(--hatch) 5px 6px); }
@@ -1226,7 +1244,12 @@ fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
 .bday-list { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 4px; }
 .event > .came { grid-column: 1 / -1; margin-top: 0; padding-top: 10px; border-top: 1px solid var(--rule); }
 .came { margin-top: 8px; font-size: 14.5px; }
-.past-more > summary { cursor: pointer; list-style: none; display: flex; align-items: center; gap: 8px; }
+.past-more > summary, .prof > summary { cursor: pointer; list-style: none; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.prof > summary::-webkit-details-marker { display: none; }
+.prof > summary::before { content: '▸'; color: var(--accent); }
+.prof[open] > summary::before { content: '▾'; }
+.prof > summary h3 { display: inline; }
+.prof[open] > summary { margin-bottom: 8px; }
 .past-more > summary::-webkit-details-marker { display: none; }
 .past-more > summary::before { content: '▸'; color: var(--accent); }
 .past-more[open] > summary::before { content: '▾'; }
@@ -1310,6 +1333,20 @@ fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
 .scoped-is { padding: 6px 10px; border-left: 3px solid var(--accent); background: var(--field); border-radius: 0 var(--r) var(--r) 0; }
 .leads-pick { border: 0; margin: 6px 0 0; padding: 0; min-width: 0; }
 .lead-gen { margin-top: 22px; }
+.jump-best { display: none; }
+@media (max-width: 560px) { .jump-best { display: inline-block; justify-self: start; min-height: 44px; padding: 10px 0; font-weight: 600; } }
+#best:focus { outline: none; }
+/* Touch screens (from version 2026-10-r5.3): what members tap every week at least 44px tall. */
+@media (pointer: coarse) {
+  summary { padding-top: 10px; padding-bottom: 10px; }
+  .btn.small, .reply-acts .btn.small, .cal-tools .btn.small, .account .btn { min-height: 44px; }
+  .wdh, .mark-btn, .toast button { min-height: 44px; }
+  .wk { width: 32px; height: 40px; }
+}
+/* The skip link: out of sight until it has the keyboard's focus. */
+.skip { position: absolute; left: 8px; top: -60px; z-index: 50; padding: 10px 14px; border-radius: var(--r); background: var(--sheet); color: var(--ink); font-weight: 700; box-shadow: var(--card-drop); }
+.skip:focus { top: 8px; }
+#main:focus { outline: none; }
 </style>
 </head>
 <body>
@@ -1324,6 +1361,32 @@ fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
 var API_URL = 'https://script.google.com/macros/s/AKfycbzjxxXx_t5JqctCYV3iDAjsd-ouDi9iYZJujIihngBq23nIUydWVgRaTX37BLavh1eSBQ/exec';
 </script>
 <script>
+/* What this device keeps for Provala (the sign-in, answers not sent yet, the language…) is under provala- names from
+   version 2026-10-r5.4; before, under the names of the app's first working title. Copied over once, at the very start,
+   so nobody is signed out and nothing waiting to be sent is lost. The old copies stay for now, so going back to the
+   previous page still finds them; signing out takes them away too (provalaDropOld). (Old-style JavaScript, like the
+   safety net.) */
+(function () {
+  var OLD = 'tu' + 'tti-', DONE = 'provala-moved';
+  function each(st, fn) {
+    var ks = [], i, k;
+    for (i = 0; i < st.length; i++) { k = st.key(i); if (k && k.indexOf(OLD) === 0) ks.push(k); }
+    for (i = 0; i < ks.length; i++) fn(ks[i]);
+  }
+  function copy(st) {
+    if (st.getItem(DONE)) return;
+    each(st, function (k) { var nk = 'provala-' + k.slice(OLD.length); if (st.getItem(nk) === null) st.setItem(nk, st.getItem(k)); });
+    st.setItem(DONE, '1');
+  }
+  try { copy(window.localStorage); } catch (e) { /* no storage here */ }
+  try { copy(window.sessionStorage); } catch (e) { /* no storage here */ }
+  window.provalaDropOld = function () {
+    try { each(window.localStorage, function (k) { window.localStorage.removeItem(k); }); } catch (e) { /* no storage */ }
+    try { each(window.sessionStorage, function (k) { window.sessionStorage.removeItem(k); }); } catch (e) { /* no storage */ }
+  };
+})();
+</script>
+<script>
 /* Safety net, written in old-style JavaScript so any browser runs it. If the page can't start, or drawing it
    fails, this shows what happened and two ways out instead of an empty page:
    reload, or clear the copy of the page kept on this device (sign-in and unsent answers stay). */
@@ -1334,7 +1397,7 @@ var API_URL = 'https://script.google.com/macros/s/AKfycbzjxxXx_t5JqctCYV3iDAjsd-
   };
   function lang() {
     var l = null;
-    try { l = localStorage.getItem('tutti-lang'); } catch (e) { /* no storage */ }
+    try { l = localStorage.getItem('provala-lang'); } catch (e) { /* no storage */ }
     return l === 'en' ? 'en' : 'tr';
   }
   function el(tag, cls, text) {
@@ -1352,7 +1415,7 @@ var API_URL = 'https://script.google.com/macros/s/AKfycbzjxxXx_t5JqctCYV3iDAjsd-
   // What went wrong on a member's device is sent to the backend, so it can be fixed without anyone having to
   // describe it: the error and the browser, never names, answers or anything typed. At most three per page load,
   // and nothing at all without a backend address (as in the demo).
-  var VERSION = '2026-10-r5.2.1', sent = 0, seen = {};
+  var VERSION = '2026-10-r5.4', sent = 0, seen = {};
   window.provalaVersion = VERSION;
   window.provalaReport = function (err, where) {
     try {
@@ -1382,7 +1445,7 @@ var API_URL = 'https://script.google.com/macros/s/AKfycbzjxxXx_t5JqctCYV3iDAjsd-
     var acts = el('div', 'fail-actions');
     acts.appendChild(button('btn primary', t.reload, function () { location.reload(); }));
     acts.appendChild(button('btn', t.clear, function () {
-      try { localStorage.removeItem('tutti-page'); } catch (e) { /* no storage */ }
+      try { localStorage.removeItem('provala-page'); } catch (e) { /* no storage */ }
       // And (from version 2026-10-r4.5) the copy the home-screen helper keeps, with the helper itself: the page then
       // comes fresh from the site, and sets the helper up again. Only if the site can be reached: without a connection,
       // that copy is what still opens.
@@ -1471,6 +1534,9 @@ function rnd(n) {
   crypto.getRandomValues(a);
   return Array.from(a, b => (b % 36).toString(36)).join('');
 }
+// This page's own mark, sent with its saves of a schedule or a poll (from version 2026-10-r5.3): a save of its own whose
+// answer was lost doesn't then count as someone else's (Code.gs pageTok_).
+const PAGE_TOK = rnd(16);
 
 function h(tag, props, ...kids) {
   const el = document.createElement(tag);
@@ -1575,10 +1641,10 @@ const T = {
     docTitle: 'Provala',
     bannerAlt: 'A priest raises his hand and chants “Provayoyo!” to call a villager to rehearsal. The villager answers “Yaparım” (I’m in).',
     modeNight: 'Switch to night mode', modeDay: 'Switch to day mode',
-    tabAvailability: 'Availability', tabSchedule: 'Schedule', planner: 'Planner', sections: 'Sections', language: 'Language',
+    skipToMain: 'Skip to content', stageRegion: 'Stage plan', tabAvailability: 'Availability', tabSchedule: 'Schedule', tabDotNew: 'new', tabDotReply: 'needs your reply', planner: 'Planner', sections: 'Sections', language: 'Language',
     loading: 'Loading…', loadErrorTitle: 'Connection problem', retry: 'Try again',
     demoBanner: 'Demo with sample people. Changes stay in this browser.',
-    demoOrganizer: 'Open the organizer view', demoMember: 'Back to the member page', demoReset: 'Reset demo', demoResetDone: 'Demo reset',
+    demoOrganizer: 'Open the planner view', demoMember: 'Back to the member page', demoReset: 'Reset demo', demoResetDone: 'Demo reset',
     noPollTitle: 'No poll open right now', noPollText: "When the next one opens, you'll find it at this same link.",
     deadline: 'Please answer by {date}', closedChip: 'Answers closed',
     closedNotice: 'This poll is closed. You can still look at your answers.',
@@ -1588,7 +1654,7 @@ const T = {
     offline: "Couldn't connect. This is the page as it was last time on this device.",
     pageUpdated: 'Your conductor changed the poll, so the page has been updated.',
     restored: "Your changes are still here, but they haven't been sent yet. Don't forget to send them.",
-    privacy: 'Only your conductor sees your notes and comment. Other members see, without names, how many people are free or free if needed at each time (new and changed answers are added once a day), and for each published rehearsal, how many of each voice part (or instrument) can come. Names only your conductor sees.',
+    privacy: 'Only your conductor sees who answered what, and your notes and comment. Other members see, without names, how many people are free or free if needed at each time (new and changed answers are added once a day), and for each published rehearsal, how many of each section can come.',
     groupHint: ({ n }) => 'Open a day to see how many people are free at each time. From ' + (n === 1 ? '1 person’s answer' : n + ' people’s answers') + "; the numbers update each night, so today's answers show up tomorrow.",
     groupWait: ({ min, n }) => 'Once answers from at least ' + min + " people besides you are counted, a day you open will show how many are free at each time (" + n + ' so far). The numbers update each night.',
     slotsHint: 'The person sign and number beside a time show how many people are free then; the one with + is how many could come if needed. From answers up to last night.',
@@ -1601,11 +1667,11 @@ const T = {
     secvn1: 'Violin I', secvn2: 'Violin II', secva: 'Viola', secvc: 'Cello', seccb: 'Double bass', secfl: 'Flute', secob: 'Oboe',
     seccl: 'Clarinet', secbn: 'Bassoon', sechn: 'Horn', sectp: 'Trumpet', sectb: 'Trombone', secperc: 'Percussion', secpf: 'Piano',
     partNone: 'No section', partAll: 'Everyone', attOther: 'Others',
-    partLabel: 'Voice part of {name}', partSaved: 'Voice part saved', secSaved: 'Saved',
-    partsHint: "Set each person's voice part: for every published rehearsal, members then see how many of each part can come.",
+    partLabel: 'Section for {name}', partSaved: 'Section saved', secSaved: 'Saved',
+    partsHint: "Set each person's section: for every published rehearsal, members see how many of each section can come.",
     partsHintGroups: "Choose each person's groups, and their section in each. Members only see their own groups' polls and meetings.",
-    secLabelIn: "{name}'s section in {group}", membersShow: 'Show', allMembers: 'Everyone ({n})', noGroupMembers: 'In no group ({n})',
-    addInto: 'Add them to', groupMain: 'Choir', switchLabel: "Your groups' polls",
+    secLabelIn: "{name}'s section in {group}", membersShow: 'Show', membersFind: 'Find a name', membersNoMatch: 'Nobody by that name here.', allMembers: 'Everyone ({n})', noGroupMembers: 'In no group ({n})',
+    addInto: 'Add them to', addSec: 'Section (optional)', addSecNone: '— pick later', groupMain: 'Choir', switchLabel: "Your groups' polls",
     groupsTitle: 'Groups', groupNew: 'New group', groupEdit: 'Edit', groupEditFor: 'Edit {name}',
     groupsHint: "Each group has its own sections: voice parts like soprano and alto, or instruments like violin and cello. A member can be in several groups. You choose the groups each poll is for in its settings, and only their members see it.",
     groupCount: ({ n }) => (n === 1 ? '1 member' : n + ' members'), groupNoSections: 'No sections',
@@ -1619,7 +1685,7 @@ const T = {
     groupMembers: 'Members', groupMembersN: '({n} of {of})', groupMembersHint: "Who is in this group, and their section in it. Their accounts don't change.",
     groupFind: 'Find a member', groupFindPh: 'Find a member…', notInGroup: 'Not in this group', inGroupNoSec: 'In it, no section',
     leadLabel: 'Conductor', leadNone: 'Nobody', inGroupLead: 'In it', leadOn: '{name} is now the conductor.', leadOff: '{name} is no longer the conductor.',
-    leadHint: 'Whoever leads the groups. The conductor has no section in any group and isn’t in any section’s numbers, and every meeting of their groups, sectionals too, is in their calendar.',
+    leadHint: 'The conductor: counted in no section; every meeting of their groups, sectionals too, shows in their calendar.',
     groupCreate: 'Create group', groupSave: 'Save group', groupSaveAnyway: 'Save anyway', groupKeepEditing: 'Keep editing', groupCreated: 'Group created', groupSaved: 'Group saved',
     groupDelete: 'Delete group', groupDeleted: 'Group deleted', groupDeleteAlone: ({ n }) => (n === 1 ? '1 member is only in this group and will be in none.' : n + ' members are only in this group and will be in none.'),
     groupDiscardAsk: 'You have changes that aren’t saved.', groupDiscard: 'Close without saving',
@@ -1638,19 +1704,21 @@ const T = {
     fillBoth: 'Write your username and password.',
     badLogin: "That username and password don't match. Check for typos and try again.",
     locked: 'Too many wrong tries. Wait 15 minutes, then try again.',
-    forgot: "Forgot your password? Message your conductor and they'll give you a new one.", organizerDoor: 'Organizer sign-in', memberDoor: 'Member sign-in',
+    forgot: "Forgot your password? Message your conductor and they'll give you a new one.", organizerDoor: 'Planner sign-in', memberDoor: 'Member sign-in',
     demoLoginHint: 'In the demo, the username is deneme and the password is demo.', useDemoLogin: 'Fill in the demo login',
     signedInAs: 'Signed in as {name}', changePassword: 'Change password',
     pwTitle: 'Change your password', pwOld: 'Current password', pwNew: 'New password',
     pwHint: "At least 6 characters. You stay signed in here; on your other devices you'll sign in again.",
     pwChanged: 'Password changed.', errBadPassword: "Your current password isn't right.", errWeakPassword: 'Use at least 6 characters.',
     errSignedOut: 'You were signed out. Please sign in again; your changes are still here.',
-    unsavedSignOut: 'You have changes that are not sent yet.', signOutAnyway: 'Sign out anyway', unsavedSignOutSaved: 'You have changes that are not saved yet.',
+    unsavedSignOut: 'You have changes that are not sent yet.', signOutAnyway: 'Sign out anyway',
+    signOutAsk: 'Sign out? To get back in you’ll need your username and password.', signOutYes: 'Yes, sign out', unsavedSignOutSaved: 'You have changes that are not saved yet.',
     stepDays: 'Pick a day',
-    helpOneT: 'Tap a single day to fill in your availability for just that day.',
-    helpWdT: 'Want every Tuesday, for example? Tap the day name at the top and all of those days in the month get selected.',
-    helpWkT: 'To pick a whole week, tap the week number on the left.',
-    helpMultiT: 'To pick several different days, keep “Select several days” switched on and tap the days.', helpMultiMouse: 'On a computer you can do the same with Ctrl or Shift + left click.',
+    helpOneT: 'Tap a day, then mark its times below.',
+    helpWdT: 'Tap a day name at the top to pick, say, every Tuesday at once.',
+    helpWkT: 'Tap a week number on the left for the whole week.',
+    helpMultiT: 'To pick several different days, switch on “Select several days”, then tap the days.', helpMultiMouse: 'On a computer, Ctrl- or Shift-click does the same.',
+    calHelpFold: 'How to pick days',
     selectAll: 'Select all days', clearSel: 'Deselect', multiSel: 'Select several days', wk: 'Wk',
     nSel: ({ n }) => (n === 1 ? '1 day selected' : n + ' days selected'),
     selWeekday: 'Select every {day}', selWeek: 'Select week {w}',
@@ -1659,6 +1727,7 @@ const T = {
     noneSelected: 'Pick a day in the calendar first, then mark the times you can come here.',
     timesForMany: 'For {n} days: {days}', andMore: '{list} and {n} more', prevDay: 'Previous day', nextDay: 'Next day',
     paintWith: 'Mark as', toolFree: 'Available', toolMaybe: 'If needed', toolNone: 'Not available',
+    maybeHint: 'For a day you mark “If needed”, add a short reason in its note.',
     paintTouch: 'Tap a time to mark it. To mark several in a row, press and hold, then slide your finger.',
     paintMouse: 'Click a time to mark it, or click and drag to mark several.',
     paintMany: 'Changes apply to all {n} selected days. To change just one of them, tap it in the calendar.',
@@ -1676,6 +1745,7 @@ const T = {
     summary: 'Your answers', summaryEmpty: "You haven't marked any days yet.", noTimes: 'note only', ifNeededShort: 'if needed', needTag: 'note needed',
     save: 'Send my answers', saveChanges: 'Send changes', saving: 'Sending…', saved: 'Sent. Thank you!',
     stUnsaved: 'Changes not sent yet', stSaved: 'Everything is sent', stNew: 'Not sent yet',
+    stSavedS: ({ n }) => 'Sent · ' + (n === 1 ? '1 day' : n + ' days'), stNewS: ({ n }) => 'Not sent · ' + (n === 1 ? '1 day' : n + ' days'), saveS: 'Send',
     needNotes: ({ n }) => (n === 1
       ? 'One “if needed” day still needs a note. Write it in the day note or under “Anything else?”.'
       : n + ' “if needed” days still need a note. Write them in the day notes, or once under “Anything else?”.'),
@@ -1683,14 +1753,14 @@ const T = {
     clearAllYes: 'Yes, clear it', clearedToast: "Calendar cleared. It isn't final until you send.", undo: 'Undo',
     daysMarked: ({ n }) => (n === 1 ? '1 day marked' : n + ' days marked'),
     copied: 'Copied', copyTitle: 'Select and copy', close: 'Close',
-    errClosed: 'Answers are closed for this poll.', errBusy: 'The planner is busy. Try again in a few seconds.',
-    errNetwork: "Couldn't reach the planner. Check your connection and try again.", errGeneric: 'Something went wrong. Try again.',
-    errNotSetUp: "The planner isn't set up yet. Your conductor needs to run setup in Apps Script.",
+    errClosed: 'Answers are closed for this poll.', errBusy: 'Provala is busy right now. Try again in a few seconds.',
+    errNetwork: "Couldn't reach Provala. Check your internet connection and try again.", errGeneric: 'Something went wrong. Try again.',
+    errNotSetUp: "Provala isn't set up yet. Your conductor needs to run setup in Apps Script.",
     errNoPoll: 'That poll no longer exists.', errTooLarge: 'That is a bit too much text. Shorten your notes and try again.',
     errFull: 'This poll has reached its answer limit.', errInvalid: 'Some fields need fixing.',
     schedTitle: 'Meeting dates', schedEmpty: 'No dates yet. Your conductor will publish them here.',
-    publishedOn: 'Published {date}', googleCal: 'Add to Google Calendar', icsOne: 'Calendar file', icsAll: 'Add all to your calendar (.ics)', meeting: 'Meeting',
-    orgAccess: 'Organizer access', keyLabel: 'Organizer key',
+    publishedOn: 'Published {date}', calAdd: 'Add to calendar', googleCal: 'Add to Google Calendar', icsOne: 'Calendar file', icsAll: 'Add all to your calendar (.ics)', meeting: 'Meeting',
+    orgAccess: 'Planner sign-in', keyLabel: 'Organizer key',
     keyHint: 'You got this key when you ran setup in Apps Script. This browser then stays signed in for 30 days, or until you sign out. The key itself is not saved.',
     demoKeyHint: 'In the demo, the key is: demo', useDemoKey: 'Use the demo key', openPlanner: 'Open planner',
     badKey: "That key doesn't match. Check for typos, or run showOrganizerKey in Apps Script to see it again.",
@@ -1698,7 +1768,7 @@ const T = {
     openChip: 'Accepting answers', closedAdminChip: 'Closed', closeAnswers: 'Close answers', openAnswers: 'Reopen answers',
     copyMemberLink: 'Copy member link', exportCsv: 'Export CSV',
     answersN: ({ n }) => (n === 1 ? '1 answer' : n + ' answers'), lastUpdate: 'last update {ago}',
-    tabPlan: 'Plan', tabPeople: 'People', tabSched: 'Schedule', tabMembers: 'Members',
+    tabPlan: 'Plan', tabPeople: 'Answers', tabSched: 'Schedule', tabMembers: 'Members',
     // Version 2026-10-r4.3: what changed in the published meetings; publishing a best time in one go.
     chgTitle: 'The schedule has changed', chgOk: 'OK',
     chgMoved: '{what}: now {now} (was {was})', chgAlsoPlace: '; now at {place}', chgAlsoNoPlace: '; no place given now', chgPlace: '{what}, {when} — now at {place}', chgNoPlace: '{what}, {when} — no place given now',
@@ -1746,8 +1816,8 @@ const T = {
     msgT_credMsg: 'Sign-in details', msgW_credMsg: 'Members tab, after adding someone or making a new password',
     msgT_linkMsg: 'One-tap sign-in link', msgW_linkMsg: 'Members tab, “Sign-in link” next to each member',
     msgT_schedMsg: 'The schedule', msgW_schedMsg: 'Schedule tab, “Copy as message”',
-    msgT_pollAll: 'Poll reminder, for the group chat', msgW_pollAll: 'People tab, for those who haven’t answered',
-    msgT_pollOne: 'Poll reminder, for one person', msgW_pollOne: 'People tab, “Messages one by one”: the link signs them in with one tap',
+    msgT_pollAll: 'Poll reminder, for the group chat', msgW_pollAll: 'Answers tab, for those who haven’t answered',
+    msgT_pollOne: 'Poll reminder, for one person', msgW_pollOne: 'Answers tab, “Messages one by one”: the link signs them in with one tap',
     msgT_meetAll: 'Meeting reminder, for the group chat', msgW_meetAll: 'Attendance tab, for those who haven’t replied',
     msgT_meetOne: 'Meeting reminder, for one person', msgW_meetOne: 'Attendance tab, “Messages one by one”: the link signs them in with one tap',
     ph_name: 'name', ph_poll: 'poll', ph_deadline: 'deadline', ph_link: 'link', ph_username: 'username', ph_password: 'password',
@@ -1791,8 +1861,8 @@ const T = {
     rptStaleTheirs: 'Open the saved one', rptGone: 'This piece was deleted somewhere else.', rptSaveNew: 'Save as a new piece',
     rptDiscardAsk: 'You have changes that aren’t saved.', rptDiscard: 'Leave without saving', rptGroupIs: 'Group: {name}',
     groupHasPieces: 'This group has pieces in its repertoire: {list}. Delete them in the Repertoire tab first.',
-    rptPageTitle: 'Repertoire', rptPageHint: 'The pieces, with their sheet music and practice tracks: your own part’s first.',
-    rptMine: 'Your part: {part}', rptForAll: 'For everyone', rptOthers: 'Other parts ({n})', rptNoLinks: 'No links yet.',
+    rptPageTitle: 'Repertoire', rptPageHint: 'The pieces, with their sheet music and practice tracks: your own section’s first.',
+    rptMine: 'Your section: {part}', rptForAll: 'For everyone', rptOthers: 'Other sections ({n})', rptNoLinks: 'No links yet.',
     rptNoneMember: 'No pieces yet', rptNoneMemberText: 'When your conductor adds some, you’ll find them here with their practice links.',
     rptNewTab: '(opens in a new tab)', rptLink: 'Link',
     // Version 2026-10-r4.7: rehearsal plans.
@@ -1825,19 +1895,20 @@ const T = {
     msgSamplePlan: '19:00–19:20 Warm-up\n19:20–20:00 Ave Maria: bars 1–32 (Soprano and Alto)\n20:00–20:15 Break\n20:15–21:00 Ave Maria: bars 33–60 (Tenor and Bass)',
     msgSampleTimes: 'Soprano, Alto: 19:00–20:00\nTenor, Bass: 19:00–21:00', msgSamplePlace: 'Hall A', msgSamplePlanNote: 'Bring your scores.',
     // Version 2026-10-r4.9: polls made easier.
-    busyTitle: 'Hours you can never make it', busyIntro: 'A class, a shift, a standing engagement: the hours of the week you can’t come, until a day you choose if it ends. Every poll leaves them out for you, so you don’t have to.',
-    busyDays: 'Days', busyFrom: 'From', busyTo: 'To', busyUntil: 'Until (optional)', busyNoteL: 'Note (only the organizer sees it)', busyNoteOrg: 'Note', busyAdd: 'Add', busyRemove: 'Remove', busyRemoveFor: 'Remove: {what}',
+    busyTitle: 'Regular times you can’t make', busyIntro: 'A class, a shift, a standing engagement: the hours of the week you can’t come, until a day you choose if it ends. Every poll leaves them out for you, so you don’t have to.',
+    busyDays: 'Days', busyFrom: 'From', busyTo: 'To', busyUntil: 'Until (optional)', busyNoteL: 'Note (optional; only your conductor sees it)', busyNoteOrg: 'Note', busyAdd: 'Add', busyRemove: 'Remove', busyRemoveFor: 'Remove: {what}',
     busyNone: 'None yet.', busyAdded: 'Added', busyRemoved: 'Removed', busyFull: 'At most 8 at a time.', busyErrDays: 'Pick at least one day.', busyErrTimes: 'The end has to be after the start.', busyErrFive: 'Times in whole five minutes.',
     busyUntilText: 'until {date}', busyWord: 'can’t come', busyOrgBtn: 'Hours they can’t come', busyOrgTitle: '{name}: hours they can’t come', busyOrgIntro: 'Set for them what they told you: those hours don’t count in their answers.',
-    busyLine: 'Can’t come: {list}', busyMarked: 'Hours you can never come are left out, whatever you marked there.',
+    busyLine: 'Can’t come: {list}', busyMarked: 'Your regular times you can’t make are left out, whatever you marked there.',
     actBtn: 'Edit their answer', actBtnFor: 'Edit the answer of {name}', actHint: 'Opens their page in a new tab, signed in as them for two hours. What you send is marked as yours, and they see that.',
-    actBanner: 'You are editing the answer of {name}, as the organizer. What you send is marked as yours.', actDone: 'Finish', actFailed: 'Couldn’t open their page: {why}', actNoKey: 'Sign in to the planner first.',
-    actByOrg: 'Your answer was last changed by the organizer ({ago}). Change it back if it isn’t right.',
-    histChanges: 'Changes', histNoneYet: 'No changes yet.', histFirst: 'first answer', histDaysN: ({ n }) => (n === 1 ? '1 day changed' : n + ' days changed'), histComment: 'the comment', histByOrg: 'by the organizer',
+    actBanner: 'You are editing {name}’s answer. What you send is marked “by the conductor”.', actDone: 'Finish', actFailed: 'Couldn’t open their page: {why}', actNoKey: 'Sign in to the planner first.',
+    actByOrg: 'Your conductor last changed your answer ({ago}). Change it if it isn’t right.',
+    histChanges: 'Changes', histNoneYet: 'No changes yet.', histFirst: 'first answer', histDaysN: ({ n }) => (n === 1 ? '1 day changed' : n + ' days changed'), histComment: 'the comment', histByOrg: 'by the conductor',
     histNoteChanged: 'note changed', histWasNone: 'nothing', histMoreDays: ({ n }) => 'and ' + n + ' more',
     newsPlanNew: 'Rehearsal plan added: {when}', newsPlanChanged: 'Rehearsal plan changed: {when}', newsPiece: 'New in the repertoire: {title}',
-    clashTitle: 'Clashes with another group’s meetings', clashLine: ({ title, poll, when, n }) => title + ' (' + poll + ', ' + when + '): ' + (n === 1 ? '1 person is' : n + ' people are') + ' called to both',
-    clashChip: ({ n }) => 'Clashes · ' + n, clashHint: 'The same people are called to a meeting of another group at that time. Members see both in their calendar; this only says so.',
+    clashTitle: 'Clashes with other meetings', clashLine: ({ title, poll, when, n }) => title + ' (' + poll + ', ' + when + '): ' + (n === 1 ? '1 person is' : n + ' people are') + ' called to both',
+    clashBump: ({ title, poll, when }) => title + ' (' + poll + ', ' + when + '): a section leader’s sectional. When you publish, it comes off their calendar and its members are told it’s cancelled.',
+    clashChip: ({ n }) => 'Clashes · ' + n, clashHint: 'The same people are called to another meeting at that time. Members see both in their calendar; this only says so.',
     // Version 2026-10-r5.1: places and people.
     bkTitle: 'Backups', bkNone: 'No backup yet.', bkLast: 'Last backup: {when} ({ago}) · {n} kept', bkOld: 'The last backup is more than a week old. Is the weekly trigger set up? (README, “Backups”)',
     rideTitle: 'Lifts', rideTitleN: 'Lifts ({n})', rideKindQ: 'Offering room or looking for a lift?', rideOffer: 'I have room', rideAsk: 'I need a lift', rideSeats: 'How many', rideFrom: 'From', rideFromPh: 'Beşiktaş',
@@ -1860,6 +1931,12 @@ const T = {
     tpl_careMsg: 'Hi {name}, we haven’t seen you for a while. Is everything all right? Tell me if there’s anything I can help with. The schedule is here:\n{link}',
     bkDemo: 'In the real Provala, each backup is a spreadsheet in your Google Drive. The demo makes none.',
     errorsOpen: 'Open the Errors sheet',
+    schedTooMany: 'A schedule takes at most {n} meetings. Remove some, or put the later ones in next month’s poll.',
+    schedStale: 'Not saved: the schedule was changed elsewhere meanwhile.',
+    schedStaleTitle: 'The schedule was changed elsewhere meanwhile',
+    schedStaleHint: 'On another device or tab, perhaps. Look at that version (your changes here go), or save yours over it.',
+    schedStaleLoad: 'Show that version', schedStaleSave: 'Save mine over it', schedStalePublish: 'Publish mine over it', schedStaleUnpublish: 'Take it off anyway',
+    pollStale: 'Not saved: this poll was changed elsewhere meanwhile. Cancel and open it again: it opens as it is now.',
     agoNow: 'now', agoYesterday: 'yesterday', agoTomorrow: 'tomorrow', agoPast: '{n} {u} ago', agoFuture: 'in {n} {u}', agoU_second: 'seconds', agoU_minute: 'minutes', agoU_hour: 'hours', agoU_day: 'days',
     agoU_second1: 'second', agoU_minute1: 'minute', agoU_hour1: 'hour', agoU_day1: 'day',
     leadPanel: 'Section panel', leadSignIn: 'Open the section panel from your own page, signed in.', leadToMember: 'Your page',
@@ -1908,10 +1985,10 @@ const T = {
     tabMembersM: 'Members', peopleTitle: 'Members', peopleHint: 'The members of your group, by section. What each person tells about themselves, they entered themselves.',
     peopleHintAll: 'Everyone in every group, by section. What each person tells about themselves, they entered themselves.',
     peopleNone: 'No one to show yet', peopleNoneText: 'The members of your group will be listed here.', peopleOthers: 'Other groups', peopleMe: '(you)',
-    profTitle: 'Your profile', profHint: 'Your name and sections come from the organizer. The rest is up to you: what you fill in here, the members of your group see once you tick the line below.',
+    profTitle: 'Your profile', profHint: 'Your name and section come from your conductor. The rest is up to you: the members of your group see what you fill in here once you tick the line below.',
     profPhone: 'Phone', profAddr: 'District or address', profBday: 'Birthday', profDay: 'Day', profMonth: 'Month', profNoDay: '—', profAbout: 'About you', profAboutPh: 'Sings alto, plays a little piano.',
     profConsent: 'I agree that the members of my group see what I fill in here (phone, district or address, birthday, about me). I can untick this at any time.',
-    profConsentHint: 'Unticked, only the organizer sees what you filled in.', profSave: 'Save', profSaved: 'Profile saved', profUnsaved: 'Not saved yet',
+    profConsentHint: 'Unticked, only your conductor sees what you filled in.', profSave: 'Save', profSaved: 'Profile saved', profUnsaved: 'Not saved yet',
     noticeLink: 'Privacy notice (KVKK)', noticeTitle: 'Privacy notice', noticeRead: 'I have read and understood', noticeReadOn: 'You read it on {date}.', noticeClose: 'Close',
     bdayWeek: 'Birthdays this week', bdayToday: 'today', pastTitle: ({ n }) => 'Past rehearsals this season (' + n + ')', pastHint: 'Rehearsals of your groups this season with attendance taken or notes from the conductor, latest first.',
     cameTitle: ({ n }) => 'Who came (' + n + ')', cameLate: 'late', cameGuests: ({ n }) => '+ ' + n + (n === 1 ? ' guest' : ' guests'), cameNone: 'No one marked as came',
@@ -2001,6 +2078,7 @@ const T = {
     goMembers: 'Add members',
     answered: 'Answered', notAnswered: 'No answer yet', lastSignIn: 'Signed in {ago}', neverSignedIn: "Hasn't signed in yet",
     newPassword: 'New password', removeMember: 'Remove',
+    confirmNewPw: ({ name }) => 'Make a new password for ' + name + '? The old one, and every device signed in with it, stop working at once.', yesNewPw: 'Yes, new password',
     confirmRemoveMember: "Remove {name}? They won't be able to sign in. Answers they already gave stay.",
     memberRemoved: 'Member removed',
     answeredOf: ({ a, n }) => a + ' of ' + n + ' members answered', notYet: 'No answer yet:',
@@ -2010,9 +2088,9 @@ const T = {
     heatTitle: 'When people are free', legendMore: 'the greener, the more people are free', legendAll: 'everyone is free', allIn: 'all in', legendTm: 'everyone, some only if needed',
     tapCell: 'Tap a square to see who is free at that time.',
     free: 'Free', ifNeeded: 'If needed', notFree: 'Not free', addHere: 'Add a meeting here',
-    bestTitle: 'Best times', length: 'Length', canStart: 'can start between {a} and {b}', missing: 'Missing', add: 'Add',
+    jumpBest: 'Go to the best times ↓', bestTitle: 'Best times', length: 'Length', canStart: 'can start between {a} and {b}', missing: 'Missing', add: 'Add to draft',
     noWindows: 'No time works for the people on the board.',
-    minGapLabel: 'Gap', daysN: ({ n }) => 'at least ' + n + (n === 1 ? ' day' : ' days'), addBoth: 'Add both',
+    minGapLabel: 'Gap', daysN: ({ n }) => 'at least ' + n + (n === 1 ? ' day' : ' days'), addBoth: 'Add both to draft',
     addedToDraft: 'Added to the schedule draft', viewDraft: 'Open schedule',
     peopleUpdated: 'Updated {ago}', onlyThis: 'Show only this person on the board', deleteAnswer: 'Delete answer',
     confirmDeleteAnswer: "Delete {name}'s answer? This can't be undone.", yesDelete: 'Delete', keep: 'Keep', deleted: 'Answer deleted', noComment: 'No comment', fromComment: 'from their comment',
@@ -2022,7 +2100,7 @@ const T = {
     generalNote: 'Note for everyone', saveDraft: 'Save draft', publish: 'Publish to members', unpublish: 'Unpublish',
     copyMsgTr: 'Copy as message (TR)', copyMsgEn: 'Copy as message (EN)', downloadIcs: 'Download .ics', previewMember: 'See the member view',
     draftSaved: 'Draft saved', publishedToast: 'Published. Members can see the dates now.', unpublishedToast: 'Unpublished',
-    attendance: '{a} of {n} free', attOutside: 'Outside the poll days or times', remove: 'Remove',
+    attendance: '{a} of {n} free', attOutside: 'Outside the poll days or times', remove: 'Remove', evRemove: 'Remove meeting',
     msgSampleNote: 'Please bring your scores.', defaultEventTitle: 'Rehearsal',
     editNew: 'New poll', editTitle: 'Poll settings', fTitleTr: 'Title in Turkish', fTitleEn: 'Title in English',
     fMsgTr: 'Message to members in Turkish (optional)', fMsgEn: 'Message to members in English (optional)',
@@ -2049,8 +2127,9 @@ const T = {
     replyFrom: 'arriving {t}', replyUntil: 'leaving {t}', replyReasonLabel: 'Reason', replyReasonOptional: 'Reason (optional)',
     replyKnownPart: 'My conductor already knows why I can only come for part of it.', replyKnownNo: 'My conductor already knows why I can’t come.', replyKnownShort: 'conductor knows',
     replyNeedReason: 'Please write the reason, or tick that your conductor already knows.',
+    replyNeedBoth: 'Choose when you’ll arrive or leave, and write the reason (or tick that your conductor already knows).',
     replyNeedTime: 'Choose when you’ll arrive or leave (or tick that your conductor already knows).', replyErrTimes: 'Arriving has to be before leaving.',
-    replyPrivacy: "Other members see no names, only how many of each voice part (or instrument) are coming; in a section of one, that number shows that person's reply too. Your reason and times only your conductor sees.",
+    replyPrivacy: "Other members see no names, only how many of each section are coming; in a section of one, that number shows that person's reply too. Only your conductor sees your reason and times.",
     replyNotSent: ' (not sent yet)', switchWait: 'Your answers are on their way; one moment.',
     errPast: 'This meeting is over, so replies are closed.', errNoEvent: 'This meeting is no longer on the schedule.',
     errNoUrl: 'This page doesn’t have the planner’s address yet: paste the Apps Script web app URL into the API_URL line of index.html.',
@@ -2082,7 +2161,7 @@ const T = {
     repSum: 'Coming {y} · Partly {p} · Can’t come {n} · No reply {w}', repDetails: 'Who said what',
     repKnown: 'You know why', repYes: 'Coming', repPart: 'Partly', repNo: "Can't come", repNone: 'No reply yet', repStale: 'before the day or time changed: {s}', repNobody: 'nobody',
     remindTr: 'Copy reminder (TR)', remindEn: 'Copy reminder (EN)', remindEach: 'Messages one by one', remindOne: 'Message', remindOneFor: 'Copy a message for {name}',
-    attTake: 'Take attendance', attEditBtn: 'Edit attendance', attNotTaken: 'Attendance not taken yet', attLater: 'Attendance opens on the day of the meeting.',
+    attToday: 'Today', attLastOpen: 'Still without attendance', attTake: 'Take attendance', attEditBtn: 'Edit attendance', attNotTaken: 'Attendance not taken yet', attLater: 'Attendance opens on the day of the meeting.',
     attTaken: 'Came {p} · Late {l} · Excused {e} · Absent {a}', attGuestsN: '+ {n} guests',
     attDialog: 'Attendance: {when}', attFill: 'Fill in from replies', attRest: 'Mark the rest as came', attClear: 'Clear',
     attFillHint: '“Coming” becomes Came and “Can’t come” becomes Excused; you mark the rest.',
@@ -2092,6 +2171,7 @@ const T = {
     attCleared: 'Nothing marked, so this meeting has no attendance now',
     attOrphan: 'This meeting is no longer on the schedule. Its attendance stays in the season record until you delete it.',
     attDelete: 'Delete this attendance', attDeleteAsk: 'Delete this meeting’s attendance? It also leaves the season record and members’ history.', attDeleted: 'Attendance deleted',
+    delPollSoon: ({ n }) => (n === 1 ? '1 published meeting is still to come. It' : n + ' published meetings are still to come. They') + ' will vanish from members’ calendars without a word, so tell them first.',
     delPollAtt: ({ n }) => 'Also delete its attendance (' + n + (n === 1 ? ' meeting' : ' meetings') + '). Otherwise it stays in the season record.',
     markShortP: 'Came', markShortL: 'Late', markShortE: 'Excused', markShortA: 'Absent',
     seasonTitle: 'Season record', seasonShow: 'Show this season',
@@ -2121,7 +2201,7 @@ const T = {
     rankBalanceHint: 'Ranked by how much of the weakest section can come: 10 people with every section there come before 12 with no tenors.',
     bySection: 'By section', reqMissing: 'Needed, but can’t come', reqMaybe: 'Needed, but only free if needed',
     setsTitle: 'Meetings in a month', setsCount: 'How many', meetingsN: ({ n }) => n + ' meetings',
-    setsNone: ({ n }) => n + ' meetings don’t fit with this gap. Try a shorter gap or fewer meetings.', addThem: 'Add them all',
+    setsNone: ({ n }) => n + ' meetings don’t fit with this gap. Try a shorter gap or fewer meetings.', addThem: 'Add them all to draft',
     reqLabel: 'Needed at every meeting:', reqNoAnswer: 'no answer yet', reqRemove: ({ name }) => 'Remove ' + name,
     reqAddLabel: 'Add someone every meeting needs', reqAdd: 'Add someone…',
     reqHint: 'The accompanist or a soloist, say: the times they can come go first.',
@@ -2138,12 +2218,12 @@ const T = {
     docTitle: 'Provala',
     bannerAlt: 'Elini kaldırmış bir rahip “Provayoyo!” diye köylüyü provaya çağırıyor, köylü “Yaparım” diye cevap veriyor.',
     modeNight: 'Gece moduna geç', modeDay: 'Gündüz moduna geç',
-    tabAvailability: 'Uygunluk', tabSchedule: 'Takvim', planner: 'Planlayıcı', sections: 'Bölümler', language: 'Dil',
+    skipToMain: 'İçeriğe geç', stageRegion: 'Sahne düzeni', tabAvailability: 'Uygunluk', tabSchedule: 'Takvim', tabDotNew: 'yeni', tabDotReply: 'yanıt bekliyor', planner: 'Planlayıcı', sections: 'Bölümler', language: 'Dil',
     loading: 'Yükleniyor…', loadErrorTitle: 'Bağlantı sorunu', retry: 'Tekrar dene',
     demoBanner: 'Örnek kişilerle demo. Değişiklikler bu tarayıcıda kalır.',
-    demoOrganizer: 'Organizatör görünümünü aç', demoMember: 'Üye sayfasına dön', demoReset: 'Demoyu sıfırla', demoResetDone: 'Demo sıfırlandı',
+    demoOrganizer: 'Planlayıcı görünümünü aç', demoMember: 'Üye sayfasına dön', demoReset: 'Demoyu sıfırla', demoResetDone: 'Demo sıfırlandı',
     noPollTitle: 'Şu an açık bir anket yok', noPollText: 'Yeni anket açılınca yine bu bağlantıdan doldurabilirsiniz.',
-    deadline: 'Son bildirim günü: {date}', closedChip: 'Yanıtlar kapandı',
+    deadline: 'Son yanıt günü: {date}', closedChip: 'Yanıtlar kapandı',
     closedNotice: 'Bu anket kapandı. Verdiğiniz yanıtlara yine de bakabilirsiniz.',
     timesIn: 'Saatler {city} saatine göre.', yourTz: 'Cihazınız {city} saatini kullanıyor.',
     scheduleReady: 'Buluşma tarihleri belli oldu.', seeSchedule: 'Tarihlere bakın',
@@ -2151,7 +2231,7 @@ const T = {
     offline: 'İnternete bağlanılamadı. Sayfa, bu cihazdaki son hâliyle açık.',
     pageUpdated: 'Şefiniz anketi değiştirdi, sayfa güncellendi.',
     restored: 'Değişiklikleriniz duruyor ama henüz gönderilmedi. Göndermeyi unutmayın.',
-    privacy: 'Notlarınızı ve yorumunuzu yalnızca şefiniz görür. Diğer üyeler isim görmeden, her saatte kaç kişinin uygun ya da gerekirse uygun olduğunu (yeni ve değişen yanıtlar günde bir kez eklenir) ve yayımlanan her provaya her ses grubundan (ya da çalgıdan) kaç kişinin gelebileceğini görür. İsimleri yalnızca şefiniz görür.',
+    privacy: 'Kimin ne yanıt verdiğini, notlarınızı ve yorumunuzu yalnızca şefiniz görür. Diğer üyeler isim görmeden, her saatte kaç kişinin uygun ya da gerekirse uygun olduğunu (yeni ve değişen yanıtlar günde bir kez eklenir) ve yayımlanan her provaya her bölümden kaç kişinin gelebileceğini görür.',
     groupHint: 'Bir günü açınca, her saatte kaç kişinin uygun olduğunu görürsünüz. {n} kişinin yanıtına göre; sayılar her gece güncellenir, bugünkü yanıtlar yarın eklenir.',
     groupWait: 'Sizden başka en az {min} kişinin yanıtı sayılınca, açtığınız günde her saatte kaç kişinin uygun olduğu görünecek (şu an {n}). Sayılar her gece güncellenir.',
     slotsHint: 'Saatlerin yanındaki kişi işareti ve sayı, o saatte kaç kişinin uygun olduğunu gösterir; + ile yazılan, gerekirse gelebilecekler. Dün geceye kadarki yanıtlara göre.',
@@ -2164,11 +2244,11 @@ const T = {
     secvn1: 'Keman I', secvn2: 'Keman II', secva: 'Viyola', secvc: 'Çello', seccb: 'Kontrbas', secfl: 'Flüt', secob: 'Obua',
     seccl: 'Klarnet', secbn: 'Fagot', sechn: 'Korno', sectp: 'Trompet', sectb: 'Trombon', secperc: 'Vurmalılar', secpf: 'Piyano',
     partNone: 'Bölümsüz', partAll: 'Herkes', attOther: 'Diğer',
-    partLabel: '{name} için ses grubu', partSaved: 'Ses grubu kaydedildi', secSaved: 'Kaydedildi',
-    partsHint: 'Her üyenin ses grubunu seçin: yayımladığınız her provada üyeler, her ses grubundan kaç kişinin gelebileceğini görür.',
+    partLabel: '{name} için bölüm', partSaved: 'Bölüm kaydedildi', secSaved: 'Kaydedildi',
+    partsHint: 'Her üyenin bölümünü seçin: yayımladığınız her provada üyeler, her bölümden kaç kişinin gelebileceğini görür.',
     partsHintGroups: 'Her üyenin gruplarını ve her gruptaki bölümünü seçin. Üyeler yalnızca kendi gruplarının anketlerini ve buluşmalarını görür.',
-    secLabelIn: '{name}: {group} grubundaki bölümü', membersShow: 'Göster', allMembers: 'Tüm üyeler ({n})', noGroupMembers: 'Hiçbir grupta olmayanlar ({n})',
-    addInto: 'Eklenecekleri grup', groupMain: 'Koro', switchLabel: 'Gruplarınızın anketleri',
+    secLabelIn: '{name}: {group} grubundaki bölümü', membersShow: 'Göster', membersFind: 'İsim ara', membersNoMatch: 'Bu isimde kimse yok.', allMembers: 'Tüm üyeler ({n})', noGroupMembers: 'Hiçbir grupta olmayanlar ({n})',
+    addInto: 'Eklenecekleri grup', addSec: 'Bölüm (isteğe bağlı)', addSecNone: '— sonra seçerim', groupMain: 'Koro', switchLabel: 'Gruplarınızın anketleri',
     groupsTitle: 'Gruplar', groupNew: 'Yeni grup', groupEdit: 'Düzenle', groupEditFor: '{name} grubunu düzenle',
     groupsHint: 'Her grubun kendi bölümleri olur: soprano, alto gibi partiler ya da keman, çello gibi çalgılar. Bir üye birden fazla grupta olabilir. Her anketin hangi gruplar için olduğunu anketin ayarlarında seçersiniz; anketi yalnızca o grupların üyeleri görür.',
     groupCount: ({ n }) => n + ' üye', groupNoSections: 'Bölüm yok',
@@ -2182,7 +2262,7 @@ const T = {
     groupMembers: 'Üyeler', groupMembersN: '({n}/{of})', groupMembersHint: 'Bu grupta kimlerin olduğu ve gruptaki bölümleri. Hesapları değişmez.',
     groupFind: 'Üye ara', groupFindPh: 'Üye arayın…', notInGroup: 'Grupta değil', inGroupNoSec: 'Grupta, bölümsüz',
     leadLabel: 'Şef', leadNone: 'Seçilmedi', inGroupLead: 'Grupta', leadOn: '{name} şef olarak seçildi.', leadOff: '{name} artık şef değil.',
-    leadHint: 'Grupları yöneten kişi. Şefin hiçbir grupta bölümü olmaz, bölüm sayılarına girmez ve gruplarının bütün buluşmaları, bölüm provaları da, onun takviminde görünür.',
+    leadHint: 'Şef: hiçbir bölüme sayılmaz; gruplarının bütün buluşmaları, bölüm provaları da, takviminde görünür.',
     groupCreate: 'Grubu oluştur', groupSave: 'Grubu kaydet', groupSaveAnyway: 'Yine de kaydet', groupKeepEditing: 'Düzenlemeye devam et', groupCreated: 'Grup oluşturuldu', groupSaved: 'Grup kaydedildi',
     groupDelete: 'Grubu sil', groupDeleted: 'Grup silindi', groupDeleteAlone: ({ n }) => 'Yalnızca bu grupta olan ' + n + ' üye hiçbir grupta kalmayacak.',
     groupDiscardAsk: 'Kaydedilmemiş değişiklikleriniz var.', groupDiscard: 'Kaydetmeden kapat',
@@ -2201,19 +2281,21 @@ const T = {
     fillBoth: 'Kullanıcı adınızı ve şifrenizi yazın.',
     badLogin: 'Kullanıcı adı ya da şifre yanlış. Yazım hatası olmadığına bakıp tekrar deneyin.',
     locked: 'Çok fazla yanlış deneme oldu. 15 dakika bekleyip tekrar deneyin.',
-    forgot: 'Şifrenizi mi unuttunuz? Şefinize yazın, size yeni bir şifre versin.', organizerDoor: 'Şef girişi', memberDoor: 'Üye girişi',
+    forgot: 'Şifrenizi mi unuttunuz? Şefinize yazın, size yeni bir şifre versin.', organizerDoor: 'Planlayıcı girişi', memberDoor: 'Üye girişi',
     demoLoginHint: 'Demoda kullanıcı adı deneme, şifre demo.', useDemoLogin: 'Demo bilgilerini doldur',
     signedInAs: '{name} olarak giriş yaptınız', changePassword: 'Şifremi değiştir',
     pwTitle: 'Şifrenizi değiştirin', pwOld: 'Şu anki şifre', pwNew: 'Yeni şifre',
     pwHint: 'En az 6 karakter. Bu cihazda girişiniz devam eder, diğer cihazlarınızda yeniden giriş yaparsınız.',
     pwChanged: 'Şifreniz değişti.', errBadPassword: 'Şu anki şifreniz doğru değil.', errWeakPassword: 'En az 6 karakter kullanın.',
     errSignedOut: 'Oturumunuz kapanmış. Lütfen yeniden giriş yapın; değişiklikleriniz duruyor.',
-    unsavedSignOut: 'Henüz gönderilmemiş değişiklikleriniz var.', signOutAnyway: 'Yine de çıkış yap', unsavedSignOutSaved: 'Henüz kaydedilmemiş değişiklikleriniz var.',
+    unsavedSignOut: 'Henüz gönderilmemiş değişiklikleriniz var.', signOutAnyway: 'Yine de çıkış yap',
+    signOutAsk: 'Çıkış yapılsın mı? Yeniden girmek için kullanıcı adınız ve şifreniz gerekir.', signOutYes: 'Evet, çıkış yap', unsavedSignOutSaved: 'Henüz kaydedilmemiş değişiklikleriniz var.',
     stepDays: 'Gün seçin',
-    helpOneT: 'Tek bir güne tıklayarak bireysel olarak uygunluğunuzu doldurabilirsiniz.',
-    helpWdT: 'Mesela bütün salıları seçmek istiyorsanız üstteki gün adına tıklayın, ayın tüm salıları birden seçilir.',
-    helpWkT: 'Bütün bir haftayı seçmek istiyorsanız soldaki hafta numarasına basın.',
-    helpMultiT: 'Birden fazla farklı gün seçmek için “Birden çok gün seç”i basılı bırakıp günleri seçin.', helpMultiMouse: 'Aynı özelliği bilgisayarda Ctrl ya da Shift + Mouse sol tık ile de uygulayabilirsiniz.',
+    helpOneT: 'Bir güne dokunun, sonra o günün saatlerini aşağıda işaretleyin.',
+    helpWdT: 'Örneğin bütün salıları birden seçmek için üstteki gün adına dokunun.',
+    helpWkT: 'Bütün bir hafta için soldaki hafta numarasına dokunun.',
+    helpMultiT: 'Farklı günleri birlikte seçmek için “Birden çok gün seç”i açın, sonra günlere dokunun.', helpMultiMouse: 'Bilgisayarda Ctrl ya da Shift basılıyken tıklayarak da seçebilirsiniz.',
+    calHelpFold: 'Nasıl seçerim?',
     selectAll: 'Tüm günleri seç', clearSel: 'Seçimi kaldır', multiSel: 'Birden çok gün seç', wk: 'Hf',
     nSel: ({ n }) => n + ' gün seçili',
     selWeekday: 'Tüm {day} günlerini seç', selWeek: '{w}. haftayı seç',
@@ -2222,6 +2304,7 @@ const T = {
     noneSelected: 'Önce takvimden bir gün seçin, sonra gelebileceğiniz saatleri burada işaretleyin.',
     timesForMany: '{n} gün için: {days}', andMore: '{list} ve {n} gün daha', prevDay: 'Önceki gün', nextDay: 'Sonraki gün',
     paintWith: 'İşaretleme türü', toolFree: 'Uygunum', toolMaybe: 'Gerekirse', toolNone: 'Uygun değilim',
+    maybeHint: '“Gerekirse” işaretlediğiniz gün için gün notuna kısa bir neden yazın.',
     paintTouch: 'Saate dokunarak işaretleyin. Art arda birkaç saati işaretlemek için basılı tutup parmağınızı kaydırın.',
     paintMouse: 'Saate tıklayarak işaretleyin ya da basılı tutup sürükleyerek birkaç saati birden işaretleyin.',
     paintMany: 'Yaptığınız değişiklik seçili {n} günün hepsine uygulanır. Sadece birini değiştirmek istiyorsanız takvimde o güne dokunun.',
@@ -2239,6 +2322,7 @@ const T = {
     summary: 'Yanıtlarınız', summaryEmpty: 'Henüz bir gün işaretlemediniz.', noTimes: 'yalnızca not', ifNeededShort: 'gerekirse', needTag: 'açıklama gerekli',
     save: 'Yanıtlarımı gönder', saveChanges: 'Değişiklikleri gönder', saving: 'Gönderiliyor…', saved: 'Gönderildi. Teşekkürler!',
     stUnsaved: 'Değişiklikler henüz gönderilmedi', stSaved: 'Hepsi gönderildi', stNew: 'Henüz gönderilmedi',
+    stSavedS: 'Gönderildi · {n} gün', stNewS: 'Gönderilmedi · {n} gün', saveS: 'Gönder',
     needNotes: ({ n }) => (n === 1
       ? '“Gerekirse” işaretlediğiniz bir gün için açıklama eksik. Gün notuna ya da “Eklemek istedikleriniz” kutusuna yazın.'
       : '“Gerekirse” işaretlediğiniz ' + n + ' gün için açıklama eksik. Gün notlarına ya da bir kere “Eklemek istedikleriniz” kutusuna yazın.'),
@@ -2246,14 +2330,14 @@ const T = {
     clearAllYes: 'Evet, temizle', clearedToast: 'Takvim temizlendi. Göndermeden kesinleşmez.', undo: 'Geri al',
     daysMarked: ({ n }) => n + ' gün işaretli',
     copied: 'Kopyalandı', copyTitle: 'Seçip kopyalayın', close: 'Kapat',
-    errClosed: 'Bu anket için yanıtlar kapandı.', errBusy: 'Planlayıcı şu an meşgul. Birkaç saniye sonra tekrar deneyin.',
-    errNetwork: 'Planlayıcıya ulaşılamadı. Bağlantınızı kontrol edip tekrar deneyin.', errGeneric: 'Bir sorun oluştu. Tekrar deneyin.',
-    errNotSetUp: "Planlayıcı henüz kurulmamış. Şefinizin Apps Script'te setup'ı çalıştırması gerekiyor.",
+    errClosed: 'Bu anket için yanıtlar kapandı.', errBusy: 'Provala şu an meşgul. Birkaç saniye sonra tekrar deneyin.',
+    errNetwork: 'Provala’ya ulaşılamadı. İnternet bağlantınızı kontrol edip tekrar deneyin.', errGeneric: 'Bir sorun oluştu. Tekrar deneyin.',
+    errNotSetUp: "Provala henüz kurulmamış. Şefinizin Apps Script'te setup'ı çalıştırması gerekiyor.",
     errNoPoll: 'Bu anket artık yok.', errTooLarge: 'Yazdıklarınız biraz uzun oldu. Notları kısaltıp tekrar deneyin.',
     errFull: 'Bu anket yanıt sınırına ulaştı.', errInvalid: 'Bazı alanların düzeltilmesi gerekiyor.',
     schedTitle: 'Buluşma tarihleri', schedEmpty: 'Henüz tarih yok. Şefiniz tarihleri burada yayımlayacak.',
-    publishedOn: 'Yayımlanma: {date}', googleCal: "Google Takvim'e ekle", icsOne: 'Takvim dosyası', icsAll: 'Tümünü takviminize ekleyin (.ics)', meeting: 'Buluşma',
-    orgAccess: 'Organizatör girişi', keyLabel: 'Organizatör anahtarı',
+    publishedOn: 'Yayımlanma: {date}', calAdd: 'Takvime ekle', googleCal: "Google Takvim'e ekle", icsOne: 'Takvim dosyası', icsAll: 'Tümünü takviminize ekleyin (.ics)', meeting: 'Buluşma',
+    orgAccess: 'Planlayıcı girişi', keyLabel: 'Planlayıcı anahtarı',
     keyHint: "Bu anahtarı Apps Script'te setup'ı çalıştırdığınızda aldınız. Bu tarayıcıda 30 gün ya da çıkış yapana kadar girişiniz açık kalır. Anahtarın kendisi kaydedilmez.",
     demoKeyHint: 'Demoda anahtar: demo', useDemoKey: 'Demo anahtarını kullan', openPlanner: 'Planlayıcıyı aç',
     badKey: "Anahtar eşleşmedi. Yazım hatası olup olmadığına bakın ya da Apps Script'te showOrganizerKey'i çalıştırıp yeniden görün.",
@@ -2261,7 +2345,7 @@ const T = {
     openChip: 'Yanıt alınıyor', closedAdminChip: 'Kapalı', closeAnswers: 'Yanıtları kapat', openAnswers: 'Yanıtları yeniden aç',
     copyMemberLink: 'Üye bağlantısını kopyala', exportCsv: "CSV'ye aktar",
     answersN: ({ n }) => n + ' yanıt', lastUpdate: 'son güncelleme {ago}',
-    tabPlan: 'Plan', tabPeople: 'Kişiler', tabSched: 'Takvim', tabMembers: 'Üyeler',
+    tabPlan: 'Plan', tabPeople: 'Yanıtlar', tabSched: 'Takvim', tabMembers: 'Üyeler',
     // Sürüm 2026-10-r4.3: yayımlanan buluşmalardaki değişiklikler; en iyi saati tek seferde yayımlamak.
     chgTitle: 'Takvimde değişiklik', chgOk: 'Tamam',
     chgMoved: '{what}: {was} yerine {now}', chgAlsoPlace: '; yeni yer: {place}', chgAlsoNoPlace: '; yer artık belirtilmemiş', chgPlace: '{what}, {when} — yeni yer: {place}', chgNoPlace: '{what}, {when} — yer artık belirtilmemiş',
@@ -2294,8 +2378,8 @@ const T = {
     // Sürüm 2026-10-r4.1: kalan günleriyle son bildirim günü, kendiliğinden kapanma, anketi açıp yanıtlamayanlar.
     fAutoClose: 'Son yanıt tarihinden sonra yanıtları kendiliğinden kapat',
     fAutoCloseHint: 'O günün ertesi günü (anketin saat diliminde) yeni yanıt alınmaz. Seçilmezse üyeler geç de yanıt verebilir; kimin geç verdiğini görürsünüz.',
-    dueToday: 'Bugün son gün', dueTomorrow: 'Son bildirim günü yarın, {date}', dueIn: 'Son bildirim günü: {date} ({n} gün kaldı)',
-    duePast: 'Son bildirim günü {date} idi; yine de yanıt verebilirsiniz',
+    dueToday: 'Bugün son gün', dueTomorrow: 'Son yanıt günü yarın, {date}', dueIn: 'Son yanıt günü: {date} ({n} gün kaldı)',
+    duePast: 'Son yanıt günü {date} idi; yine de yanıt verebilirsiniz',
     leftToday: 'bugün son gün', leftTomorrow: 'yarın son gün', leftDays: '{n} gün kaldı', leftPast: 'son gün geçti', dueThenClose: 'sonra yanıtlar kapanır',
     autoClosedChip: 'Son günden sonra kapandı', changeDeadline: 'Son günü değiştir',
     openedNotYet: 'Açtı, henüz yanıtlamadı:', neverOpened: 'Henüz açmadı:', openedChip: 'Açtı, yanıtlamadı', lateChip: 'Son günden sonra',
@@ -2309,8 +2393,8 @@ const T = {
     msgT_credMsg: 'Giriş bilgileri', msgW_credMsg: 'Üyeler sekmesinde, birini ekledikten ya da yeni şifre verdikten sonra',
     msgT_linkMsg: 'Tek dokunuşla giriş bağlantısı', msgW_linkMsg: 'Üyeler sekmesinde, her üyenin yanındaki “Giriş bağlantısı”',
     msgT_schedMsg: 'Takvim duyurusu', msgW_schedMsg: 'Takvim sekmesinde, “Mesaj olarak kopyala”',
-    msgT_pollAll: 'Anket hatırlatması (grup için)', msgW_pollAll: 'Kişiler sekmesinde, henüz yanıt vermeyenler için',
-    msgT_pollOne: 'Anket hatırlatması (kişiye özel)', msgW_pollOne: 'Kişiler sekmesinde, “Kişiye özel mesajlar”: bağlantı kişiyi tek dokunuşla içeri alır',
+    msgT_pollAll: 'Anket hatırlatması (grup için)', msgW_pollAll: 'Yanıtlar sekmesinde, henüz yanıt vermeyenler için',
+    msgT_pollOne: 'Anket hatırlatması (kişiye özel)', msgW_pollOne: 'Yanıtlar sekmesinde, “Kişiye özel mesajlar”: bağlantı kişiyi tek dokunuşla içeri alır',
     msgT_meetAll: 'Buluşma hatırlatması (grup için)', msgW_meetAll: 'Katılım sekmesinde, henüz yanıt vermeyenler için',
     msgT_meetOne: 'Buluşma hatırlatması (kişiye özel)', msgW_meetOne: 'Katılım sekmesinde, “Kişiye özel mesajlar”: bağlantı kişiyi tek dokunuşla içeri alır',
     ph_name: 'ad', ph_poll: 'anket', ph_deadline: 'son gün', ph_link: 'bağlantı', ph_username: 'kullanıcı adı', ph_password: 'şifre',
@@ -2338,7 +2422,7 @@ const T = {
     msgNotHere: 'Bu mesajda kullanılamadığı için yazdığınız gibi kalacak: {list}',
     // Sürüm 2026-10-r4.6: repertuvar.
     tabRep: 'Repertuvar', rptTitle: 'Repertuvar', rptNew: 'Yeni eser',
-    rptIntro: 'Her eser, notasına ve çalışma kayıtlarına bağlantılarıyla: herkes için ya da bir bölüm için. Üyeler kendi gruplarının eserlerini, kendi partilerinin bağlantıları başta olmak üzere görür. Burada yalnızca bağlantılar saklanır, dosyalar değil.',
+    rptIntro: 'Her eser, notasına ve çalışma kayıtlarına bağlantılarıyla: herkes için ya da bir bölüm için. Üyeler kendi gruplarının eserlerini, kendi bölümlerinin bağlantıları başta olmak üzere görür. Burada yalnızca bağlantılar saklanır, dosyalar değil.',
     rptNone: 'Henüz eser yok', rptNoneText: 'Çalıştığınız eserleri notalarına ve çalışma kayıtlarına bağlantılarıyla ekleyin.',
     rptShown: 'Üyeler görüyor', rptHidden: 'Gizli', rptLinksN: '{n} bağlantı',
     rptEdit: 'Düzenle', rptDelete: 'Sil', rptEditFor: '“{title}” eserini düzenle', rptDeleteFor: '“{title}” eserini sil',
@@ -2354,8 +2438,8 @@ const T = {
     rptStaleTheirs: 'Kaydedileni aç', rptGone: 'Bu eser başka bir yerde silinmiş.', rptSaveNew: 'Yeni eser olarak kaydet',
     rptDiscardAsk: 'Kaydedilmemiş değişiklikleriniz var.', rptDiscard: 'Kaydetmeden çık', rptGroupIs: 'Grup: {name}',
     groupHasPieces: 'Bu grubun repertuvarında eserler var: {list}. Önce onları Repertuvar sekmesinden silin.',
-    rptPageTitle: 'Repertuvar', rptPageHint: 'Eserler, notaları ve çalışma kayıtlarıyla: kendi partinizinkiler başta.',
-    rptMine: 'Sizin partiniz: {part}', rptForAll: 'Herkes için', rptOthers: 'Diğer partiler ({n})', rptNoLinks: 'Henüz bağlantı yok.',
+    rptPageTitle: 'Repertuvar', rptPageHint: 'Eserler, notaları ve çalışma kayıtlarıyla: kendi bölümünüzünkiler başta.',
+    rptMine: 'Sizin bölümünüz: {part}', rptForAll: 'Herkes için', rptOthers: 'Diğer bölümler ({n})', rptNoLinks: 'Henüz bağlantı yok.',
     rptNoneMember: 'Henüz eser yok', rptNoneMemberText: 'Şefiniz eser eklediğinde, çalışma bağlantılarıyla birlikte burada göreceksiniz.',
     rptNewTab: '(yeni sekmede açılır)', rptLink: 'Bağlantı',
     // Sürüm 2026-10-r4.7: prova planları.
@@ -2388,19 +2472,20 @@ const T = {
     msgSamplePlan: '19:00–19:20 Isınma\n19:20–20:00 Ave Maria: 1–32. ölçüler (Soprano ve Alto)\n20:00–20:15 Ara\n20:15–21:00 Ave Maria: 33–60. ölçüler (Tenor ve Bas)',
     msgSampleTimes: 'Soprano, Alto: 19:00–20:00\nTenor, Bas: 19:00–21:00', msgSamplePlace: 'A salonu', msgSamplePlanNote: 'Notalarınızı getirin.',
     // Sürüm 2026-10-r4.9: anketler kolaylaşır.
-    busyTitle: 'Hiç gelemeyeceğiniz saatler', busyIntro: 'Ders, nöbet, düzenli bir iş: haftanın gelemediğiniz saatleri, bitecekse bir güne kadar. Her anket bu saatleri sizin için boş bırakır; sizin işaretlemeniz gerekmez.',
-    busyDays: 'Günler', busyFrom: 'Başlangıç', busyTo: 'Bitiş', busyUntil: 'Şu güne kadar (isteğe bağlı)', busyNoteL: 'Not (yalnız yönetici görür)', busyNoteOrg: 'Not', busyAdd: 'Ekle', busyRemove: 'Kaldır', busyRemoveFor: 'Kaldır: {what}',
+    busyTitle: 'Düzenli olarak gelemediğiniz saatler', busyIntro: 'Ders, nöbet, düzenli bir iş: haftanın gelemediğiniz saatleri, bitecekse bir güne kadar. Her anket bu saatleri sizin için boş bırakır; sizin işaretlemeniz gerekmez.',
+    busyDays: 'Günler', busyFrom: 'Başlangıç', busyTo: 'Bitiş', busyUntil: 'Şu güne kadar (isteğe bağlı)', busyNoteL: 'Not (isteğe bağlı; yalnızca şefiniz görür)', busyNoteOrg: 'Not', busyAdd: 'Ekle', busyRemove: 'Kaldır', busyRemoveFor: 'Kaldır: {what}',
     busyNone: 'Henüz yok.', busyAdded: 'Eklendi', busyRemoved: 'Kaldırıldı', busyFull: 'En çok 8 tane olabilir.', busyErrDays: 'En az bir gün seçin.', busyErrTimes: 'Bitiş, başlangıçtan sonra olmalı.', busyErrFive: 'Saatler beşer dakikalık olmalı.',
     busyUntilText: '{date} tarihine kadar', busyWord: 'gelemez', busyOrgBtn: 'Gelemediği saatler', busyOrgTitle: '{name}: gelemediği saatler', busyOrgIntro: 'Size söylediklerini onun yerine girin: bu saatler yanıtlarında sayılmaz.',
-    busyLine: 'Gelemez: {list}', busyMarked: 'Hiç gelemeyeceğiniz saatler, orada ne işaretlemiş olursanız olun, sayılmaz.',
+    busyLine: 'Gelemez: {list}', busyMarked: 'Düzenli olarak gelemediğiniz saatler, orada ne işaretlemiş olursanız olun, sayılmaz.',
     actBtn: 'Yanıtı düzenle', actBtnFor: '{name} adlı üyenin yanıtını düzenle', actHint: 'Sayfasını yeni bir sekmede, iki saatliğine onun adına açar. Gönderdikleriniz sizin düzenlemeniz olarak işaretlenir ve üye bunu görür.',
-    actBanner: '{name} adına yanıtını düzenliyorsunuz. Gönderdikleriniz yönetici düzenlemesi olarak işaretlenir.', actDone: 'Bitir', actFailed: 'Sayfası açılamadı: {why}', actNoKey: 'Önce planlayıcıya giriş yapın.',
-    actByOrg: 'Yanıtınız en son yönetici tarafından değiştirildi ({ago}). Doğru değilse düzeltin.',
-    histChanges: 'Değişiklikler', histNoneYet: 'Henüz değişiklik yok.', histFirst: 'ilk yanıt', histDaysN: '{n} gün değişti', histComment: 'yorum', histByOrg: 'yönetici düzenledi',
+    actBanner: '{name} adına yanıtını düzenliyorsunuz. Gönderdikleriniz “şef düzenledi” olarak işaretlenir.', actDone: 'Bitir', actFailed: 'Sayfası açılamadı: {why}', actNoKey: 'Önce planlayıcıya giriş yapın.',
+    actByOrg: 'Yanıtınızı en son şefiniz değiştirdi ({ago}). Doğru değilse düzeltin.',
+    histChanges: 'Değişiklikler', histNoneYet: 'Henüz değişiklik yok.', histFirst: 'ilk yanıt', histDaysN: '{n} gün değişti', histComment: 'yorum', histByOrg: 'şef düzenledi',
     histNoteChanged: 'not değişti', histWasNone: 'boş', histMoreDays: '{n} gün daha',
     newsPlanNew: 'Prova planı eklendi: {when}', newsPlanChanged: 'Prova planı değişti: {when}', newsPiece: 'Repertuvara eklendi: {title}',
-    clashTitle: 'Başka bir grubun buluşmalarıyla çakışıyor', clashLine: '{title} ({poll}, {when}): {n} kişi her ikisine de çağrılı',
-    clashChip: 'Çakışıyor · {n}', clashHint: 'Aynı kişiler o saatte başka bir grubun buluşmasına da çağrılı. Üyeler takvimlerinde ikisini de görür; burası yalnız haber verir.',
+    clashTitle: 'Başka buluşmalarla çakışıyor', clashLine: '{title} ({poll}, {when}): {n} kişi her ikisine de çağrılı',
+    clashBump: '{title} ({poll}, {when}): bir bölüm şefinin bölüm provası. Yayımladığınızda takvimden kalkar; üyelerine iptal edildiği söylenir.',
+    clashChip: 'Çakışıyor · {n}', clashHint: 'Aynı kişiler o saatte başka bir buluşmaya da çağrılı. Üyeler takvimlerinde ikisini de görür; burası yalnız haber verir.',
     // Sürüm 2026-10-r5.1: mekânlar ve insanlar.
     bkTitle: 'Yedekler', bkNone: 'Henüz yedek yok.', bkLast: 'Son yedek: {when} ({ago}) · {n} kopya', bkOld: 'Son yedek bir haftadan eski. Haftalık zamanlayıcı kurulu mu? (README, “Backups”)',
     rideTitle: 'Araç paylaşımı', rideTitleN: 'Araç paylaşımı ({n})', rideKindQ: 'Yer mi veriyorsunuz, yer mi arıyorsunuz?', rideOffer: 'Arabamda yer var', rideAsk: 'Yer arıyorum', rideSeats: 'Kaç kişilik', rideFrom: 'Nereden', rideFromPh: 'Beşiktaş',
@@ -2423,6 +2508,12 @@ const T = {
     tpl_careMsg: 'Merhaba {ad}, bir süredir görüşemedik. Her şey yolunda mı? Yardımcı olabileceğim bir şey varsa yaz. Takvim burada:\n{bağlantı}',
     bkDemo: 'Gerçek Provala’da her yedek Google Drive’ınızda bir tablodur. Demoda yedek alınmaz.',
     errorsOpen: 'Errors sayfasını aç',
+    schedTooMany: 'Bir takvimde en çok {n} buluşma olabilir. Bazılarını kaldırın ya da sonrakileri gelecek ayın anketine koyun.',
+    schedStale: 'Kaydedilmedi: takvim bu arada başka bir yerde değiştirildi.',
+    schedStaleTitle: 'Takvim bu arada başka bir yerde değiştirildi',
+    schedStaleHint: 'Belki başka bir cihazda ya da sekmede. O hâline bakın (buradaki değişiklikleriniz gider) ya da sizinkini onun üstüne kaydedin.',
+    schedStaleLoad: 'O hâlini göster', schedStaleSave: 'Benimkini üstüne kaydet', schedStalePublish: 'Benimkini üstüne yayımla', schedStaleUnpublish: 'Yine de yayından kaldır',
+    pollStale: 'Kaydedilmedi: bu anket bu arada başka bir yerde değiştirildi. Vazgeçip yeniden açın; son hâliyle açılır.',
     agoNow: 'şimdi', agoYesterday: 'dün', agoTomorrow: 'yarın', agoPast: '{n} {u} önce', agoFuture: '{n} {u} sonra', agoU_second: 'saniye', agoU_minute: 'dakika', agoU_hour: 'saat', agoU_day: 'gün',
     agoU_second1: 'saniye', agoU_minute1: 'dakika', agoU_hour1: 'saat', agoU_day1: 'gün',
     leadPanel: 'Bölüm paneli', leadSignIn: 'Bölüm panelini, giriş yapmış olarak kendi sayfanızdan açın.', leadToMember: 'Kendi sayfanız',
@@ -2471,10 +2562,10 @@ const T = {
     tabMembersM: 'Üyeler', peopleTitle: 'Üyeler', peopleHint: 'Grubunuzun üyeleri, bölüm bölüm. Herkesin kendisi hakkında yazdıklarını kendisi girmiştir.',
     peopleHintAll: 'Bütün grupların üyeleri, bölüm bölüm. Herkesin kendisi hakkında yazdıklarını kendisi girmiştir.',
     peopleNone: 'Gösterilecek kimse yok', peopleNoneText: 'Grubunuzun üyeleri burada listelenir.', peopleOthers: 'Diğer gruplar', peopleMe: '(siz)',
-    profTitle: 'Profiliniz', profHint: 'Adınız ve bölümünüz yöneticiden gelir. Gerisi size kalmış: buraya yazdıklarınızı, aşağıdaki satırı işaretlediğinizde grubunuzun üyeleri görür.',
+    profTitle: 'Profiliniz', profHint: 'Adınız ve bölümünüz şefinizden gelir. Gerisi size kalmış: buraya yazdıklarınızı, aşağıdaki satırı işaretlediğinizde grubunuzun üyeleri görür.',
     profPhone: 'Telefon', profAddr: 'Semt ya da adres', profBday: 'Doğum günü', profDay: 'Gün', profMonth: 'Ay', profNoDay: '—', profAbout: 'Kendinizden bir satır', profAboutPh: 'Alto söylüyorum, biraz da piyano çalıyorum.',
     profConsent: 'Buraya yazdıklarımı (telefon, semt ya da adres, doğum günü, kendimden bir satır) grubumdaki üyelerin görmesine açık rıza veriyorum. Bu işareti dilediğimde kaldırabilirim.',
-    profConsentHint: 'İşaretli değilken yazdıklarınızı yalnız yönetici görür.', profSave: 'Kaydet', profSaved: 'Profil kaydedildi', profUnsaved: 'Henüz kaydedilmedi',
+    profConsentHint: 'İşaretli değilken yazdıklarınızı yalnızca şefiniz görür.', profSave: 'Kaydet', profSaved: 'Profil kaydedildi', profUnsaved: 'Henüz kaydedilmedi',
     noticeLink: 'Aydınlatma metni (KVKK)', noticeTitle: 'Aydınlatma metni', noticeRead: 'Okudum ve anladım', noticeReadOn: '{date} tarihinde okudunuz.', noticeClose: 'Kapat',
     bdayWeek: 'Bu haftanın doğum günleri', bdayToday: 'bugün', pastTitle: 'Bu sezonun geçmiş provaları ({n})', pastHint: 'Gruplarınızın bu sezon yoklaması alınmış ya da şefin not düştüğü provaları, en yenisi önde.',
     cameTitle: 'Gelenler ({n})', cameLate: 'geç', cameGuests: '+ {n} misafir', cameNone: 'Geldi olarak işaretlenen yok',
@@ -2562,6 +2653,7 @@ const T = {
     goMembers: 'Üyeleri ekle',
     answered: 'Yanıtladı', notAnswered: 'Henüz yanıtlamadı', lastSignIn: '{ago} giriş yaptı', neverSignedIn: 'Henüz giriş yapmadı',
     newPassword: 'Yeni şifre', removeMember: 'Kaldır',
+    confirmNewPw: '{name} için yeni şifre oluşturulsun mu? Eski şifresi ve onunla açık oturumlar hemen çalışmaz olur.', yesNewPw: 'Evet, yeni şifre',
     confirmRemoveMember: '{name} kaldırılsın mı? Artık giriş yapamaz. Verdiği yanıtlar kalır.',
     memberRemoved: 'Üye kaldırıldı',
     answeredOf: ({ a, n }) => n + ' üyeden ' + a + ' kişi yanıtladı', notYet: 'Henüz yanıtlamayanlar:',
@@ -2571,9 +2663,9 @@ const T = {
     heatTitle: 'Kim ne zaman uygun', legendMore: 'ne kadar yeşilse o kadar çok kişi uygun', legendAll: 'herkes uygun', allIn: 'tam kadro', legendTm: 'herkes, bazıları yalnızca gerekirse',
     tapCell: 'O saatte kimin uygun olduğunu görmek için bir kareye dokunun.',
     free: 'Uygun', ifNeeded: 'Gerekirse', notFree: 'Uygun değil', addHere: 'Buraya buluşma ekle',
-    bestTitle: 'En uygun zamanlar', length: 'Süre', canStart: '{a} ile {b} arasında başlayabilir', missing: 'Eksik', add: 'Ekle',
+    jumpBest: 'En uygun zamanlara git ↓', bestTitle: 'En uygun zamanlar', length: 'Süre', canStart: '{a} ile {b} arasında başlayabilir', missing: 'Eksik', add: 'Taslağa ekle',
     noWindows: 'Panodaki kişilere uyan bir zaman yok.',
-    minGapLabel: 'Aralık', daysN: 'en az {n} gün', addBoth: 'İkisini de ekle',
+    minGapLabel: 'Aralık', daysN: 'en az {n} gün', addBoth: 'İkisini de taslağa ekle',
     addedToDraft: 'Takvim taslağına eklendi', viewDraft: 'Takvimi aç',
     peopleUpdated: '{ago} güncellendi', onlyThis: 'Panoda yalnızca bu kişiyi göster', deleteAnswer: 'Yanıtı sil',
     confirmDeleteAnswer: '{name} adlı kişinin yanıtı silinsin mi? Bu işlem geri alınamaz.', yesDelete: 'Sil', keep: 'Vazgeç', deleted: 'Yanıt silindi', noComment: 'Yorum yok', fromComment: 'genel yorumundan',
@@ -2583,7 +2675,7 @@ const T = {
     generalNote: 'Herkese not', saveDraft: 'Taslağı kaydet', publish: 'Üyelere yayımla', unpublish: 'Yayından kaldır',
     copyMsgTr: 'Mesaj olarak kopyala (TR)', copyMsgEn: 'Mesaj olarak kopyala (EN)', downloadIcs: '.ics indir', previewMember: 'Üyelerin gördüğü sayfa',
     draftSaved: 'Taslak kaydedildi', publishedToast: 'Yayımlandı. Üyeler tarihleri artık görebilir.', unpublishedToast: 'Yayından kaldırıldı',
-    attendance: '{n} kişiden {a} kişi uygun', attOutside: 'Anket günlerinin ya da saatlerinin dışında', remove: 'Kaldır',
+    attendance: '{n} kişiden {a} kişi uygun', attOutside: 'Anket günlerinin ya da saatlerinin dışında', remove: 'Kaldır', evRemove: 'Buluşmayı kaldır',
     msgSampleNote: 'Notalarınızı getirmeyi unutmayın.', defaultEventTitle: 'Prova',
     editNew: 'Yeni anket', editTitle: 'Anket ayarları', fTitleTr: 'Türkçe başlık', fTitleEn: 'İngilizce başlık',
     fMsgTr: 'Üyelere Türkçe mesaj (isteğe bağlı)', fMsgEn: 'Üyelere İngilizce mesaj (isteğe bağlı)',
@@ -2608,10 +2700,11 @@ const T = {
     replyEdit: 'Düzenle', replySend: 'Gönder', replyTimesQ: 'Kaçta geleceksiniz ya da ayrılacaksınız?',
     replyFromLabel: 'Geliş', replyUntilLabel: 'Ayrılış', replyFromStart: 'Başından itibaren', replyUntilEnd: 'Sonuna kadar',
     replyFrom: 'geliş {t}', replyUntil: 'ayrılış {t}', replyReasonLabel: 'Nedeni', replyReasonOptional: 'Nedeni (isteğe bağlı)',
-    replyKnownPart: 'Şef, kısmen katılma nedenimi biliyor.', replyKnownNo: 'Şef, katılamama nedenimi biliyor.', replyKnownShort: 'şef biliyor',
+    replyKnownPart: 'Şefim neden kısmen katılabildiğimi biliyor.', replyKnownNo: 'Şefim neden katılamadığımı biliyor.', replyKnownShort: 'şef biliyor',
     replyNeedReason: 'Lütfen nedenini yazın ya da şefin bildiğini işaretleyin.',
+    replyNeedBoth: 'Kaçta geleceğinizi ya da ayrılacağınızı seçin ve nedenini yazın (ya da şefin bildiğini işaretleyin).',
     replyNeedTime: 'Kaçta geleceğinizi ya da ayrılacağınızı seçin (ya da şefin bildiğini işaretleyin).', replyErrTimes: 'Geliş saati ayrılıştan önce olmalı.',
-    replyPrivacy: 'Diğer üyeler isim görmez, yalnızca her ses grubundan (ya da çalgıdan) kaç kişinin geleceğini görür; tek kişilik bir bölümde bu sayı o kişinin yanıtını da gösterir. Nedeninizi ve saatlerinizi yalnızca şefiniz görür.',
+    replyPrivacy: 'Diğer üyeler isim görmez, yalnızca her bölümden kaç kişinin geleceğini görür; tek kişilik bir bölümde bu sayı o kişinin yanıtını da gösterir. Nedeninizi ve saatlerinizi yalnızca şefiniz görür.',
     replyNotSent: ' (henüz gönderilmedi)', switchWait: 'Yanıtlarınız gönderiliyor, bir saniye.',
     errPast: 'Bu buluşma geçti, artık yanıt verilemiyor.', errNoEvent: 'Bu buluşma artık takvimde yok.',
     errNoUrl: 'Bu sayfaya planlayıcının adresi henüz yazılmamış: index.html’deki API_URL satırına Apps Script’in Web uygulaması adresini yapıştırın.',
@@ -2624,7 +2717,7 @@ const T = {
     installIos: 'Safari’de Paylaş düğmesine (içinden ok çıkan kare; yeni iOS sürümlerinde önce adres çubuğunun yanındaki ••• düğmesine), ardından “Ana Ekrana Ekle”ye dokunun.',
     installIosSignIn: 'Ana ekrandan ilk açtığınızda bir kez daha giriş yapmanız gerekir: kullanıcı adınız ve şifrenizle ya da şefinizden yeni bir giriş bağlantısı isteyip onu kullanıcı adı kutusuna yapıştırarak.',
     pasteLink: 'Giriş bağlantınız mı var? Kopyalayıp kullanıcı adı kutusuna yapıştırın.',
-    installIosKey: 'Ana ekrandan ilk açtığınızda organizatör anahtarını bir kez daha girmeniz gerekir.',
+    installIosKey: 'Ana ekrandan ilk açtığınızda planlayıcı anahtarını bir kez daha girmeniz gerekir.',
     installGo: 'Ana ekrana ekle', installNo: 'Hayır, teşekkürler',
     updateReady: 'Provala’nın yeni sürümü hazır.', updateReload: 'Yenile', updateLater: 'Sonra',
     updateBusy: 'Yazdıklarınız ya da henüz gönderilmeyenler kaybolabilir.', updateAnyway: 'Yine de yenile',
@@ -2643,7 +2736,7 @@ const T = {
     repSum: 'Geliyor {y} · Kısmen {p} · Gelemiyor {n} · Yanıtsız {w}', repDetails: 'Kim ne dedi',
     repKnown: 'Nedenini biliyorsunuz', repYes: 'Geliyor', repPart: 'Kısmen', repNo: 'Gelemiyor', repNone: 'Henüz yanıt vermeyenler', repStale: 'gün ya da saat değişmeden önce: {s}', repNobody: 'kimse yok',
     remindTr: 'Hatırlatmayı kopyala (TR)', remindEn: 'Hatırlatmayı kopyala (EN)', remindEach: 'Kişiye özel mesajlar', remindOne: 'Mesaj', remindOneFor: '{name} için mesajı kopyala',
-    attTake: 'Yoklama al', attEditBtn: 'Yoklamayı düzenle', attNotTaken: 'Yoklama henüz alınmadı', attLater: 'Yoklama buluşma günü açılır.',
+    attToday: 'Bugün', attLastOpen: 'Yoklaması alınmamış son buluşma', attTake: 'Yoklama al', attEditBtn: 'Yoklamayı düzenle', attNotTaken: 'Yoklama henüz alınmadı', attLater: 'Yoklama buluşma günü açılır.',
     attTaken: 'Geldi {p} · Geç {l} · İzinli {e} · Gelmedi {a}', attGuestsN: '+ {n} misafir',
     attDialog: 'Yoklama: {when}', attFill: 'Yanıtlara göre doldur', attRest: 'Kalanları “Geldi” yap', attClear: 'Temizle',
     attFillHint: '“Geliyorum” diyenler Geldi, “Gelemiyorum” diyenler İzinli olur; gerisini siz işaretlersiniz.',
@@ -2653,6 +2746,7 @@ const T = {
     attCleared: 'Kimse işaretlenmedi; bu buluşmanın yoklaması kaldırıldı',
     attOrphan: 'Bu buluşma artık takvimde değil. Yoklaması siz silene kadar sezon kaydında kalır.',
     attDelete: 'Yoklamayı sil', attDeleteAsk: 'Bu buluşmanın yoklaması silinsin mi? Sezon kaydından ve üyelerin geçmişinden de çıkar.', attDeleted: 'Yoklama silindi',
+    delPollSoon: '{n} yayımlanmış buluşması henüz yapılmadı. Üyelerin takviminden haber verilmeden kalkar; önce onlara haber verin.',
     delPollAtt: ({ n }) => 'Yoklamalarını da sil (' + n + ' buluşma). İşaretlemezseniz sezon kaydında kalır.',
     markShortP: 'Geldi', markShortL: 'Geç', markShortE: 'İzinli', markShortA: 'Gelmedi',
     seasonTitle: 'Sezon kaydı', seasonShow: 'Bu sezonu göster',
@@ -2682,7 +2776,7 @@ const T = {
     rankBalanceHint: 'En zayıf bölümün ne kadarının gelebildiğine göre sıralandı: her bölümün olduğu 10 kişi, tenorsuz 12 kişiden önce gelir.',
     bySection: 'Bölümlere göre', reqMissing: 'Gerekli ama gelemiyor', reqMaybe: 'Gerekli, ancak gerekirse gelebilir',
     setsTitle: 'Ayın buluşmaları', setsCount: 'Kaç tane', meetingsN: '{n} buluşma',
-    setsNone: ({ n }) => n + ' buluşma bu aralıkla sığmıyor. Daha kısa bir aralık ya da daha az buluşma deneyin.', addThem: 'Hepsini ekle',
+    setsNone: ({ n }) => n + ' buluşma bu aralıkla sığmıyor. Daha kısa bir aralık ya da daha az buluşma deneyin.', addThem: 'Hepsini taslağa ekle',
     reqLabel: 'Her buluşmada olması gerekenler:', reqNoAnswer: 'henüz yanıt vermedi', reqRemove: ({ name }) => name + ' listeden çıksın',
     reqAddLabel: 'Her buluşmada olması gereken birini ekleyin', reqAdd: 'Kişi ekle…',
     reqHint: 'Örneğin piyanist ya da solist: onların gelebildiği zamanlar öne geçer.',
@@ -2700,7 +2794,7 @@ const T = {
 // Every page opens in Turkish, whatever language the phone or browser is set to. Someone who picks EN
 // in the header keeps English on that device until they pick TR again.
 function initialLang() {
-  const saved = store.get('tutti-lang');
+  const saved = store.get('provala-lang');
   return saved === 'en' ? 'en' : 'tr';
 }
 
@@ -2713,7 +2807,7 @@ function systemMode() {
   return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'night' : 'day';
 }
 function initialMode() {
-  const saved = store.get('tutti-mode');
+  const saved = store.get('provala-mode');
   return saved === 'day' || saved === 'night' ? saved : systemMode();
 }
 
@@ -2734,11 +2828,11 @@ const S = {
   polls: [], groups: [],
   pollParam: new URLSearchParams(location.search).get('p') || '',
   // Members sign in; the sign-in is remembered on this device until they sign out.
-  session: store.get('tutti-session') || '', member: null, needLogin: false, loginErr: '', loginUser: ''
+  session: store.get('provala-session') || '', member: null, needLogin: false, loginErr: '', loginUser: ''
 };
 // The planner editing an answer as a member (from version 2026-10-r4.9), in this tab: its sign-in, not the device's.
 let actKept = null;
-try { actKept = JSON.parse(sessionStorage.getItem('tutti-act') || 'null'); } catch (e) { actKept = null; }
+try { actKept = JSON.parse(sessionStorage.getItem('provala-act') || 'null'); } catch (e) { actKept = null; }
 if (/^#duzenle=/.test(location.hash) || (actKept && actKept.session)) S.session = '';
 
 function t(key, vars, lang) {
@@ -2795,7 +2889,8 @@ function durWords(m) {
     : [hh ? hh + (hh === 1 ? ' hour' : ' hours') : '', mm ? mm + ' minutes' : ''];
   return parts.filter(Boolean).join(' ');
 }
-const tzCity = tz => (tz || '').split('/').pop().replace(/_/g, ' ');
+// (In Turkish, İstanbul with its dotted İ: from version 2026-10-r5.3.)
+const tzCity = tz => { const c = (tz || '').split('/').pop().replace(/_/g, ' '); return S.lang === 'tr' && c === 'Istanbul' ? 'İstanbul' : c; };
 // "Soprano, Alto ve Tenor" / "Soprano, Alto and Tenor".
 const listFmts = {};
 function listText(list, lang) {
@@ -3382,10 +3477,27 @@ const R = {};
 function toast(msg, opts) {
   opts = opts || {};
   const host = document.getElementById('toasts');
-  const el = h('div', { class: 'toast' + (opts.error ? ' error' : ''), role: opts.error ? 'alert' : 'status' }, h('span', null, msg),
-    opts.action ? h('button', { type: 'button', onclick: () => { el.remove(); opts.action.fn(); } }, opts.action.label) : null);
+  const prev = document.activeElement;
+  // (A question, as before signing out: its button takes the focus, for the keyboard; "Vazgeç" or Escape closes it,
+  // and the focus goes back where it was.)
+  const done = () => {
+    const had = el.contains(document.activeElement);
+    el.remove();
+    if (had && prev && prev.isConnected && prev.focus) prev.focus({ preventScroll: true });
+  };
+  const ask = !!(opts.focus && opts.action);
+  // (One question at a time: asked again, the one already there takes the focus.)
+  const there = ask && host.querySelector('.toast.ask');
+  if (there) { const b0 = there.querySelector('button'); if (b0) b0.focus({ preventScroll: true }); return there; }
+  const btn = opts.action ? h('button', { type: 'button', onclick: () => { el.remove(); opts.action.fn(); } }, opts.action.label) : null;
+  const no = ask ? h('button', { type: 'button', class: 'toast-no', onclick: done }, t('cancel')) : null;
+  const msgId = ask ? 'toast-q-' + rnd(6) : null;
+  // A question stays until it's answered (from version 2026-10-r5.3); the rest go by themselves.
+  const el = h('div', { class: 'toast' + (opts.error ? ' error' : '') + (ask ? ' ask' : ''), role: ask ? 'alertdialog' : opts.error ? 'alert' : 'status', 'aria-labelledby': msgId,
+    onkeydown: e => { if (no && e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); done(); } } }, h('span', { id: msgId }, msg), btn, no);
   host.append(el);
-  setTimeout(() => el.remove(), opts.error ? 6500 : opts.action ? 6000 : 3500);
+  if (ask) btn.focus({ preventScroll: true });
+  else setTimeout(() => { if (el.isConnected) done(); }, opts.error ? 6500 : opts.action ? 6000 : 3500);
   return el;
 }
 // For screen readers: one live region that stays in the page (text in parts of the page that are redrawn
@@ -3479,6 +3591,28 @@ function foldLine(line) {
   out.push(cur);
   return out.join('\r\n ');
 }
+// The offset of a time zone at a moment, in minutes east of UTC (as Code.gs tzOffset_).
+const tzFmts = {};
+function tzOff(date, tz) {
+  const f = tzFmts[tz] || (tzFmts[tz] = new Intl.DateTimeFormat('en-GB', { timeZone: tz, hourCycle: 'h23', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' }));
+  const x = {};
+  for (const part of f.formatToParts(date)) x[part.type] = part.value;
+  const asUtc = Date.UTC(+x.year, +x.month - 1, +x.day, +x.hour % 24, +x.minute, +x.second);
+  return Math.round((asUtc - Math.floor(date.getTime() / 1000) * 1000) / 60000);
+}
+// A meeting time in a calendar file: the moment in UTC, worked out in the poll's time zone (from version 2026-10-r5.3;
+// before, the time was written without a zone, so a phone set to another zone showed it shifted). Same as the subscription.
+function icsWhen(day, minute, tz) {
+  if (tz) {
+    try {
+      const guess = Date.parse(day + 'T00:00:00Z') + minute * 60000;
+      const off = tzOff(new Date(guess), tz);
+      const off2 = tzOff(new Date(guess - off * 60000), tz);
+      return new Date(guess - off2 * 60000).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+    } catch (e) { /* unknown zone: the local time as written */ }
+  }
+  return stamp(day, minute);
+}
 const icsText = (events, p) => icsItems(events.map(ev => [ev, p]));
 // items: [meeting, its poll] pairs, so one file can hold meetings of several polls.
 function icsItems(items) {
@@ -3487,7 +3621,7 @@ function icsItems(items) {
   const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Provala//Planner//EN', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH'];
   for (const [ev, p] of items) {
     const o = ownTimes(ev, p);
-    lines.push('BEGIN:VEVENT', 'UID:' + (p && p.id ? p.id + '.' : '') + ev.id + '@provala', 'DTSTAMP:' + now, 'DTSTART:' + stamp(ev.date, o.start), 'DTEND:' + stamp(ev.date, o.end), 'SUMMARY:' + esc(ev.title || loc(p.title)));
+    lines.push('BEGIN:VEVENT', 'UID:' + (p && p.id ? p.id + '.' : '') + ev.id + '@provala', 'DTSTAMP:' + now, 'DTSTART:' + icsWhen(ev.date, o.start, p && p.tz), 'DTEND:' + icsWhen(ev.date, o.end, p && p.tz), 'SUMMARY:' + esc(ev.title || loc(p.title)));
     const vn = S.view !== 'admin' ? venueOf(ev) : null, where = [ev.place || (vn ? vn.name : ''), vn && vn.address ? vn.address.replace(/\s*\n\s*/g, ', ') : ''].filter(Boolean).join(', ');
     if (where) lines.push('LOCATION:' + esc(where));
     if (o.details) lines.push('DESCRIPTION:' + esc(o.details));
@@ -3505,7 +3639,7 @@ function resetMember() {
 resetMember();
 
 // Unsent changes are kept on this device, separately for each member and poll.
-const draftKey = () => 'tutti-draft-' + S.poll.id + '-' + S.member.id;
+const draftKey = () => 'provala-draft-' + S.poll.id + '-' + S.member.id;
 // The draft is a snapshot taken at the change, so it can be written later even if the page has moved on.
 let draftTimer = 0, draftDue = null;
 function saveDraftSoon() {
@@ -3544,7 +3678,7 @@ function markDirty() {
 // The page a member last saw is kept on this device, so it opens at once next time while a fresh copy
 // is fetched behind it. It holds only what that member may see anyway (their own answer, the group's numbers,
 // who can come to each rehearsal), and signing out removes it (like unsent changes).
-const PAGE_KEY = 'tutti-page';
+const PAGE_KEY = 'provala-page';
 const pageOf = st => ({ member: st.member, poll: st.poll, schedule: st.schedule, mine: st.mine, prev: st.prev || null, group: st.group || null, attend: st.attend || null,
   replies: st.replies || {}, more: st.more || [], caps: st.caps || [], polls: st.polls || [], groups: st.groups || [], stages: st.stages || [], away: st.away || [],
   repertoire: st.repertoire || [], plans: st.plans || [], people: st.people || null, past: st.past || [], notice: st.notice || null, busy: st.busy || [],
@@ -3708,15 +3842,17 @@ document.addEventListener('visibilitychange', () => {
 
 function endSession() {
   if (S.acting) { actEnd(); return; }
+  if (window.provalaDropOld) window.provalaDropOld();   // (what an earlier version kept under its old names goes too)
+  for (const q of document.querySelectorAll('#toasts .toast.ask')) q.remove();   // (a question left open: no longer for anyone)
   if (A.leadMode || A.key.indexOf('ldr.') === 0) switchAdmin(false);   // (from version 2026-10-r5.2: their section leader's page goes too)
   flushDraft();   // a sign-out the member didn't choose (password changed elsewhere) keeps their unsent changes
   pageGen++; pageFetch = null;
-  store.del('tutti-session');
+  store.del('provala-session');
   store.del(PAGE_KEY);
   Object.assign(S, { session: '', member: null, needLogin: true, poll: null, schedule: null, prev: null, group: null, attend: null, page: null,
     replies: {}, more: [], caps: [], polls: [], groups: [], stages: [], history: null, feed: '', linkAsk: null, loaded: true, loading: false, away: [],
     people: null, past: [], notice: null, repertoire: [], plans: [], busy: [], rehearsalNotes: [], pieceHistory: [], venues: [], rides: [] });
-  profUi.dirty = false; profUi.busy = false; profUi.draft = null; noticeUi.done = '';
+  profUi.dirty = false; profUi.busy = false; profUi.draft = null; profUi.open = null; noticeUi.done = '';
   historyJob = null; feedUi.ask = false; refetchAfterReplies = false;
   openPlans.clear(); openRides.clear();
   for (const k of Object.keys(rideUi)) delete rideUi[k];   // (what one member typed isn't left for the next on a shared device)
@@ -3725,7 +3861,7 @@ function endSession() {
   resetMember();
 }
 // A member's unsent changes kept on this device (on a shared device they shouldn't outlive the sign-in).
-const draftsOf = id => (id ? store.keys().filter(k => k.indexOf('tutti-draft-') === 0 && k.slice(-id.length - 1) === '-' + id) : []);
+const draftsOf = id => (id ? store.keys().filter(k => k.indexOf('provala-draft-') === 0 && k.slice(-id.length - 1) === '-' + id) : []);
 function dropDrafts(id) {
   dropDraft();
   draftsOf(id).forEach(k => store.del(k));
@@ -3736,8 +3872,9 @@ function memberSignOut() {
     endSession();
     render();
   };
-  if (M.dirty || profUi.dirty || ridesTyped()) toast(t('unsavedSignOut'), { action: { label: t('signOutAnyway'), fn: go } });
-  else go();
+  if (M.dirty || profUi.dirty || ridesTyped()) toast(t('unsavedSignOut'), { action: { label: t('signOutAnyway'), fn: go }, focus: true });
+  // (From version 2026-10-r5.3 it always asks: getting back in takes the password, which many keep only in an old message.)
+  else toast(t('signOutAsk'), { action: { label: t('signOutYes'), fn: go }, focus: true });
 }
 
 /* ---------- Signing in */
@@ -3765,7 +3902,7 @@ async function linkSignIn(token, view, sw) {
     if (S.session) endSession();   // (the same member again: their unsent changes stay)
     pageGen++; pageFetch = null;
     S.session = r.session; S.member = r.member;
-    store.set('tutti-session', r.session);
+    store.set('provala-session', r.session);
     S.loginErr = ''; S.loginUser = '';
     applyState(r.state);
     keepPage(r.state);
@@ -3855,7 +3992,7 @@ function renderLogin(main) {
         const r = await api.login(u, pw, S.pollParam);
         pageGen++; pageFetch = null;
         S.session = r.session; S.member = r.member;
-        store.set('tutti-session', r.session);
+        store.set('provala-session', r.session);
         S.loginErr = ''; S.loginUser = '';
         if (r.state && r.state.member) {
           applyState(r.state);
@@ -3910,7 +4047,7 @@ function openPasswordDialog() {
       try {
         const r = await api.password(S.session, old.value, next.value);
         S.session = r.session;
-        store.set('tutti-session', r.session);
+        store.set('provala-session', r.session);
         close();
         toast(t('pwChanged'));
       } catch (x) {
@@ -3954,7 +4091,7 @@ const leftText = (n, lang) => (n === 0 ? t('leftToday', null, lang) : n === 1 ? 
 function deadlineChip(p) {
   if (!p.deadline || !p.open) return null;
   const n = daysLeft(p), date = dFull(p.deadline);
-  if (n < 0) return h('span', { class: 'chip-s due' }, t('duePast', { date }));
+  if (n < 0) return h('span', { class: 'chip-s due past' }, t('duePast', { date }));
   // (and, for a poll that closes by itself, that it does)
   return h('span', { class: 'chip-s due' + (n <= 1 ? ' soon' : '') }, (n === 0 ? t('dueToday') : n === 1 ? t('dueTomorrow', { date }) : t('dueIn', { date, n }))
     + (p.autoClose ? ' · ' + t('dueThenClose') : ''));
@@ -4089,7 +4226,7 @@ function buildComment(ro) {
     h('label', { class: 'visually-hidden', for: 'm-comment' }, t('stepComment')),
     h('textarea', {
       id: 'm-comment', class: 'input', rows: '4', maxlength: '3000', disabled: ro, value: M.comment, placeholder: t('commentPh'), 'aria-describedby': 'm-comment-need',
-      oninput: e => { M.comment = e.target.value; markDirty(); refreshNeeds(); redrawSoon(); }
+      oninput: e => { const had = !!M.comment.trim(); M.comment = e.target.value; markDirty(); refreshNeeds(); if (!!M.comment.trim() !== had) redrawSoon(); else summarySoon(); }
     }),
     R.commentNeed);
 }
@@ -4128,10 +4265,13 @@ let redrawQueued = false;
 function redrawSoon() {
   if (redrawQueued) return;
   redrawQueued = true;
-  requestAnimationFrame(() => { redrawQueued = false; renderCal(); renderSummary(); });
+  requestAnimationFrame(() => { redrawQueued = false; clearTimeout(summaryTimer); renderCal(); renderSummary(); });
 }
+let summaryTimer = 0;
+function summarySoon() { clearTimeout(summaryTimer); summaryTimer = setTimeout(() => { if (!redrawQueued) renderSummary(); }, 250); }
 
 const CAL_HELP = [['helpOneT'], ['helpWdT'], ['helpWkT'], ['helpMultiT', 'helpMultiMouse']];
+let calHelpOpen = false;   // (the folded help, opened: stays open as the calendar is drawn again)
 function renderCal() {
   if (!R.cal) return; // the view changed while the server was answering
   const p = S.poll, el = clear(R.cal), ro = !pollOpen(p);
@@ -4175,10 +4315,12 @@ function renderCal() {
     }
     months.append(h('section', null, h('h3', { class: 'month-name' }, dMonth(first)), grid));
   }
+  // (Once they have sent an answer, the help folds away: from version 2026-10-r5.3.)
+  const help = h('ul', { class: 'cal-help' }, CAL_HELP.map(x => h('li', null,
+    t(x[0]), x[1] ? h('span', { class: 'only-mouse' }, ' ' + t(x[1])) : null)));
   el.append(months, calMarks(p) || '', groupLegend(p) || '', buildClearAll(ro), awayLink() || '',
-    h('ul', { class: 'cal-help' }, CAL_HELP.map(x => h('li', null,
-      t(x[0]), x[1] ? h('span', { class: 'only-mouse' }, ' ' + t(x[1])) : null))));
-  fitStick();
+    M.savedAt ? h('details', { class: 'cal-help-fold', open: calHelpOpen, ontoggle: e => { calHelpOpen = e.target.open; } }, h('summary', null, t('calHelpFold')), help) : help);
+  fitStickSoon();
 }
 // "Like last month": their latest earlier answer, laid out by weekday on this poll's open days (from Code.gs), while
 // nothing is marked yet. One press fills it in; they fix what's different and save.
@@ -4221,6 +4363,9 @@ function groupLegend(p) {
     : t('groupWait', { min: g.min || 5, n: typeof g.others === 'number' ? g.others : g.answered }));
 }
 // On wide screens the calendar stays in view beside the long list of times, when it fits on the screen.
+// (After a redraw, once per frame: reading the heights then doesn't make the browser lay the page out at once.)
+let stickQueued = false;
+function fitStickSoon() { if (stickQueued) return; stickQueued = true; requestAnimationFrame(() => { stickQueued = false; fitStick(); }); }
 function fitStick() {
   const st = R.cal && R.cal.closest('.step');
   if (!st || !st.isConnected) return;
@@ -4304,10 +4449,16 @@ function renderTimes() {
     bar.append(h('div', { class: 'tools', role: 'group', 'aria-label': t('paintWith') },
       [['2', 'free', 'toolFree'], ['1', 'maybe', 'toolMaybe'], ['0', 'none', 'toolNone']].map(x =>
         h('button', { type: 'button', class: 'tool', id: 'tool-' + x[0], 'aria-pressed': String(M.tool === x[0]), dataset: { v: x[0] },
-          onclick: () => { M.tool = x[0]; el.querySelectorAll('.tool').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.v === M.tool))); } },
+          onclick: () => {
+            M.tool = x[0]; el.querySelectorAll('.tool').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.v === M.tool)));
+            const mh = document.getElementById('maybe-hint');
+            if (mh) mh.hidden = M.tool !== '1';
+          } },
           h('span', { class: 'sw ' + x[1], 'aria-hidden': 'true' }), t(x[2])))));
   }
   el.append(bar);
+  // (From version 2026-10-r5.3: with Gerekirse picked, said before sending that such a day needs a reason.)
+  if (!ro) el.append(h('p', { class: 'hint maybe-hint', id: 'maybe-hint', hidden: M.tool !== '1' }, t('maybeHint')));
   const hol = sel.length === 1 ? holidayOn(sel[0]) : null;
   if (hol) el.append(h('p', { class: 'hol-line' }, holText(hol)));
   if (!ro) {
@@ -4511,9 +4662,12 @@ function buildNote(sel, ro) {
       id: 'm-note', class: 'input', rows: '3', maxlength: '300', disabled: ro, value: same ? vals[0] : '', placeholder: same ? t('notePh') : t('noteMixed'),
       'aria-describedby': 'm-note-need',
       oninput: e => {
-        const v = e.target.value;
+        const v = e.target.value, had = Array.from(M.sel).map(d => !!M.notes[d]).join();
         for (const d of M.sel) { if (v.trim()) M.notes[d] = v; else delete M.notes[d]; }
-        markDirty(); refreshNeeds(); redrawSoon();
+        markDirty(); refreshNeeds();
+        // (The calendar only when a day's note comes or goes, which its mark shows; the summary a moment after typing:
+        // from version 2026-10-r5.3, each key no longer draws the whole calendar again.)
+        if (Array.from(M.sel).map(d => !!M.notes[d]).join() !== had) redrawSoon(); else summarySoon();
       }
     }));
   return R.noteField;
@@ -4569,10 +4723,14 @@ function renderSummary() {
 function updateSaveBar() {
   if (!R.saveBtn || !R.saveBtn.isConnected) return;
   const nDays = Object.keys(M.avail).filter(d => canMark(S.poll, d)).length;
+  // (On a narrow phone, from version 2026-10-r5.3, the short words: one line beside a short button. The long ones are
+  // in the page too, hidden there; when it was sent stays in the "Yanıtınız alındı" chip at the top.)
+  const both = (long, short) => [h('span', { class: 'sb-long' }, long), h('span', { class: 'sb-short' }, short)];
+  const sent = M.savedAt && !M.dirty, st = M.saving ? t('saving') : M.dirty && M.savedAt ? t('stUnsaved') : M.savedAt ? t('stSaved') : t('stNew');
   add(clear(R.saveStatus), [
-    h('strong', null, M.saving ? t('saving') : M.dirty && M.savedAt ? t('stUnsaved') : M.savedAt ? t('stSaved') : t('stNew')),
-    h('span', null, t('daysMarked', { n: nDays }) + (M.savedAt && !M.dirty ? ' · ' + ago(M.savedAt) : ''))]);
-  add(clear(R.saveBtn), [M.saving ? h('span', { class: 'spin', 'aria-hidden': 'true' }) : null, M.savedAt ? t('saveChanges') : t('save')]);
+    h('strong', null, both(st, M.saving ? t('saving') : sent ? t('stSavedS', { n: nDays }) : t('stNewS', { n: nDays }))),
+    h('span', { class: 'sb-long' }, t('daysMarked', { n: nDays }) + (sent ? ' · ' + ago(M.savedAt) : ''))]);
+  add(clear(R.saveBtn), [M.saving ? h('span', { class: 'spin', 'aria-hidden': 'true' }) : null, both(M.savedAt ? t('saveChanges') : t('save'), t('saveS'))]);
   R.saveBtn.disabled = M.saving || (!M.dirty && !!M.savedAt);
   syncSentChip();
 }
@@ -4658,9 +4816,14 @@ const REPLY_SW = { yes: 'free', part: 'maybe', no: 'none' };
 // The date and the minute of the day now, in a poll's time zone: for which meetings are over, and what's next.
 const nowFmts = {};
 // The day a moment falls on in a time zone ("2026-10-31").
+// (One formatter per time zone, made once: from version 2026-10-r5.3, as nowIn does.)
+const dayFmts = {};
 function dayInTz(iso, tz) {
-  try { return new Intl.DateTimeFormat('en-CA', { timeZone: tz || undefined, year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(iso)); }
-  catch (e) { return String(iso).slice(0, 10); }
+  try {
+    const k = tz || '';
+    const f = dayFmts[k] || (dayFmts[k] = new Intl.DateTimeFormat('en-CA', { timeZone: tz || undefined, year: 'numeric', month: '2-digit', day: '2-digit' }));
+    return f.format(new Date(iso));
+  } catch (e) { return String(iso).slice(0, 10); }
 }
 function nowIn(tz) {
   try {
@@ -4711,7 +4874,8 @@ function replyProblem(f, ev) {
   if (f.s === 'part') {
     const from = f.from || ev.start, until = f.until || ev.end;
     if (from >= until) return t('replyErrTimes');
-    if (!f.known && from <= ev.start && until >= ev.end) return t('replyNeedTime');
+    // (Both missing: both said at once, from version 2026-10-r5.3.)
+    if (!f.known && from <= ev.start && until >= ev.end) return String(f.note || '').trim() ? t('replyNeedTime') : t('replyNeedBoth');
   }
   if ((f.s === 'part' || f.s === 'no') && !f.known && !String(f.note || '').trim()) return t('replyNeedReason');
   return '';
@@ -4791,7 +4955,7 @@ function sendForm(p, ev, f, key, id) {
   const problem = replyProblem(f, ev);
   if (problem) {
     f.err = problem;
-    redrawReplies(id + (f.s === 'part' && (problem === t('replyNeedTime') || problem === t('replyErrTimes')) ? '-from' : '-note'));
+    redrawReplies(id + (f.s === 'part' && (problem === t('replyNeedTime') || problem === t('replyNeedBoth') || problem === t('replyErrTimes')) ? '-from' : '-note'));
     return;
   }
   const needsWhy = f.s === 'part' || f.s === 'no';
@@ -4993,9 +5157,10 @@ function renderSchedule(main) {
   if (!blocks.length) { main.append(h('div', { class: 'stack sched-page' }, stateBlock(t('noPollTitle'), t('noPollText')), buildAway() || '')); focusAway(); return; }
   const wrap = h('div', { class: 'stack sched-page' }, S.poll ? buildHero(S.poll, true) : h('h1', { class: 'visually-hidden' }, t('schedTitle')));
   const head = h('div', { class: 'sched-head' }, h('h2', { class: 'sub' }, t('schedTitle')));
-  wrap.append(head);
+  // (What changed first, then the heading and who sees what: from version 2026-10-r5.3.)
   const chg = buildChanges();
   if (chg) wrap.append(chg);
+  wrap.append(head);
   const several = blocks.length > 1, all = [];
   let anyAtt = false, anyOpen = false;
   for (const b of blocks) {
@@ -5080,7 +5245,7 @@ function changeLine(c, p, lang, gmap) {
 }
 const CHG_DAYS = 14;
 // When this member last pressed Tamam on this device, for a poll (kept in memory too, where the device won't keep it).
-const chgKey = p => 'tutti-chg-' + (S.member ? S.member.id + '-' : '') + p.id;
+const chgKey = p => 'provala-chg-' + (S.member ? S.member.id + '-' : '') + p.id;
 const chgMem = {};
 function chgSeen(p) {
   let v = '';
@@ -5099,7 +5264,7 @@ function chgSaw(p, at) {
 // Since then, what the box last told them about each meeting, as its line ({ id: { at, kind, was, now } }, at: the
 // time of the meeting's last change then): a meeting changed again since (undone, say) is told from how they last saw
 // it, until Tamam. (Kept as it was shown, so changes the schedule no longer keeps don't matter.)
-const shownKey = p => 'tutti-chgs-' + (S.member ? S.member.id + '-' : '') + p.id;
+const shownKey = p => 'provala-chgs-' + (S.member ? S.member.id + '-' : '') + p.id;
 function chgShown(p) {
   const v = store.json(shownKey(p)), all = v && typeof v === 'object' && !Array.isArray(v) ? v : {};
   return Object.assign(all, chgMem[shownKey(p)] || {});
@@ -5163,7 +5328,7 @@ function byDay(list, of) {
 }
 // Also new since the member last pressed Tamam (from version 2026-10-r4.9): a rehearsal plan added or changed for a
 // meeting of theirs still to come, and a piece new in their repertoire. (The first time on a device nothing is news.)
-const newsKey = () => 'tutti-news-' + (S.member ? S.member.id : '');
+const newsKey = () => 'provala-news-' + (S.member ? S.member.id : '');
 let newsMem = '';
 function newsSeen() { let v = ''; try { v = store.get(newsKey()) || ''; } catch (e) { /* newsMem */ } return newsMem > v ? newsMem : v; }
 function newsSaw(at) { if (newsMem < at) newsMem = at; try { if ((store.get(newsKey()) || '') < at) store.set(newsKey(), at); } catch (e) { /* kept in newsMem */ } }
@@ -5489,11 +5654,12 @@ function eventCard(b, ev, now, nested) {
       pl ? planBlock(pl, ev, b.p) : null,
       over && called ? notesBlock(notesOf(b.p.id, ev.id)) : null,
       !over && called ? rideBlock(b.p, ev) : null,
-      called ? null : h('p', { class: 'hint not-called' }, t('notCalled')),
-      over || !called ? null : h('div', { class: 'event-actions' },
-        h('a', { class: 'btn small', href: gcalUrl(ev, b.p), target: '_blank', rel: 'noopener' }, t('googleCal')),
-        framed ? null : h('button', { type: 'button', class: 'btn small', onclick: () => download('provala-' + ev.date + '.ics', icsText([ev], b.p), 'text/calendar') }, t('icsOne')))),
+      called ? null : h('p', { class: 'hint not-called' }, t('notCalled'))),
     can('replies') && called && !S.acting ? replyBox(b.p, ev, b.replies[ev.id], 'rp') : null,   // (replies are the member's own word: not as them)
+    // (From version 2026-10-r5.3 after the reply, folded into one quiet "Takvime ekle": the page offers the subscription too.)
+    over || !called ? null : h('details', { class: 'cal-add' }, h('summary', null, t('calAdd')), h('div', { class: 'event-actions' },
+      h('a', { class: 'btn small', href: gcalUrl(ev, b.p), target: '_blank', rel: 'noopener' }, t('googleCal')),
+      framed ? null : h('button', { type: 'button', class: 'btn small', onclick: () => download('provala-' + ev.date + '.ics', icsText([ev], b.p), 'text/calendar') }, t('icsOne')))),
     buildAttend(ev, b.attend),
     over ? cameBlock(pastOf(b.p.id, ev.id)) : null);
 }
@@ -5550,9 +5716,14 @@ const onTouch = () => !!(window.matchMedia && window.matchMedia('(pointer: coars
 let installEvt = null, versionAt = 0, versionLater = 0;
 function startApp() {
   if (isDemo) return;
-  try {
-    if (window.isSecureContext && 'serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => { /* no app cache: the page works as before */ });
-  } catch (e) { /* (a sandboxed frame, say): no app cache either */ }
+  // (From version 2026-10-r5.3 a little after the page has loaded: what it keeps on the phone then doesn't hold up the
+  // first opening.)
+  const reg = () => {
+    try {
+      if (window.isSecureContext && 'serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => { /* no app cache: the page works as before */ });
+    } catch (e) { /* (a sandboxed frame, say): no app cache either */ }
+  };
+  if (document.readyState === 'complete') setTimeout(reg, 2000); else window.addEventListener('load', () => setTimeout(reg, 2000), { once: true });
   window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEvt = e; refreshInstall(); });
   window.addEventListener('appinstalled', () => { installEvt = null; refreshInstall(); });
   // A newer Provala on the site: taken up soon after opening (when a slow connection opened the kept copy), when the
@@ -5610,7 +5781,7 @@ function busyHere() {
 // The versions this tab loaded by itself (at most three in all): should the phone still open an older copy, or the site
 // go back and forth between two versions, the note says so instead of loading again and again.
 function loadedFor() {
-  try { const v = JSON.parse(sessionStorage.getItem('tutti-updated') || '[]'); return Array.isArray(v) ? v : []; } catch (e) { return null; }
+  try { const v = JSON.parse(sessionStorage.getItem('provala-updated') || '[]'); return Array.isArray(v) ? v : []; } catch (e) { return null; }
 }
 async function checkVersion(auto, tries) {
   if (isDemo || !window.provalaVersion) return;
@@ -5629,7 +5800,7 @@ async function checkVersion(auto, tries) {
     versionLater = setTimeout(() => checkVersion(true, (tries || 0) + 1), 10000);
     return;
   }
-  try { sessionStorage.setItem('tutti-updated', JSON.stringify(done.concat(m[1]).slice(-10))); } catch (e) { showUpdate(); return; }
+  try { sessionStorage.setItem('provala-updated', JSON.stringify(done.concat(m[1]).slice(-10))); } catch (e) { showUpdate(); return; }
   location.reload();
 }
 // With the other messages (and read out like them): a newer Provala is ready. Yenile asks first if something here
@@ -5684,7 +5855,7 @@ function focusBefore(slot) {
 function fillInstall(slot) {
   const kind = slot.dataset.kind, ios = onIos();
   slot.replaceChildren();
-  if (isDemo || inApp() || store.get('tutti-install-' + kind) === 'no' || (!ios && (!installEvt || !onTouch()))) return;
+  if (isDemo || inApp() || store.get('provala-install-' + kind) === 'no' || (!ios && (!installEvt || !onTouch()))) return;
   const done = () => { refreshInstall(); focusBefore(slot); };
   const go = async () => {
     const ev = installEvt;
@@ -5699,7 +5870,7 @@ function fillInstall(slot) {
     ios ? h('p', { class: 'hint' }, kind === 'planner' ? t('installIosKey') : t('installIosSignIn')) : null,
     h('div', { class: 'actions' },
       !ios && installEvt ? h('button', { type: 'button', class: 'btn primary', id: 'install-go', onclick: go }, t('installGo')) : null,
-      h('button', { type: 'button', class: 'btn quiet', id: 'install-no', onclick: () => { store.set('tutti-install-' + kind, 'no'); done(); } }, t('installNo')))));
+      h('button', { type: 'button', class: 'btn quiet', id: 'install-no', onclick: () => { store.set('provala-install-' + kind, 'no'); done(); } }, t('installNo')))));
 }
 
 function buildFeed() {
@@ -5789,13 +5960,13 @@ function pastBlock() {
   list.sort((x, y) => (x.date === y.date ? y.start - x.start : (x.date < y.date ? 1 : -1)));
   if (!(can('people') || can('after')) || !list.length) return null;
   return h('section', { class: 'sheet past-season', 'aria-labelledby': 'past-h' },
-    h('details', { class: 'past-more', open: pastOpen || null, ontoggle: e => { pastOpen = e.target.open; } },
-      h('summary', null, h('h3', { id: 'past-h' }, t('pastTitle', { n: list.length }))),
+    lazyFold({ class: 'past-more', open: pastOpen || null, ontoggle: e => { pastOpen = e.target.open; } },
+      h('h3', { id: 'past-h' }, t('pastTitle', { n: list.length })), () => [
       h('p', { class: 'hint' }, t('pastHint')),
       h('ul', { class: 'past-list' }, list.map(x => h('li', null,
         h('div', { class: 'past-line' }, h('strong', null, dShort(x.date) + ', ' + hm(x.start) + '–' + hm(x.end)), x.title ? ' · ' + x.title : ''),
         notesBlock(notesOf(x.poll, x.event)),
-        x.onlyNotes ? null : cameBlock(x))))));
+        x.onlyNotes ? null : cameBlock(x))))]));
 }
 /* ---------- Carpooling (from version 2026-10-r5.1): under a meeting to come that calls them, the lifts offered and asked
    for, by name (posting is what shares it), with the phone those share; and a short form to offer or ask. */
@@ -5933,9 +6104,9 @@ function pitchBlock(p, g) {
 
 /* ============================================================= ORGANIZER */
 const A = {
-  // A 30-day planner sign-in made from the key; older versions kept the key itself under tutti-admin-key.
-  key: store.get('tutti-org') || store.get('tutti-admin-key') || '', authed: false, loading: false, error: null, keyErr: '',
-  polls: [], currentId: '', pollId: store.get('tutti-admin-poll') || '', data: null,
+  // A 30-day planner sign-in made from the key; older versions kept the key itself under provala-admin-key.
+  key: store.get('provala-org') || store.get('provala-admin-key') || '', authed: false, loading: false, error: null, keyErr: '',
+  polls: [], currentId: '', pollId: store.get('provala-admin-poll') || '', data: null,
   board: new Set(), tab: 'plan', duration: 120, cell: null, hl: null, scrollX: null,
   draft: { events: [], note: '' }, draftDirty: false, busy: false,
   creds: [],   // sign-in details just created; shown once, never stored
@@ -5946,7 +6117,7 @@ const A = {
   // Release 3: the sections the board is filtered to ("group|section"; none: everyone), how best times are ranked
   // (by the weakest section, or by the number of people), how many meetings a month to find and how far apart, and
   // the meetings whose "who's called" list is open in the schedule editor.
-  secs: new Set(), rank: store.get('tutti-org-rank') === 'count' ? 'count' : 'balance', sets: setsPref(), openCall: new Set(),
+  secs: new Set(), rank: store.get('provala-org-rank') === 'count' ? 'count' : 'balance', sets: setsPref(), openCall: new Set(),
   // From version 2026-10-r5.2: a section leader's page (#bolum) rather than the planner's; what Code.gs says they lead;
   // the general rehearsals they may take attendance at.
   leadMode: false, leader: null, lgen: null
@@ -5960,8 +6131,8 @@ function switchAdmin(lead) {
   for (const b of document.querySelectorAll('.backdrop')) b.remove();   // (the other page's dialogs go with it, and its undo offers)
   for (const b of document.querySelectorAll('#toasts .toast button')) b.closest('.toast').remove();
   lgOpening = false;
-  Object.assign(A, { key: lead ? (S.session && !S.acting ? 'ldr.' + S.session : '') : store.get('tutti-org') || store.get('tutti-admin-key') || '',
-    authed: false, loading: false, error: null, keyErr: '', polls: [], currentId: '', pollId: store.get(lead ? 'tutti-lead-poll' : 'tutti-admin-poll') || '', data: null,
+  Object.assign(A, { key: lead ? (S.session && !S.acting ? 'ldr.' + S.session : '') : store.get('provala-org') || store.get('provala-admin-key') || '',
+    authed: false, loading: false, error: null, keyErr: '', polls: [], currentId: '', pollId: store.get(lead ? 'provala-lead-poll' : 'provala-admin-poll') || '', data: null,
     board: new Set(), tab: 'plan', cell: null, hl: null, scrollX: null, draft: { events: [], note: '' }, draftDirty: false, busy: false, creds: [], caps: [], errors: null,
     since: {}, openEv: new Set(), season: null, seasonBusy: false, seasonErr: false, groups: [], current: {}, memberGroup: '', seasonGroup: '', secs: new Set(), openCall: new Set(),
     messages: [], stage: freshStage(), rep: freshRep(), plan: freshPlanUi(), notes: freshNotesUi(), vn: freshVn(), venues: [], leadMode: !!lead, leader: null, lgen: null,
@@ -5981,7 +6152,7 @@ function leadsText(leads, gmap) {
   }).join(' · ');
 }
 function setsPref() {
-  const x = store.json('tutti-org-sets');
+  const x = store.json('provala-org-sets');
   return x && x.n >= 2 && x.n <= 8 && x.gap >= 1 && x.gap <= 14 ? { n: Math.round(x.n), gap: Math.round(x.gap) } : { n: 2, gap: 10 };
 }
 const adminGmap = () => gmapOf(A.groups);
@@ -6026,8 +6197,8 @@ async function adminEnter() {
     if (A.leadMode) A.leader = st.leader && typeof st.leader === 'object' ? st.leader : { leads: {} };
     else {
       if (st.session) A.key = st.session;
-      store.set('tutti-org', A.key);
-      store.del('tutti-admin-key');
+      store.set('provala-org', A.key);
+      store.del('provala-admin-key');
     }
     A.polls = st.polls; A.currentId = st.currentId;
     A.groups = st.groups || [MAIN_GROUP()];
@@ -6047,7 +6218,7 @@ async function adminEnter() {
     else if (e.code === 'bad_key' || e.code === 'locked') {
       // An expired planner sign-in just asks for the key again; a wrong key says so.
       const wasSignIn = A.key.indexOf('org.') === 0;
-      A.authed = false; A.key = ''; store.del('tutti-org'); store.del('tutti-admin-key');
+      A.authed = false; A.key = ''; store.del('provala-org'); store.del('provala-admin-key');
       A.keyErr = e.code === 'locked' ? t('locked') : wasSignIn ? '' : t('badKey');
     }
     else A.error = e;
@@ -6074,7 +6245,8 @@ function applyAdminPoll(r) {
   // (Another poll: a rehearsal plan open for this one is left; the same poll again keeps it.)
   if (!(A.data && A.data.poll && A.data.poll.id === id)) { A.plan = freshPlanUi(); A.notes = freshNotesUi(); }
   A.pollId = id;
-  store.set(A.leadMode ? 'tutti-lead-poll' : 'tutti-admin-poll', id);
+  A.schedStale = null;   // (the schedule as it is now)
+  store.set(A.leadMode ? 'provala-lead-poll' : 'provala-admin-poll', id);
   A.data = { poll: r.poll, responses: r.responses, members: r.members || [], schedule: r.schedule || { draft: null, published: null },
     replies: r.replies || [], attendance: r.attendance || [], seen: r.seen || {}, plans: r.plans || [], clashes: Array.isArray(r.clashes) ? r.clashes : [],
     notes: Array.isArray(r.notes) ? r.notes : [], generals: cleanGenerals(r.generals) };
@@ -6083,7 +6255,7 @@ function applyAdminPoll(r) {
   reAway();
   takeGroups(r);
   // What's new since this device last opened this poll here: the earlier visit is noted once per page load.
-  const seenKey = (A.leadMode ? 'tutti-lead-seen-' : 'tutti-org-seen-') + id;
+  const seenKey = (A.leadMode ? 'provala-lead-seen-' : 'provala-org-seen-') + id;
   if (!(id in A.since)) { A.since[id] = store.get(seenKey) || ''; store.set(seenKey, new Date().toISOString()); }
   A.board = new Set(r.responses.map(x => x.id));
   A.secs = new Set();
@@ -6098,7 +6270,8 @@ function applyAdminPoll(r) {
 // The days someone is away don't count in the planner either: each answer is read without them (availAll keeps what
 // they marked, to read it again when their away periods change).
 const awayOf = id => { const m = acan('away') && A.data ? A.data.members.find(x => x.id === id) : null; return m ? awayNow(m) : []; };
-// The members as the backend now has them (after a change there): the board's answers follow their days away.
+// The members as the backend now has them (after a change there): the board's answers follow their days away and
+// (from version 2026-10-r5.3) the hours they can never come, as Code.gs counts them for members.
 function takeMembers(list) {
   A.data.members = list;
   reAway();
@@ -6110,7 +6283,8 @@ function reAway() {
   A.data.responses = A.data.responses.map(r => {
     const all = r.availAll || r.avail || {}, m = byId.get(r.memberId);
     const mine = gens.length && m ? gens.filter(g => genCalls(g, m, A.data.poll, gmap)) : gens;
-    return Object.assign({}, r, { availAll: all, avail: withoutGenerals(withoutAway(all, awayOf(r.memberId)), mine, A.data.poll) });
+    const busy = acan('busy') && m ? busyNow(m) : [];
+    return Object.assign({}, r, { availAll: all, avail: withoutGenerals(withoutBusy(withoutAway(all, awayOf(r.memberId)), busy, A.data.poll), mine, A.data.poll) });
   });
 }
 // An answer without the slots of general rehearsals (as Code.gs's withoutGenerals_).
@@ -6263,14 +6437,18 @@ function deadlineNote(p) {
   return ' · ' + (n < 0 ? t('leftPast') : leftText(n) + (p.autoClose && acan('deadline') ? ', ' + t('dueThenClose') : ''));
 }
 async function toggleOpen() {
-  const p = Object.assign(clone(A.data.poll), { open: !A.data.poll.open });
+  const p = Object.assign(clone(A.data.poll), { open: !A.data.poll.open, since: A.data.poll.updated || '', tok: PAGE_TOK });
   try {
     const r = await api.admin(A.key, 'savePoll', { poll: p });
     A.data.poll = r.poll;
     const listed = A.polls.find(x => x.id === r.poll.id);
     if (listed) Object.assign(listed, r.poll);
     S.loaded = false;
-  } catch (e) { toast(errText(e), { error: true }); }
+  } catch (e) {
+    // (Changed elsewhere meanwhile: the poll as it is now, then the planner decides again.)
+    if (e.code === 'stale') { toast(t('pollStale'), { error: true }); try { await loadAdminPoll(A.pollId); } catch (x) { /* as it was */ } }
+    else toast(errText(e), { error: true });
+  }
   render();
 }
 
@@ -6284,10 +6462,24 @@ function buildAdminTabs() {
   if (acan('places')) tabs.push(['venues', t('tabVenues')]);
   if (acan('messages') && !A.leadMode) tabs.push(['messages', t('tabMessages')]);
   const dot = k => (k === 'schedule' && scheduleChanged()) || (k === 'attend' && repliesSince() > 0);
-  return h('div', { class: 'atabs', role: 'tablist' }, tabs.map(x => h('button', {
-    type: 'button', role: 'tab', class: 'atab', id: 'tab-' + x[0], 'aria-selected': String(A.tab === x[0]), 'aria-controls': 'atab-panel',
+  // (From version 2026-10-r5.3, as tabs go: one stop for the keyboard, the arrow keys, Home and End to move along
+  // them, and the focus stays on the tab picked.)
+  const keys = tabs.map(x => x[0]), cur = keys.indexOf(A.tab) === -1 ? 0 : keys.indexOf(A.tab);
+  const onkeydown = e => {
+    const i = keys.indexOf((e.target.id || '').slice(4));
+    if (i === -1) return;
+    const j = e.key === 'ArrowRight' ? (i + 1) % keys.length : e.key === 'ArrowLeft' ? (i - 1 + keys.length) % keys.length : e.key === 'Home' ? 0 : e.key === 'End' ? keys.length - 1 : -1;
+    if (j === -1) return;
+    e.preventDefault();
+    const b = document.getElementById('tab-' + keys[j]);
+    if (b) b.click();
+  };
+  return h('div', { class: 'atabs', role: 'tablist', onkeydown }, tabs.map((x, i) => h('button', {
+    type: 'button', role: 'tab', class: 'atab', id: 'tab-' + x[0], 'aria-selected': String(A.tab === x[0]), 'aria-controls': 'atab-panel', tabindex: i === cur ? '0' : '-1',
     onclick: () => {
+      const had = document.activeElement && document.activeElement.id === 'tab-' + x[0];
       A.tab = x[0]; refreshTabs(); renderTab();
+      if (had || (document.activeElement === document.body)) focusId('tab-' + x[0]);
       if (x[0] === 'attend') refreshAttend().then(ok => { if (ok && A.tab === 'attend' && !document.querySelector('.backdrop')) redrawKeepingFocus(() => { refreshTabs(); renderTab(); }); });
     }
   }, x[1], dot(x[0]) ? h('span', { class: 'dot', 'aria-hidden': 'true' }) : null)));
@@ -6335,14 +6527,18 @@ function buildPlan() {
   R.boardBar = h('div', { class: 'board' });
   R.score = h('div', { class: 'score-block' });
   R.cell = h('div');
-  R.best = h('div', { class: 'best' });
+  R.best = h('div', { class: 'best', id: 'best', tabindex: '-1' });
   dropZone(R.tray, moveOff);
   dropZone(R.boardBar, moveOn);
   dropZone(R.score, moveOn);
-  const wrap = h('div', { class: 'planner' }, R.tray, h('div', { class: 'plan-main' }, R.boardBar, R.score, R.cell, R.best));
+  // (On a phone the best times are a few screens down: a way straight there, from version 2026-10-r5.3. Not an
+  // address: the address picks the page here.)
+  const jump = h('a', { class: 'jump-best', href: '#best', onclick: e => { e.preventDefault(); R.best.scrollIntoView({ behavior: smooth(), block: 'start' }); R.best.focus({ preventScroll: true }); } }, t('jumpBest'));
+  const wrap = h('div', { class: 'planner' }, jump, R.tray, h('div', { class: 'plan-main' }, R.boardBar, R.score, R.cell, R.best));
   refreshPlan();
   return wrap;
 }
+let bestStamp = 0, lastBest = null;   // (renderScore's turn, and the best times renderBest found in it)
 function refreshPlan() { renderTray(); renderBoardBar(); renderScore(); renderCell(); renderBest(); }
 
 function dropZone(el, onDrop) {
@@ -6527,12 +6723,14 @@ function renderScore() {
   markScore();
   // After layout: shorten hour labels if columns are narrow, and on small screens
   // scroll the timetable to the best time instead of the start of the day.
+  const stamp = ++bestStamp;
   requestAnimationFrame(() => {
     if (!wrap.isConnected) return;
     fitHours();
     if (A.scrollX !== null) { wrap.scrollLeft = A.scrollX; return; }
     if (!N || wrap.scrollWidth <= wrap.clientWidth + 4) return;
-    const w = bestWindows(openDates(p), planCtx(), p, A.duration)[0];
+    // (The best times worked out for the list just now, if they were: from version 2026-10-r5.3 not twice.)
+    const w = (lastBest && lastBest.at === stamp ? lastBest.wins : bestWindows(openDates(p), planCtx(), p, A.duration))[0];
     const c = w && grid.querySelector('.c[data-d="' + w.d + '"][data-i="' + w.s + '"]');
     if (c) wrap.scrollLeft = Math.max(0, c.getBoundingClientRect().left - wrap.getBoundingClientRect().left + wrap.scrollLeft - 124 - 30);
   });
@@ -6610,10 +6808,11 @@ function renderBest() {
     h('label', { class: 'inline-field', for: 'a-dur' }, t('length'),
       selectEl('a-dur', durs.map(v => [v, durText(v)]), A.duration, v => { A.duration = +v; A.hl = null; markScore(); renderBest(); })),
     ctx.secKeys.length > 1 ? h('label', { class: 'inline-field', for: 'a-rank' }, t('rankLabel'),
-      selectEl('a-rank', RANKS.map(x => [x[0], t(x[1])]), A.rank, v => { A.rank = v === 'count' ? 'count' : 'balance'; store.set('tutti-org-rank', A.rank); A.hl = null; markScore(); renderBest(); })) : null));
+      selectEl('a-rank', RANKS.map(x => [x[0], t(x[1])]), A.rank, v => { A.rank = v === 'count' ? 'count' : 'balance'; store.set('provala-org-rank', A.rank); A.hl = null; markScore(); renderBest(); })) : null));
   if (acan('required')) el.append(buildRequired());
   if (!N) { el.append(h('p', { class: 'muted' }, t('boardEmpty'))); return; }
   const wins = bestWindows(openDates(p), ctx, p, A.duration);
+  lastBest = { at: bestStamp, wins };
   if (!wins.length) { el.append(h('p', { class: 'muted' }, t('noWindows'))); return; }
   if (ctx.bal) el.append(h('p', { class: 'hint' }, t('rankBalanceHint')));
   el.append(h('ol', { class: 'wins' }, wins.slice(0, 8).map(w => winItem(w, N, ctx))));
@@ -6630,7 +6829,7 @@ function setSets(n, gap) {
   // More meetings than fit in a month with this gap: a shorter gap, so there's still something to show.
   if (n) { A.sets.n = n; if ((n - 1) * A.sets.gap > 28) A.sets.gap = SET_GAPS.filter(g => (n - 1) * g <= 28).pop() || 1; }
   if (gap) A.sets.gap = gap;
-  store.set('tutti-org-sets', JSON.stringify(A.sets));
+  store.set('provala-org-sets', JSON.stringify(A.sets));
   renderBest();
 }
 
@@ -6664,11 +6863,28 @@ async function saveRequired(list, removed) {
   // Focus stays in the list: on the picker, or on the ✕ of the person just added once nobody is left to pick.
   if (removed || !document.getElementById('a-req')) focusReq(removed ? '' : list[list.length - 1]);
   try {
-    const r = await api.admin(A.key, 'setRequired', { pollId: id, required: list });
+    const had = A.data.poll.updated || '';
+    const r = await api.admin(A.key, 'setRequired', { pollId: id, required: list, since: had, tok: PAGE_TOK });
     if (!A.data || A.pollId !== id) return;
     A.data.poll.required = r.poll.required || [];
     const listed = A.polls.find(x => x.id === id);
     if (listed) listed.required = r.poll.required || [];
+    // (From version 2026-10-r5.3: the new version only if this page had the poll as it was; changed on another device
+    // meanwhile, the poll is fetched again, so a later save here starts from that and the buttons say what it is now.)
+    if (typeof r.was !== 'string' || r.was === had) {
+      A.data.poll.updated = r.poll.updated;
+      if (listed) listed.updated = r.poll.updated;
+    } else {
+      // (Only the poll itself: what's being edited here, a schedule draft say, stays as it is.)
+      const g = adminGen;
+      api.admin(A.key, 'poll', { pollId: id }).then(f => {
+        if (g !== adminGen || !A.data || A.pollId !== id || !f.poll || f.poll.id !== id) return;
+        A.data.poll = f.poll;
+        const l = A.polls.find(x => x.id === id);
+        if (l) Object.assign(l, f.poll);
+        redrawKeepingFocus(render);
+      }, () => null);
+    }
   } catch (e) {
     if (A.data && A.pollId === id) {
       A.data.poll.required = before;
@@ -6706,7 +6922,9 @@ function winItem(w, N, ctx) {
       w.maybe.length ? h('p', { class: 'win-who' }, h('span', { class: 'lbl' }, t('ifNeeded') + ': '), whoList(w.maybe, w.d)) : null,
       w.miss.length ? h('p', { class: 'win-who' }, h('span', { class: 'lbl' }, t('missing') + ': '), whoList(w.miss, w.d)) : null),
     h('div', { class: 'win-acts' },
-      done ? h('span', { class: 'chip-s ok' }, t('pubNowAlready')) : [
+      done ? [h('span', { class: 'chip-s ok' }, t('pubNowAlready')),
+        // (Published from here: its message stays to copy on the row, from version 2026-10-r5.3; before, only in the toast.)
+        pubMsgs.has(p.id + '|' + k) ? h('button', { type: 'button', class: 'btn small', dataset: { k: 'msg-' + k }, onclick: () => copyText(pubMsgs.get(p.id + '|' + k)(S.lang), t('copied')) }, t('copyChange')) : null] : [
         drafted ? h('span', { class: 'chip-s', dataset: { k: 'add-' + k } }, t('onDraft'))
           : h('button', { type: 'button', class: 'btn small', dataset: { k: 'add-' + k }, onclick: () => { addEvent(w.d, start, end); renderTab(); focusK('pub-' + k); } }, t('add')),
         acan('changes') ? h('button', { type: 'button', class: 'btn small primary', dataset: { k: 'pub-' + k }, 'aria-label': t('pubNowFor', { when: dLong(w.d) + ', ' + hm(start) }),
@@ -6745,7 +6963,14 @@ function askPublish(li, d, start, end) {
   // and the place of the nearest meeting for them (or of the last one).
   const near = nearMeeting(d, start, call), last = A.draft.events[A.draft.events.length - 1];
   const title = h('input', { id: 'pn-title-' + k, class: 'input', type: 'text', maxlength: '120', value: same ? same.title || '' : call && near ? near.title || '' : t('defaultEventTitle') });
-  const place = h('input', { id: 'pn-place-' + k, class: 'input', type: 'text', maxlength: '160', value: same ? same.place || '' : (near || last || {}).place || '' });
+  const place = h('input', { id: 'pn-place-' + k, class: 'input', type: 'text', maxlength: '160', value: same ? same.place || '' : (near || last || {}).place || '',
+    oninput: () => { const v = venueSel && A.venues.find(x => x.id === venueSel.value); if (v && place.value.trim() !== v.name) venueSel.value = ''; } });
+  // The venue too, when there are venues (from version 2026-10-r5.3): rehearsal venues first; the one of the meeting
+  // the place came from.
+  const vlist = acan('places') && !isScoped(p) ? (A.venues || []).slice().sort((a, b) => (a.use === 'concert') - (b.use === 'concert') || a.name.localeCompare(b.name, 'tr')) : [];
+  const from = same || near || last || {}, vNow = from.venue && vlist.some(v => v.id === from.venue) && (from.place || '') === place.value ? from.venue : '';
+  const venueSel = vlist.length ? h('select', { id: 'pn-venue-' + k, class: 'select', onchange: () => { const v = vlist.find(x => x.id === venueSel.value); if (v) place.value = v.name; } },
+    [h('option', { value: '', selected: !vNow }, t('vnPick'))].concat(vlist.map(v => h('option', { value: v.id, selected: v.id === vNow }, v.name)))) : null;
   const yes = h('button', { type: 'button', class: 'btn small primary', onclick: go }, t('pubNowYes'));
   const cancel = () => { box.remove(); if (back) back.focus(); };
   // Enter in a field publishes; Escape is No.
@@ -6759,29 +6984,40 @@ function askPublish(li, d, start, end) {
     clash ? h('p', { class: 'hint warn' }, t('pubNowClash', { what: ((clash.title || '').trim() || t('defaultEventTitle')) + (clashCall ? ' (' + t('msgOnly', { who: callText(clashCall, p, gmap) }) + ')' : '') })) : null,
     h('div', { class: 'win-fields' },
       h('div', { class: 'field' }, h('label', { class: 'label', for: 'pn-title-' + k }, t('fTitle')), title),
-      h('div', { class: 'field' }, h('label', { class: 'label', for: 'pn-place-' + k }, t('fPlace')), place)),
+      h('div', { class: 'field' }, h('label', { class: 'label', for: 'pn-place-' + k }, t('fPlace')), place),
+      venueSel ? h('div', { class: 'field' }, h('label', { class: 'label', for: 'pn-venue-' + k }, t('fVenue')), venueSel) : null),
     h('div', { class: 'actions' }, yes, h('button', { type: 'button', class: 'btn small', onclick: cancel }, t('cancel'))));
   li.append(box);
   yes.focus();
   async function go() {
     if (A.busy || !box.isConnected) return;
-    for (const b of box.querySelectorAll('button, input')) b.disabled = true;
-    const t1 = title.value.trim() || t('defaultEventTitle'), pl = place.value.trim();
+    for (const b of box.querySelectorAll('button, input, select')) b.disabled = true;
+    const t1 = title.value.trim() || t('defaultEventTitle'), pl = place.value.trim(), vid = venueSel && venueSel.value || '';
     // On the draft already (added meanwhile, or by a try whose answer didn't come back): that one, not a second.
     const on = sameMeeting(A.draft.events, d, start, end);
     if (on) {
-      if ((on.title || '') !== t1 || (on.place || '') !== pl) { on.title = t1; on.place = pl; A.draftDirty = true; }
-    } else addEvent(d, start, end, true, false, { title: t1, place: pl });
+      if ((on.title || '') !== t1 || (on.place || '') !== pl || (on.venue || '') !== vid) {
+        on.title = t1; on.place = pl;
+        if (vid) on.venue = vid; else delete on.venue;
+        A.draftDirty = true;
+      }
+    } else {
+      const ev = addEvent(d, start, end, true, false, { title: t1, place: pl });
+      if (ev) { if (vid) ev.venue = vid; else delete ev.venue; }
+    }
     // (If it fails, the meeting stays on the draft as typed, not saved yet: trying again publishes that one.)
     const ok = await saveSched(true, false, { quiet: true, failNote: t('pubNowKept') });
+    const msg = ok ? (ok.changes.length ? lang => changeMessage(lang, ok.poll, ok.changes) : lang => scheduleMessage(lang, ok.poll, ok.published)) : null;
+    if (ok) pubMsgs.set(p.id + '|' + k, msg);
     renderTab();
     if (!ok) { focusK('pub-' + k); return; }   // (said already)
-    focusK('win-' + k);
+    if (document.querySelector('[data-k="msg-' + k + '"]')) focusK('msg-' + k); else focusK('win-' + k);
     // (Said once: the message is a status.)
-    const when = dLong(d) + ', ' + hm(start), msg = ok.changes.length ? lang => changeMessage(lang, ok.poll, ok.changes) : lang => scheduleMessage(lang, ok.poll, ok.published);
+    const when = dLong(d) + ', ' + hm(start);
     toast(t('pubNowDone', { when }), { action: { label: t('copyChange'), fn: () => copyText(msg(S.lang), t('copied')) } });
   }
 }
+const pubMsgs = new Map();   // best time → its message, once published from the Plan tab (this page load only)
 const focusK = k => { const el = document.querySelector('[data-k="' + k + '"]'); if (el) el.focus({ preventScroll: true }); };
 // "Soprano 4/5 · Alto 2/4 (+1) · Tenor 1/3": how much of each section can come; the weakest is marked.
 function secLine(w) {
@@ -7075,14 +7311,29 @@ function fillAddInto() {
   const pickedId = was ? was.value : A.memberGroup && A.memberGroup !== '-' ? A.memberGroup : MAIN;
   clear(R.addInto);
   R.addInto.hidden = !manyAdminGroups();
-  if (R.addInto.hidden) return;
+  if (R.addInto.hidden) { fillAddSec(); return; }
   R.addInto.append(h('label', { class: 'label', for: 'mm-group' }, t('addInto')),
-    selectEl('mm-group', A.groups.map(g => [g.id, groupName(g)]), A.groups.some(g => g.id === pickedId) ? pickedId : MAIN, () => {}, { class: 'select' }));
+    selectEl('mm-group', A.groups.map(g => [g.id, groupName(g)]), A.groups.some(g => g.id === pickedId) ? pickedId : MAIN, () => fillAddSec(), { class: 'select' }));
+  fillAddSec();
+}
+// Their section too, for all of them at once (from version 2026-10-r5.3): paste the sopranos, pick Soprano.
+function fillAddSec() {
+  if (!R.addSec) return;
+  const into = !R.addInto.hidden && document.getElementById('mm-group');
+  const g = A.groups.find(x => x.id === (into ? into.value : MAIN)) || A.groups.find(x => x.id === MAIN);
+  const was = document.getElementById('mm-sec'), keep = was ? was.value : '';
+  clear(R.addSec);
+  R.addSec.hidden = !g || !g.sections.length;
+  if (R.addSec.hidden) return;
+  R.addSec.append(h('label', { class: 'label', for: 'mm-sec' }, t('addSec')),
+    selectEl('mm-sec', [['', t('addSecNone')]].concat(g.sections.map(x => [x.id, secName(x)])), g.sections.some(x => x.id === keep) ? keep : '', () => {}, { class: 'select' }));
 }
 function buildAddMembers() {
   const ta = h('textarea', { id: 'mm-names', class: 'input', rows: '4', placeholder: t('addMembersPh'), 'aria-describedby': 'mm-hint' });
   R.addInto = h('div', { class: 'field add-into' });
+  R.addSec = h('div', { class: 'field add-into add-sec' });
   fillAddInto();
+  fillAddSec();
   const btn = h('button', {
     type: 'button', class: 'btn primary',
     onclick: async () => {
@@ -7090,8 +7341,19 @@ function buildAddMembers() {
       if (!names.length) { ta.focus(); return; }
       btn.disabled = true;
       const into = !R.addInto.hidden && document.getElementById('mm-group');
+      const secEl = !R.addSec.hidden && document.getElementById('mm-sec'), sec = secEl ? secEl.value : '';
+      const gid = into ? into.value : MAIN;
       try {
-        const r = await api.admin(A.key, 'addMembers', into ? { names, group: into.value } : { names });
+        const r = await api.admin(A.key, 'addMembers', Object.assign(into ? { names, group: into.value } : { names }, sec ? { section: sec } : {}));
+        // (An earlier Code.gs adds them without it: then one by one, as the pickers in the list do.)
+        let members = r.members;
+        const missed = sec ? r.created.filter(c => { const m = (members || []).find(x => x.id === c.id); return m && (groupsOf(m)[gid] || '') !== sec; }) : [];
+        for (const c of missed) {
+          const m = members.find(x => x.id === c.id), gs = Object.assign({}, groupsOf(m), { [gid]: sec });
+          try { members = (acan('groups') ? await api.admin(A.key, 'setGroups', { id: c.id, groups: gs }) : await api.admin(A.key, 'setPart', { id: c.id, part: sec })).members || members; }
+          catch (x) { break; }
+        }
+        r.members = members;
         takeMembers(r.members);
         A.creds = r.created.concat(A.creds);
         ta.value = '';
@@ -7104,7 +7366,7 @@ function buildAddMembers() {
   return h('section', { class: 'sheet add-members' },
     h('h3', null, h('label', { for: 'mm-names' }, t('addMembersTitle'))),
     h('p', { class: 'hint', id: 'mm-hint' }, t('addMembersHint')),
-    ta, R.addInto,
+    ta, R.addInto, R.addSec,
     h('div', { class: 'actions' }, btn));
 }
 
@@ -7361,10 +7623,23 @@ function renderMemberList() {
     selectEl('mm-show', [['', t('allMembers', { n: all.length })]].concat(many ? A.groups.map(g => [g.id, groupName(g) + ' (' + countIn(g.id) + ')']) : [],
       nowhere.length ? [['-', t('noGroupMembers', { n: nowhere.length })]] : []), gid,
     v => { A.memberGroup = v; redrawKeepingFocus(renderMemberList); }, { class: 'select' })) : null;
-  el.append(h('div', { class: 'members-head' }, h('h3', { class: 'sub members-count' }, t('membersN', { n: ms.length })), filter),
+  // (From version 2026-10-r5.3, with more than a few: a name to look for. The rows not matching are only hidden.)
+  const find = ms.length > 8 ? h('div', { class: 'field members-find' }, h('label', { class: 'label', for: 'mm-find' }, t('membersFind')),
+    h('input', { id: 'mm-find', class: 'input', type: 'search', autocomplete: 'off', value: A.memberFind || '', oninput: e => { A.memberFind = e.target.value; findMembers(); } })) : null;
+  const none = h('p', { class: 'muted members-none', hidden: true }, t('membersNoMatch'));
+  el.append(h('div', { class: 'members-head' }, h('h3', { class: 'sub members-count' }, t('membersN', { n: ms.length })), filter, find),
     h('p', { class: 'hint' }, many ? t('partsHintGroups') : t('partsHint')), acan('lead') ? leadField() : null, R.partsSum,
-    h('ul', { class: 'member-list' }, ms.map(m => memberRow(m, did.has(m.id)))));
+    h('ul', { class: 'member-list' }, ms.map(m => memberRow(m, did.has(m.id)))), none);
   fillPartsSum();
+  findMembers();
+}
+function findMembers() {
+  if (!R.memberList) return;
+  const q = (document.getElementById('mm-find') ? A.memberFind || '' : '').trim().toLocaleLowerCase('tr');
+  let shown = 0;
+  for (const li of R.memberList.querySelectorAll('.member-list > li.member')) { const ok = !q || (li.dataset.q || '').indexOf(q) !== -1; li.hidden = !ok; if (ok) shown++; }
+  const none = R.memberList.querySelector('.members-none');
+  if (none) none.hidden = !(q && !shown);
 }
 // "Soprano 5 · Alto 4 · Tenor 3 · Bas 4", plus how many have no section yet; for each group shown.
 function fillPartsSum() {
@@ -7440,12 +7715,22 @@ function memberRow(m, did) {
       () => linkMessage(m, S.lang), linkCopied) : null,
     acan('away') ? h('button', { type: 'button', class: 'btn small', id: 'mm-away-' + m.id, 'aria-label': t('awayOrgBtnFor', { name: m.name }), onclick: () => openAway(m) }, t('awayOrgBtn')) : null,
     acan('busy') ? h('button', { type: 'button', class: 'btn small', id: 'mm-busy-' + m.id, 'aria-label': t('busyOrgTitle', { name: m.name }), onclick: () => openBusy(m) }, t('busyOrgBtn')) : null,
-    h('button', { type: 'button', class: 'btn small', onclick: () => resetMemberPw(m) }, t('newPassword')),
-    h('button', { type: 'button', class: 'btn small danger', onclick: ask }, t('removeMember')));
+    h('button', { type: 'button', class: 'btn small', id: 'mm-pw-' + m.id, onclick: askPw }, t('newPassword')),
+    h('button', { type: 'button', class: 'btn small danger', id: 'mm-rm-' + m.id, onclick: ask }, t('removeMember')));
+  // (Both ask first, in place; from version 2026-10-r5.3 a new password too: it signs the member out everywhere.
+  // The question takes the focus, and "Vazgeç" gives it back to the button.)
+  const back = id => () => { idle(); focusId(id); };
   function ask() {
     clear(actions).append(h('div', { class: 'confirm' }, h('span', null, t('confirmRemoveMember', { name: m.name })),
       h('button', { type: 'button', class: 'btn small danger solid', onclick: remove }, t('removeMember')),
-      h('button', { type: 'button', class: 'btn small', onclick: idle }, t('keep'))));
+      h('button', { type: 'button', class: 'btn small', id: 'mm-keep-' + m.id, onclick: back('mm-rm-' + m.id) }, t('keep'))));
+    focusId('mm-keep-' + m.id);
+  }
+  function askPw() {
+    clear(actions).append(h('div', { class: 'confirm' }, h('span', null, t('confirmNewPw', { name: m.name })),
+      h('button', { type: 'button', class: 'btn small danger solid', id: 'mm-pw-yes-' + m.id, onclick: () => resetMemberPw(m) }, t('yesNewPw')),
+      h('button', { type: 'button', class: 'btn small', id: 'mm-keep-' + m.id, onclick: back('mm-pw-' + m.id) }, t('keep'))));
+    focusId('mm-keep-' + m.id);
   }
   async function remove() {
     try {
@@ -7458,7 +7743,7 @@ function memberRow(m, did) {
   }
   idle();
   const shown = A.memberGroup && A.memberGroup !== '-' ? A.groups.filter(g => g.id === A.memberGroup) : A.groups;
-  return h('li', { class: 'member' },
+  return h('li', { class: 'member', dataset: { q: (m.name + ' ' + (m.username || '')).toLocaleLowerCase('tr') } },
     h('div', { class: 'member-who' }, h('strong', null, m.name), h('span', { class: 'mono muted' }, m.username),
       isLead(m) ? h('span', { class: 'chip-s lead' }, t('leadLabel')) : null,
       m.leads && Object.keys(m.leads).length ? h('span', { class: 'chip-s lead leads-chip' }, t('leadsChip', { secs: leadsText(m.leads, adminGmap()) })) : null),
@@ -7480,6 +7765,8 @@ function leadsFold(m) {
   const gmap = adminGmap(), gids = Object.keys(groupsOf(m)).filter(gid => own(gmap, gid) && gmap[gid].sections.length);
   if (!gids.length) return null;
   const id = 'lf-' + m.id, had = m.leads || {}, boxes = [];
+  // (Its contents made the first time it's opened: from version 2026-10-r5.3. See lazyFold.)
+  const body = () => {
   const save = h('button', { type: 'button', class: 'btn small primary', id: id + '-save', onclick: async () => {
     const leads = {};
     for (const b of boxes) if (b.checked) { const [gid, sid] = b.value.split('|'); (leads[gid] = leads[gid] || []).push(sid); }
@@ -7492,9 +7779,7 @@ function leadsFold(m) {
       focusId(id + '-save');
     } catch (e) { toast(errText(e), { error: true }); save.disabled = false; }
   } }, t('leadsSave'));
-  return h('details', { class: 'leads-fold', id, open: leadsOpen.has(m.id) || null, ontoggle: e => { if (e.target.open) leadsOpen.add(m.id); else leadsOpen.delete(m.id); } },
-    h('summary', null, h('span', null, t('leadsAdmin')), Object.keys(had).length ? h('span', { class: 'muted prof-sum' }, leadsText(had, gmap)) : null),
-    h('div', { class: 'stack-s prof-body' },
+  return h('div', { class: 'stack-s prof-body' },
       h('p', { class: 'hint' }, t('leadsAdminHint')),
       h('fieldset', { class: 'leads-pick' }, h('legend', { class: 'visually-hidden' }, t('leadsAdmin') + ': ' + m.name),
         h('div', { class: 'daypick grouppick' }, gids.map(gid => gmap[gid].sections.map(x => {
@@ -7502,7 +7787,20 @@ function leadsFold(m) {
           boxes.push(b);
           return h('label', null, b, (gids.length > 1 ? groupName(gmap[gid]) + ' · ' : '') + secName(x));
         })))),
-      h('div', { class: 'actions' }, save)));
+      h('div', { class: 'actions' }, save));
+  };
+  return lazyFold({ class: 'leads-fold', id, open: leadsOpen.has(m.id) || null, ontoggle: e => { if (e.target.open) leadsOpen.add(m.id); else leadsOpen.delete(m.id); } },
+    [h('span', null, t('leadsAdmin')), Object.keys(had).length ? h('span', { class: 'muted prof-sum' }, leadsText(had, gmap)) : null], body);
+}
+// A fold whose contents are made only when it's first opened (from version 2026-10-r5.3): a long list of members, each
+// with folds, then costs only their summaries. Made on the click itself, so they're there as it opens.
+function lazyFold(props, summaryKids, build) {
+  let made = false;
+  const fill = () => { if (!made) { made = true; add(el, [build()]); } };
+  const el = h('details', Object.assign({}, props, { ontoggle: e => { if (el.open) fill(); if (props.ontoggle) props.ontoggle(e); } }),
+    h('summary', { onclick: fill }, summaryKids));
+  if (props.open) fill();
+  return el;
 }
 // A section leader's page opens with who they are and what they lead.
 function buildLeadBand() {
@@ -7519,6 +7817,9 @@ const profOpen = new Set();
 function profileFold(m) {
   const pr = m.profile || {}, d = { phone: pr.phone || '', addr: pr.addr || '', bday: pr.bday || '', about: pr.about || '' };
   const id = 'mp-' + m.id, bd = d.bday ? d.bday.split('-') : ['', ''];
+  const summary = [d.phone, d.addr, d.bday ? '🎂 ' + bdayText(d.bday) : '', d.about].filter(Boolean).join(' · ');
+  // (Its contents made the first time it's opened: from version 2026-10-r5.3. See lazyFold.)
+  const body = () => {
   const months = Array.from({ length: 12 }, (_, i) => [String(i + 1).padStart(2, '0'), fmt('2024-' + String(i + 1).padStart(2, '0') + '-01', { month: 'long' })]);
   const daySel = h('select', { id: id + '-day', class: 'select', 'aria-label': t('profBday') + ' · ' + t('profDay') },
     [h('option', { value: '', selected: !bd[1] }, t('profNoDay'))].concat(Array.from({ length: 31 }, (_, i) => h('option', { value: String(i + 1).padStart(2, '0'), selected: bd[1] === String(i + 1).padStart(2, '0') }, String(i + 1)))));
@@ -7538,10 +7839,7 @@ function profileFold(m) {
     } catch (e) { toast(errText(e), { error: true }); }
     save.disabled = false;
   } }, t('profSave'));
-  const summary = [d.phone, d.addr, d.bday ? '🎂 ' + bdayText(d.bday) : '', d.about].filter(Boolean).join(' · ');
-  return h('details', { class: 'prof-fold', id: id, open: profOpen.has(m.id) || null, ontoggle: e => { if (e.target.open) profOpen.add(m.id); else profOpen.delete(m.id); } },
-    h('summary', null, h('span', null, t('profAdmin')), summary ? h('span', { class: 'muted prof-sum' }, summary) : null),
-    h('div', { class: 'stack-s prof-body' },
+  return h('div', { class: 'stack-s prof-body' },
       h('p', { class: 'hint' }, t('profAdminHint')),
       h('p', { class: 'muted' }, h('span', { class: 'chip-s' + (pr.consent ? ' ok' : '') }, pr.consent ? t('profShared') : t('profNotShared')), ' ',
         h('span', null, m.notice ? t('noticeReadAt', { ago: ago(m.notice) }) : t('noticeNotRead'))),
@@ -7550,7 +7848,10 @@ function profileFold(m) {
         h('div', { class: 'field' }, h('label', { class: 'label', for: id + '-addr' }, t('profAddr')), inp('addr', 'text', 160)),
         h('div', { class: 'field' }, h('span', { class: 'label', id: id + '-bday-l' }, t('profBday')), h('div', { class: 'pf-bday', role: 'group', 'aria-labelledby': id + '-bday-l' }, daySel, monSel)),
         h('div', { class: 'field' }, h('label', { class: 'label', for: id + '-about' }, t('profAbout')), inp('about', 'text', 200))),
-      h('div', { class: 'actions' }, save)));
+      h('div', { class: 'actions' }, save));
+  };
+  return lazyFold({ class: 'prof-fold', id: id, open: profOpen.has(m.id) || null, ontoggle: e => { if (e.target.open) profOpen.add(m.id); else profOpen.delete(m.id); } },
+    [h('span', null, t('profAdmin')), summary ? h('span', { class: 'muted prof-sum' }, summary) : null], body);
 }
 // The planner sets someone's standing commitments (from version 2026-10-r4.9): the same list and form as on the
 // member's page.
@@ -7671,8 +7972,8 @@ function histFold(r, p) {
   if (!acan('busy') || !Array.isArray(r.hist)) return null;
   const steps = r.hist.slice().reverse();
   const times = s => { const free = rangesText(s, '2', p), maybe = rangesText(s, '1', p); return [free.join(', '), maybe.length ? t('ifNeededShort') + ' ' + maybe.join(', ') : ''].filter(Boolean).join(' · ') || t('histWasNone'); };
-  return h('details', { class: 'hist-fold', open: histFolds.has(r.id) || null, ontoggle: e => { if (e.target.open) histFolds.add(r.id); else histFolds.delete(r.id); } },
-    h('summary', null, t('histChanges') + ' (' + steps.length + ')'),
+  return lazyFold({ class: 'hist-fold', open: histFolds.has(r.id) || null, ontoggle: e => { if (e.target.open) histFolds.add(r.id); else histFolds.delete(r.id); } },
+    t('histChanges') + ' (' + steps.length + ')', () =>
     steps.length ? h('ul', { class: 'hist-steps' }, steps.map(x => h('li', null,
       h('div', { class: 'hist-step-head' }, h('strong', null, dShort(dayInTz(x.at)) + ' ' + hm(new Date(x.at).getHours() * 60 + new Date(x.at).getMinutes())), ' · ',
         x.first ? t('histFirst') : [x.n ? t('histDaysN', { n: x.n }) : '', x.comment ? t('histComment') : ''].filter(Boolean).join(' · '), x.by === 'p' ? h('span', { class: 'chip-s' }, t('histByOrg')) : null),
@@ -7735,7 +8036,7 @@ function renderSched() {
   R.pubBtn = h('button', { type: 'button', class: 'btn primary', disabled: A.busy || (!scheduleChanged() && !!pub), onclick: () => saveSched(true) }, A.busy ? h('span', { class: 'spin', 'aria-hidden': 'true' }) : null, t('publish'));
   R.draftBtn = h('button', { type: 'button', class: 'btn', disabled: A.busy || !A.draftDirty, onclick: () => saveSched(false) }, t('saveDraft'));
   const hasEvents = A.draft.events.length > 0;
-  el.append(R.schedStatus, buildBumpedNote() || '', buildChangeNote() || '', buildClashNote() || '', buildGeneralsNote() || '', list, planOrphans() || '',
+  el.append(R.schedStatus, buildSchedStale() || '', buildBumpedNote() || '', buildChangeNote() || '', buildClashNote() || '', buildGeneralsNote() || '', list, planOrphans() || '',
     h('div', { class: 'actions' }, h('button', { type: 'button', class: 'btn', id: 'sc-add', onclick: () => { const d = openDates(p)[0] || pollDates(p)[0] || p.start; addEvent(d, Math.max(p.dayStart, Math.min(1140, p.dayEnd - 60)), 0, true, true); renderSched(); } }, t('addMeeting'))),
     h('div', { class: 'field' },
       h('label', { class: 'label', for: 's-note' }, t('generalNote')),
@@ -7746,6 +8047,21 @@ function renderSched() {
       h('button', { type: 'button', class: 'btn small', disabled: !hasEvents, onclick: () => copyText(scheduleMessage('en'), t('copied')) }, t('copyMsgEn')),
       framed ? null : h('button', { type: 'button', class: 'btn small', disabled: !hasEvents, onclick: () => download('provala-' + p.id + '.ics', icsText(A.draft.events, p), 'text/calendar') }, t('downloadIcs')),
       editMsgBtn('schedMsg')));
+}
+// The schedule saved elsewhere since this page had it (from version 2026-10-r5.3): see that one, or save this over it.
+function buildSchedStale() {
+  const st = A.schedStale;
+  if (!st || !A.data) return null;
+  return h('div', { class: 'notice warn sched-stale', role: 'alert' }, h('p', null, h('strong', null, t('schedStaleTitle'))),
+    h('p', { class: 'hint' }, t('schedStaleHint')),
+    h('div', { class: 'actions' },
+      h('button', { type: 'button', class: 'btn small', id: 'sc-stale-load', disabled: A.busy, onclick: async () => {
+        A.schedStale = null;
+        try { await loadAdminPoll(A.pollId); } catch (e) { toast(errText(e), { error: true }); }
+        render(); focusId('sc-add');
+      } }, t('schedStaleLoad')),
+      h('button', { type: 'button', class: 'btn small', id: 'sc-stale-mine', disabled: A.busy, onclick: () => saveSched(st.publish, st.unpublish, { force: true }).then(() => focusId('sc-add')) },
+        st.publish ? t('schedStalePublish') : st.unpublish ? t('schedStaleUnpublish') : t('schedStaleSave'))));
 }
 function fillSchedStatus() {
   const pub = A.data.schedule && A.data.schedule.published, p = A.data.poll;
@@ -7831,7 +8147,7 @@ function eventRow(ev) {
       draftChanged();
     } })),
     acan('places') && (A.venues || []).length && !isScoped(p) ? venueField(ev, id) : null,
-    h('button', { type: 'button', class: 'btn small quiet f-del', 'aria-label': t('remove') + ': ' + dShort(ev.date), onclick: () => { A.draft.events = A.draft.events.filter(x => x !== ev); draftChanged(); renderSched(); } }, t('remove')),
+    h('button', { type: 'button', class: 'btn small quiet f-del', 'aria-label': t('evRemove') + ': ' + dShort(ev.date), onclick: () => { A.draft.events = A.draft.events.filter(x => x !== ev); draftChanged(); renderSched(); } }, t('evRemove')),
     f('f-note', id + '-note', t('fNote'), h('input', { id: id + '-note', class: 'input', type: 'text', maxlength: '500', value: ev.note || '', oninput: e => { ev.note = e.target.value; draftChanged(); } })),
     acan('call') ? callField(ev, id, () => { draftChanged(); updAtt(); }) : null,
     acan('after') && !isScoped(p) ? kindField(ev, id) : null,
@@ -7938,8 +8254,8 @@ function buildClashNote() {
   if (!list.length) return null;
   return h('div', { class: 'notice warn clash-note' }, h('p', null, h('strong', null, t('clashTitle'))),
     h('ul', { class: 'chg-list' }, list.map(c => { const ev = A.draft.events.find(e => e.id === c.eventId) || {};
-      return h('li', null, dShort(ev.date) + ' ' + hm(ev.start) + ': ' + t('clashLine', { title: c.with.title || t('meeting'), poll: loc(c.with.pollTitle), when: clashWhen(c), n: c.n })); })),
-    h('p', { class: 'hint' }, t('clashHint')));
+      return h('li', c.bump ? { class: 'clash-bump' } : null, dShort(ev.date) + ' ' + hm(ev.start) + ': ' + t(c.bump ? 'clashBump' : 'clashLine', { title: c.with.title || t('meeting'), poll: loc(c.with.pollTitle), when: clashWhen(c), n: c.n })); })),
+    list.some(c => !c.bump) ? h('p', { class: 'hint' }, t('clashHint')) : null);
 }
 // Who a meeting is for: everyone, or some sections (a sectional: only they are asked to reply, and only their
 // numbers show). Each group's sections; a group without sections, as a whole.
@@ -7985,14 +8301,21 @@ function callField(ev, id, changed) {
 }
 // Gives, once saved, { pollId, poll, changes } (what this publishing changed), else false. The answer belongs to the
 // poll it was for: if another one is on show by then, that one is left as it is.
+// The version of the schedule this page has: the latest of its draft's and its publishing's times ('' for none yet).
+const schedVer = sch => [sch && sch.draft && sch.draft.saved, sch && sch.published && sch.published.at].filter(x => typeof x === 'string' && x).sort().pop() || '';
+const SCHED_MAX = 60;   // (as Code.gs's LIMITS.events, from version 2026-10-r5.3)
 async function saveSched(publish, unpublish, opts) {
   let ok = false;
   const pollId = A.pollId, poll = A.data.poll, draft = A.draft, sent = JSON.stringify(A.draft);
   const known = (A.data.schedule && A.data.schedule.published && A.data.schedule.published.at) || '';
-  A.busy = true; renderSched();
+  if (A.draft.events.length > SCHED_MAX) { toast(t('schedTooMany', { n: SCHED_MAX }) + (opts && opts.failNote ? ' ' + opts.failNote : ''), { error: true }); return false; }
+  A.busy = true; A.schedStale = null; renderSched();
   try {
     const clean = { events: A.draft.events.map(e => Object.assign({}, e, { title: (e.title || '').trim(), place: (e.place || '').trim(), note: (e.note || '').trim() })), note: (A.draft.note || '').trim() };
-    const r = await api.admin(A.key, 'saveSchedule', { pollId, schedule: clean, publish: !!publish, unpublish: !!unpublish });
+    // (From version 2026-10-r5.3: which version this page had, so a schedule changed elsewhere meanwhile isn't undone
+    // unseen; force: saved over it, when asked.)
+    const since = opts && opts.force ? undefined : schedVer(A.data.schedule);
+    const r = await api.admin(A.key, 'saveSchedule', { pollId, schedule: clean, publish: !!publish, unpublish: !!unpublish, since, tok: PAGE_TOK });
     // (The poll picker waits while this is on its way; should another poll be on show anyway, it's left alone.)
     if (A.pollId === pollId && A.data) {
       A.data.schedule = r.schedule;
@@ -8025,7 +8348,9 @@ async function saveSched(publish, unpublish, opts) {
   } catch (e) {
     // (From version 2026-10-r5.2: a section leader's meetings over the group's general rehearsals: which ones.)
     const over = e.code === 'overlap' ? String(e.message || '').split(',').map(id => A.draft.events.find(x => x.id === id)).filter(Boolean) : [];
-    toast((e.code === 'too_large' ? t('schedTooLarge') : e.code === 'overlap' ? t('schedOverlap', { what: over.map(x => dShort(x.date) + ' ' + hm(x.start)).join(', ') || '?' }) : errText(e))
+    if (e.code === 'stale' && A.pollId === pollId) A.schedStale = { publish: !!publish, unpublish: !!unpublish };
+    toast((e.code === 'too_large' ? t('schedTooLarge') : e.code === 'too_many' ? t('schedTooMany', { n: SCHED_MAX }) : e.code === 'stale' ? t('schedStale')
+      : e.code === 'overlap' ? t('schedOverlap', { what: over.map(x => dShort(x.date) + ' ' + hm(x.start)).join(', ') || '?' }) : errText(e))
       + (opts && opts.failNote ? ' ' + opts.failNote : ''), { error: true });
   }
   A.busy = false;
@@ -8711,13 +9036,13 @@ function buildSince() {
 }
 // Problems the page met on members' devices (the backend counts them; details are in the Errors sheet).
 function buildErrorsNotice() {
-  const n = (A.errors && A.errors.n) || 0, seen = Number(store.get('tutti-org-errors')) || 0;
+  const n = (A.errors && A.errors.n) || 0, seen = Number(store.get('provala-org-errors')) || 0;
   if (n <= seen) return null;
   // (From version 2026-10-r5.2.1: a link to the Errors sheet itself, when Code.gs says where it is.)
   const url = A.errors && typeof A.errors.url === 'string' && A.errors.url.indexOf('https://docs.google.com/spreadsheets/d/') === 0 ? A.errors.url : '';
   const box = h('div', { class: 'notice warn' }, h('span', null, t('errorsNotice', { n: n - seen })),
     url ? h('a', { class: 'btn small', id: 'err-open', href: url, target: '_blank', rel: 'noopener noreferrer' }, t('errorsOpen')) : null,
-    h('button', { type: 'button', class: 'btn small', onclick: () => { store.set('tutti-org-errors', String(n)); box.remove(); } }, t('dismiss')));
+    h('button', { type: 'button', class: 'btn small', onclick: () => { store.set('provala-org-errors', String(n)); box.remove(); } }, t('dismiss')));
   return box;
 }
 
@@ -9040,6 +9365,8 @@ function buildAttTab() {
       h('button', { type: 'button', class: 'btn primary', onclick: () => { A.tab = 'schedule'; refreshTabs(); renderTab(); } }, t('viewDraft'))));
   } else {
     const now = nowIn(A.data.poll.tz);
+    const today = attToday(pub.events, now);
+    if (today) wrap.append(today);
     wrap.append(h('div', { class: 'att-cards' }, pub.events.map(ev => attCard(ev, now))));
   }
   // Attendance taken for meetings that are no longer on the schedule stays in the season record; here it can go.
@@ -9052,6 +9379,25 @@ function buildAttTab() {
   const season = buildSeason();
   if (season) wrap.append(season);
   return wrap;
+}
+// At the top (from version 2026-10-r5.3): today's meetings, with their attendance button, so taking it at the rehearsal
+// needs no scrolling past the month's earlier ones; on another day, the latest one that has been without attendance.
+function attToday(events, now) {
+  if (!acan('attendance')) return null;
+  const rec = ev => (A.data.attendance || []).find(a => a.eventId === ev.id);
+  let list = events.filter(ev => ev.date === now.day), lbl = 'attToday';
+  if (!list.length) {
+    const last = events.filter(ev => ev.date < now.day && !rec(ev)).pop();
+    list = last ? [last] : [];
+    lbl = 'attLastOpen';
+  }
+  if (!list.length) return null;
+  return h('section', { class: 'att-today', 'aria-labelledby': 'att-today-h' },
+    h('h3', { id: 'att-today-h', class: 'sub' }, t(lbl)),
+    h('ul', { class: 'att-today-list' }, list.map(ev => h('li', null,
+      h('span', null, h('strong', null, (lbl === 'attToday' ? '' : dShort(ev.date) + ', ') + hm(ev.start) + '–' + hm(ev.end)), ev.title ? ' · ' + ev.title : ''),
+      h('button', { type: 'button', class: 'btn' + (rec(ev) ? '' : ' primary'), id: 'att-today-' + ev.id, onclick: () => openAttendance(ev) },
+        rec(ev) ? t('attEditBtn') : t('attTake'))))));
 }
 function attCard(ev, now) {
   const id = 'ac-' + ev.id;
@@ -9228,8 +9574,10 @@ function openAttendance(ev, cx) {
     cx.general ? h('p', { class: 'hint' }, t('leadGenAttHint')) : null,
     ms.length || rest.length ? groups : h('p', { class: 'muted' }, t('noMembersText')),
     cx.general ? null : h('div', { class: 'field att-guests' }, h('label', { class: 'label', for: 'att-guests' }, t('attGuests')), guests),
-    status, err, ask,
-    h('div', { class: 'modal-foot' }, h('div', { class: 'end' }, h('button', { type: 'button', class: 'btn', onclick: () => close() }, t('cancel')), save)));
+    // (The count and the save button stay in view at the bottom while the list scrolls, from version 2026-10-r5.3: on a
+    // phone the list is several screens long.)
+    h('div', { class: 'att-foot' }, status, err, ask,
+      h('div', { class: 'modal-foot' }, h('div', { class: 'end' }, h('button', { type: 'button', class: 'btn', onclick: () => close() }, t('cancel')), save))));
   // A tap beside the dialog does nothing here: it's a list being filled in, often on a phone. Escape works
   // wherever the focus is (after such a tap it's on the page, not in the dialog).
   const back = h('div', { class: 'backdrop' },
@@ -9476,9 +9824,11 @@ function seasonCsv(st) {
 
 /* ---------- Poll settings dialog */
 function newPollDefaults(groups) {
-  // Like the latest poll of the same groups, if there is one.
+  // Like the latest poll of the same groups, if there is one (the planner's: never a section leader's, from version
+  // 2026-10-r5.3; a section leader's from their own).
   const same = p => stable(pollGroups(p, adminGmap()).slice().sort()) === stable(groups.slice().sort());
-  const latest = A.polls.find(same) || A.polls[0];
+  const pool = A.leadMode ? A.polls : A.polls.filter(p => !isScoped(p));
+  const latest = pool.find(same) || pool[0];
   let mk;
   if (latest) {
     const n = D.add(D.lastOfMonth(latest.end.slice(0, 7)), 1);
@@ -9612,6 +9962,7 @@ function openPollEditor(poll, focus) {
     const v = id => form.querySelector('#' + id).value;
     const out = {
       id: isNew ? undefined : f.id,
+      since: isNew ? undefined : f.updated || '', tok: PAGE_TOK,   // (from version 2026-10-r5.3: refused if it changed elsewhere since it was opened)
       title: { tr: v('pe-ttr').trim(), en: v('pe-ten').trim() }, message: { tr: v('pe-mtr'), en: v('pe-men') },
       start: v('pe-start'), end: v('pe-end'),
       days: Array.from(form.querySelectorAll('input[name="pe-day"]:checked')).map(x => +x.value),
@@ -9659,8 +10010,11 @@ function openPollEditor(poll, focus) {
         const pub = A.data && A.data.poll.id === f.id && A.data.schedule.published ? A.data.schedule.published.events : [];
         return String(x.message || '').split(',').map(id => pub.find(ev => ev.id === id)).filter(Boolean).map(ev => dShort(ev.date) + ' ' + hm(ev.start)).join(', ') || '?';
       };
-      fail(A.leadMode && x.code === 'full' ? t('leadPollsFull') : x.code === 'scope_calls' ? t('scopeCalls', { what: which() }) : errText(x));
+      if (x.code === 'stale' && !isNew) loadAdminPoll(f.id).then(() => render(), () => null);   // (opened again, it's as it is now)
+      fail(A.leadMode && x.code === 'full' ? t('leadPollsFull') : x.code === 'scope_calls' ? t('scopeCalls', { what: which() }) : x.code === 'stale' ? t('pollStale') : errText(x));
       submitBtn.disabled = false;
+      // (The button lost the focus while it was disabled: back to it, so the keyboard, Escape too, still works here.)
+      if (back.isConnected && !back.contains(document.activeElement)) submitBtn.focus();
     }
   }
   let alsoAtt = null;
@@ -9668,7 +10022,11 @@ function openPollEditor(poll, focus) {
     const n = (A.data && A.data.poll.id === f.id) ? A.data.responses.length : (f.answers || 0);
     const nAtt = (A.data && A.data.poll.id === f.id && !A.leadMode) ? (A.data.attendance || []).length : 0;   // (a section leader's deleting keeps it)
     alsoAtt = nAtt ? h('input', { type: 'checkbox', id: 'pe-del-att' }) : null;
+    // Published meetings still to come just disappear from members' pages and calendars, with no word of it (from
+    // version 2026-10-r5.3 the prompt says so).
+    const pubSoon = A.data && A.data.poll.id === f.id && A.data.schedule && A.data.schedule.published ? (A.data.schedule.published.events || []).filter(ev => !isOver(ev, nowIn(A.data.poll.tz))).length : 0;
     clear(confirmBox).append(h('span', null, t('confirmDeletePoll', { n })),
+      pubSoon ? h('span', { class: 'del-soon' }, t('delPollSoon', { n: pubSoon })) : null,
       alsoAtt ? h('label', { class: 'switch-row del-att' }, alsoAtt, t('delPollAtt', { n: nAtt })) : null,
       h('button', { type: 'button', class: 'btn small danger solid', onclick: doDelete }, t('yesDelete')),
       h('button', { type: 'button', class: 'btn small', onclick: () => { confirmBox.hidden = true; } }, t('keep')));
@@ -9703,8 +10061,8 @@ function scopePick(f, isNew) {
 function signOut() {
   const go = () => {
     adminGen++;   // (answers still on their way are for a page that's gone)
-    store.del('tutti-org');
-    store.del('tutti-admin-key');
+    store.del('provala-org');
+    store.del('provala-admin-key');
     linksMade.clear();
     for (const k of Object.keys(msgUi)) delete msgUi[k];
     Object.assign(A, { key: '', authed: false, data: null, polls: [], keyErr: '', error: null, caps: [], errors: null, season: null, stage: freshStage(), rep: freshRep(),
@@ -9872,16 +10230,16 @@ function stageChart(lengths, shape, size, cell, o) {
   const cr = Math.round(hgt * 0.42);
   box.append(h('span', { class: 'stage-cond', 'aria-hidden': 'true', style: 'left:' + X(geo.cond.x) + 'px;top:' + (Y(geo.cond.y) - cr) + 'px;min-width:' + 2 * cr + 'px;height:' + 2 * cr + 'px;border-radius:' + cr + 'px;padding:0 ' + Math.round(cr * 0.5) + 'px' }, t('conductorMark')));
   const aud = h('p', { class: 'stage-aud' + (flip ? ' aud-top' : ''), 'aria-hidden': 'true' }, t('audience'));
-  return h('div', { class: 'stage-fig' + (o.small ? ' small' : '') + (flip ? ' flip' : '') }, flip ? aud : null, h('div', { class: 'stage-scroll' }, box), flip ? null : aud);
+  return h('div', { class: 'stage-fig' + (o.small ? ' small' : '') + (flip ? ' flip' : '') }, flip ? aud : null, h('div', { class: 'stage-scroll', tabindex: '0', role: 'region', 'aria-label': t('stageRegion') }, box), flip ? null : aud);
 }
 // The stage as the audience (and the conductor) sees it, the back row at the top; or as the singers do, facing the
 // audience: turned round, the audience and the conductor at the top, left and right as theirs. Each device keeps
 // its choice, for the planner's editor and picture and for the members' Stage page alike.
-const singersView = () => store.get('tutti-stage-view') === 'singers';
+const singersView = () => store.get('provala-stage-view') === 'singers';
 function viewSwitch(id, redraw) {
   return h('label', { class: 'switch-row stage-view' },
     h('input', { type: 'checkbox', id, checked: singersView(), onchange: e => {
-      if (e.target.checked) store.set('tutti-stage-view', 'singers'); else store.del('tutti-stage-view');
+      if (e.target.checked) store.set('provala-stage-view', 'singers'); else store.del('provala-stage-view');
       redraw();
     } }), t('viewSingers'));
 }
@@ -9905,7 +10263,7 @@ const rowName = (r, n, lang) => t('rowLabel', { n: r + 1 }, lang) + (n > 1 && r 
 // 'not_found' when the plan was saved or deleted elsewhere meanwhile; note: people taken off the stage on opening;
 // focus: the place the arrow keys move from.
 const freshStage = () => ({ list: null, members: [], loading: false, error: null, gid: '', edit: null, li: 0, pick: null, dirty: false, busy: false, ask: false, how: 'cols',
-  names: store.get('tutti-stage-names') === 'full' ? 'full' : 'short', delAsk: '', rev: 0, conflict: '', note: '', focus: null, exporting: false,
+  names: store.get('provala-stage-names') === 'full' ? 'full' : 'short', delAsk: '', rev: 0, conflict: '', note: '', focus: null, exporting: false,
   cant: {}, hideCant: false });
 function buildStageTab() {
   const st = A.stage;
@@ -10641,7 +10999,7 @@ function stageExport() {
     h('h3', null, t('exportTitle')),
     h('div', { class: 'actions' },
       h('label', { class: 'inline-field', for: 'st-names' }, t('exportNames'),
-        selectEl('st-names', [['short', t('namesShort')], ['full', t('namesFull')]], st.names, v => { st.names = v === 'full' ? 'full' : 'short'; store.set('tutti-stage-names', st.names); }, { class: 'select' })),
+        selectEl('st-names', [['short', t('namesShort')], ['full', t('namesFull')]], st.names, v => { st.names = v === 'full' ? 'full' : 'short'; store.set('provala-stage-names', st.names); }, { class: 'select' })),
       h('button', { type: 'button', class: 'btn', id: 'st-png', onclick: () => exportStage([st.li], false) }, t('exportOne')),
       st.edit.lineups.length > 1 ? h('button', { type: 'button', class: 'btn', id: 'st-png-all', onclick: () => exportStage(st.edit.lineups.map((x, i) => i), false) }, t('exportAll')) : null,
       canShare ? h('button', { type: 'button', class: 'btn', id: 'st-share', onclick: () => exportStage([st.li], true) }, t('exportShare')) : null),
@@ -11290,7 +11648,7 @@ function noticeDialog(readOnly, back_) {
   function close() { back.remove(); document.removeEventListener('keydown', onKey); if (back_) focusId(back_); }
   // The notice is read in either language: the switch is in the dialog too (the header's is behind the backdrop).
   if (!readOnly) box.querySelector('h2').after(h('div', { class: 'lang notice-lang', role: 'group', 'aria-label': t('language') }, ['tr', 'en'].map(l => h('button', {
-    type: 'button', lang: l, 'aria-pressed': String(S.lang === l), onclick: () => { if (S.lang !== l) { S.lang = l; store.set('tutti-lang', l); render(); } } }, l.toUpperCase()))));
+    type: 'button', lang: l, 'aria-pressed': String(S.lang === l), onclick: () => { if (S.lang !== l) { S.lang = l; store.set('provala-lang', l); render(); } } }, l.toUpperCase()))));
   if (readOnly) {
     box.append(S.notice && S.notice.at ? h('p', { class: 'hint' }, t('noticeReadOn', { date: dFull(S.notice.at.slice(0, 10)) })) : null,
       h('div', { class: 'modal-foot' }, h('div', { class: 'end' }, h('button', { type: 'button', class: 'btn', id: id + '-close', onclick: close }, t('noticeClose')))));
@@ -11317,7 +11675,7 @@ function noticeDialog(readOnly, back_) {
   return back;
 }
 // The member's own profile: optional fields, and the tick that lets their group see them.
-const profUi = { dirty: false, busy: false, draft: null };   // draft: what's typed and not yet saved, kept across redraws
+const profUi = { dirty: false, busy: false, draft: null, open: null };   // draft: what's typed and not yet saved, kept across redraws; open: the fold, as they left it
 const profLoaded = () => { const pr = (S.member && S.member.profile) || {}; return { phone: pr.phone || '', addr: pr.addr || '', bday: pr.bday || '', about: pr.about || '', consent: !!pr.consent }; };
 // A birthday the calendar has (no 31 April): 'MM-DD', or ''.
 const bdayOk = b => BDAY_RE.test(b) && +b.slice(3) <= [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][+b.slice(0, 2) - 1];
@@ -11359,8 +11717,12 @@ function profileForm() {
       focusId('pf-save');
     } catch (e) { profUi.busy = false; saveBtn.disabled = false; toast(errText(e), { error: true }); }
   } }, t('profSave'));
-  return h('section', { class: 'sheet prof', 'aria-labelledby': 'pf-h' },
-    h('h3', { id: 'pf-h' }, t('profTitle')),
+  // (From version 2026-10-r5.3 folded, with whether it's shared, above the list: open while nothing is filled in yet,
+  // or something is typed and not saved; otherwise as they last left it.)
+  const pr0 = profLoaded(), empty = !pr0.phone && !pr0.addr && !pr0.bday && !pr0.about;
+  const open = profUi.dirty || (profUi.open === null ? empty : profUi.open);
+  return h('details', { class: 'sheet prof', open: open || null, ontoggle: e => { profUi.open = e.target.open; } },
+    h('summary', null, h('h3', { id: 'pf-h' }, t('profTitle')), h('span', { class: 'chip-s' + (pr0.consent ? ' ok' : '') }, pr0.consent ? t('profShared') : t('profNotShared'))),
     h('p', { class: 'hint' }, t('profHint')),
     h('div', { class: 'form-grid' },
       field('pf-phone', t('profPhone'), h('input', { id: 'pf-phone', class: 'input', type: 'tel', autocomplete: 'tel', maxlength: '40', value: d.phone, oninput: e => { d.phone = e.target.value; changed(); } })),
@@ -11374,8 +11736,11 @@ function profileForm() {
 // This week's birthdays (today and the six days after), of the members the member may see.
 function birthdaysBlock() {
   const list = (S.people && S.people.list) || [], today = isoDay(new Date().toISOString());
-  const days = D.range(today, D.add(today, 6)).map(x => x.slice(5));
-  const soon = list.filter(x => x.bday && days.indexOf(x.bday) !== -1).map(x => ({ x, i: days.indexOf(x.bday) })).sort((a, b) => a.i - b.i || a.x.name.localeCompare(b.x.name, LOC[S.lang]));
+  // (A 29 February birthday is on the 28th in other years, from version 2026-10-r5.3.)
+  const leap = y => (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0;
+  const days = D.range(today, D.add(today, 6)).map(x => x.slice(5) === '02-28' && !leap(+x.slice(0, 4)) ? ['02-28', '02-29'] : [x.slice(5)]);
+  const at = b => days.findIndex(d => d.indexOf(b) !== -1);
+  const soon = list.filter(x => x.bday && at(x.bday) !== -1).map(x => ({ x, i: at(x.bday) })).sort((a, b) => a.i - b.i || a.x.name.localeCompare(b.x.name, LOC[S.lang]));
   if (!soon.length) return null;
   return h('section', { class: 'sheet bdays', 'aria-labelledby': 'bd-h' }, h('h3', { id: 'bd-h' }, '🎂 ' + t('bdayWeek')),
     h('ul', { class: 'bday-list' }, soon.map(({ x, i }) => h('li', null, h('strong', null, x.name), ' · ' + bdayText(x.bday) + (i === 0 ? ' · ' + t('bdayToday') : '')))));
@@ -11415,9 +11780,26 @@ function renderPeople(main) {
 }
 
 /* ================================================================ SHELL */
+// The dot on the Takvim tab (from version 2026-10-r5.3; before, it showed whenever there were meetings): 'new' for
+// what changed or is new since they last looked, 'reply' for a meeting still to come they're called to and haven't
+// replied to (not on their days away); '' for nothing.
+function schedNeeds() {
+  if (!S.member || S.acting) return '';
+  if (recentChanges().length || newsItems().length) return 'new';
+  if (!can('replies')) return '';
+  const away = myAway();
+  for (const b of schedBlocks()) {
+    const now = nowIn(b.p.tz);
+    for (const ev of (b.s && b.s.events) || []) {
+      if (isOver(ev, now) || !meCalled(ev, b.p) || awayOn(away, ev.date)) continue;
+      if (!(b.replies && own(b.replies, ev.id))) return 'reply';
+    }
+  }
+  return '';
+}
 function buildHeader() {
   const v = S.view;
-  const hasSchedule = !!S.member && hasMeetings();
+  const sched = S.member ? schedNeeds() : '';
   return h('header', { class: 'top' }, h('div', { class: 'wrap top-in' },
     h('a', { class: 'brand', href: '#' }, APP_NAME),
     v === 'admin'
@@ -11425,14 +11807,14 @@ function buildHeader() {
       : !S.member ? h('span', { class: 'top-label' })
       : h('nav', { class: 'tabs', 'aria-label': t('sections') },
         h('a', { class: 'tab', href: '#', 'aria-current': v === 'member' ? 'page' : null }, t('tabAvailability')),
-        h('a', { class: 'tab', href: '#schedule', 'aria-current': v === 'schedule' ? 'page' : null }, t('tabSchedule'), hasSchedule ? h('span', { class: 'dot', 'aria-hidden': 'true' }) : null),
+        h('a', { class: 'tab', href: '#schedule', 'aria-current': v === 'schedule' ? 'page' : null }, t('tabSchedule'), sched ? [h('span', { class: 'dot', 'aria-hidden': 'true' }), h('span', { class: 'visually-hidden' }, ' (' + t(sched === 'new' ? 'tabDotNew' : 'tabDotReply') + ')')] : null),
         hasStages() || v === 'stage' ? h('a', { class: 'tab', href: '#stage', 'aria-current': v === 'stage' ? 'page' : null }, t('tabStage')) : null,
         hasRep() || v === 'repertoire' ? h('a', { class: 'tab', href: '#repertoire', 'aria-current': v === 'repertoire' ? 'page' : null }, t('tabRep')) : null,
         can('people') || v === 'people' ? h('a', { class: 'tab', href: '#people', 'aria-current': v === 'people' ? 'page' : null }, t('tabMembersM')) : null,
         leading() ? h('a', { class: 'tab tab-lead', href: '#bolum' }, t('leadPanel')) : null),
     h('div', { class: 'lang', role: 'group', 'aria-label': t('language') }, ['tr', 'en'].map(l => h('button', {
       type: 'button', lang: l, 'aria-pressed': String(S.lang === l),
-      onclick: () => { if (S.lang !== l) { S.lang = l; store.set('tutti-lang', l); render(); } }
+      onclick: () => { if (S.lang !== l) { S.lang = l; store.set('provala-lang', l); render(); } }
     }, l.toUpperCase()))),
     modeButton(),
     v === 'admin' && A.authed && !A.leadMode ? h('button', { type: 'button', class: 'btn small quiet', onclick: signOut }, t('signOut')) : null,
@@ -11446,7 +11828,7 @@ function buildDemoBand() {
     S.view === 'admin' ? h('a', { href: '#' }, t('demoMember')) : h('a', { href: '#admin' }, t('demoOrganizer')),
     h('button', { type: 'button', class: 'btn small quiet', onclick: () => {
       window.ProvalaDemo.reset();
-      store.keys().filter(k => /^tutti-(token|draft|admin|session|org|page)/.test(k)).forEach(k => store.del(k));
+      store.keys().filter(k => /^provala-(token|draft|admin|session|org|page)/.test(k)).forEach(k => store.del(k));
       Object.assign(A, { key: '', authed: false, data: null, polls: [], pollId: '', keyErr: '', error: null, tab: 'plan', creds: [], caps: [], errors: null, since: {}, season: null, stage: freshStage(), rep: freshRep() });
       endSession();
       S.loaded = false;
@@ -11479,6 +11861,12 @@ function drawPage() {
   document.title = t('docTitle');
   const app = clear(document.getElementById('app'));
   for (const k of Object.keys(R)) delete R[k];
+  // (From version 2026-10-r5.3: past the header with one key. Not a #main address: the address picks the page here.)
+  app.append(h('a', { class: 'skip', href: '#main', onclick: e => {
+    e.preventDefault();
+    const m = document.getElementById('main');
+    if (m) { m.setAttribute('tabindex', '-1'); m.focus(); }
+  } }, t('skipToMain')));
   app.append(buildHeader());
   if (isDemo) app.append(buildDemoBand());
   if (S.acting) app.append(buildActBand());
@@ -11536,7 +11924,7 @@ function modeButton() {
     type: 'button', class: 'mode-btn', 'aria-label': label, title: label,
     onclick: () => {
       S.mode = night ? 'day' : 'night';
-      store.set('tutti-mode', S.mode);
+      store.set('provala-mode', S.mode);
       applyMode();
       const nb = modeButton();
       b.replaceWith(nb);
@@ -11550,7 +11938,7 @@ function modeButton() {
 if (window.matchMedia) {
   const mq = window.matchMedia('(prefers-color-scheme: dark)');
   const follow = () => {
-    if (store.get('tutti-mode')) return;
+    if (store.get('provala-mode')) return;
     S.mode = systemMode();
     applyMode();
     const old = document.querySelector('.mode-btn');
@@ -11602,11 +11990,11 @@ function onRoute() {
    People tab in a new tab (#duzenle=<memberId>), signed in as the member for two hours with a sign-in made from the
    planner's own. The tab keeps nothing of the member on this device (no page copy, no drafts), and shows a band
    saying whose answer it is; what's sent is marked as the planner's. */
-const ACT_KEY = 'tutti-act';
+const ACT_KEY = 'provala-act';
 let actSession = actKept && actKept.session ? actKept : null;
 // keep: a reload of one of the acting tab's pages (the sign-in kept in this tab): that page, not the member's first.
 async function actStart(id, keep) {
-  const key = A.key || store.get('tutti-org') || '';
+  const key = A.key || store.get('provala-org') || '';
   // (Opened again in this tab, a reload say: the sign-in made before, if it's for the same member.)
   const kept = actSession && actSession.id === id && actSession.session ? actSession : null;
   if (!kept && !key) { S.acting = null; Object.assign(S, { needLogin: false, loaded: true, loading: false, error: null }); render(); showActError(t('actNoKey')); return; }
@@ -11624,7 +12012,7 @@ async function actStart(id, keep) {
     if (!keep) history.replaceState(null, '', location.pathname + location.search + '#duzenle=' + id);
     await refreshPage();
   } catch (e) {
-    S.acting = null; S.session = store.get('tutti-session') || '';
+    S.acting = null; S.session = store.get('provala-session') || '';
     Object.assign(S, { loading: false, loaded: true, error: null });
     render();
     showActError(t('actFailed', { why: errText(e) }));
