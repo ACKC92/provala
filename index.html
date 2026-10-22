@@ -440,6 +440,18 @@ textarea.input { min-height: 88px; resize: vertical; line-height: 1.5; }
 .tool { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 12px; border: 1px solid var(--rule-strong); border-radius: var(--r); background: var(--btn-face); box-shadow: var(--bevel); font-weight: 600; white-space: nowrap; }
 .tool[aria-pressed="true"] { border-color: var(--ink); background: var(--field); box-shadow: inset 0 0 0 1px var(--ink); }
 @media (max-width: 520px) { .tools { gap: 5px; flex-wrap: nowrap; } .tool { flex: 1 1 auto; justify-content: center; gap: 5px; padding: 0 6px; font-size: 13.5px; } }
+/* The marking tools (from version 2026-10-r5.5, with "Zorlar ama gelirim"): always on one row, the words on two lines
+   if need be; on a phone three equal buttons. */
+.tool-w { min-width: 0; }
+.tools.paint { flex-wrap: nowrap; }
+.tools.paint .tool { min-width: 0; white-space: normal; line-height: 1.15; text-align: center; }
+@media (max-width: 560px) {
+  .tools.paint { gap: 5px; flex-wrap: nowrap; }
+  .tools.paint .tool { flex: 1 1 0; justify-content: center; font-size: 13.5px; min-width: 0; padding: 3px 6px; white-space: normal; line-height: 1.15; text-align: center; }
+  .tools.paint .tool .sw { flex: none; }
+}
+@media (max-width: 400px) { .tools.paint { gap: 4px; } .tools.paint .tool { flex-direction: column; gap: 3px; padding: 5px 3px 4px; font-size: 12.5px; }
+  .tools.paint .tool .sw { width: 22px; height: 8px; } }
 .sw { width: 14px; height: 14px; border-radius: 3px; flex: none; display: inline-block; }
 .sw.free { background: var(--free); }
 .sw.maybe { background-color: var(--maybe); background-image: repeating-linear-gradient(135deg, transparent 0 4px, rgb(255 255 255 / 35%) 4px 6px); }
@@ -450,8 +462,9 @@ textarea.input { min-height: 88px; resize: vertical; line-height: 1.5; }
 .slots { display: grid; gap: 8px; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
 .slot-hour { display: grid; gap: 3px; }
 .slot { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 36px; padding: 0 14px; border: 1px solid var(--rule); border-radius: var(--r); background: var(--empty); color: var(--ink-2); text-align: left; touch-action: pan-y; -webkit-tap-highlight-color: transparent; }
-.slot-t { font: 600 15px/1 var(--font-mono); }
+.slot-t { font: 600 15px/1 var(--font-mono); white-space: nowrap; }
 .slot-s { font: 700 13.5px/1 var(--font-body); }
+@media (max-width: 400px) { .slot { gap: 8px; padding: 0 10px; } .slot-s { font-size: 12.5px; line-height: 1.1; text-align: right; } }
 /* How many people are free at this time, and (+) how many if needed */
 .slot-n { margin-left: auto; display: inline-flex; align-items: center; gap: 5px; font: 600 13.5px/1 var(--font-body); }
 .slot-n::before { content: ""; width: 10px; height: 12px; background: currentColor; opacity: 0.7;
@@ -997,7 +1010,7 @@ fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
 .stage-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
 @media (max-width: 760px) { .stage-ctl { grid-template-columns: minmax(0, 1fr); } }
 .stage-fig { display: grid; gap: 2px; }
-.stage-scroll { overflow-x: auto; padding: 4px 2px 8px; -webkit-overflow-scrolling: touch; }
+.stage-scroll { overflow-x: auto; padding: 4px 2px 8px; -webkit-overflow-scrolling: touch; contain: inline-size; }
 .stage-chart { position: relative; margin: 0 auto; }
 .stage-bands { position: absolute; left: 0; top: 0; }
 .stage-bands path { fill: var(--riser); stroke: var(--riser-edge); stroke-width: 1; }
@@ -1016,7 +1029,7 @@ fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
   border-top: 1px solid var(--rule); padding-top: 4px; }
 .stage-legend { list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 14px; }
 .stage-legend li { display: inline-flex; align-items: center; gap: 6px; }
-.sw { display: inline-grid; place-items: center; min-width: 24px; height: 20px; padding: 0 3px; border: 2px solid var(--c, var(--rule-strong)); border-radius: 3px;
+.stage-legend .sw { display: inline-grid; place-items: center; width: auto; min-width: 24px; height: 20px; padding: 0 3px; border: 2px solid var(--c, var(--rule-strong)); border-radius: 3px;
   background: var(--ct, var(--field)); color: var(--ink); font: 700 10px/1 var(--font-body); }
 .stage-pick { min-height: 1.5em; }
 .stage-tray { display: grid; gap: 8px; padding: 12px; border: 1px solid var(--rule); border-radius: var(--r); background: var(--field); }
@@ -1030,11 +1043,27 @@ fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
 .chip-m[aria-pressed="true"] { outline: 3px solid var(--accent); outline-offset: 1px; }
 .stage-export { display: grid; gap: 8px; padding-top: 6px; border-top: 1px solid var(--rule); }
 .stage-export h3 { font-size: 15.5px; }
+.xp-what { display: grid; gap: 4px; }
+.xp-more summary { cursor: pointer; font-weight: 600; }
+.xp-list { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 4px; }
+.xp-plan { font-weight: 450; align-items: flex-start; }
+/* Printing the stage plans (from version 2026-10-r5.5): only their pages, each on its own sheet of A4. */
+#print-pages { display: none; }
+@media print {
+  html.printing, html.printing body { background: #fff !important; margin: 0 !important; padding: 0 !important; }
+  html.printing body > *:not(#print-pages) { display: none !important; }
+  html.printing body::before { display: none !important; }
+  html.printing #print-pages { display: block; }
+  #print-pages img { display: block; width: auto; height: auto; max-width: 100%; max-height: 280mm; max-height: min(280mm, 97vh); margin: 0 auto; break-after: page; page-break-after: always; break-inside: avoid; }
+  #print-pages[data-side="1"] img { max-height: 193mm; max-height: min(193mm, 97vh); }
+  #print-pages img:last-child { break-after: auto; page-break-after: auto; }
+}
 /* Members: their stage plans */
 .stage-plan { display: grid; gap: 10px; }
 .stage-plan-title { font-size: 21px; }
 .lineup-card { display: grid; gap: 8px; padding: 12px 14px; border: 1px solid var(--rule); border-radius: var(--r); background: var(--field); }
 .lineup-card h4 { font-size: 17px; color: var(--rubric-ink); }
+@media (max-width: 400px) { .lineup-card { padding: 10px 8px; } .stage-page .stage-scroll { padding-left: 0; padding-right: 0; } }
 .lineup-songs { font-style: italic; }
 .my-place { font-weight: 700; }
 .my-place.none { font-weight: 400; color: var(--ink-3); }
@@ -1043,6 +1072,24 @@ fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
 .mspot.empty { border-style: dashed; background: transparent; }
 .mspot.me { background: var(--accent); border-color: var(--accent-strong); color: var(--accent-ink); box-shadow: 0 0 0 3px var(--sheet), 0 0 0 5px var(--accent); z-index: 1; }
 .stage-fig.small .stage-cond { font-size: 9px; }
+/* Smaller places, so that a long row fits the width (from version 2026-10-r5.5): never smaller than the name and the
+   surname's initial, on two lines (the editor works out how wide that is for the names on stage). */
+.sp-two { display: none; max-width: 100%; min-width: 0; }
+.stage-chart.d2 .spot { grid-template-columns: minmax(0, 1fr); }
+.sp-two span { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.stage-chart.d2 .spot { align-content: start; padding: 1px 1px 0; border-top-width: 4px; font-size: 10.5px; line-height: 1.12; }
+.stage-chart.d2 .sp-sec { position: static; font-size: 8.5px; line-height: 1.1; }
+.stage-chart.d2 .sp-name { display: none; }
+.stage-chart.d2 .sp-two { display: block; }
+.stage-chart.d2 .spot.blocked { align-content: center; padding: 2px; font-size: 10.5px; }
+.stage-chart.d2 .sp-block { padding: 1px 3px; }
+.stage-chart.d2 .spot.empty { align-content: center; }
+.stage-chart.d2 .spot.cant::after, .stage-chart.d2 .spot.some::after { top: 1px; right: 1px; width: 12px; height: 12px; font-size: 9px; line-height: 12px; }
+/* The members' view: round places with a section's mark, as small as the row needs. */
+.stage-chart.d3 .mspot { font-size: 9.5px; }
+.stage-chart.d4 .mspot { font-size: 8px; border-width: 1px; }
+.stage-chart.d4 .mspot.me { font-size: 7px; letter-spacing: -0.02em; }
+.stage-chart.d3 .mspot.me, .stage-chart.d4 .mspot.me { box-shadow: 0 0 0 2px var(--sheet), 0 0 0 4px var(--accent); }
 .hint.warn { color: var(--danger); font-weight: 600; }
 .chip-s.late { background: var(--danger-soft); color: var(--danger); }
 /* What changed in the meetings (version 2026-10-r4.3); a best time published in one go. */
@@ -1098,7 +1145,7 @@ fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
 .spot.cant::after { content: "!"; position: absolute; top: 3px; right: 4px; width: 15px; height: 15px; border-radius: 50%;
   background: var(--danger); color: var(--danger-ink); font: 700 11px/15px var(--font-body); text-align: center; }
 .mspot.blocked { border: 1.5px solid var(--rule-strong); background: repeating-linear-gradient(45deg, transparent 0 4px, var(--hatch) 4px 6px), var(--sunk); }
-.sw.blocked { border-color: var(--rule-strong); background: repeating-linear-gradient(45deg, transparent 0 3px, var(--hatch) 3px 5px), var(--sunk); }
+.stage-legend .sw.blocked { border-color: var(--rule-strong); background: repeating-linear-gradient(45deg, transparent 0 3px, var(--hatch) 3px 5px), var(--sunk); }
 .stage-aud.aud-top { border-top: 0; border-bottom: 1px solid var(--rule); padding: 0 0 4px; }
 .stage-view { font-size: 14.5px; }
 .block-bar { display: grid; gap: 6px; }
@@ -1415,7 +1462,7 @@ var API_URL = 'https://script.google.com/macros/s/AKfycbzjxxXx_t5JqctCYV3iDAjsd-
   // What went wrong on a member's device is sent to the backend, so it can be fixed without anyone having to
   // describe it: the error and the browser, never names, answers or anything typed. At most three per page load,
   // and nothing at all without a backend address (as in the demo).
-  var VERSION = '2026-10-r5.4', sent = 0, seen = {};
+  var VERSION = '2026-10-r5.5', sent = 0, seen = {};
   window.provalaVersion = VERSION;
   window.provalaReport = function (err, where) {
     try {
@@ -1517,6 +1564,10 @@ var API_URL = 'https://script.google.com/macros/s/AKfycbzjxxXx_t5JqctCYV3iDAjsd-
 // inside the page, on a stand-in for Google Sheets kept in this browser (window.ProvalaDemo).
 const API_URL = typeof window.API_URL === 'string' ? window.API_URL.trim() : '';
 const APP_NAME = 'Provala';
+// The information notice (aydınlatma metni, KVKK), shelved from version 2026-10-r5.5 until Provala moves to a hosted
+// server: not shown to members, nor in Mesajlar or Üyeler. Everything for it stays (and what members read is still
+// kept by Code.gs); true brings it back as it was.
+const NOTICE_ON = false;
 const isDemo = !!window.ProvalaDemo;
 const framed = (function () { try { return window.self !== window.top; } catch (e) { return true; } })();
 
@@ -1742,7 +1793,7 @@ const T = {
     stepComment: 'Anything else?',
     commentPh: "Anything else I should know? For example: I'm away the last week of the month. I rehearse with the XYZ choir on Tuesdays. Or: I'm free every Wednesday.",
     commentNeed: 'You can explain your “if needed” days here instead of in the day notes.',
-    summary: 'Your answers', summaryEmpty: "You haven't marked any days yet.", noTimes: 'note only', ifNeededShort: 'if needed', needTag: 'note needed',
+    summary: 'Your answers', summaryEmpty: "You haven't marked any days yet.", noTimes: 'note only', ifNeededShort: 'if needed', maybeTimes: 'if needed {t}', maybeTimesMine: 'if needed {t}', needTag: 'note needed',
     save: 'Send my answers', saveChanges: 'Send changes', saving: 'Sending…', saved: 'Sent. Thank you!',
     stUnsaved: 'Changes not sent yet', stSaved: 'Everything is sent', stNew: 'Not sent yet',
     stSavedS: ({ n }) => 'Sent · ' + (n === 1 ? '1 day' : n + ' days'), stNewS: ({ n }) => 'Not sent · ' + (n === 1 ? '1 day' : n + ' days'), saveS: 'Send',
@@ -2017,7 +2068,8 @@ const T = {
     songsHint: 'Up to 30 songs, each up to 120 characters.', songsTooMany: 'More than 30 songs: only the first 30 are saved.', songsTooLong: 'Song titles longer than 120 characters are cut short.',
     saidPlaced: '{name}: {where}.', saidReplaced: '{name}: {where}. {other} is back in the list.', saidSwapped: '{name} and {other} swapped places.',
     saidOff: '{name} is off the stage.', saidCancelled: 'Nobody picked.', stageKeys: 'Move between the places with the arrow keys; Enter picks or places someone.',
-    exportReady: 'The picture is ready.',
+    exportReady: 'The picture is ready.', exportReadyN: 'The pictures are ready.', exportShareNo: 'This phone can’t share that many pictures at once: they were downloaded instead.', exportShareNo1: 'This phone can’t share the picture: it was downloaded instead.',
+    exportPrintIos: 'On an iPhone home screen, printing may not open: use Share…, then Print.',
     lineupsLabel: 'Lineups', lineupN: 'Lineup {n}', lineupAdd: 'Add a lineup', lineupRemove: 'Remove this lineup', lineupFName: 'Name of the lineup',
     lineupFSongs: 'Songs in this lineup (one per line)', lineupSongsPh: 'Ave Maria\nSalve Regina', lineupShape: 'Shape',
     shapeStraight: 'Straight rows', shapeArc: 'An arc around the conductor', lineupRows: 'Rows',
@@ -2055,9 +2107,14 @@ const T = {
     cantNoDate: 'Once you enter a date and save, those who can’t come that day (away, or who said “Can’t come” to that day’s meetings) are marked on the stage.',
     cantHint: 'Those who can’t come on this date (away, or who said “Can’t come” to that day’s meetings) are marked on the stage.',
     cantAfterSave: 'Once you save, those who can’t come on this date are marked on the stage.',
-    exportTitle: 'Picture', exportNames: 'Names', namesShort: 'Short (Ayşe D.)', namesFull: 'Full', exportOne: 'Download this lineup', exportAll: 'Download all lineups in one picture',
-    exportShare: 'Share…', exportHint: 'A PNG with the title, the songs and everyone’s name in their place, ready to share with your group. It shows the plan as it is here, saved or not.',
-    exportDone: 'Picture downloaded', exportFailed: 'The picture couldn’t be made in this browser.',
+    exportTitle: 'Picture and print', exportNames: 'Names', namesShort: 'Short (Ayşe D.)', namesFull: 'Full',
+    exportPage: 'Page', pageAuto: 'A4, as suits the stage', pagePortrait: 'A4 upright', pageLandscape: 'A4 on its side',
+    exportWhat: 'What goes in', exportOneL: 'This lineup ({name})', exportAllL: ({ n }) => 'All ' + n + ' lineups of this plan',
+    exportMore: ({ n }) => 'Other plans too (' + n + ')', exportMoreN: ({ n }) => (n === 1 ? '1 ticked' : n + ' ticked'),
+    exportMoreHint: 'Each one ticked comes after this one, all its lineups, as last saved.',
+    exportPng: 'Download PNG', exportPrint: 'Print…', exportFileMany: 'stage plans', pageOf: 'Page {n} of {of}',
+    exportShare: 'Share…', exportHint: 'A4 pages with the title, the songs and everyone’s name in their place, as many lineups to a page as can still be read. More than one page makes a PNG for each; in Print you can also save them as one PDF. It shows this plan as it is here, saved or not.',
+    exportDone: 'Picture downloaded', exportDoneN: ({ n }) => n + ' pictures downloaded (if the browser asks, allow it to download several files)', exportFailed: 'The picture couldn’t be made in this browser.',
     stagePageTitle: 'Stage',
     stageMemberHint: 'As the audience sees it: the back row at the top, the conductor in front. Of the others, you see only their section.',
     stageMemberHintS: 'As you see it facing the audience: the audience and the conductor at the top, the back row at the bottom. Of the others, you see only their section.',
@@ -2231,12 +2288,12 @@ const T = {
     offline: 'İnternete bağlanılamadı. Sayfa, bu cihazdaki son hâliyle açık.',
     pageUpdated: 'Şefiniz anketi değiştirdi, sayfa güncellendi.',
     restored: 'Değişiklikleriniz duruyor ama henüz gönderilmedi. Göndermeyi unutmayın.',
-    privacy: 'Kimin ne yanıt verdiğini, notlarınızı ve yorumunuzu yalnızca şefiniz görür. Diğer üyeler isim görmeden, her saatte kaç kişinin uygun ya da gerekirse uygun olduğunu (yeni ve değişen yanıtlar günde bir kez eklenir) ve yayımlanan her provaya her bölümden kaç kişinin gelebileceğini görür.',
+    privacy: 'Kimin ne yanıt verdiğini, notlarınızı ve yorumunuzu yalnızca şefiniz görür. Diğer üyeler isim görmeden, her saatte kaç kişinin uygun olduğunu ya da zorlansa da gelebileceğini (yeni ve değişen yanıtlar günde bir kez eklenir) ve yayımlanan her provaya her bölümden kaç kişinin gelebileceğini görür.',
     groupHint: 'Bir günü açınca, her saatte kaç kişinin uygun olduğunu görürsünüz. {n} kişinin yanıtına göre; sayılar her gece güncellenir, bugünkü yanıtlar yarın eklenir.',
     groupWait: 'Sizden başka en az {min} kişinin yanıtı sayılınca, açtığınız günde her saatte kaç kişinin uygun olduğu görünecek (şu an {n}). Sayılar her gece güncellenir.',
-    slotsHint: 'Saatlerin yanındaki kişi işareti ve sayı, o saatte kaç kişinin uygun olduğunu gösterir; + ile yazılan, gerekirse gelebilecekler. Dün geceye kadarki yanıtlara göre.',
+    slotsHint: 'Saatlerin yanındaki kişi işareti ve sayı, o saatte kaç kişinin uygun olduğunu gösterir; + ile yazılan, zorlansa da gelebilecekler. Dün geceye kadarki yanıtlara göre.',
     dayBest: 'Bu günün en uygun saatinde {dur} sürecek bir prova için {n} kişi gelebilir.',
-    slotFree: '{n} kişi uygun', slotMaybe: '{n} kişi gerekirse',
+    slotFree: '{n} kişi uygun', slotMaybe: '{n} kişi zorlansa da gelir',
     attTitle: 'Yanıtlara göre gelebilecek kişi sayısı', attNobody: 'henüz kimse yok',
     attHint: 'Sayılar anket yanıtlarına göre hesaplanır. Gelemeyecekseniz şefinize haber verin.',
     secS: 'Soprano', secMS: 'Mezzosoprano', secA: 'Alto', secT: 'Tenor', secBar: 'Bariton', secB: 'Bas',
@@ -2303,8 +2360,8 @@ const T = {
     stepTimes: 'Saatlerinizi işaretleyin',
     noneSelected: 'Önce takvimden bir gün seçin, sonra gelebileceğiniz saatleri burada işaretleyin.',
     timesForMany: '{n} gün için: {days}', andMore: '{list} ve {n} gün daha', prevDay: 'Önceki gün', nextDay: 'Sonraki gün',
-    paintWith: 'İşaretleme türü', toolFree: 'Uygunum', toolMaybe: 'Gerekirse', toolNone: 'Uygun değilim',
-    maybeHint: '“Gerekirse” işaretlediğiniz gün için gün notuna kısa bir neden yazın.',
+    paintWith: 'İşaretleme türü', toolFree: 'Uygunum', toolMaybe: 'Zorlar ama gelirim', toolNone: 'Uygun değilim',
+    maybeHint: '“Zorlar ama gelirim” işaretlediğiniz gün için gün notuna kısa bir neden yazın.',
     paintTouch: 'Saate dokunarak işaretleyin. Art arda birkaç saati işaretlemek için basılı tutup parmağınızı kaydırın.',
     paintMouse: 'Saate tıklayarak işaretleyin ya da basılı tutup sürükleyerek birkaç saati birden işaretleyin.',
     paintMany: 'Yaptığınız değişiklik seçili {n} günün hepsine uygulanır. Sadece birini değiştirmek istiyorsanız takvimde o güne dokunun.',
@@ -2312,20 +2369,20 @@ const T = {
     presetAll: 'Tüm gün', presetMorning: 'Sabah', presetAfternoon: 'Öğleden sonra', presetEvening: 'Akşam', presetClear: 'Saatleri temizle',
     mixedLegend: 'Çizgili satırlar: seçtiğiniz günlerde o saat farklı işaretlenmiş.',
     noteOne: 'Güne özel not', noteMany: 'Seçili günlere not', noteOptional: '(isteğe bağlı)', noteNeededTag: '(gerekli)',
-    noteNeeded: '“Gerekirse” işaretlediniz. Neye bağlı olduğunu kısaca yazar mısınız? İsterseniz aşağıdaki “Eklemek istedikleriniz” kutusuna da yazabilirsiniz.',
-    notePh: "Örneğin: 22.30'a kadar kalabilirim. Ya da işten geç çıkıyorum, 20.00'den önce yetişemem. Ya da gerekirse 23.00'e kadar zorlayabilirim.",
+    noteNeeded: '“Zorlar ama gelirim” işaretlediniz. Neye bağlı olduğunu kısaca yazar mısınız? İsterseniz aşağıdaki “Eklemek istedikleriniz” kutusuna da yazabilirsiniz.',
+    notePh: "Örneğin: 22.30'a kadar kalabilirim. Ya da işten geç çıkıyorum, 20.00'den önce yetişemem. Ya da 23.00'e kadar zorlayabilirim.",
     noteMixed: 'Seçili günlerin notları farklı. Buraya ne yazarsanız hepsinin notu o olur.',
-    stateFree: 'uygun', stateMaybe: 'gerekirse', stateNone: 'uygun değil', stateMix: 'günlere göre farklı',
+    stateFree: 'uygun', stateMaybe: 'zorlar ama gelirim', stateNone: 'uygun değil', stateMix: 'günlere göre farklı',
     stepComment: 'Eklemek istedikleriniz',
     commentPh: 'Bilmem gereken başka bir şey varsa buraya yazın. Örneğin: Ayın son haftası şehir dışındayım. Salı günleri XYZ korosuyla provalarım var. Ya da bütün çarşambaları uygunum.',
-    commentNeed: '“Gerekirse” dediğiniz günlerin açıklamasını gün notları yerine buraya da yazabilirsiniz.',
-    summary: 'Yanıtlarınız', summaryEmpty: 'Henüz bir gün işaretlemediniz.', noTimes: 'yalnızca not', ifNeededShort: 'gerekirse', needTag: 'açıklama gerekli',
+    commentNeed: '“Zorlar ama gelirim” dediğiniz günlerin açıklamasını gün notları yerine buraya da yazabilirsiniz.',
+    summary: 'Yanıtlarınız', summaryEmpty: 'Henüz bir gün işaretlemediniz.', noTimes: 'yalnızca not', ifNeededShort: 'zorlar ama gelir', maybeTimes: 'zorlar ama gelir: {t}', maybeTimesMine: 'zorlar ama gelirim: {t}', needTag: 'açıklama gerekli',
     save: 'Yanıtlarımı gönder', saveChanges: 'Değişiklikleri gönder', saving: 'Gönderiliyor…', saved: 'Gönderildi. Teşekkürler!',
     stUnsaved: 'Değişiklikler henüz gönderilmedi', stSaved: 'Hepsi gönderildi', stNew: 'Henüz gönderilmedi',
     stSavedS: 'Gönderildi · {n} gün', stNewS: 'Gönderilmedi · {n} gün', saveS: 'Gönder',
     needNotes: ({ n }) => (n === 1
-      ? '“Gerekirse” işaretlediğiniz bir gün için açıklama eksik. Gün notuna ya da “Eklemek istedikleriniz” kutusuna yazın.'
-      : '“Gerekirse” işaretlediğiniz ' + n + ' gün için açıklama eksik. Gün notlarına ya da bir kere “Eklemek istedikleriniz” kutusuna yazın.'),
+      ? '“Zorlar ama gelirim” işaretlediğiniz bir gün için açıklama eksik. Gün notuna ya da “Eklemek istedikleriniz” kutusuna yazın.'
+      : '“Zorlar ama gelirim” işaretlediğiniz ' + n + ' gün için açıklama eksik. Gün notlarına ya da bir kere “Eklemek istedikleriniz” kutusuna yazın.'),
     clearAll: 'Tüm takvimi temizle', clearAllAsk: 'Bütün günlerdeki saatler ve notlar silinsin mi? Adınız ve yorumunuz kalır.',
     clearAllYes: 'Evet, temizle', clearedToast: 'Takvim temizlendi. Göndermeden kesinleşmez.', undo: 'Geri al',
     daysMarked: ({ n }) => n + ' gün işaretli',
@@ -2522,7 +2579,7 @@ const T = {
     leadBandTitle: 'Bölüm şefi: {name}.', leadBandWhat: 'Bölümleriniz: {secs}.', leadBandHow: 'Nasıl işler?',
     leadBandHint: 'Burada açtığınız anketler yalnız bölümlerinizin üyelerine gider. Bölüm provaları grubun genel provalarıyla çakışamaz: önce genel provalar gelir. Sonradan sizinkilerden birinin saatine genel prova konursa sizinki takvimden kalkar ve yeniden yerleştirmeniz için taslağınızda kalır. Planlayıcı anketlerinizi görür ve kaldırabilir.',
     scopedTag: 'bölüm şefi {by}', scopedPollMember: 'Bu anketi bölüm şefiniz {name} açtı.',
-    privacyLead: 'Notlarınızı ve yorumunuzu yalnızca şefiniz görür. Bu ankette bölüm şefiniz de ({name}) adınızı ve saatlerinizi, uzakta olduğunuz günler ve gelemediğiniz saatlerle (notları olmadan), buluşmalarına verdiğiniz yanıtları (nedenleri olmadan) ve bu buluşmaların yoklamasını görür. Diğer üyeler isim görmeden, her saatte kaç kişinin uygun ya da gerekirse uygun olduğunu (yeni ve değişen yanıtlar günde bir kez eklenir) ve yayımlanan her buluşmaya her bölümden kaç kişinin gelebileceğini görür.',
+    privacyLead: 'Notlarınızı ve yorumunuzu yalnızca şefiniz görür. Bu ankette bölüm şefiniz de ({name}) adınızı ve saatlerinizi, uzakta olduğunuz günler ve gelemediğiniz saatlerle (notları olmadan), buluşmalarına verdiğiniz yanıtları (nedenleri olmadan) ve bu buluşmaların yoklamasını görür. Diğer üyeler isim görmeden, her saatte kaç kişinin uygun olduğunu ya da zorlansa da gelebileceğini (yeni ve değişen yanıtlar günde bir kez eklenir) ve yayımlanan her buluşmaya her bölümden kaç kişinin gelebileceğini görür.',
     bumpedToast: 'takvimden kalkan bölüm provası: {n} (Takvim sekmesinde)', attSavedKept: 'Kaydedildi. Bu arada başka bir yerde değişmiş olanlar olduğu gibi bırakıldı: {names}. Görmek için yeniden açın.', attGuestsWord: 'misafir sayısı',
     scopeCalls: 'Bölümleri değiştirmek, yayımlanmış buluşmaların kimleri çağırdığını da değiştirir ({what}). Önce bunları takvimden çıkarın ya da kimleri çağırdıklarını değiştirip yayımlayın; sonra bölümleri değiştirin.', genMarked: 'Genel provaların saatleri, orada ne işaretlemiş olursanız olun, bu ankette sayılmaz.',
     scopedPollIs: 'Bir bölüm şefinin anketi: {who}, açan {by}. Yalnız bu bölümlerin üyeleri görür; düzenleseniz de öyle kalır.',
@@ -2594,7 +2651,8 @@ const T = {
     songsHint: 'En çok 30 şarkı, her biri en çok 120 karakter.', songsTooMany: '30’dan fazla şarkı var: yalnızca ilk 30’u kaydedilir.', songsTooLong: '120 karakterden uzun şarkı adları kısaltılır.',
     saidPlaced: '{name}: {where}.', saidReplaced: '{name}: {where}. {other} listeye döndü.', saidSwapped: '{name} ile {other} yer değiştirdi.',
     saidOff: '{name} sahneden çıkarıldı.', saidCancelled: 'Seçim kaldırıldı.', stageKeys: 'Yerler arasında ok tuşlarıyla gezinin; Enter ile birini seçin ya da yerleştirin.',
-    exportReady: 'Resim hazır.',
+    exportReady: 'Resim hazır.', exportReadyN: 'Resimler hazır.', exportShareNo: 'Bu telefon bu kadar çok resmi bir arada paylaşamıyor: onun yerine indirildi.', exportShareNo1: 'Bu telefon resmi paylaşamıyor: onun yerine indirildi.',
+    exportPrintIos: 'iPhone’da ana ekrandan açtıysanız Yazdır açılmayabilir: Paylaş…’a, sonra Yazdır’a dokunun.',
     lineupsLabel: 'Dizilişler', lineupN: '{n}. diziliş', lineupAdd: 'Diziliş ekle', lineupRemove: 'Bu dizilişi kaldır', lineupFName: 'Dizilişin adı',
     lineupFSongs: 'Bu dizilişteki şarkılar (her satıra bir şarkı)', lineupSongsPh: 'Ave Maria\nÜsküdar’a Gider İken', lineupShape: 'Biçim',
     shapeStraight: 'Düz sıralar', shapeArc: 'Şefin çevresinde yay', lineupRows: 'Sıra sayısı',
@@ -2630,9 +2688,14 @@ const T = {
     cantNoDate: 'Tarih girip kaydederseniz, o gün gelemeyecek olanlar (uzakta olanlar ya da o günkü buluşmalara “Gelemiyorum” diyenler) sahnede işaretlenir.',
     cantHint: 'Bu tarihte gelemeyecek olanlar (uzakta olanlar ya da o günkü buluşmalara “Gelemiyorum” diyenler) sahnede işaretli.',
     cantAfterSave: 'Kaydettiğinizde, bu tarihte gelemeyecek olanlar sahnede işaretlenir.',
-    exportTitle: 'Resim', exportNames: 'Adlar', namesShort: 'Kısa (Ayşe D.)', namesFull: 'Tam', exportOne: 'Bu dizilişi indir', exportAll: 'Bütün dizilişleri tek resimde indir',
-    exportShare: 'Paylaş…', exportHint: 'Başlığı, şarkıları ve herkesin adını yerinde gösteren bir PNG; grubunuzla paylaşmaya hazır. Düzeni burada göründüğü gibi gösterir, kaydedilmiş olsun ya da olmasın.',
-    exportDone: 'Resim indirildi', exportFailed: 'Resim bu tarayıcıda hazırlanamadı.',
+    exportTitle: 'Resim ve çıktı', exportNames: 'Adlar', namesShort: 'Kısa (Ayşe D.)', namesFull: 'Tam',
+    exportPage: 'Sayfa', pageAuto: 'A4, sahneye göre', pagePortrait: 'A4 dikey', pageLandscape: 'A4 yatay',
+    exportWhat: 'Neler olsun', exportOneL: 'Bu diziliş ({name})', exportAllL: 'Bu planın {n} dizilişinin hepsi',
+    exportMore: 'Başka planlar da ({n})', exportMoreN: '{n} tanesi seçili',
+    exportMoreHint: 'Seçtiğiniz her plan, bütün dizilişleriyle ve son kaydedildiği hâliyle bu planın ardından gelir.',
+    exportPng: 'PNG indir', exportPrint: 'Yazdır…', exportFileMany: 'sahne planlari', pageOf: 'Sayfa {n} / {of}',
+    exportShare: 'Paylaş…', exportHint: 'Başlığı, şarkıları ve herkesin adını yerinde gösteren A4 sayfalar; bir sayfaya okunabildiği kadar diziliş sığar. Birden çok sayfa çıkarsa her sayfa ayrı bir PNG olur; Yazdır’da hepsini tek bir PDF olarak da kaydedebilirsiniz. Bu planı burada göründüğü gibi gösterir, kaydedilmiş olsun ya da olmasın.',
+    exportDone: 'Resim indirildi', exportDoneN: '{n} resim indirildi (tarayıcı sorarsa birden çok dosya indirmesine izin verin)', exportFailed: 'Resim bu tarayıcıda hazırlanamadı.',
     stagePageTitle: 'Sahne',
     stageMemberHint: 'Seyirciden bakınca: en arka sıra en üstte, şef önde. Diğerlerinin yalnızca bölümünü görürsünüz.',
     stageMemberHintS: 'Seyirciye dönük dururken gördüğünüz gibi: seyirci ve şef üstte, en arka sıra en altta. Diğerlerinin yalnızca bölümünü görürsünüz.',
@@ -2660,9 +2723,9 @@ const T = {
     trayTitle: 'Panoda olmayanlar', trayHint: 'Kişileri çizelgeye sürükleyin ya da taşımak için ada dokunun.', trayEmpty: 'Herkes panoda.',
     boardTitle: ({ n }) => 'Panoda (' + n + ')', boardEmpty: 'Ne zaman çakıştıklarını görmek için kişileri buraya bırakın.',
     addAll: 'Herkesi ekle', clearBoard: 'Panoyu temizle', chipAdd: 'Panoya ekle', chipRemove: 'Panodan çıkar', hasWords: 'yorumu ya da notu var',
-    heatTitle: 'Kim ne zaman uygun', legendMore: 'ne kadar yeşilse o kadar çok kişi uygun', legendAll: 'herkes uygun', allIn: 'tam kadro', legendTm: 'herkes, bazıları yalnızca gerekirse',
+    heatTitle: 'Kim ne zaman uygun', legendMore: 'ne kadar yeşilse o kadar çok kişi uygun', legendAll: 'herkes uygun', allIn: 'tam kadro', legendTm: 'herkes, bazıları zorlansa da',
     tapCell: 'O saatte kimin uygun olduğunu görmek için bir kareye dokunun.',
-    free: 'Uygun', ifNeeded: 'Gerekirse', notFree: 'Uygun değil', addHere: 'Buraya buluşma ekle',
+    free: 'Uygun', ifNeeded: 'Zorlar ama gelir', notFree: 'Uygun değil', addHere: 'Buraya buluşma ekle',
     jumpBest: 'En uygun zamanlara git ↓', bestTitle: 'En uygun zamanlar', length: 'Süre', canStart: '{a} ile {b} arasında başlayabilir', missing: 'Eksik', add: 'Taslağa ekle',
     noWindows: 'Panodaki kişilere uyan bir zaman yok.',
     minGapLabel: 'Aralık', daysN: 'en az {n} gün', addBoth: 'İkisini de taslağa ekle',
@@ -2689,7 +2752,7 @@ const T = {
     cancel: 'Vazgeç', savePoll: 'Anketi kaydet', createPoll: 'Anketi oluştur', deletePoll: 'Anketi sil',
     confirmDeletePoll: ({ n }) => 'Bu anket ve ' + n + ' yanıtı silinsin mi? Bu işlem geri alınamaz.',
     pollSaved: 'Anket kaydedildi', pollDeleted: 'Anket silindi', nowCurrent: 'Üyeler artık bu anketi görüyor', linkCopied: 'Üye bağlantısı kopyalandı',
-    csvName: 'Ad', csvUpdated: 'Güncellendi', csvDate: 'Tarih', csvDay: 'Gün', csvFree: 'Uygun', csvMaybe: 'Gerekirse', csvNote: 'Gün notu', csvComment: 'Yorum',
+    csvName: 'Ad', csvUpdated: 'Güncellendi', csvDate: 'Tarih', csvDay: 'Gün', csvFree: 'Uygun', csvMaybe: 'Zorlar ama gelir', csvNote: 'Gün notu', csvComment: 'Yorum',
     // Buluşmalara yanıtlar (üyeler)
     replyAsk: 'Geliyor musunuz?', replyYes: 'Geliyorum', replyPart: 'Kısmen', replyNo: 'Gelemiyorum',
     replyMine: 'Yanıtınız: {s}', replySending: 'Gönderiliyor…', replySaved: 'Yanıtınız iletildi', replyTaken: 'Yanıtınız geri alındı', replyNoteSaved: 'Notunuz iletildi',
@@ -2774,7 +2837,7 @@ const T = {
     addedSectional: ({ who }) => 'Taslağa ' + who + ' için bölüm provası olarak eklendi',
     rankLabel: 'Sıralama', rankBalance: 'en zayıf bölüm', rankCount: 'kişi sayısı',
     rankBalanceHint: 'En zayıf bölümün ne kadarının gelebildiğine göre sıralandı: her bölümün olduğu 10 kişi, tenorsuz 12 kişiden önce gelir.',
-    bySection: 'Bölümlere göre', reqMissing: 'Gerekli ama gelemiyor', reqMaybe: 'Gerekli, ancak gerekirse gelebilir',
+    bySection: 'Bölümlere göre', reqMissing: 'Gerekli ama gelemiyor', reqMaybe: 'Gerekli, zorlar ama gelir',
     setsTitle: 'Ayın buluşmaları', setsCount: 'Kaç tane', meetingsN: '{n} buluşma',
     setsNone: ({ n }) => n + ' buluşma bu aralıkla sığmıyor. Daha kısa bir aralık ya da daha az buluşma deneyin.', addThem: 'Hepsini taslağa ekle',
     reqLabel: 'Her buluşmada olması gerekenler:', reqNoAnswer: 'henüz yanıt vermedi', reqRemove: ({ name }) => name + ' listeden çıksın',
@@ -4446,7 +4509,7 @@ function renderTimes() {
   const bar = h('div', { class: 'times-bar' },
     sel.length === 1 ? dayNav(sel[0]) : h('p', { class: 'times-for' }, t('timesForMany', { n: sel.length, days: selLabel(sel) })));
   if (!ro) {
-    bar.append(h('div', { class: 'tools', role: 'group', 'aria-label': t('paintWith') },
+    bar.append(h('div', { class: 'tools paint', role: 'group', 'aria-label': t('paintWith') },
       [['2', 'free', 'toolFree'], ['1', 'maybe', 'toolMaybe'], ['0', 'none', 'toolNone']].map(x =>
         h('button', { type: 'button', class: 'tool', id: 'tool-' + x[0], 'aria-pressed': String(M.tool === x[0]), dataset: { v: x[0] },
           onclick: () => {
@@ -4454,10 +4517,10 @@ function renderTimes() {
             const mh = document.getElementById('maybe-hint');
             if (mh) mh.hidden = M.tool !== '1';
           } },
-          h('span', { class: 'sw ' + x[1], 'aria-hidden': 'true' }), t(x[2])))));
+          h('span', { class: 'sw ' + x[1], 'aria-hidden': 'true' }), h('span', { class: 'tool-w' }, t(x[2]))))));
   }
   el.append(bar);
-  // (From version 2026-10-r5.3: with Gerekirse picked, said before sending that such a day needs a reason.)
+  // (From version 2026-10-r5.3: with “Zorlar ama gelirim” (if needed) picked, said before sending that such a day needs a reason.)
   if (!ro) el.append(h('p', { class: 'hint maybe-hint', id: 'maybe-hint', hidden: M.tool !== '1' }, t('maybeHint')));
   const hol = sel.length === 1 ? holidayOn(sel[0]) : null;
   if (hol) el.append(h('p', { class: 'hol-line' }, holText(hol)));
@@ -4713,7 +4776,7 @@ function renderSummary() {
       h('button', { type: 'button', class: 'answer-day', onclick: () => { selectOnly(d); afterSelect(); R.timesStep.scrollIntoView({ behavior: smooth(), block: 'start' }); } }, dShort(d)),
       h('span', { class: 'answer-times' },
         free.length ? free.join(', ') : null,
-        maybe.length ? h('span', { class: 'maybe-text' }, (free.length ? ' · ' : '') + t('ifNeededShort') + ' ' + maybe.join(', ')) : null,
+        maybe.length ? h('span', { class: 'maybe-text' }, (free.length ? ' · ' : '') + t('maybeTimesMine', { t: maybe.join(', ') })) : null,
         !s ? h('span', { class: 'muted' }, t('noTimes')) : null,
         missing.indexOf(d) !== -1 ? h('span', { class: 'need-tag' }, t('needTag')) : null),
       note ? h('q', { class: 'answer-note' }, note) : null);
@@ -7842,7 +7905,7 @@ function profileFold(m) {
   return h('div', { class: 'stack-s prof-body' },
       h('p', { class: 'hint' }, t('profAdminHint')),
       h('p', { class: 'muted' }, h('span', { class: 'chip-s' + (pr.consent ? ' ok' : '') }, pr.consent ? t('profShared') : t('profNotShared')), ' ',
-        h('span', null, m.notice ? t('noticeReadAt', { ago: ago(m.notice) }) : t('noticeNotRead'))),
+        NOTICE_ON ? h('span', null, m.notice ? t('noticeReadAt', { ago: ago(m.notice) }) : t('noticeNotRead')) : null),
       h('div', { class: 'form-grid' },
         h('div', { class: 'field' }, h('label', { class: 'label', for: id + '-phone' }, t('profPhone')), inp('phone', 'tel', 40)),
         h('div', { class: 'field' }, h('label', { class: 'label', for: id + '-addr' }, t('profAddr')), inp('addr', 'text', 160)),
@@ -7971,7 +8034,7 @@ const histFolds = new Set();
 function histFold(r, p) {
   if (!acan('busy') || !Array.isArray(r.hist)) return null;
   const steps = r.hist.slice().reverse();
-  const times = s => { const free = rangesText(s, '2', p), maybe = rangesText(s, '1', p); return [free.join(', '), maybe.length ? t('ifNeededShort') + ' ' + maybe.join(', ') : ''].filter(Boolean).join(' · ') || t('histWasNone'); };
+  const times = s => { const free = rangesText(s, '2', p), maybe = rangesText(s, '1', p); return [free.join(', '), maybe.length ? t('maybeTimes', { t: maybe.join(', ') }) : ''].filter(Boolean).join(' · ') || t('histWasNone'); };
   return lazyFold({ class: 'hist-fold', open: histFolds.has(r.id) || null, ontoggle: e => { if (e.target.open) histFolds.add(r.id); else histFolds.delete(r.id); } },
     t('histChanges') + ' (' + steps.length + ')', () =>
     steps.length ? h('ul', { class: 'hist-steps' }, steps.map(x => h('li', null,
@@ -7997,7 +8060,7 @@ function miniCal(r, p) {
       const shut = allowed(p, d) && isClosed(p, d), s = shut ? '' : r.avail[d], ok = isOpen(p, d), note = r.notes && r.notes[d], hol = holidayOn(d);
       const off = ok ? awayOn(away, d) : null;   // away that day: hatched, and what they marked doesn't count
       const free = rangesText(s, '2', p), maybe = rangesText(s, '1', p);
-      const tip = dShort(d) + (hol ? ' (' + holText(hol) + ')' : '') + (shut ? ' · ' + t('closedDay') : '') + (off ? ' · ' + t('awayTag') + (off.note ? ': ' + off.note : '') : '') + (free.length ? ': ' + free.join(', ') : '') + (maybe.length ? ' · ' + t('ifNeededShort') + ' ' + maybe.join(', ') : '') + (note ? ' — ' + note : '');
+      const tip = dShort(d) + (hol ? ' (' + holText(hol) + ')' : '') + (shut ? ' · ' + t('closedDay') : '') + (off ? ' · ' + t('awayTag') + (off.note ? ': ' + off.note : '') : '') + (free.length ? ': ' + free.join(', ') : '') + (maybe.length ? ' · ' + t('maybeTimes', { t: maybe.join(', ') }) : '') + (note ? ' — ' + note : '');
       g.append(h('span', { class: 'md' + (ok ? '' : ' x') + (shut ? ' shut' : '') + (off ? ' away' : '') + (hol ? ' hol' : '') + (note ? ' n' : ''), title: tip }, h('b', null, String(+d.slice(8))), h('i', { style: s ? 'background:' + barGradient(s) : null })));
     }
     box.append(h('div', null, h('p', { class: 'mini-name' }, dMonth(mk + '-01')), g));
@@ -9060,7 +9123,7 @@ const MSG_TYPES = [
   { type: 'changeMsg', ph: ['poll', 'changes', 'link'], cap: 'changes' },
   { type: 'planMsg', ph: ['meeting', 'when', 'place', 'plan', 'times', 'note', 'link'], cap: 'plans' },
   // (The information notice: a long text with no fields, shown to members as it is.)
-  { type: 'kvkk', ph: [], cap: 'people', long: true },
+  ...(NOTICE_ON ? [{ type: 'kvkk', ph: [], cap: 'people', long: true }] : []),
   // (From version 2026-10-r5.1: a check-in, for the care list.)
   { type: 'careMsg', ph: ['name', 'link'], one: true, cap: 'places' },
   { type: 'careAppMsg', ph: ['name', 'link'], one: true, cap: 'places' }
@@ -10177,7 +10240,10 @@ function stageGeometry(lengths, shape, w, h, gap, rowGap) {
     for (const [px, py] of [[-hw, -hh], [hw, -hh], [hw, hh], [-hw, hh]]) take(s.x + px * c - py * sn, s.y + px * sn + py * c);
   }
   if (!isFinite(minY)) { minY = 0; maxY = h; }
-  const front = spots[0] || [], low = front.reduce((m, s) => Math.max(m, s.y + h / 2 + Math.abs(Math.sin(s.rot)) * w / 2), -Infinity);
+  // The conductor: in front of the places in the middle of the front row (on a long arc, inside its curve: the ends come
+  // further forward than the conductor, from version 2026-10-r5.5).
+  const all = spots[0] || [], near = all.filter(s => Math.abs(s.x) < w * 1.2), front = near.length ? near : all;
+  const low = front.reduce((m, s) => Math.max(m, s.y + h / 2 + Math.abs(Math.sin(s.rot)) * w / 2), -Infinity);
   const mid = front.length ? Math.max(...front.map(s => s.y)) : 0;
   const cond = { x: 0, y: Math.max(isFinite(low) ? low : 0, mid + h / 2) + rowGap + h * 0.55 };
   take(-w / 2, cond.y - h * 0.4); take(w / 2, cond.y + h * 0.5);
@@ -10196,41 +10262,115 @@ function bandPath(b) {
   return 'M' + p(b.r1, -b.half) + 'A' + b.r1 + ',' + b.r1 + ' 0 ' + big + ' 1 ' + p(b.r1, b.half) + 'L' + p(b.r0, b.half) +
     'A' + b.r0 + ',' + b.r0 + ' 0 ' + big + ' 0 ' + p(b.r0, -b.half) + 'Z';
 }
+// The sizes of the places (and of the gaps between them) for a drawing at most avail wide: as they are when they fit,
+// else smaller, down to min, each size shrinking with the others (from version 2026-10-r5.5, so that a row of up to 16
+// places fits a phone's width with no sliding). Nothing smaller than min: wider than that, the drawing slides.
+function fitSize(lengths, shape, size, min, avail) {
+  const at = k => size.map((v, j) => Math.max(min[j], v * k)), wide = k => stageGeometry(lengths, shape, ...at(k)).width;
+  if (!(avail > 0) || wide(1) <= avail) return size;
+  const k0 = Math.min(...size.map((v, j) => min[j] / v));   // (at k0 and below, every size is at its least)
+  if (wide(k0) > avail) return min;
+  let lo = k0, hi = 1;
+  for (let n = 0; n < 18; n++) { const k = (lo + hi) / 2; if (wide(k) <= avail) lo = k; else hi = k; }
+  return at(lo).map(v => Math.floor(v * 2) / 2);
+}
+// How much a place can hold at width w: all of it, smaller words, or the initials (on one line, or one under the other).
+const stageDensity = (w, small) => (small ? (w < 22 ? 'd4' : w < 30 ? 'd3' : '') : w < 72 ? 'd2' : '');
+// A short name on two lines, for a smaller place: "Ayşe" over "K.".
+function twoLines(label) {
+  const i = String(label).lastIndexOf(' ');
+  return i > 0 ? [label.slice(0, i), label.slice(i + 1)] : [String(label)];
+}
+// How narrow the editor's places may get: as wide as the widest first name's first word ("Ayşe" of "Ayşe Nur") or
+// surname's start on stage, in the small places' letters, never under 38 pixels nor over 72. What's longer ends in
+// "…" ("Ayşe N…"), so the name and the surname's initial always show, and pointing at a place shows the whole name.
+let measureCtx = null;
+function stageMinWidth(labels) {
+  if (!measureCtx) { try { measureCtx = document.createElement('canvas').getContext('2d'); } catch (e) { /* none */ } }
+  if (!measureCtx) return 64;
+  const body = getComputedStyle(document.documentElement).getPropertyValue('--font-body').trim() || 'serif';
+  measureCtx.font = '600 10.5px ' + body;
+  let most = 0;
+  for (const label of labels) for (const part of twoLines(label)) most = Math.max(most, measureCtx.measureText(part.indexOf(' ') > 0 ? part.split(' ')[0] + '…' : part).width);
+  // (A little more room while the page's own letters are still on their way: the fallback's are narrower or wider.)
+  const loose = document.fonts && document.fonts.status !== 'loaded' ? 1.12 : 1;
+  return Math.min(72, Math.max(38, Math.ceil(most * loose) + 6));
+}
 // The drawing, as page elements: risers, the places (made by cell(r, i)), the conductor and the audience.
 // o.label (and o.describedBy): the drawing's name for screen readers, without which it's hidden from them; o.small:
-// the members' view, round places that don't need turning; o.flip: as the singers see it (see singersView).
+// the members' view, round places that don't need turning; o.flip: as the singers see it (see singersView); o.min: the
+// smallest sizes the places may take to fit the width there is (see fitSize).
 function stageChart(lengths, shape, size, cell, o) {
   o = o || {};
-  const [w, hgt, gap, rowGap] = size, geo = stageGeometry(lengths, shape, w, hgt, gap, rowGap), flip = !!o.flip;
-  // Turned round for the singers: each point goes to the other side of the middle (a place stays upright).
-  const X = x => (flip ? geo.width - x : x), Y = y => (flip ? geo.height - y : y);
+  const flip = !!o.flip, min = o.min || size;
   const ns = 'http://www.w3.org/2000/svg', svg = document.createElementNS(ns, 'svg');
   svg.setAttribute('class', 'stage-bands'); svg.setAttribute('aria-hidden', 'true');
-  svg.setAttribute('width', geo.width); svg.setAttribute('height', geo.height); svg.setAttribute('viewBox', '0 0 ' + geo.width + ' ' + geo.height);
   const into = flip ? document.createElementNS(ns, 'g') : svg;
-  if (flip) { into.setAttribute('transform', 'rotate(180 ' + geo.width / 2 + ' ' + geo.height / 2 + ')'); svg.append(into); }
-  for (const b of geo.bands) { const path = document.createElementNS(ns, 'path'); path.setAttribute('d', bandPath(b)); into.append(path); }
-  const box = h('div', { class: 'stage-chart', style: 'width:' + Math.ceil(geo.width) + 'px;height:' + Math.ceil(geo.height) + 'px', role: o.label ? 'group' : null,
+  if (flip) svg.append(into);
+  const box = h('div', { class: 'stage-chart', role: o.label ? 'group' : null,
     'aria-label': o.label || null, 'aria-describedby': o.label && o.describedBy || null, 'aria-hidden': o.label ? null : 'true' }, svg);
   // In the page's order as drawn: the row at the top first (the back row, or the front one turned round), each
   // from the left.
-  const rows = geo.spots.map((x, r) => r);
+  const rows = lengths.map((x, r) => r), cells = lengths.map(() => []);
   if (!flip) rows.reverse();
   for (const r of rows) {
-    const places = geo.spots[r].map((x, i) => i);
+    const places = Array.from({ length: lengths[r] }, (x, i) => i);
     if (flip) places.reverse();
-    for (const i of places) {
-      const s = geo.spots[r][i], el = cell(r, i);
-      el.style.left = (X(s.x) - w / 2) + 'px'; el.style.top = (Y(s.y) - hgt / 2) + 'px'; el.style.width = w + 'px'; el.style.height = hgt + 'px';
-      if (s.rot && !o.small) el.style.transform = 'rotate(' + s.rot.toFixed(4) + 'rad)';
-      box.append(el);
-    }
+    for (const i of places) { const el = cell(r, i); cells[r][i] = el; box.append(el); }
   }
   // The conductor: a round mark, as wide as the word needs ("Şef", "Conductor").
-  const cr = Math.round(hgt * 0.42);
-  box.append(h('span', { class: 'stage-cond', 'aria-hidden': 'true', style: 'left:' + X(geo.cond.x) + 'px;top:' + (Y(geo.cond.y) - cr) + 'px;min-width:' + 2 * cr + 'px;height:' + 2 * cr + 'px;border-radius:' + cr + 'px;padding:0 ' + Math.round(cr * 0.5) + 'px' }, t('conductorMark')));
+  const cond = h('span', { class: 'stage-cond', 'aria-hidden': 'true' }, t('conductorMark'));
+  box.append(cond);
+  const scroll = h('div', { class: 'stage-scroll' }, box);
+  let was = '', wd = 0, room0 = 0;
+  // Everything placed for places of these sizes; avail: the width there is (none known yet: as large as they come).
+  const lay = avail => {
+    const sz = fitSize(lengths, shape, size, min, avail), key = sz.join(',');
+    if (key !== was) {
+      was = key;
+      const [w, hgt, gap, rowGap] = sz, geo = stageGeometry(lengths, shape, w, hgt, gap, rowGap);
+      wd = Math.ceil(geo.width);
+      // Turned round for the singers: each point goes to the other side of the middle (a place stays upright).
+      const X = x => (flip ? geo.width - x : x), Y = y => (flip ? geo.height - y : y);
+      svg.setAttribute('width', geo.width); svg.setAttribute('height', geo.height); svg.setAttribute('viewBox', '0 0 ' + geo.width + ' ' + geo.height);
+      if (flip) into.setAttribute('transform', 'rotate(180 ' + geo.width / 2 + ' ' + geo.height / 2 + ')');
+      while (into.firstChild) into.firstChild.remove();
+      for (const b of geo.bands) { const path = document.createElementNS(ns, 'path'); path.setAttribute('d', bandPath(b)); into.append(path); }
+      box.style.width = wd + 'px'; box.style.height = Math.ceil(geo.height) + 'px';
+      box.className = 'stage-chart' + (stageDensity(w, o.small) ? ' ' + stageDensity(w, o.small) : '');
+      geo.spots.forEach((row, r) => row.forEach((sp, i) => {
+        const el = cells[r][i];
+        el.style.left = (X(sp.x) - w / 2) + 'px'; el.style.top = (Y(sp.y) - hgt / 2) + 'px'; el.style.width = w + 'px'; el.style.height = hgt + 'px';
+        el.style.transform = sp.rot && !o.small ? 'rotate(' + sp.rot.toFixed(4) + 'rad)' : '';
+      }));
+      const cr = Math.round(hgt * 0.42);
+      cond.setAttribute('style', 'left:' + X(geo.cond.x) + 'px;top:' + (Y(geo.cond.y) - cr) + 'px;min-width:' + 2 * cr + 'px;height:' + 2 * cr + 'px;border-radius:' + cr + 'px;padding:0 ' + Math.round(cr * 0.5) + 'px');
+    }
+    // Only a drawing wider than the page slides, and only then is it a stop for the keyboard.
+    const over = !(avail > 0) || wd > avail + 1;
+    if (over) { scroll.setAttribute('tabindex', '0'); scroll.setAttribute('role', 'region'); scroll.setAttribute('aria-label', t('stageRegion')); }
+    else if (scroll.hasAttribute('tabindex')) {
+      // (The keyboard on the drawing when it stops sliding goes to its place that takes Tab, not to nowhere.)
+      const had = document.activeElement === scroll;
+      scroll.removeAttribute('tabindex'); scroll.removeAttribute('role'); scroll.removeAttribute('aria-label');
+      if (had) { const f = box.querySelector('[tabindex="0"]'); if (f) f.focus({ preventScroll: true }); }
+    }
+  };
+  lay(0);
+  const room = () => scroll.clientWidth - 4;   // (less the padding)
+  if (typeof ResizeObserver === 'function') {
+    // (A little more width is taken only when it's more than a scroll bar's: a drawing that grows can bring the
+    // page's scroll bar, which takes the width away again, and so on.)
+    const ro = new ResizeObserver(() => {
+      if (!scroll.isConnected) { ro.disconnect(); return; }
+      const r = room();
+      if (!scroll.clientWidth || (room0 && r > room0 && r - room0 < 24 && was !== size.join(',') && wd <= room0 + 1)) return;
+      room0 = r; lay(r);
+    });
+    ro.observe(scroll);
+  } else requestAnimationFrame(() => { if (scroll.clientWidth) lay(room()); });
   const aud = h('p', { class: 'stage-aud' + (flip ? ' aud-top' : ''), 'aria-hidden': 'true' }, t('audience'));
-  return h('div', { class: 'stage-fig' + (o.small ? ' small' : '') + (flip ? ' flip' : '') }, flip ? aud : null, h('div', { class: 'stage-scroll', tabindex: '0', role: 'region', 'aria-label': t('stageRegion') }, box), flip ? null : aud);
+  return h('div', { class: 'stage-fig' + (o.small ? ' small' : '') + (flip ? ' flip' : '') }, flip ? aud : null, scroll, flip ? null : aud);
 }
 // The stage as the audience (and the conductor) sees it, the back row at the top; or as the singers do, facing the
 // audience: turned round, the audience and the conductor at the top, left and right as theirs. Each device keeps
@@ -10264,7 +10404,7 @@ const rowName = (r, n, lang) => t('rowLabel', { n: r + 1 }, lang) + (n > 1 && r 
 // focus: the place the arrow keys move from.
 const freshStage = () => ({ list: null, members: [], loading: false, error: null, gid: '', edit: null, li: 0, pick: null, dirty: false, busy: false, ask: false, how: 'cols',
   names: store.get('provala-stage-names') === 'full' ? 'full' : 'short', delAsk: '', rev: 0, conflict: '', note: '', focus: null, exporting: false,
-  cant: {}, hideCant: false });
+  cant: {}, hideCant: false, xp: 'one', xpMore: [] });
 function buildStageTab() {
   const st = A.stage;
   R.stage = h('div', { class: 'stage-tab stack' });
@@ -10804,7 +10944,8 @@ function stageBoard(l, g, byId) {
       ondragover: e => { if (blk) return; e.preventDefault(); el.classList.add('over'); },
       ondragleave: () => el.classList.remove('over'),
       ondrop: e => { e.preventDefault(); const v = e.dataTransfer.getData('text/plain'); if (v.indexOf('m:') === 0) { A.stage.pick = { m: v.slice(2) }; tapSpot(r, i); } }
-    }, m ? [h('span', { class: 'sp-sec', 'aria-hidden': 'true' }, secAbbr(g, sid)), nameLines(m, 'short', labels).map(x => h('span', { class: 'sp-name' }, x))]
+    }, m ? [h('span', { class: 'sp-sec', 'aria-hidden': 'true' }, secAbbr(g, sid)), nameLines(m, 'short', labels).map(x => h('span', { class: 'sp-name' }, x)),
+        h('span', { class: 'sp-two', 'aria-hidden': 'true' }, twoLines(nameLines(m, 'short', labels)[0]).map(x => h('span', null, x)))]
       : blk ? h('span', { class: 'sp-block' }, blockText(id) || t('spotBlocked'))
       : h('span', { class: 'sp-plus', 'aria-hidden': 'true' }, '+'));
     return el;
@@ -10813,7 +10954,7 @@ function stageBoard(l, g, byId) {
     pickBar(l, byId),
     viewSwitch('st-view', stageRedraw),
     h('p', { class: 'visually-hidden', id: 'st-keys' }, t('stageKeys')),
-    stageChart(l.rows.map(r => r.length), l.shape, [96, 50, 8, 14], cell, { label: flip ? t('stageChartLabelS') : t('stageChartLabel'), describedBy: 'st-keys', flip }),
+    stageChart(l.rows.map(r => r.length), l.shape, [96, 50, 8, 14], cell, { label: flip ? t('stageChartLabelS') : t('stageChartLabel'), describedBy: 'st-keys', flip, min: [stageMinWidth([].concat(...l.rows).filter(id => isPerson(id) && byId.has(id)).map(id => nameLines(byId.get(id), 'short', labels)[0])), 42, 2, 8] }),
     stageLegend(g, l, byId));
 }
 // Above the stage: what to do next, for whoever or whatever place is picked.
@@ -10992,57 +11133,167 @@ async function saveStage(mode) {
   if (st.conflict && st.edit === d) focusId('st-conflict');
 }
 
-/* ---------- The picture: the lineups drawn on parchment, names and all, to share in the group's chat. */
+/* ---------- The picture: the lineups drawn on parchment, names and all, to share in the group's chat; from version
+   2026-10-r5.5 on A4 pages (upright or on their side, whichever suits the stage), to print as well, and with other plans
+   of the planner's beside this one if wanted. */
+const XP_PAGES = ['auto', 'portrait', 'landscape'];
+const xpPage = () => { const v = store.get('provala-stage-page'); return XP_PAGES.indexOf(v) > 0 ? v : 'auto'; };
+// The plans that can go with this one: the others saved, of groups still there, with a lineup or more.
+// (By date, the undated last, as they go in.)
+const xpOthers = d => (A.stage.list || []).filter(p => p.id !== d.id && adminGmap()[p.group] && Array.isArray(p.lineups) && p.lineups.length)
+  .sort((a, b) => (a.date || '9999').localeCompare(b.date || '9999') || String(a.title).localeCompare(String(b.title), LOC[S.lang]));
+const xpCount = () => (A.stage.xpMore.length ? t('exportMoreN', { n: A.stage.xpMore.length }) : '');
 function stageExport() {
-  const st = A.stage, canShare = typeof navigator.canShare === 'function' && typeof File === 'function';
+  const st = A.stage, d = st.edit, many = d.lineups.length > 1, others = xpOthers(d), manyGroups = stageGroups().length > 1;
+  const canShare = typeof navigator.canShare === 'function' && typeof File === 'function';
+  st.xpMore = st.xpMore.filter(id => others.some(p => p.id === id));
+  const radio = (v, label) => h('label', { class: 'switch-row' }, h('input', { type: 'radio', name: 'st-what', id: 'st-what-' + v, checked: (st.xp === 'all') === (v === 'all'),
+    onchange: () => { st.xp = v; } }), label);
+  const tick = p => h('li', null, h('label', { class: 'switch-row xp-plan' },
+    h('input', { type: 'checkbox', id: 'st-xp-' + p.id, checked: st.xpMore.indexOf(p.id) !== -1, onchange: e => {
+      st.xpMore = st.xpMore.filter(x => x !== p.id);
+      if (e.target.checked) st.xpMore.push(p.id);
+      const c = document.getElementById('st-xp-n');
+      if (c) c.textContent = xpCount();
+    } }),
+    h('span', null, h('strong', null, p.title), ' ', h('span', { class: 'muted' },
+      [manyGroups ? groupName(adminGmap()[p.group]) : '', p.date ? dFull(p.date) : '', t('stageCount', { n: p.lineups.length })].filter(Boolean).join(' · ')))));
   return h('div', { class: 'stage-export' },
     h('h3', null, t('exportTitle')),
     h('div', { class: 'actions' },
       h('label', { class: 'inline-field', for: 'st-names' }, t('exportNames'),
         selectEl('st-names', [['short', t('namesShort')], ['full', t('namesFull')]], st.names, v => { st.names = v === 'full' ? 'full' : 'short'; store.set('provala-stage-names', st.names); }, { class: 'select' })),
-      h('button', { type: 'button', class: 'btn', id: 'st-png', onclick: () => exportStage([st.li], false) }, t('exportOne')),
-      st.edit.lineups.length > 1 ? h('button', { type: 'button', class: 'btn', id: 'st-png-all', onclick: () => exportStage(st.edit.lineups.map((x, i) => i), false) }, t('exportAll')) : null,
-      canShare ? h('button', { type: 'button', class: 'btn', id: 'st-share', onclick: () => exportStage([st.li], true) }, t('exportShare')) : null),
-    h('p', { class: 'hint' }, t('exportHint')));
+      h('label', { class: 'inline-field', for: 'st-page' }, t('exportPage'),
+        selectEl('st-page', [['auto', t('pageAuto')], ['portrait', t('pagePortrait')], ['landscape', t('pageLandscape')]], xpPage(), v => {
+          if (v === 'portrait' || v === 'landscape') store.set('provala-stage-page', v); else store.del('provala-stage-page');
+        }, { class: 'select' }))),
+    many ? h('fieldset', { class: 'xp-what' }, h('legend', { class: 'label' }, t('exportWhat')),
+      h('div', { class: 'ride-kinds' }, radio('one', t('exportOneL', { name: lineupName(curLineup(), st.li) })), radio('all', t('exportAllL', { n: d.lineups.length })))) : null,
+    others.length ? h('details', { class: 'xp-more', open: st.xpMore.length > 0 || null },
+      h('summary', null, t('exportMore', { n: others.length }), ' ', h('span', { class: 'muted', id: 'st-xp-n' }, xpCount())),
+      h('p', { class: 'hint' }, t('exportMoreHint')),
+      h('ul', { class: 'xp-list' }, others.map(tick))) : null,
+    h('div', { class: 'actions' },
+      h('button', { type: 'button', class: 'btn', id: 'st-png', onclick: () => exportStage('png') }, t('exportPng')),
+      h('button', { type: 'button', class: 'btn', id: 'st-print', onclick: () => exportStage('print') }, t('exportPrint')),
+      canShare ? h('button', { type: 'button', class: 'btn', id: 'st-share', onclick: () => exportStage('share') }, t('exportShare')) : null),
+    h('p', { class: 'hint' }, t('exportHint')),
+    navigator.standalone === true ? h('p', { class: 'hint' }, t('exportPrintIos')) : null);
+}
+// What goes in, in order: this lineup (or all of this plan's, as it is here, saved or not), then each plan ticked.
+function xpItems() {
+  const st = A.stage, d = st.edit, items = (st.xp === 'all' && d.lineups.length > 1 ? d.lineups.map((l, i) => i) : [st.li]).map(i => ({ plan: d, i }));
+  const more = xpOthers(d).filter(p => st.xpMore.indexOf(p.id) !== -1);
+  for (const p of more) p.lineups.forEach((l, i) => items.push({ plan: p, i }));
+  return items;
 }
 const fileSlug = s => (String(s).toLocaleLowerCase('tr-TR').replace(/[çğıöşü]/g, c => ({ ç: 'c', ğ: 'g', ı: 'i', ö: 'o', ş: 's', ü: 'u' }[c]))
   .normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'sahne');
-async function exportStage(idxs, share) {
+// how: 'png' (downloaded, a file a page), 'share' (the phone's share sheet) or 'print' (the browser's printing, every
+// page on its own sheet; "Save as PDF" there makes one file of them all).
+async function exportStage(how) {
   const st = A.stage, d = st.edit;
-  if (st.exporting) return;   // a second tap while the picture is still being drawn
+  if (st.exporting) return;   // a second tap while the pictures are still being drawn
   st.exporting = true;
   try {
-    const canvas = await drawStage(d, idxs, st.names);
-    const blob = await new Promise(res => canvas.toBlob(res, 'image/png'));
-    canvas.width = canvas.height = 0;   // phones hold on to canvas memory until it is given back
-    if (!blob) throw new Error('no image');
-    const name = fileSlug(d.title + (idxs.length === 1 && d.lineups.length > 1 ? ' ' + lineupName(d.lineups[idxs[0]], idxs[0]) : '')) + '.png';
-    if (share) {
-      const file = new File([blob], name, { type: 'image/png' });
-      if (navigator.canShare({ files: [file] })) {
-        try { await navigator.share({ files: [file], title: d.title }); return; }
+    const items = xpItems(), more = items.some(x => x.plan !== d), print = how === 'print';
+    const pages = await stagePages(items, xpPage(), st.names);
+    // Printed, every sheet is upright: pages on their side are turned, unless all of them are (then the printer is
+    // told so).
+    const allSide = pages.every(pg => pg.land);
+    const blobs = [];
+    for (let k = 0; k < pages.length; k++) {
+      let cv = drawStagePage(pages[k], k, pages.length, st.names, print);
+      if (print && pages[k].land && !allSide) cv = turnCanvas(cv);
+      const blob = await new Promise(res => cv.toBlob(res, 'image/png'));
+      cv.width = cv.height = 0;   // phones hold on to canvas memory until it is given back
+      if (!blob) throw new Error('no image');
+      blobs.push(blob);
+    }
+    if (print) { await printPages(blobs, allSide); return; }   // (a second tap meanwhile is the same print)
+    const base = fileSlug(more ? t('exportFileMany') : d.title + (items.length === 1 && d.lineups.length > 1 ? ' ' + lineupName(d.lineups[items[0].i], items[0].i) : ''));
+    const names = blobs.map((b, k) => base + (blobs.length > 1 ? '-' + (k + 1) : '') + '.png');
+    if (how === 'share') {
+      const files = blobs.map((b, k) => new File([b], names[k], { type: 'image/png' }));
+      if (navigator.canShare({ files })) {
+        try { await navigator.share({ files, title: d.title }); return; }
         catch (e) {
           if (e && e.name === 'AbortError') return;   // the share sheet was closed
-          // A big picture can take long enough for the phone to forget the tap: one more tap shares it at once.
-          toast(t('exportReady'), { action: { label: t('exportShare'), fn: () => {
-            navigator.share({ files: [file], title: d.title }).catch(x => { if (!x || x.name !== 'AbortError') { downloadBlob(name, blob); toast(t('exportDone')); } });
+          // Big pictures can take long enough for the phone to forget the tap: one more tap shares them at once.
+          toast(t(files.length > 1 ? 'exportReadyN' : 'exportReady'), { action: { label: t('exportShare'), fn: () => {
+            navigator.share({ files, title: d.title }).catch(x => { if (!x || x.name !== 'AbortError') { saveAll(names, blobs); } });
           } } });
           return;
         }
       }
+      await saveAll(names, blobs, true);
+      return;
     }
-    downloadBlob(name, blob);
-    toast(t('exportDone'));
+    await saveAll(names, blobs);
   } catch (e) {
     toast(t('exportFailed'), { error: true });
   } finally {
     st.exporting = false;
   }
 }
+// (unshared: asked to share, which this phone can't for these: said so.)
+async function saveAll(names, blobs, unshared) {
+  for (let k = 0; k < blobs.length; k++) { if (k) await sleep(450); downloadBlob(names[k], blobs[k]); }
+  toast(unshared ? t(blobs.length > 1 ? 'exportShareNo' : 'exportShareNo1') : blobs.length > 1 ? t('exportDoneN', { n: blobs.length }) : t('exportDone'));
+}
 function downloadBlob(name, blob) {
   const url = URL.createObjectURL(blob), a = h('a', { href: url, download: name });
   document.body.append(a); a.click(); a.remove();
   setTimeout(() => URL.revokeObjectURL(url), 60000);   // iPhones ask where to save first; the picture must still be there
+}
+// A page on its side, turned upright (a quarter turn to the right) for printing.
+function turnCanvas(cv) {
+  const out = document.createElement('canvas');
+  out.width = cv.height; out.height = cv.width;
+  const ctx = out.getContext('2d');
+  ctx.translate(out.width, 0); ctx.rotate(Math.PI / 2); ctx.drawImage(cv, 0, 0);
+  cv.width = cv.height = 0;
+  return out;
+}
+// Printing: the pages, one a sheet of A4, and nothing else of the page; taken away once printed (or at the next print).
+let printUndo = null;   // the last print's clean-up, until it's done
+function printPages(blobs, side) {
+  if (printUndo) printUndo();
+  const urls = blobs.map(b => URL.createObjectURL(b));
+  const imgs = urls.map(u => h('img', { src: u, alt: '' }));
+  const box = h('div', { id: 'print-pages', 'aria-hidden': 'true', dataset: { side: side ? '1' : '' } },
+    h('style', null, '@page { size: A4 ' + (side ? 'landscape' : 'portrait') + '; margin: 8mm; }'), imgs);
+  document.body.append(box);
+  document.documentElement.classList.add('printing');
+  // Taken away at the first tap, key or look back at the page after printing: never during it (some phones say it's
+  // printed while still drawing the sheets), and never left for the browser's own Print to print again. Each print
+  // cleans up only its own, once.
+  let gone = false, timer = 0, mine = true;
+  const done = () => {
+    if (gone) return;
+    gone = true; clearTimeout(timer);
+    for (const ev of ['pointerdown', 'keydown']) document.removeEventListener(ev, done, true);
+    document.removeEventListener('visibilitychange', seen);
+    window.removeEventListener('afterprint', printed);
+    window.removeEventListener('beforeprint', other);
+    if (printUndo === done) { printUndo = null; document.documentElement.classList.remove('printing'); }
+    urls.forEach(u => URL.revokeObjectURL(u)); box.remove();
+  };
+  const seen = () => { if (document.visibilityState === 'visible') { clearTimeout(timer); timer = setTimeout(done, 1500); } };
+  const later = () => setTimeout(() => { if (!gone) for (const ev of ['pointerdown', 'keydown']) document.addEventListener(ev, done, true); }, 0);
+  // (Once this print is over, the browser's own Print prints the page as it is, not these pages.)
+  const printed = () => { mine = false; later(); };
+  const other = () => { if (!mine) done(); };
+  printUndo = done;
+  return Promise.all(imgs.map(i => (i.decode ? i.decode().catch(() => null) : null))).then(() => {
+    if (gone) return;
+    window.addEventListener('afterprint', printed);
+    window.addEventListener('beforeprint', other);
+    try { window.print(); } catch (e) { done(); throw e; }
+    // (Where printing doesn't wait, the page goes on at once: the next tap or key after this one cleans up too.)
+    later();
+    document.addEventListener('visibilitychange', seen);
+  });
 }
 // Section colours by day (the picture is always on parchment); see the CSS tokens --sec-0… for the page itself.
 const SEC_HUES = ['#2a78d6', '#eb6834', '#1baf7a', '#eda100', '#e87ba4', '#008300', '#6250d6', '#e34948'];
@@ -11062,164 +11313,247 @@ function roundRect(ctx, x, y, w, h, r) {
   ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r);
   ctx.closePath();
 }
-async function drawStage(plan, idxs, style) {
-  const FONT = '"Vollkorn Figures", "Vollkorn", Georgia, serif', lang = S.lang;   // lining figures, as on the page
-  try { await Promise.all(['700 34px ', '600 18px ', 'italic 400 19px '].map(f => document.fonts.load(f + FONT, 'Aa1'))); } catch (e) { /* the system serif then */ }
-  const g = adminGmap()[plan.group] || MAIN_GROUP(), byId = new Map(A.stage.members.map(m => [m.id, m])), flip = singersView();
-  const lead = A.stage.members.find(m => isLead(m) && inGroup(m, plan.group));
-  const labels = shortNames(stageMembers(plan.group), lang), marks = secMarks(g, lang);
-  const W = 150, H = 64, GAP = 10, RG = 18, PAD = 56;
-  const blocks = idxs.map(i => ({ l: plan.lineups[i], i, geo: stageGeometry(plan.lineups[i].rows.map(r => r.length), plan.lineups[i].shape, W, H, GAP, RG) }));
-  const inner = Math.max(880, ...blocks.map(b => b.geo.width));
-  const probe = document.createElement('canvas').getContext('2d');
-  for (const b of blocks) {
-    probe.font = 'italic 400 19px ' + FONT;
-    const songs = b.l.songs.map(s => s.trim()).filter(Boolean);
-    b.songs = songs.length ? wrapText(probe, t('stageSongs', null, lang) + ': ' + songs.join(' · '), inner) : [];
-    // The legend: each section's colour and mark, and how many stand in this lineup, in lines as wide as the picture.
+// The page, in CSS pixels of an A4 sheet (96 to the inch): upright 794 × 1123, on its side 1123 × 794; a margin of
+// about 13 mm, and a line at the foot for the page's number. Drawn 2.5 times as fine (240 dots to the inch).
+const PAGE = { short: 794, long: 1123, margin: 48, foot: 22, dpr: 2.5 };
+// A place on paper as it comes (118 × 52, the gaps 8 and 14), and the least it may shrink to and still be read
+// (50 wide, the name in 10-pixel letters, about 7.5 points); a stage wider than that on the page is drawn smaller.
+const PSIZE = [118, 52, 8, 14], PMIN = [50, 40, 3, 7];
+const psize = k => PSIZE.map((v, j) => Math.max(PMIN[j], v * k));
+const PK0 = Math.min(...PSIZE.map((v, j) => PMIN[j] / v));
+const XP_FONT = '"Vollkorn Figures", "Vollkorn", Georgia, serif';   // lining figures, as on the page
+// The pages: the lineups in order, as many on a page as fit at a size that can be read, each page upright or on its
+// side as asked (auto: whichever needs nothing drawn smaller than can be read, then holds more, then draws larger). Each block: the lineup, the place's
+// sizes, how much smaller it's drawn when even the least places don't fit, and its lines of songs and legend.
+async function stagePages(items, mode, style) {
+  try { await Promise.all(['700 24px ', '600 14px ', 'italic 400 13px '].map(f => document.fonts.load(f + XP_FONT, 'Aa1'))); } catch (e) { /* the system serif then */ }
+  const lang = S.lang, probe = document.createElement('canvas').getContext('2d'), byId = new Map(A.stage.members.map(m => [m.id, m]));
+  const base = items.map(it => {
+    const l = it.plan.lineups[it.i], g = adminGmap()[it.plan.group] || MAIN_GROUP(), marks = secMarks(g, lang);
     const n = {}, closed = [];
-    for (const row of b.l.rows) for (const id of row) {
+    for (const row of l.rows) for (const id of row) {
       if (isBlocked(id)) { closed.push(id); continue; }
       const m = id && byId.get(id);
       if (m) { const k = sectionOf(m, g); n[k] = (n[k] || 0) + 1; }
     }
-    const items = g.sections.filter(z => n[z.id]).map(z => ({ slot: secSlot(g, z.id), mark: marks.get(z.id) || '', label: secName(z, lang) + ' (' + n[z.id] + ')' }));
-    if (n['']) items.push({ slot: -1, mark: '', label: t('partNone', null, lang) + ' (' + n[''] + ')' });
-    if (closed.length) items.push({ slot: -2, mark: '', label: blockedLegend(closed, lang) });
-    b.legend = [];
-    let lx = 0;
-    for (const it of items) {
-      probe.font = '700 12px ' + FONT; it.sw = Math.max(26, probe.measureText(it.mark).width + 12);
-      probe.font = '400 17px ' + FONT; it.w = it.sw + 8 + probe.measureText(it.label).width;
-      if (!b.legend.length || (lx && lx + it.w > inner)) { b.legend.push([]); lx = 0; }
-      b.legend[b.legend.length - 1].push(it); lx += it.w + 22;
+    const legend = g.sections.filter(z => n[z.id]).map(z => ({ slot: secSlot(g, z.id), mark: marks.get(z.id) || '', label: secName(z, lang) + ' (' + n[z.id] + ')' }));
+    if (n['']) legend.push({ slot: -1, mark: '', label: t('partNone', null, lang) + ' (' + n[''] + ')' });
+    if (closed.length) legend.push({ slot: -2, mark: '', label: blockedLegend(closed, lang) });
+    for (const it2 of legend) {
+      probe.font = '700 10px ' + XP_FONT; it2.sw = Math.max(22, probe.measureText(it2.mark).width + 10);
+      probe.font = '400 12.5px ' + XP_FONT; it2.w = it2.sw + 6 + probe.measureText(it2.label).width;
     }
+    return { plan: it.plan, i: it.i, l, g, legend: legend, lengths: l.rows.map(r => r.length), songs: l.songs.map(s => s.trim()).filter(Boolean) };
+  });
+  // The text of a block for a page this wide: songs and legend in lines.
+  const texts = (b, cw) => {
+    probe.font = 'italic 400 13px ' + XP_FONT;
+    const songs = b.songs.length ? wrapText(probe, t('stageSongs', null, lang) + ': ' + b.songs.join(' · '), cw) : [];
+    const legend = [];
+    let lx = 0;
+    for (const it of b.legend) {
+      if (!legend.length || (lx && lx + it.w > cw)) { legend.push([]); lx = 0; }
+      legend[legend.length - 1].push(it); lx += it.w + 16;
+    }
+    return { songs, legendLines: legend };
+  };
+  const geoAt = (b, k) => stageGeometry(b.lengths, b.l.shape, ...psize(k));
+  // The largest size (up to as it comes) at which the stage fits the width; at the least, how much smaller it's drawn.
+  const fitW = (b, cw) => {
+    if (geoAt(b, 1).width <= cw) return { k: 1, zoom: 1 };
+    const w0 = geoAt(b, PK0).width;
+    if (w0 > cw) return { k: PK0, zoom: cw / w0 };
+    let lo = PK0, hi = 1;
+    for (let n = 0; n < 16; n++) { const k = (lo + hi) / 2; if (geoAt(b, k).width <= cw) lo = k; else hi = k; }
+    return { k: lo, zoom: 1 };
+  };
+  const textH = (x, head) => (head ? 58 : 0) + 24 + x.songs.length * 18 + (x.songs.length ? 4 : 0) + 6 + 24 + 6 + Math.max(1, x.legendLines.length) * 22 + 18;
+  // A page of these blocks (from s on), as many as fit: their sizes, made smaller together (down to the least) when
+  // they don't fit as they come.
+  const fill = (s, side) => {
+    const cw = (side ? PAGE.long : PAGE.short) - 2 * PAGE.margin, ch = (side ? PAGE.short : PAGE.long) - 2 * PAGE.margin - PAGE.foot;
+    let best = null;
+    for (let e = s; e < base.length; e++) {
+      const bl = base.slice(s, e + 1).map((b, j, arr) => Object.assign({}, b, texts(b, cw), fitW(b, cw), { head: j === 0 || arr[j - 1].plan !== b.plan }));
+      // (A stage drawn smaller than can be read has its page to itself.)
+      if (e > s && bl.some(b => b.zoom < 1)) break;
+      const total = c => bl.reduce((n, b) => n + textH(b, b.head) + geoAt(b, Math.min(b.k, c)).height * b.zoom, 0);
+      let cap = 1;
+      if (total(1) > ch) {
+        if (total(PK0) > ch) {
+          if (e > s) break;
+          // One lineup too tall for the page even at the least: drawn smaller to fit.
+          const b = bl[0], g0 = geoAt(b, PK0);
+          b.k = PK0; b.zoom = Math.min(b.zoom, Math.max(0.2, (ch - textH(b, b.head)) / g0.height));
+          best = { land: side, blocks: bl };
+          break;
+        }
+        let lo = PK0, hi = 1;
+        for (let n = 0; n < 16; n++) { const c = (lo + hi) / 2; if (total(c) <= ch) lo = c; else hi = c; }
+        cap = lo;
+      }
+      for (const b of bl) b.k = Math.min(b.k, cap);
+      best = { land: side, blocks: bl };
+    }
+    for (const b of best.blocks) b.geo = geoAt(b, b.k);
+    best.size = best.blocks.reduce((n, b) => n + psize(b.k)[0] * b.zoom, 0);
+    best.small = best.blocks.some(b => b.zoom < 1);
+    return best;
+  };
+  const pages = [];
+  for (let s = 0; s < base.length;) {
+    const tries = (mode === 'auto' ? [false, true] : [mode === 'landscape']).map(side => fill(s, side));
+    // Better: a page where everything can be read; then one with more on it; then larger.
+    const better = (b, a) => (b.small !== a.small ? !b.small : b.blocks.length !== a.blocks.length ? b.blocks.length > a.blocks.length : b.size > a.size * 1.03);
+    const pick = tries.reduce((a, b) => (better(b, a) ? b : a));
+    pages.push(pick);
+    s += pick.blocks.length;
   }
-  const headH = 48 + 30 + 18;
-  const blockH = b => 40 + b.songs.length * 26 + 14 + b.geo.height + 34 + Math.max(1, b.legend.length) * 30 + 10 + 24;
-  const total = PAD + headH + blocks.reduce((n, b) => n + blockH(b), 0) + 24 + PAD;
-  // Sharp on phones (2×), but never bigger than an iPhone will draw: it refuses canvases over about 16.7 million pixels.
-  const scale = Math.min(2, 4096 / (inner + 2 * PAD), 8000 / total, Math.sqrt(16e6 / ((inner + 2 * PAD) * total)));
+  return pages;
+}
+// One page drawn: on parchment in a gold double frame (on white for printing, the frame kept).
+function drawStagePage(page, pageNo, pages, style, print) {
+  const lang = S.lang, flip = singersView(), side = page.land, FONT = XP_FONT;
+  const PW = side ? PAGE.long : PAGE.short, PH = side ? PAGE.short : PAGE.long, M = PAGE.margin, cw = PW - 2 * M;
   const cv = document.createElement('canvas');
-  cv.width = Math.round((inner + 2 * PAD) * scale); cv.height = Math.round(total * scale);
+  cv.width = Math.round(PW * PAGE.dpr); cv.height = Math.round(PH * PAGE.dpr);
   const ctx = cv.getContext('2d');
-  ctx.scale(scale, scale);
-  const fullW = inner + 2 * PAD;
-  // Parchment, in a gold double frame.
-  ctx.fillStyle = '#f2e5c6'; ctx.fillRect(0, 0, fullW, total);
-  ctx.strokeStyle = '#7a5c22'; ctx.lineWidth = 3; ctx.strokeRect(14, 14, fullW - 28, total - 28);
-  ctx.strokeStyle = '#c8a04c'; ctx.lineWidth = 1.5; ctx.strokeRect(21, 21, fullW - 42, total - 42);
-  let y = PAD;
-  ctx.fillStyle = '#24160a'; ctx.textBaseline = 'alphabetic'; ctx.textAlign = 'left';
-  ctx.font = '700 34px ' + FONT; ctx.fillText(plan.title, PAD, y + 34);
-  ctx.font = '400 19px ' + FONT; ctx.fillStyle = '#47311b';
-  ctx.fillText([groupName(g, lang), plan.date ? dFull(plan.date, lang) : '', lead ? t('conductorMark', null, lang) + ': ' + lead.name : '',
-    flip ? t('viewSingersNote', null, lang) : ''].filter(Boolean).join(' · '), PAD, y + 34 + 30);
-  y += headH;
-  for (const b of blocks) {
-    ctx.fillStyle = '#8e2219'; ctx.font = '700 25px ' + FONT; ctx.fillText(lineupName(b.l, b.i, lang), PAD, y + 28);
-    y += 40;
-    ctx.fillStyle = '#47311b'; ctx.font = 'italic 400 19px ' + FONT;
-    for (const line of b.songs) { ctx.fillText(line, PAD, y + 19); y += 26; }
-    y += 14;
+  ctx.scale(PAGE.dpr, PAGE.dpr);
+  const byId = new Map(A.stage.members.map(m => [m.id, m]));
+  ctx.fillStyle = print ? '#ffffff' : '#f2e5c6'; ctx.fillRect(0, 0, PW, PH);
+  ctx.strokeStyle = '#7a5c22'; ctx.lineWidth = 2.5; ctx.strokeRect(16, 16, PW - 32, PH - 32);
+  ctx.strokeStyle = '#c8a04c'; ctx.lineWidth = 1.2; ctx.strokeRect(22, 22, PW - 44, PH - 44);
+  const ground = print ? '#ffffff' : '#f2e5c6';
+  let y = M;
+  ctx.textBaseline = 'alphabetic';
+  for (const b of page.blocks) {
+    const plan = b.plan, g = b.g, marks = secMarks(g, lang), labels = shortNames(stageMembers(plan.group), lang);
+    if (b.head) {
+      const lead = A.stage.members.find(m => isLead(m) && inGroup(m, plan.group));
+      ctx.fillStyle = '#24160a'; ctx.textAlign = 'left'; ctx.font = '700 24px ' + FONT; ctx.fillText(plan.title, M, y + 24, cw);
+      ctx.font = '400 13.5px ' + FONT; ctx.fillStyle = '#47311b';
+      ctx.fillText([groupName(g, lang), plan.date ? dFull(plan.date, lang) : '', lead ? t('conductorMark', null, lang) + ': ' + lead.name : '',
+        flip ? t('viewSingersNote', null, lang) : ''].filter(Boolean).join(' · '), M, y + 44, cw);
+      y += 58;
+    }
+    ctx.fillStyle = '#8e2219'; ctx.font = '700 17px ' + FONT; ctx.textAlign = 'left'; ctx.fillText(lineupName(b.l, b.i, lang), M, y + 18, cw);
+    y += 24;
+    ctx.fillStyle = '#47311b'; ctx.font = 'italic 400 13px ' + FONT;
+    for (const line of b.songs) { ctx.fillText(line, M, y + 13); y += 18; }
+    if (b.songs.length) y += 4;
+    y += 6;
     // The audience: below the stage, or above it turned round for the singers.
     const audience = () => {
-      ctx.strokeStyle = '#9a7a48'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(PAD, y + 8); ctx.lineTo(fullW - PAD, y + 8); ctx.stroke();
-      ctx.fillStyle = '#f2e5c6'; ctx.font = '600 15px ' + FONT; ctx.textAlign = 'center';
-      const aud = t('audience', null, lang).toLocaleUpperCase(LOC[lang]), aw = ctx.measureText(aud).width + 24;
-      ctx.fillRect(fullW / 2 - aw / 2, y - 4, aw, 24);
-      ctx.fillStyle = '#614a2f'; ctx.fillText(aud, fullW / 2, y + 13);
-      y += 34;
+      ctx.strokeStyle = '#9a7a48'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(M, y + 9); ctx.lineTo(PW - M, y + 9); ctx.stroke();
+      ctx.font = '600 11px ' + FONT; ctx.textAlign = 'center';
+      const aud = t('audience', null, lang).toLocaleUpperCase(LOC[lang]), aw = ctx.measureText(aud).width + 20;
+      ctx.fillStyle = ground; ctx.fillRect(PW / 2 - aw / 2, y + 1, aw, 16);
+      ctx.fillStyle = '#614a2f'; ctx.fillText(aud, PW / 2, y + 13);
+      y += 24;
     };
     if (flip) audience();
-    const ox = PAD + (inner - b.geo.width) / 2, oy = y;
-    const X = v => ox + (flip ? b.geo.width - v : v), Y = v => oy + (flip ? b.geo.height - v : v), turn = flip ? Math.PI : 0;
-    // Risers.
-    ctx.fillStyle = 'rgba(122, 92, 34, 0.13)'; ctx.strokeStyle = 'rgba(122, 92, 34, 0.35)'; ctx.lineWidth = 1;
-    for (const band of b.geo.bands) {
-      ctx.beginPath();
-      if (band.arc) {
-        ctx.arc(X(band.cx), Y(band.cy), band.r1, -Math.PI / 2 - band.half + turn, -Math.PI / 2 + band.half + turn);
-        ctx.arc(X(band.cx), Y(band.cy), band.r0, -Math.PI / 2 + band.half + turn, -Math.PI / 2 - band.half + turn, true);
-        ctx.closePath();
-      } else roundRect(ctx, flip ? X(band.x + band.w) : X(band.x), flip ? Y(band.y + band.h) : Y(band.y), band.w, band.h, 8);
-      ctx.fill(); ctx.stroke();
-    }
-    // Places.
-    b.geo.spots.forEach((row, r) => row.forEach((s, i) => {
-      const id = b.l.rows[r][i], m = isPerson(id) ? byId.get(id) : null, x = -W / 2, yy = -H / 2;
-      ctx.save();
-      ctx.translate(X(s.x), Y(s.y));
-      if (s.rot) ctx.rotate(s.rot);
-      if (isBlocked(id)) {
-        // Closed: hatched, with what's there.
-        ctx.save(); roundRect(ctx, x + 1, yy + 1, W - 2, H - 2, 8); ctx.clip();
-        ctx.fillStyle = '#e6d4ab'; ctx.fillRect(x, yy, W, H);
-        ctx.strokeStyle = 'rgba(122, 92, 34, 0.38)'; ctx.lineWidth = 1.5;
-        for (let k = -H; k < W; k += 10) { ctx.beginPath(); ctx.moveTo(x + k, yy + H); ctx.lineTo(x + k + H, yy); ctx.stroke(); }
-        ctx.restore();
-        ctx.strokeStyle = '#9a7a48'; ctx.lineWidth = 1.2; roundRect(ctx, x + 1, yy + 1, W - 2, H - 2, 8); ctx.stroke();
-        const what = blockText(id) || t('spotBlocked', null, lang);
-        let size = 16;
-        ctx.font = 'italic 600 ' + size + 'px ' + FONT;
-        while (size > 11 && ctx.measureText(what).width > W - 22) { size--; ctx.font = 'italic 600 ' + size + 'px ' + FONT; }
-        const tw = Math.min(W - 12, ctx.measureText(what).width);
-        ctx.fillStyle = '#f2e5c6'; roundRect(ctx, -tw / 2 - 6, -size * 0.72, tw + 12, size * 1.44, 4); ctx.fill();
-        ctx.fillStyle = '#47311b'; ctx.textAlign = 'center'; ctx.fillText(what, 0, size * 0.36, W - 12);
-        ctx.restore();
-        return;
-      }
-      if (!m) {
-        ctx.setLineDash([5, 4]); ctx.strokeStyle = '#9a7a48'; ctx.lineWidth = 1.2; roundRect(ctx, x + 1, yy + 1, W - 2, H - 2, 8); ctx.stroke(); ctx.setLineDash([]);
-        ctx.restore();
-        return;
-      }
-      const sid = sectionOf(m, g), slot = secSlot(g, sid);
-      ctx.fillStyle = slot >= 0 ? SEC_TINTS[slot] : '#e4d3ac'; roundRect(ctx, x, yy, W, H, 8); ctx.fill();
-      ctx.strokeStyle = slot >= 0 ? SEC_HUES[slot] : '#9a7a48'; ctx.lineWidth = 2; ctx.stroke();
-      if (slot >= 0) { ctx.fillStyle = SEC_HUES[slot]; ctx.save(); roundRect(ctx, x, yy, W, H, 8); ctx.clip(); ctx.fillRect(x, yy, W, 7); ctx.restore(); }
-      ctx.fillStyle = '#47311b'; ctx.font = '700 12px ' + FONT; ctx.textAlign = 'left'; ctx.fillText(marks.get(sid) || '', x + 7, yy + 21);
-      const lines = nameLines(m, style, labels);
-      ctx.fillStyle = '#24160a'; ctx.textAlign = 'center';
-      let size = 18;
-      ctx.font = '600 ' + size + 'px ' + FONT;
-      while (size > 11 && Math.max(...lines.map(z => ctx.measureText(z).width)) > W - 14) { size--; ctx.font = '600 ' + size + 'px ' + FONT; }
-      const mid = yy + H / 2 + 6;
-      if (lines.length === 2) { ctx.fillText(lines[0], x + W / 2, mid - 4); ctx.fillText(lines[1], x + W / 2, mid + size - 2); }
-      else ctx.fillText(lines[0], x + W / 2, mid + 4);
-      ctx.restore();
-    }));
-    // The conductor, then the audience (unless it's above, turned round).
-    const cx = X(b.geo.cond.x), cy = Y(b.geo.cond.y), cm = t('conductorMark', null, lang);
-    ctx.font = '700 13px ' + FONT;
-    const cw = Math.max(40, ctx.measureText(cm).width + 22);
-    ctx.fillStyle = '#24160a'; roundRect(ctx, cx - cw / 2, cy - 20, cw, 40, 20); ctx.fill();
-    ctx.fillStyle = '#f2e5c6'; ctx.textAlign = 'center'; ctx.fillText(cm, cx, cy + 5);
-    y = oy + b.geo.height + 12;
+    const geo = b.geo, [W, H] = psize(b.k), z = b.zoom;
+    ctx.save();
+    ctx.translate(M + (cw - geo.width * z) / 2, y);
+    ctx.scale(z, z);
+    drawStageAt(ctx, b, geo, W, H, { flip, g, marks, labels, byId, style, lang, ground });
+    ctx.restore();
+    y += geo.height * z + 6;
     if (!flip) audience();
-    // The legend (laid out above): a swatch like the places, with the section's mark in it, then its name and count.
-    for (const line of b.legend) {
-      let lx = PAD;
+    // The legend: a swatch like the places, with the section's mark in it, then its name and count.
+    for (const line of b.legendLines) {
+      let lx = M;
       for (const it of line) {
-        ctx.fillStyle = it.slot >= 0 ? SEC_TINTS[it.slot] : '#e4d3ac'; roundRect(ctx, lx, y, it.sw, 22, 4); ctx.fill();
+        ctx.fillStyle = it.slot >= 0 ? SEC_TINTS[it.slot] : '#e4d3ac'; roundRect(ctx, lx, y, it.sw, 16, 3); ctx.fill();
         if (it.slot === -2) {   // closed places: hatched like them
-          ctx.save(); roundRect(ctx, lx, y, it.sw, 22, 4); ctx.clip();
-          ctx.strokeStyle = 'rgba(122, 92, 34, 0.45)'; ctx.lineWidth = 1.5;
-          for (let k = -22; k < it.sw; k += 7) { ctx.beginPath(); ctx.moveTo(lx + k, y + 22); ctx.lineTo(lx + k + 22, y); ctx.stroke(); }
-          ctx.restore(); roundRect(ctx, lx, y, it.sw, 22, 4);
+          ctx.save(); roundRect(ctx, lx, y, it.sw, 16, 3); ctx.clip();
+          ctx.strokeStyle = 'rgba(122, 92, 34, 0.45)'; ctx.lineWidth = 1.2;
+          for (let k = -16; k < it.sw; k += 6) { ctx.beginPath(); ctx.moveTo(lx + k, y + 16); ctx.lineTo(lx + k + 16, y); ctx.stroke(); }
+          ctx.restore(); roundRect(ctx, lx, y, it.sw, 16, 3);
         }
-        ctx.strokeStyle = it.slot >= 0 ? SEC_HUES[it.slot] : '#9a7a48'; ctx.lineWidth = 2; ctx.stroke();
-        if (it.mark) { ctx.fillStyle = '#24160a'; ctx.font = '700 12px ' + FONT; ctx.textAlign = 'center'; ctx.fillText(it.mark, lx + it.sw / 2, y + 15.5); }
-        ctx.fillStyle = '#24160a'; ctx.font = '400 17px ' + FONT; ctx.textAlign = 'left'; ctx.fillText(it.label, lx + it.sw + 8, y + 17);
-        lx += it.w + 22;
+        ctx.strokeStyle = it.slot >= 0 ? SEC_HUES[it.slot] : '#9a7a48'; ctx.lineWidth = 1.6; ctx.stroke();
+        if (it.mark) { ctx.fillStyle = '#24160a'; ctx.font = '700 10px ' + FONT; ctx.textAlign = 'center'; ctx.fillText(it.mark, lx + it.sw / 2, y + 11.5); }
+        ctx.fillStyle = '#24160a'; ctx.font = '400 12.5px ' + FONT; ctx.textAlign = 'left'; ctx.fillText(it.label, lx + it.sw + 6, y + 12.5);
+        lx += it.w + 16;
       }
-      y += 30;
+      y += 22;
     }
-    if (!b.legend.length) y += 30;
-    y += 10 + 24;
+    if (!b.legendLines.length) y += 22;
+    y += 18;
   }
-  ctx.fillStyle = '#9a7a48'; ctx.font = 'italic 400 14px ' + FONT; ctx.textAlign = 'right'; ctx.fillText(APP_NAME, fullW - PAD, total - PAD + 20);
+  ctx.fillStyle = '#9a7a48'; ctx.font = 'italic 400 11px ' + FONT;
+  if (pages > 1) { ctx.textAlign = 'left'; ctx.fillText(t('pageOf', { n: pageNo + 1, of: pages }, lang), M, PH - M + 14); }
+  ctx.textAlign = 'right'; ctx.fillText(APP_NAME, PW - M, PH - M + 14);
   return cv;
+}
+// The stage of a lineup, at the top left: risers, places of W × H, the conductor.
+function drawStageAt(ctx, b, geo, W, H, o) {
+  const { flip, g, marks, labels, byId, style, lang, ground } = o, FONT = XP_FONT;
+  const X = v => (flip ? geo.width - v : v), Y = v => (flip ? geo.height - v : v), turn = flip ? Math.PI : 0;
+  const R = Math.min(7, W * 0.1), small = W < 80, bar = small ? 4 : 6;
+  ctx.fillStyle = 'rgba(122, 92, 34, 0.13)'; ctx.strokeStyle = 'rgba(122, 92, 34, 0.35)'; ctx.lineWidth = 1;
+  for (const band of geo.bands) {
+    ctx.beginPath();
+    if (band.arc) {
+      ctx.arc(X(band.cx), Y(band.cy), band.r1, -Math.PI / 2 - band.half + turn, -Math.PI / 2 + band.half + turn);
+      ctx.arc(X(band.cx), Y(band.cy), band.r0, -Math.PI / 2 + band.half + turn, -Math.PI / 2 - band.half + turn, true);
+      ctx.closePath();
+    } else roundRect(ctx, flip ? X(band.x + band.w) : X(band.x), flip ? Y(band.y + band.h) : Y(band.y), band.w, band.h, 7);
+    ctx.fill(); ctx.stroke();
+  }
+  geo.spots.forEach((row, r) => row.forEach((s, i) => {
+    const id = b.l.rows[r][i], m = isPerson(id) ? byId.get(id) : null, x = -W / 2, yy = -H / 2;
+    ctx.save();
+    ctx.translate(X(s.x), Y(s.y));
+    if (s.rot) ctx.rotate(s.rot);
+    if (isBlocked(id)) {
+      // Closed: hatched, with what's there.
+      ctx.save(); roundRect(ctx, x + 1, yy + 1, W - 2, H - 2, R); ctx.clip();
+      ctx.fillStyle = '#e6d4ab'; ctx.fillRect(x, yy, W, H);
+      ctx.strokeStyle = 'rgba(122, 92, 34, 0.38)'; ctx.lineWidth = 1.3;
+      for (let k = -H; k < W; k += 9) { ctx.beginPath(); ctx.moveTo(x + k, yy + H); ctx.lineTo(x + k + H, yy); ctx.stroke(); }
+      ctx.restore();
+      ctx.strokeStyle = '#9a7a48'; ctx.lineWidth = 1.1; roundRect(ctx, x + 1, yy + 1, W - 2, H - 2, R); ctx.stroke();
+      const what = blockText(id) || t('spotBlocked', null, lang);
+      let size = 13;
+      ctx.font = 'italic 600 ' + size + 'px ' + FONT;
+      while (size > 9 && ctx.measureText(what).width > W - 12) { size -= 0.5; ctx.font = 'italic 600 ' + size + 'px ' + FONT; }
+      const tw = Math.min(W - 8, ctx.measureText(what).width);
+      ctx.fillStyle = ground; roundRect(ctx, -tw / 2 - 3, -size * 0.72, tw + 6, size * 1.44, 3); ctx.fill();
+      ctx.fillStyle = '#47311b'; ctx.textAlign = 'center'; ctx.fillText(what, 0, size * 0.36, W - 8);
+      ctx.restore();
+      return;
+    }
+    if (!m) {
+      ctx.setLineDash([4, 3]); ctx.strokeStyle = '#9a7a48'; ctx.lineWidth = 1.1; roundRect(ctx, x + 1, yy + 1, W - 2, H - 2, R); ctx.stroke(); ctx.setLineDash([]);
+      ctx.restore();
+      return;
+    }
+    const sid = sectionOf(m, g), slot = secSlot(g, sid);
+    ctx.fillStyle = slot >= 0 ? SEC_TINTS[slot] : '#e4d3ac'; roundRect(ctx, x, yy, W, H, R); ctx.fill();
+    ctx.strokeStyle = slot >= 0 ? SEC_HUES[slot] : '#9a7a48'; ctx.lineWidth = 1.6; ctx.stroke();
+    if (slot >= 0) { ctx.fillStyle = SEC_HUES[slot]; ctx.save(); roundRect(ctx, x, yy, W, H, R); ctx.clip(); ctx.fillRect(x, yy, W, bar); ctx.restore(); }
+    // The section's mark at the top left (in a small place, the names below it); the names in the middle, as large
+    // as they fit (two lines in a small place: "Ayşe" over "K.").
+    const markSize = small ? 9 : 10.5, mark = marks.get(sid) || '';
+    ctx.fillStyle = '#47311b'; ctx.font = '700 ' + markSize + 'px ' + FONT; ctx.textAlign = small ? 'center' : 'left';
+    if (small) ctx.fillText(mark, 0, yy + bar + markSize + 1); else ctx.fillText(mark, x + 6, yy + bar + 12);
+    const lines = style === 'full' ? nameLines(m, 'full', labels) : small ? twoLines(nameLines(m, 'short', labels)[0]) : nameLines(m, 'short', labels);
+    let size = Math.min(16, Math.max(10, W * 0.13));
+    ctx.font = '600 ' + size + 'px ' + FONT;
+    while (size > 9 && Math.max(...lines.map(q => ctx.measureText(q).width)) > W - 8) { size -= 0.5; ctx.font = '600 ' + size + 'px ' + FONT; }
+    const top = yy + bar + (small && mark ? markSize + 3 : 4), bottom = yy + H - 3, lh = size * 1.12;
+    const first = (top + bottom) / 2 - (lines.length * lh) / 2 + size * 0.82;
+    ctx.fillStyle = '#24160a'; ctx.textAlign = 'center';
+    lines.forEach((q, j) => ctx.fillText(q, 0, first + j * lh, W - 6));
+    ctx.restore();
+  }));
+  // The conductor.
+  const cx = X(geo.cond.x), cy = Y(geo.cond.y), cm = t('conductorMark', null, lang);
+  ctx.font = '700 11px ' + FONT;
+  const cww = Math.max(32, ctx.measureText(cm).width + 18), chh = Math.max(24, Math.min(32, H * 0.6));
+  ctx.fillStyle = '#24160a'; roundRect(ctx, cx - cww / 2, cy - chh / 2, cww, chh, chh / 2); ctx.fill();
+  ctx.fillStyle = '#f2e5c6'; ctx.textAlign = 'center'; ctx.fillText(cm, cx, cy + 4);
 }
 
 /* ---------- The planner's Repertoire tab (from version 2026-10-r4.6): each group's pieces, each with links to its
@@ -11497,7 +11831,7 @@ function renderStage(main) {
           h('h4', null, lineupName(l, li)),
           songs.length ? h('p', { class: 'lineup-songs' }, h('span', { class: 'muted' }, t('stageSongs') + ': '), songs.join(' · ')) : null,
           h('p', { class: 'my-place' + (me || isLead(S.member) ? '' : ' none') }, me ? (flip ? t('stageYourPlaceS', { row: me[0] + 1, n: me[1] + 1 }) : t('stageYourPlace', { row: me[0] + 1, n: me[1] + 1 })) : isLead(S.member) ? t('stageYouLead') : t('stageNoPlace')),
-          stageChart(l.rows.map(row => row.length), l.shape, [36, 36, 6, 10], cell, { small: true, flip }),
+          stageChart(l.rows.map(row => row.length), l.shape, [36, 36, 6, 10], cell, { small: true, flip, min: markRoom(g, l) }),
           memberLegend(g, l, closed));
       })));
   }
@@ -11507,6 +11841,13 @@ function renderStage(main) {
     const sc = el.closest('.stage-scroll');
     if (sc && sc.scrollWidth > sc.clientWidth) sc.scrollLeft = el.offsetLeft + el.offsetWidth / 2 - sc.clientWidth / 2;
   }));
+}
+// How small the members' round places may get: 14 pixels with marks of one or two letters (S, A1), 18 with three
+// (Vn1), 22 with four (Perc), so the mark stays inside.
+function markRoom(g, l) {
+  let most = 0;
+  for (const row of l.rows) for (const sid of row) if (typeof sid === 'string' && sid.charAt(0) !== '#') most = Math.max(most, Array.from(String(secAbbr(g, sid))).length);
+  return most > 3 ? [22, 22, 1.5, 4] : most > 2 ? [18, 18, 1.5, 4] : [14, 14, 1.5, 4];
 }
 function memberLegend(g, l, closed) {
   // The sections of the others on stage (the member's own place says "you" instead), and the closed places.
@@ -11626,7 +11967,7 @@ function noticeText() {
   // (The page's own wording carries a line for the planner, who edits it in Mesajlar; members don't see that line.)
   return (n[S.lang] || n[S.lang === 'tr' ? 'en' : 'tr'] || t('tpl_kvkk').replace(/ ?\((Yönetici|Organizer): [^)]*\)/, '')).trim();
 }
-const noticeDue = () => can('people') && !!S.notice && !S.notice.at && noticeUi.done !== sessionMemberId() + '|' + S.notice.v && !S.acting;
+const noticeDue = () => NOTICE_ON && can('people') && !!S.notice && !S.notice.at && noticeUi.done !== sessionMemberId() + '|' + S.notice.v && !S.acting;
 function noticeDialog(readOnly, back_) {
   const id = 'kvkk';
   const box = h('div', { class: 'modal notice-modal', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': id + '-title' },
@@ -11731,7 +12072,7 @@ function profileForm() {
       field('pf-about', t('profAbout'), h('input', { id: 'pf-about', class: 'input', type: 'text', maxlength: '200', value: d.about, placeholder: t('profAboutPh'), oninput: e => { d.about = e.target.value; changed(); } }), 'full'),
       h('div', { class: 'field full' }, h('label', { class: 'switch-row pf-consent' }, consent, t('profConsent')), h('p', { class: 'hint' }, t('profConsentHint')))),
     h('div', { class: 'actions' }, saveBtn, status,
-      h('button', { type: 'button', class: 'btn small quiet', id: 'pf-notice', onclick: () => document.body.append(noticeDialog(true, 'pf-notice')) }, t('noticeLink'))));
+      !NOTICE_ON ? null : h('button', { type: 'button', class: 'btn small quiet', id: 'pf-notice', onclick: () => document.body.append(noticeDialog(true, 'pf-notice')) }, t('noticeLink'))));
 }
 // This week's birthdays (today and the six days after), of the members the member may see.
 function birthdaysBlock() {
