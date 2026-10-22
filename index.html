@@ -1565,8 +1565,9 @@ var API_URL = 'https://script.google.com/macros/s/AKfycbzjxxXx_t5JqctCYV3iDAjsd-
 const API_URL = typeof window.API_URL === 'string' ? window.API_URL.trim() : '';
 const APP_NAME = 'Provala';
 // The information notice (aydınlatma metni, KVKK), shelved from version 2026-10-r5.5 until Provala moves to a hosted
-// server: not shown to members, nor in Mesajlar or Üyeler. Everything for it stays (and what members read is still
-// kept by Code.gs); true brings it back as it was.
+// server: not shown to members, nor in Mesajlar or Üyeler; and the profile's tick says plainly "let my group see
+// it" instead of giving explicit consent (açık rıza) under the law; it still decides, as before, who sees a profile.
+// Everything for them stays (and what members read is still kept by Code.gs); true brings both back as they were.
 const NOTICE_ON = false;
 const isDemo = !!window.ProvalaDemo;
 const framed = (function () { try { return window.self !== window.top; } catch (e) { return true; } })();
@@ -2039,6 +2040,7 @@ const T = {
     profTitle: 'Your profile', profHint: 'Your name and section come from your conductor. The rest is up to you: the members of your group see what you fill in here once you tick the line below.',
     profPhone: 'Phone', profAddr: 'District or address', profBday: 'Birthday', profDay: 'Day', profMonth: 'Month', profNoDay: '—', profAbout: 'About you', profAboutPh: 'Sings alto, plays a little piano.',
     profConsent: 'I agree that the members of my group see what I fill in here (phone, district or address, birthday, about me). I can untick this at any time.',
+    profShare: 'Let the members of my group see what I fill in here. I can untick this at any time.',
     profConsentHint: 'Unticked, only your conductor sees what you filled in.', profSave: 'Save', profSaved: 'Profile saved', profUnsaved: 'Not saved yet',
     noticeLink: 'Privacy notice (KVKK)', noticeTitle: 'Privacy notice', noticeRead: 'I have read and understood', noticeReadOn: 'You read it on {date}.', noticeClose: 'Close',
     bdayWeek: 'Birthdays this week', bdayToday: 'today', pastTitle: ({ n }) => 'Past rehearsals this season (' + n + ')', pastHint: 'Rehearsals of your groups this season with attendance taken or notes from the conductor, latest first.',
@@ -2622,6 +2624,7 @@ const T = {
     profTitle: 'Profiliniz', profHint: 'Adınız ve bölümünüz şefinizden gelir. Gerisi size kalmış: buraya yazdıklarınızı, aşağıdaki satırı işaretlediğinizde grubunuzun üyeleri görür.',
     profPhone: 'Telefon', profAddr: 'Semt ya da adres', profBday: 'Doğum günü', profDay: 'Gün', profMonth: 'Ay', profNoDay: '—', profAbout: 'Kendinizden bir satır', profAboutPh: 'Alto söylüyorum, biraz da piyano çalıyorum.',
     profConsent: 'Buraya yazdıklarımı (telefon, semt ya da adres, doğum günü, kendimden bir satır) grubumdaki üyelerin görmesine açık rıza veriyorum. Bu işareti dilediğimde kaldırabilirim.',
+    profShare: 'Buraya yazdıklarımı grubumdaki üyeler görsün. Bu işareti dilediğimde kaldırabilirim.',
     profConsentHint: 'İşaretli değilken yazdıklarınızı yalnızca şefiniz görür.', profSave: 'Kaydet', profSaved: 'Profil kaydedildi', profUnsaved: 'Henüz kaydedilmedi',
     noticeLink: 'Aydınlatma metni (KVKK)', noticeTitle: 'Aydınlatma metni', noticeRead: 'Okudum ve anladım', noticeReadOn: '{date} tarihinde okudunuz.', noticeClose: 'Kapat',
     bdayWeek: 'Bu haftanın doğum günleri', bdayToday: 'bugün', pastTitle: 'Bu sezonun geçmiş provaları ({n})', pastHint: 'Gruplarınızın bu sezon yoklaması alınmış ya da şefin not düştüğü provaları, en yenisi önde.',
@@ -12070,7 +12073,7 @@ function profileForm() {
       field('pf-addr', t('profAddr'), h('input', { id: 'pf-addr', class: 'input', type: 'text', maxlength: '160', value: d.addr, oninput: e => { d.addr = e.target.value; changed(); } })),
       h('div', { class: 'field' }, h('span', { class: 'label', id: 'pf-bday-l' }, t('profBday')), h('div', { class: 'pf-bday', role: 'group', 'aria-labelledby': 'pf-bday-l' }, daySel, monSel)),
       field('pf-about', t('profAbout'), h('input', { id: 'pf-about', class: 'input', type: 'text', maxlength: '200', value: d.about, placeholder: t('profAboutPh'), oninput: e => { d.about = e.target.value; changed(); } }), 'full'),
-      h('div', { class: 'field full' }, h('label', { class: 'switch-row pf-consent' }, consent, t('profConsent')), h('p', { class: 'hint' }, t('profConsentHint')))),
+      h('div', { class: 'field full' }, h('label', { class: 'switch-row pf-consent' }, consent, NOTICE_ON ? t('profConsent') : t('profShare')), h('p', { class: 'hint' }, t('profConsentHint')))),
     h('div', { class: 'actions' }, saveBtn, status,
       !NOTICE_ON ? null : h('button', { type: 'button', class: 'btn small quiet', id: 'pf-notice', onclick: () => document.body.append(noticeDialog(true, 'pf-notice')) }, t('noticeLink'))));
 }
