@@ -1,5 +1,5 @@
-/* Provala's service worker (from version 2026-10-r4.5), for the app on the home screen.
-   It keeps the page and its pictures and fonts on the phone, so Provala opens at once and also without a
+/* Provarium's service worker (from version 2026-10-r4.5), for the app on the home screen.
+   It keeps the page and its pictures and fonts on the phone, so Provarium opens at once and also without a
    connection. It never keeps the answers from Apps Script: those come from another site and go straight through,
    so nobody's names, answers or times are ever stored here.
    The page itself is asked for afresh whenever there's a connection, waiting up to a second and a half for it (four
@@ -7,9 +7,9 @@
    once it's in: see checkVersion in index.html). If the site says the page is gone (404), the copy goes too, and the
    page is asked for again at the next opening as always (so a short 404 is over as soon as the site is back).
    Changing this file: give VERSION_NAME a new number, so phones start afresh. To switch it off, see the README. */
-const VERSION_NAME = 'provala-1';
-// Provala's own folder (the address with nothing after the last /), and its cache: named with the folder, so another
-// copy of Provala elsewhere on the same github.io address keeps its own.
+const VERSION_NAME = 'provarium-1';
+// Provarium's own folder (the address with nothing after the last /), and its cache: named with the folder, so another
+// copy of Provarium elsewhere on the same github.io address keeps its own.
 const HOME = new URL('./', self.location.href);
 const CACHE = VERSION_NAME + ':' + HOME.pathname;
 // Kept at once on the first visit, so the next one works offline. (A file that's missing is simply skipped.)
@@ -24,15 +24,22 @@ self.addEventListener('install', e => {
 });
 self.addEventListener('activate', e => {
   e.waitUntil(caches.keys()
-    .then(keys => Promise.all(keys.filter(k => ours(k) && k !== CACHE).map(k => caches.delete(k))))
+    .then(keys => Promise.all(keys.filter(k => (ours(k) && k !== CACHE) || older(k)).map(k => caches.delete(k))))
     .then(() => self.clients.claim()));
 });
 
 // Kept in this version's cache (made again if something else cleared it), unless a newer sw.js for this folder has
 // its own by now: a copy arriving late mustn't bring the old one back.
-const ours = k => k.indexOf('provala-') === 0 && k.slice(k.indexOf(':') + 1) === HOME.pathname;
+const inFolder = k => k.slice(k.indexOf(':') + 1) === HOME.pathname;
+const ours = k => k.indexOf('provarium-') === 0 && inFolder(k);
+// What this folder's app kept under its previous name (before version 2026-10-r6.2): removed when this one starts, and
+// again whenever it keeps something, should the worker from before still have written one meanwhile.
+const older = k => k.indexOf('prov' + 'ala-') === 0 && inFolder(k);
 const keep = (key, res) => caches.keys()
-  .then(keys => (keys.indexOf(CACHE) === -1 && keys.some(ours) ? null : caches.open(CACHE).then(c => c.put(key, res))))
+  .then(keys => {
+    keys.filter(older).forEach(k => caches.delete(k).catch(() => null));
+    return keys.indexOf(CACHE) === -1 && keys.some(ours) ? null : caches.open(CACHE).then(c => c.put(key, res));
+  })
   .catch(() => null);
 // The site says the page is gone (the repository renamed, say): nothing kept any more, so no old copy ever opens.
 const forget = () => caches.delete(CACHE).catch(() => null);
@@ -44,7 +51,7 @@ self.addEventListener('fetch', e => {
   if (r.method !== 'GET') return;
   const url = new URL(r.url);
   if (url.origin !== self.location.origin) return;   // Apps Script, and anything else elsewhere: untouched
-  // Provala's own address (with index.html or without): any other page in the same folder is left alone.
+  // Provarium's own address (with index.html or without): any other page in the same folder is left alone.
   if (r.mode === 'navigate' && (url.pathname === HOME.pathname || url.pathname === HOME.pathname + 'index.html')) {
     // Asked afresh (the server says if it's unchanged), and kept for next time once it comes, however late (up to
     // KEEP_MS). The address may carry a poll or a sign-in link: the page is asked for and kept at the plain address.

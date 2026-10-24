@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<title>Provala</title>
+<title>Provarium</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Prova planlayıcımız. Giriş yap, uygun olduğun gün ve saatleri işaretle, prova takvimini buradan takip et.">
-<meta property="og:title" content="Provala">
+<meta property="og:title" content="Provarium">
 <meta property="og:description" content="Prova planlayıcımız. Giriş yap, uygun olduğun gün ve saatleri işaretle, prova takvimini buradan takip et.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://ackc92.github.io/provala/">
@@ -19,11 +19,11 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#130d07">
 <link rel="icon" href="icon.png">
-<!-- On the home screen (from version 2026-10-r4.5): Provala opens full-screen, from the copy sw.js keeps when there's
+<!-- On the home screen (from version 2026-10-r4.5): Provarium opens full-screen, from the copy sw.js keeps when there's
      no connection. The planner's page (#admin) is an app of its own, with its own name and icon. -->
 <link rel="manifest" href="manifest.webmanifest" id="app-manifest">
 <link rel="apple-touch-icon" href="icon.png" id="app-touch-icon">
-<meta name="apple-mobile-web-app-title" content="Provala" id="app-title">
+<meta name="apple-mobile-web-app-title" content="Provarium" id="app-title">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -33,7 +33,7 @@
   var set = function (id, k, v) { var el = document.getElementById(id); if (el) el[k] = v; };
   set('app-manifest', 'href', planner ? 'planner.webmanifest' : 'manifest.webmanifest');
   set('app-touch-icon', 'href', planner ? 'planner-180.png' : 'icon.png');
-  set('app-title', 'content', planner ? 'Planlama' : 'Provala');
+  set('app-title', 'content', planner ? 'Planlama' : 'Provarium');
 })();
 </script>
 <link rel="preload" href="vollkorn.woff2" as="font" type="font/woff2" crossorigin>
@@ -250,12 +250,18 @@ q { quotes: "\201C" "\201D"; }
 .top :focus-visible, .demo-band :focus-visible, .savebar :focus-visible, .toast :focus-visible { outline-color: var(--gold-hi); }
 @media (max-width: 520px) {
   .top { position: static; margin-top: env(safe-area-inset-top, 0px); }
-  .top-in { gap: 6px 10px; }
+  .top-in { gap: 6px 8px; }
+  /* (From version 2026-10-r6.2 the name is longer: a little smaller here, so the top row still fits a 390 px phone.) */
+  .brand { font-size: 24px; }
   .tabs { order: 3; width: 100%; margin-right: 0; flex-wrap: wrap; gap: 2px; }
   /* (Four tabs, with Sahne and Repertuvar, fit on one row from about 390 px; on a narrower phone they wrap.) */
   .tab { padding: 0 8px; }
   .top-label { margin-right: auto; }
   .lang { margin-left: auto; }
+}
+/* (And a little smaller still on a 375 px phone, where the top row was exactly full before the longer name.) */
+@media (max-width: 380px) {
+  .brand { font-size: 21px; }
 }
 
 .demo-band { color: var(--ground-ink); background: #2b1d0f; border-bottom: 1px solid var(--gold-lo); }
@@ -1177,7 +1183,7 @@ fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
   background: var(--maybe); color: var(--maybe-ink); font: 700 10px/15px var(--font-body); text-align: center; }
 .chip-some { margin-left: 2px; padding: 1px 7px; border-radius: 999px; background: var(--maybe-soft); color: var(--ink); font-size: 12px; font-weight: 700; }
 .stage-msgs { display: grid; gap: 4px; }
-/* On the home screen (from version 2026-10-r4.5): a newer Provala is ready. */
+/* On the home screen (from version 2026-10-r4.5): a newer Provarium is ready. */
 .update-note { gap: 8px; }
 .update-note span { flex: 1; }
 .update-note button { margin-left: 0; min-height: 36px; padding: 6px 6px; white-space: nowrap; }
@@ -1410,8 +1416,8 @@ fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
 </style>
 </head>
 <body>
-<div id="app"><p class="boot">Provala açılıyor…</p></div>
-<noscript><p class="boot">Provala'yı kullanmak için tarayıcıda JavaScript açık olmalı. / Provala needs JavaScript turned on.</p></noscript>
+<div id="app"><p class="boot">Provarium açılıyor…</p></div>
+<noscript><p class="boot">Provarium'u kullanmak için tarayıcıda JavaScript açık olmalı. / Provarium needs JavaScript turned on.</p></noscript>
 <div id="toasts" class="toasts" aria-live="polite"></div>
 <script>
 /* ================================================================
@@ -1421,28 +1427,44 @@ fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
 var API_URL = 'https://script.google.com/macros/s/AKfycbzjxxXx_t5JqctCYV3iDAjsd-ouDi9iYZJujIihngBq23nIUydWVgRaTX37BLavh1eSBQ/exec';
 </script>
 <script>
-/* What this device keeps for Provala (the sign-in, answers not sent yet, the language…) is under provala- names from
-   version 2026-10-r5.4; before, under the names of the app's first working title. Copied over once, at the very start,
-   so nobody is signed out and nothing waiting to be sent is lost. The old copies stay for now, so going back to the
-   previous page still finds them; signing out takes them away too (provalaDropOld). (Old-style JavaScript, like the
-   safety net.) */
+/* What this device keeps for Provarium (the sign-in, answers not sent yet, the language…) is under provarium- names
+   from version 2026-10-r6.2; before, under the app's previous name (from version 2026-10-r5.4), and before that under
+   its first working title. Copied over once, at the very start, so nobody is signed out and nothing waiting to be sent
+   is lost: the previous name's first, so the newest copy of each wins. The old copies stay for now, so going back to
+   the previous page still finds them; signing out takes them away too (provariumDropOld). (Old-style JavaScript, like
+   the safety net.) */
 (function () {
-  var OLD = 'tu' + 'tti-', DONE = 'provala-moved';
+  var OLD = ['prov' + 'ala-', 'tu' + 'tti-'], NEW = 'provarium-', DONE = 'provarium-moved';
   function each(st, fn) {
-    var ks = [], i, k;
-    for (i = 0; i < st.length; i++) { k = st.key(i); if (k && k.indexOf(OLD) === 0) ks.push(k); }
+    var ks = [], i, j, k;
+    for (i = 0; i < st.length; i++) { k = st.key(i); for (j = 0; k && j < OLD.length; j++) if (k.indexOf(OLD[j]) === 0) { ks.push(k); break; } }
     for (i = 0; i < ks.length; i++) fn(ks[i]);
   }
   function copy(st) {
     if (st.getItem(DONE)) return;
-    each(st, function (k) { var nk = 'provala-' + k.slice(OLD.length); if (st.getItem(nk) === null) st.setItem(nk, st.getItem(k)); });
+    // (Where the previous name's own copy was made, from version 2026-10-r5.4, the first working title's names are
+    // what was left behind then, a planner signed out since, say: never brought back.)
+    var from = st.getItem(OLD[0] + 'moved') ? 1 : OLD.length;
+    for (var j = 0; j < from; j++) {
+      each(st, function (k) {
+        if (k.indexOf(OLD[j]) !== 0) return;
+        var nk = NEW + k.slice(OLD[j].length);
+        if (nk !== DONE && st.getItem(nk) === null) st.setItem(nk, st.getItem(k));   // (an earlier copy's own mark isn't one)
+      });
+    }
     st.setItem(DONE, '1');
   }
   try { copy(window.localStorage); } catch (e) { /* no storage here */ }
   try { copy(window.sessionStorage); } catch (e) { /* no storage here */ }
-  window.provalaDropOld = function () {
-    try { each(window.localStorage, function (k) { window.localStorage.removeItem(k); }); } catch (e) { /* no storage */ }
-    try { each(window.sessionStorage, function (k) { window.sessionStorage.removeItem(k); }); } catch (e) { /* no storage */ }
+  // only: the names to take away under the old ones (the planner's sign-out: its own); else all of them.
+  window.provariumDropOld = function (only) {
+    var gone = function (k) {
+      if (!only) return true;
+      for (var j = 0; j < OLD.length; j++) if (k.indexOf(OLD[j]) === 0) return only.indexOf(k.slice(OLD[j].length)) !== -1;
+      return false;
+    };
+    try { each(window.localStorage, function (k) { if (gone(k)) window.localStorage.removeItem(k); }); } catch (e) { /* no storage */ }
+    try { each(window.sessionStorage, function (k) { if (gone(k)) window.sessionStorage.removeItem(k); }); } catch (e) { /* no storage */ }
   };
 })();
 </script>
@@ -1457,7 +1479,7 @@ var API_URL = 'https://script.google.com/macros/s/AKfycbzjxxXx_t5JqctCYV3iDAjsd-
   };
   function lang() {
     var l = null;
-    try { l = localStorage.getItem('provala-lang'); } catch (e) { /* no storage */ }
+    try { l = localStorage.getItem('provarium-lang'); } catch (e) { /* no storage */ }
     return l === 'en' ? 'en' : 'tr';
   }
   function el(tag, cls, text) {
@@ -1475,9 +1497,9 @@ var API_URL = 'https://script.google.com/macros/s/AKfycbzjxxXx_t5JqctCYV3iDAjsd-
   // What went wrong on a member's device is sent to the backend, so it can be fixed without anyone having to
   // describe it: the error and the browser, never names, answers or anything typed. At most three per page load,
   // and nothing at all without a backend address (as in the demo).
-  var VERSION = '2026-10-r6.1', sent = 0, seen = {};
-  window.provalaVersion = VERSION;
-  window.provalaReport = function (err, where) {
+  var VERSION = '2026-10-r6.2', sent = 0, seen = {};
+  window.provariumVersion = VERSION;
+  window.provariumReport = function (err, where) {
     try {
       var url = typeof window.API_URL === 'string' ? window.API_URL.replace(/^\s+|\s+$/g, '') : '';
       // (A sign-in link the address still had never goes along: some browsers put the address in the stack.)
@@ -1492,8 +1514,8 @@ var API_URL = 'https://script.google.com/macros/s/AKfycbzjxxXx_t5JqctCYV3iDAjsd-
       else { var x = new XMLHttpRequest(); x.open('POST', url, true); x.setRequestHeader('Content-Type', 'text/plain;charset=utf-8'); x.send(body); }
     } catch (e) { /* reporting must never get in the way */ }
   };
-  window.provalaFail = function (err, where) {
-    window.provalaReport(err || 'Nothing drawn after 10 seconds', where || (window.provalaUp ? 'render' : 'start'));
+  window.provariumFail = function (err, where) {
+    window.provariumReport(err || 'Nothing drawn after 10 seconds', where || (window.provariumUp ? 'render' : 'start'));
     var t = T[lang()];
     var app = document.getElementById('app');
     if (!app) return;
@@ -1505,7 +1527,7 @@ var API_URL = 'https://script.google.com/macros/s/AKfycbzjxxXx_t5JqctCYV3iDAjsd-
     var acts = el('div', 'fail-actions');
     acts.appendChild(button('btn primary', t.reload, function () { location.reload(); }));
     acts.appendChild(button('btn', t.clear, function () {
-      try { localStorage.removeItem('provala-page'); } catch (e) { /* no storage */ }
+      try { localStorage.removeItem('provarium-page'); } catch (e) { /* no storage */ }
       // And (from version 2026-10-r4.5) the copy the home-screen helper keeps, with the helper itself: the page then
       // comes fresh from the site, and sets the helper up again. Only if the site can be reached: without a connection,
       // that copy is what still opens.
@@ -1513,7 +1535,8 @@ var API_URL = 'https://script.google.com/macros/s/AKfycbzjxxXx_t5JqctCYV3iDAjsd-
       var drop = function () {
         var path = location.pathname.replace(/[^\/]*$/, ''), here = location.href.replace(/[?#].*$/, '').replace(/[^\/]*$/, ''), jobs = [];
         if (window.caches && caches.keys) jobs.push(caches.keys().then(function (ks) {
-          return Promise.all(ks.filter(function (k) { return k.indexOf('provala-') === 0 && k.slice(k.indexOf(':') + 1) === path; })
+          // (Also what the app kept here under its previous name, before version 2026-10-r6.2.)
+          return Promise.all(ks.filter(function (k) { return (k.indexOf('provarium-') === 0 || k.indexOf('prov' + 'ala-') === 0) && k.slice(k.indexOf(':') + 1) === path; })
             .map(function (k) { return caches['delete'](k); }));
         }));
         if (navigator.serviceWorker && navigator.serviceWorker.getRegistrations) jobs.push(navigator.serviceWorker.getRegistrations().then(function (rs) {
@@ -1533,14 +1556,14 @@ var API_URL = 'https://script.google.com/macros/s/AKfycbzjxxXx_t5JqctCYV3iDAjsd-
     folio.appendChild(box);
     main.appendChild(folio);
     app.appendChild(main);
-    try { console.error('Provala:', err); } catch (e) { /* no console */ }
+    try { console.error('Provarium:', err); } catch (e) { /* no console */ }
   };
   // Before the page is up, any uncaught error (including a browser too old to read the main script) shows the message.
-  window.addEventListener('error', function (e) { if (!window.provalaUp) window.provalaFail(e.error || e.message, 'start'); });
+  window.addEventListener('error', function (e) { if (!window.provariumUp) window.provariumFail(e.error || e.message, 'start'); });
   // And if, somehow, nothing has been drawn after a while, say so too.
   setTimeout(function () {
     var app = document.getElementById('app');
-    if (!window.provalaUp && app && app.querySelector('.boot')) window.provalaFail(null, 'stuck');
+    if (!window.provariumUp && app && app.querySelector('.boot')) window.provariumFail(null, 'stuck');
   }, 10000);
 })();
 </script>
@@ -1574,15 +1597,15 @@ var API_URL = 'https://script.google.com/macros/s/AKfycbzjxxXx_t5JqctCYV3iDAjsd-
 })();
 
 // The backend's address is set in the small script above (SETUP). The demo build instead runs the real Code.gs
-// inside the page, on a stand-in for Google Sheets kept in this browser (window.ProvalaDemo).
+// inside the page, on a stand-in for Google Sheets kept in this browser (window.ProvariumDemo).
 const API_URL = typeof window.API_URL === 'string' ? window.API_URL.trim() : '';
-const APP_NAME = 'Provala';
-// The information notice (aydınlatma metni, KVKK), shelved from version 2026-10-r5.5 until Provala moves to a hosted
+const APP_NAME = 'Provarium';
+// The information notice (aydınlatma metni, KVKK), shelved from version 2026-10-r5.5 until Provarium moves to a hosted
 // server: not shown to members, nor in Mesajlar or Üyeler; and the profile's tick says plainly "let my group see
 // it" instead of giving explicit consent (açık rıza) under the law; it still decides, as before, who sees a profile.
 // Everything for them stays (and what members read is still kept by Code.gs); true brings both back as they were.
 const NOTICE_ON = false;
-const isDemo = !!window.ProvalaDemo;
+const isDemo = !!window.ProvariumDemo;
 const framed = (function () { try { return window.self !== window.top; } catch (e) { return true; } })();
 
 /* ---------------------------------------------------------------- helpers */
@@ -1703,7 +1726,7 @@ const holText = (list, lang) => (list || []).map(x => t(x.k, { n: x.n }, lang)).
 /* ------------------------------------------------------------------- i18n */
 const T = {
   en: {
-    docTitle: 'Provala',
+    docTitle: 'Provarium',
     bannerAlt: 'A priest raises his hand and chants “Provayoyo!” to call a villager to rehearsal. The villager answers “Yaparım” (I’m in).',
     modeNight: 'Switch to night mode', modeDay: 'Switch to day mode',
     skipToMain: 'Skip to content', stageRegion: 'Stage plan', tabAvailability: 'Availability', tabSchedule: 'Schedule', tabDotNew: 'new', tabDotReply: 'needs your reply', planner: 'Planner', sections: 'Sections', language: 'Language',
@@ -1818,9 +1841,9 @@ const T = {
     clearAllYes: 'Yes, clear it', clearedToast: "Calendar cleared. It isn't final until you send.", undo: 'Undo',
     daysMarked: ({ n }) => (n === 1 ? '1 day marked' : n + ' days marked'),
     copied: 'Copied', copyTitle: 'Select and copy', close: 'Close',
-    errClosed: 'Answers are closed for this poll.', errBusy: 'Provala is busy right now. Try again in a few seconds.',
-    errNetwork: "Couldn't reach Provala. Check your internet connection and try again.", errGeneric: 'Something went wrong. Try again.',
-    errNotSetUp: "Provala isn't set up yet. Your conductor needs to run setup in Apps Script.",
+    errClosed: 'Answers are closed for this poll.', errBusy: 'Provarium is busy right now. Try again in a few seconds.',
+    errNetwork: "Couldn't reach Provarium. Check your internet connection and try again.", errGeneric: 'Something went wrong. Try again.',
+    errNotSetUp: "Provarium isn't set up yet. Your conductor needs to run setup in Apps Script.",
     errNoPoll: 'That poll no longer exists.', errTooLarge: 'That is a bit too much text. Shorten your notes and try again.',
     errFull: 'This poll has reached its answer limit.', errInvalid: 'Some fields need fixing.',
     schedTitle: 'Meeting dates', schedEmpty: 'No dates yet. Your conductor will publish them here.',
@@ -1890,8 +1913,8 @@ const T = {
     phd_name: 'The person’s first name', phd_poll: 'The poll’s title', phd_deadline: 'The poll’s deadline', phd_linkOne: 'Their own link: it signs them in with one tap',
     phd_link: 'The link to the members’ page', phd_username: 'Their username', phd_password: 'Their password', phd_meeting: 'The meeting’s title (for a sectional, also whom it’s for)',
     phd_when: 'Its day and time', phd_meetings: 'The published meetings, one per line', phd_note: 'The schedule’s note', phd_until: 'The last day the link works',
-    tpl_credMsg: 'Hi {name}! You can sign in to Provala here:\n{link}\nUsername: {username}\nPassword: {password}\nYou can change your password once you\'re in if you like.',
-    tpl_linkMsg: 'Hi {name}! Tap this link to get into Provala without a password:\n{link}\nIt’s just for you and works once, until the end of {until}. Please don’t pass it on.',
+    tpl_credMsg: 'Hi {name}! You can sign in to Provarium here:\n{link}\nUsername: {username}\nPassword: {password}\nYou can change your password once you\'re in if you like.',
+    tpl_linkMsg: 'Hi {name}! Tap this link to get into Provarium without a password:\n{link}\nIt’s just for you and works once, until the end of {until}. Please don’t pass it on.',
     tpl_schedMsg: '{poll}\n\n{meetings}[\n\n{note}][\n\nDetails and calendar links: {link}]',
     tpl_pollAll: 'Hi all! A quick reminder for anyone who hasn’t filled in the {poll} poll yet[: please answer by {deadline}]. Here’s the link:\n{link}',
     tpl_pollOne: 'Hi {name}! Don’t forget to fill in the {poll} poll[ by {deadline}]:\n{link}',
@@ -1904,7 +1927,7 @@ const T = {
     linkUnreadable: 'This sign-in link couldn’t be read: part of it may be missing. Open it again from the message, or sign in with your username and password.',
     linkForOther: 'This link is for {other}', linkSwitchText: '{me} is signed in on this device. If you use the link, {me} is signed out here and you carry on as {other}.',
     linkSwitchUnsent: 'Changes {me} hasn’t sent yet are removed from this device too.', linkSwitch: 'Continue as {other}', linkStay: 'Stay as {me}',
-    notCopied: 'The message wasn’t copied, so don’t paste: {why}', notCopiedText: '(Provala: this message wasn’t copied. Please try again.)',
+    notCopied: 'The message wasn’t copied, so don’t paste: {why}', notCopiedText: '(Provarium: this message wasn’t copied. Please try again.)',
     copyRefused: 'It couldn’t go on the clipboard. Select the text and copy it yourself: the clipboard may still hold what you copied before.',
     copiedPlain: 'Copied, but the one-tap sign-in link couldn’t be made: the message has the usual link.',
     msgNotHere: 'Can’t be used in this message, so it stays as typed: {list}',
@@ -1986,17 +2009,17 @@ const T = {
     vnSave: 'Save the venue', vnSaved: 'Venue saved', vnDelete: 'Delete the venue', vnDeleteAsk: 'Delete this venue? Meetings that have it keep its name as their place.', vnDeleted: 'Venue deleted',
     vnNeedName: 'Give the venue a name.', vnBadUrl: 'The map link needs a web address (https://…).', vnStale: 'This venue was saved elsewhere meanwhile.', vnFull: 'At most 60 venues.',
     fVenue: 'Venue', vnPick: '— typed in —', vnMapOpen: 'Map', vnMapOpenFor: 'Map: {name}',
-    careTitle: 'Worth a call ({n})', careTitle0: 'Worth a call', vnTooLarge: 'A schedule using this venue is too full to take the new name. Shorten its meetings’ notes, or keep the name.', careHint: 'Members who weren’t there at the last three meetings that called them and had attendance taken (absent or excused), or haven’t opened Provala in a month and weren’t at any of those three either. Only you see this.',
-    careNone: 'Nobody right now.', careMissed: 'Not at the last three: {marks}', careAway: 'Hasn’t opened Provala since {date}', careNever: 'Hasn’t opened Provala yet',
+    careTitle: 'Worth a call ({n})', careTitle0: 'Worth a call', vnTooLarge: 'A schedule using this venue is too full to take the new name. Shorten its meetings’ notes, or keep the name.', careHint: 'Members who weren’t there at the last three meetings that called them and had attendance taken (absent or excused), or haven’t opened Provarium in a month and weren’t at any of those three either. Only you see this.',
+    careNone: 'Nobody right now.', careMissed: 'Not at the last three: {marks}', careAway: 'Hasn’t opened Provarium since {date}', careNever: 'Hasn’t opened Provarium yet',
     careCopy: 'Copy a message', careCopyFor: 'Copy a message to {name}',
     msgT_careMsg: 'A check-in', msgW_careMsg: 'Attendance tab, “Worth a call”: for someone who missed the last three meetings',
-    msgT_careAppMsg: 'A Provala reminder', msgW_careAppMsg: 'Attendance tab, “Worth a call”: for someone who hasn’t opened Provala in a month',
-    tpl_careAppMsg: 'Hi {name}, the schedule, the rehearsals and the repertoire are waiting for you in Provala. It opens with one tap from here:\n{link}',
-    careSince: 'Who opens Provala has been noted since {date}: before a month of it, only someone who has never signed in is listed for not opening it.', careLoad: 'Show the list',
+    msgT_careAppMsg: 'A Provarium reminder', msgW_careAppMsg: 'Attendance tab, “Worth a call”: for someone who hasn’t opened Provarium in a month',
+    tpl_careAppMsg: 'Hi {name}, the schedule, the rehearsals and the repertoire are waiting for you in Provarium. It opens with one tap from here:\n{link}',
+    careSince: 'Who opens Provarium has been noted since {date}: before a month of it, only someone who has never signed in is listed for not opening it.', careLoad: 'Show the list',
     tpl_careMsg: 'Hi {name}, we haven’t seen you for a while. Is everything all right? Tell me if there’s anything I can help with. The schedule is here:\n{link}',
-    bkDemo: 'In the real Provala, each backup is a spreadsheet in your Google Drive. The demo makes none.',
-    bkHere: 'Your data is kept on Provala’s server and backed up there. For a copy of your own, download it.',
-    dlData: 'Download the data (.xlsx)', dlHint: 'Provala’s sheets as they are, members’ phones and addresses too, without passwords, calendar links or sign-in links. Share it with nobody.', dlDone: 'Downloaded: {name}',
+    bkDemo: 'In the real Provarium, each backup is a spreadsheet in your Google Drive. The demo makes none.',
+    bkHere: 'Your data is kept on Provarium’s server and backed up there. For a copy of your own, download it.',
+    dlData: 'Download the data (.xlsx)', dlHint: 'Provarium’s sheets as they are, members’ phones and addresses too, without passwords, calendar links or sign-in links. Share it with nobody.', dlDone: 'Downloaded: {name}',
     errList: 'Error reports', errTitle: 'Error reports', errNone: 'No error reports.', errHint: 'Problems the page met on members’ devices, the newest first (at most 200).',
     errClear: 'Clear them all', errClearAsk: 'Clear every report? They can’t be brought back.', errClearYes: 'Yes, clear them', errCleared: 'Cleared',
     errDetails: 'Details', errStack: 'More', errLoadErr: 'Couldn’t load the reports.', errorsNotice2: ({ n }) => 'The page ran into ' + (n === 1 ? 'a problem' : n + ' problems') + ' on members’ devices.',
@@ -2035,10 +2058,10 @@ const T = {
     leadsAdmin: 'Section leader', leadsChip: 'Leads {secs}', leadsSave: 'Save the sections', leadsSaved: '{name} is now a section leader', leadsCleared: '{name} no longer leads a section',
     leadsAdminHint: 'Tick the sections they lead. A section leader opens the section panel from their own page: they make polls and sectionals for those sections (never over a general rehearsal), see the names and times in those sections’ answers (with their days away and hours they can’t come, never notes or comments) and replies without reasons, and take attendance and write notes for them. They don’t see other groups, comments, the member list, passwords or settings. Untick everything to end it.',
     errForbidden: 'A section leader can’t do that.', errOverlap: 'It overlaps a general rehearsal.', errNotHere: 'That isn’t done here.',
-    errMoving: 'Provala is moving: changes aren’t saved for now. Try again in an hour or so.',
-    movingTitle: 'Provala is moving.', movingText: 'You can see everything, but changes aren’t saved for now. In an hour or so, you can carry on at its new address.',
-    movedTitle: 'Provala has moved', movedText: 'Provala is at its new address now. Your sign-in on this phone comes along, and so do any changes not saved yet.',
-    movedHome: 'If you added Provala to your home screen, add it again from the new address and remove the old one. (On an iPhone, you may need to sign in once there.)', movedGo: 'Go to the new address',
+    errMoving: 'Provarium is moving: changes aren’t saved for now. Try again in an hour or so.',
+    movingTitle: 'Provarium is moving.', movingText: 'You can see everything, but changes aren’t saved for now. In an hour or so, you can carry on at its new address.',
+    movedTitle: 'Provarium has moved', movedText: 'Provarium is at its new address now. Your sign-in on this phone comes along, and so do any changes not saved yet.',
+    movedHome: 'If you added Provarium to your home screen, add it again from the new address and remove the old one. (On an iPhone, you may need to sign in once there.)', movedGo: 'Go to the new address',
     movedFail: 'The new address isn’t ready to take your sign-in yet. Try again in a few minutes.',
     bkNow: 'Back up now', bkDone: 'Backup made', bkLoadErr: 'Couldn’t load the backups.', bkMaybe: 'No answer yet: the backup may still be under way. Look again in a minute.', bkList: 'The backups', bkHint: 'Each is a spreadsheet in your Google Drive with everything in it; up to 8 are kept, the oldest one reused. Only you can open them.',
     // Version 2026-10-r5: around the rehearsal.
@@ -2075,7 +2098,7 @@ const T = {
     profShared: 'Shared with the group', profNotShared: 'Not shared with the group', noticeReadAt: 'Notice read {ago}', noticeNotRead: 'Notice not read yet',
     msgT_kvkk: 'Privacy notice (KVKK)', msgW_kvkk: 'Shown to each member once on their page, and always under Members',
     msgKvkkHint: 'Write who the data controller is (you, or the association) and how to reach you. A member who read an earlier wording is shown the new one again.',
-    tpl_kvkk: 'PRIVACY NOTICE ON THE PROCESSING OF PERSONAL DATA (KVKK)\n\nThis notice is given under Article 10 of the Turkish Personal Data Protection Law (Law No. 6698), so that you know what Provala keeps about you and why.\n\nData controller: the group’s organizer, who runs Provala for the group. (Organizer: write your name, or the association’s, and how to reach you here.)\n\nWhat is kept\n• Your name, username and your section in each group.\n• Your availability answers, your day notes and comment, your replies to meetings with their reasons and times, the days you are away with their note, and your attendance record.\n• What you choose to put on your profile: phone, district or address, birthday, a line about yourself. These are optional and entered by you.\n• When you last signed in, and error reports from the page (the browser’s name and the error, never your answers).\n\nWhy\n• To plan rehearsals and concerts from everyone’s availability, to keep attendance, to share the schedule, the rehearsal plans, the repertoire and the stage plans with you, and to let the members of a group know one another.\n\nLegal basis\n• Running the group’s activities, which you take part in: Article 5(2)(c) and (f) of the Law.\n• The optional profile fields are shared with your group only with your explicit consent, which you give (and can withdraw) with the tick on your profile.\n\nWho sees what\n• Your availability, notes, reasons, times and days away are seen by the organizer only; other members see only how many of each section can come.\n• A member the organizer makes a section leader sees, for their own sections only: the names and times in the polls they make (with the days you are away and the hours you can’t come, without their notes), replies to their meetings without reasons, and attendance at your section’s rehearsals. Never your notes, comment or reasons.\n• The members of your group see your name and section, what you share on your profile, and who came to past rehearsals. Whether members of different groups see each other is the organizer’s setting.\n\nWhere it is kept\n• In a Google Sheet and Google Apps Script belonging to the organizer’s Google account. Google’s servers may be outside Türkiye. No one else receives your data.\n\nHow long\n• As long as you are a member. When you leave, your account is removed on request; attendance records stay in the season’s record.\n\nYour rights (Article 11)\n• To learn whether your data is processed, and to ask about it; to ask for it to be corrected, deleted or destroyed; to object to a result against you drawn only by automated means; to ask for compensation for damage from unlawful processing. Ask the organizer: they answer within thirty days.',
+    tpl_kvkk: 'PRIVACY NOTICE ON THE PROCESSING OF PERSONAL DATA (KVKK)\n\nThis notice is given under Article 10 of the Turkish Personal Data Protection Law (Law No. 6698), so that you know what Provarium keeps about you and why.\n\nData controller: the group’s organizer, who runs Provarium for the group. (Organizer: write your name, or the association’s, and how to reach you here.)\n\nWhat is kept\n• Your name, username and your section in each group.\n• Your availability answers, your day notes and comment, your replies to meetings with their reasons and times, the days you are away with their note, and your attendance record.\n• What you choose to put on your profile: phone, district or address, birthday, a line about yourself. These are optional and entered by you.\n• When you last signed in, and error reports from the page (the browser’s name and the error, never your answers).\n\nWhy\n• To plan rehearsals and concerts from everyone’s availability, to keep attendance, to share the schedule, the rehearsal plans, the repertoire and the stage plans with you, and to let the members of a group know one another.\n\nLegal basis\n• Running the group’s activities, which you take part in: Article 5(2)(c) and (f) of the Law.\n• The optional profile fields are shared with your group only with your explicit consent, which you give (and can withdraw) with the tick on your profile.\n\nWho sees what\n• Your availability, notes, reasons, times and days away are seen by the organizer only; other members see only how many of each section can come.\n• A member the organizer makes a section leader sees, for their own sections only: the names and times in the polls they make (with the days you are away and the hours you can’t come, without their notes), replies to their meetings without reasons, and attendance at your section’s rehearsals. Never your notes, comment or reasons.\n• The members of your group see your name and section, what you share on your profile, and who came to past rehearsals. Whether members of different groups see each other is the organizer’s setting.\n\nWhere it is kept\n• In a Google Sheet and Google Apps Script belonging to the organizer’s Google account. Google’s servers may be outside Türkiye. No one else receives your data.\n\nHow long\n• As long as you are a member. When you leave, your account is removed on request; attendance records stay in the season’s record.\n\nYour rights (Article 11)\n• To learn whether your data is processed, and to ask about it; to ask for it to be corrected, deleted or destroyed; to object to a result against you drawn only by automated means; to ask for compensation for damage from unlawful processing. Ask the organizer: they answer within thirty days.',
     // Version 2026-10-r3.2: stage plans.
     tabStage: 'Stage', stageTitle: 'Stage plans', stageGroup: 'Group', stageNew: 'New stage plan',
     stageIntro: 'Where everyone stands at a concert: up to four lineups, each for its own songs. Place people on the risers, then download the picture and share it with your group.',
@@ -2220,14 +2243,14 @@ const T = {
     nextTitle: 'Next meeting', today: 'Today', tomorrow: 'Tomorrow', allMeetings: 'All dates',
     histTitle: 'Your attendance this season', histLine: 'Came {p} · Late {l} · Excused {e} · Absent {a}', histMore: 'Show the meetings',
     markP: 'Came', markL: 'Came late', markE: 'Excused', markA: 'Absent',
-    installTitle: 'Add Provala to your home screen', installTitlePlanner: 'Add the planner to your home screen',
+    installTitle: 'Add Provarium to your home screen', installTitlePlanner: 'Add the planner to your home screen',
     installText: 'It opens full-screen, like an app, and shows what it last had even without an internet connection.',
     installIos: 'In Safari, tap Share (the square with an arrow; on newer iOS versions, first the ••• button by the address bar), then “Add to Home Screen”.',
     installIosSignIn: 'The first time you open it from the home screen, you sign in once more: with your username and password, or with a new sign-in link from your conductor, pasted into the username box.',
     pasteLink: 'Got a sign-in link? Copy it and paste it into the username box.',
     installIosKey: 'The first time you open it from the home screen, you enter the organizer key once more.',
     installGo: 'Add to home screen', installNo: 'No, thanks',
-    updateReady: 'A new version of Provala is ready.', updateReload: 'Reload', updateLater: 'Later',
+    updateReady: 'A new version of Provarium is ready.', updateReload: 'Reload', updateLater: 'Later',
     updateBusy: 'What you’ve typed, or anything not sent yet, may be lost.', updateAnyway: 'Reload anyway',
     updateWait: 'Something is still on its way; reloading now may cut it off.',
     feedTitle: 'Get the dates in your calendar',
@@ -2298,7 +2321,7 @@ const T = {
     heatAria: 'Each row is a day and each column a time; the greener, the more people can come. The best times are listed below.',
   },
   tr: {
-    docTitle: 'Provala',
+    docTitle: 'Provarium',
     bannerAlt: 'Elini kaldırmış bir rahip “Provayoyo!” diye köylüyü provaya çağırıyor, köylü “Yaparım” diye cevap veriyor.',
     modeNight: 'Gece moduna geç', modeDay: 'Gündüz moduna geç',
     skipToMain: 'İçeriğe geç', stageRegion: 'Sahne düzeni', tabAvailability: 'Uygunluk', tabSchedule: 'Takvim', tabDotNew: 'yeni', tabDotReply: 'yanıt bekliyor', planner: 'Planlayıcı', sections: 'Bölümler', language: 'Dil',
@@ -2413,9 +2436,9 @@ const T = {
     clearAllYes: 'Evet, temizle', clearedToast: 'Takvim temizlendi. Göndermeden kesinleşmez.', undo: 'Geri al',
     daysMarked: ({ n }) => n + ' gün işaretli',
     copied: 'Kopyalandı', copyTitle: 'Seçip kopyalayın', close: 'Kapat',
-    errClosed: 'Bu anket için yanıtlar kapandı.', errBusy: 'Provala şu an meşgul. Birkaç saniye sonra tekrar deneyin.',
-    errNetwork: 'Provala’ya ulaşılamadı. İnternet bağlantınızı kontrol edip tekrar deneyin.', errGeneric: 'Bir sorun oluştu. Tekrar deneyin.',
-    errNotSetUp: "Provala henüz kurulmamış. Şefinizin Apps Script'te setup'ı çalıştırması gerekiyor.",
+    errClosed: 'Bu anket için yanıtlar kapandı.', errBusy: 'Provarium şu an meşgul. Birkaç saniye sonra tekrar deneyin.',
+    errNetwork: 'Provarium’a ulaşılamadı. İnternet bağlantınızı kontrol edip tekrar deneyin.', errGeneric: 'Bir sorun oluştu. Tekrar deneyin.',
+    errNotSetUp: "Provarium henüz kurulmamış. Şefinizin Apps Script'te setup'ı çalıştırması gerekiyor.",
     errNoPoll: 'Bu anket artık yok.', errTooLarge: 'Yazdıklarınız biraz uzun oldu. Notları kısaltıp tekrar deneyin.',
     errFull: 'Bu anket yanıt sınırına ulaştı.', errInvalid: 'Bazı alanların düzeltilmesi gerekiyor.',
     schedTitle: 'Buluşma tarihleri', schedEmpty: 'Henüz tarih yok. Şefiniz tarihleri burada yayımlayacak.',
@@ -2485,8 +2508,8 @@ const T = {
     phd_name: 'Kişinin ilk adı', phd_poll: 'Anketin başlığı', phd_deadline: 'Anketin son günü', phd_linkOne: 'Kişiye özel bağlantı: tek dokunuşla giriş yaptırır',
     phd_link: 'Üye sayfasının bağlantısı', phd_username: 'Kullanıcı adı', phd_password: 'Şifre', phd_meeting: 'Buluşmanın adı (bölüm provasında kimler için olduğu da)',
     phd_when: 'Günü ve saati', phd_meetings: 'Yayımlanan buluşmalar, her biri bir satırda', phd_note: 'Takvimin notu', phd_until: 'Bağlantının çalıştığı son gün',
-    tpl_credMsg: 'Merhaba {ad}! Provala\'ya buradan girebilirsin:\n{bağlantı}\nKullanıcı adı: {kullanıcı adı}\nŞifre: {şifre}\nGiriş yaptıktan sonra istersen şifreni değiştirebilirsin.',
-    tpl_linkMsg: 'Merhaba {ad}! Provala\'ya şifre yazmadan girmek için bu bağlantıya dokunman yeterli:\n{bağlantı}\nBağlantı sana özel ve {geçerlilik} gününün sonuna kadar bir kez çalışır. Lütfen kimseyle paylaşma.',
+    tpl_credMsg: 'Merhaba {ad}! Provarium\'a buradan girebilirsin:\n{bağlantı}\nKullanıcı adı: {kullanıcı adı}\nŞifre: {şifre}\nGiriş yaptıktan sonra istersen şifreni değiştirebilirsin.',
+    tpl_linkMsg: 'Merhaba {ad}! Provarium\'a şifre yazmadan girmek için bu bağlantıya dokunman yeterli:\n{bağlantı}\nBağlantı sana özel ve {geçerlilik} gününün sonuna kadar bir kez çalışır. Lütfen kimseyle paylaşma.',
     tpl_schedMsg: '{anket}\n\n{buluşmalar}[\n\n{not}][\n\nAyrıntılar ve takvim bağlantıları: {bağlantı}]',
     tpl_pollAll: 'Merhaba! {anket} anketini henüz doldurmayanlar için küçük bir hatırlatma[: son gün {son gün}]. Buradan doldurabilirsiniz:\n{bağlantı}',
     tpl_pollOne: 'Merhaba {ad}! {anket} anketini doldurmayı unutma[, son gün {son gün}]:\n{bağlantı}',
@@ -2499,7 +2522,7 @@ const T = {
     linkUnreadable: 'Bu giriş bağlantısı okunamadı; bir kısmı eksik olabilir. Mesajdaki bağlantıyı yeniden açın ya da kullanıcı adınız ve şifrenizle girin.',
     linkForOther: 'Bu bağlantı {other} için', linkSwitchText: 'Bu cihazda şu an {me} olarak giriş yapılmış. Bağlantıyı kullanırsanız {me} bu cihazda çıkış yapar ve {other} olarak devam edersiniz.',
     linkSwitchUnsent: '{me} adına henüz gönderilmemiş değişiklikler de bu cihazdan silinir.', linkSwitch: '{other} olarak devam et', linkStay: '{me} olarak kal',
-    notCopied: 'Mesaj kopyalanamadı, yapıştırmayın: {why}', notCopiedText: '(Provala: bu mesaj kopyalanamadı, lütfen tekrar deneyin.)',
+    notCopied: 'Mesaj kopyalanamadı, yapıştırmayın: {why}', notCopiedText: '(Provarium: bu mesaj kopyalanamadı, lütfen tekrar deneyin.)',
     copyRefused: 'Panoya kopyalanamadı. Metni seçip kendiniz kopyalayın; panoda hâlâ önceki metin olabilir.',
     copiedPlain: 'Kopyalandı, ama tek dokunuşla giriş bağlantısı oluşturulamadı: mesajda olağan bağlantı var.',
     msgNotHere: 'Bu mesajda kullanılamadığı için yazdığınız gibi kalacak: {list}',
@@ -2581,17 +2604,17 @@ const T = {
     vnSave: 'Mekânı kaydet', vnSaved: 'Mekân kaydedildi', vnDelete: 'Mekânı sil', vnDeleteAsk: 'Bu mekân silinsin mi? Onu kullanan buluşmalar adını yer olarak korur.', vnDeleted: 'Mekân silindi',
     vnNeedName: 'Mekâna bir ad verin.', vnBadUrl: 'Harita bağlantısı için bir web adresi gerekli (https://…).', vnStale: 'Bu mekân bu arada başka bir yerde kaydedildi.', vnFull: 'En çok 60 mekân olabilir.',
     fVenue: 'Mekân', vnPick: '— elle yazılan —', vnMapOpen: 'Harita', vnMapOpenFor: 'Harita: {name}',
-    careTitle: 'Arayıp sormaya değer ({n})', careTitle0: 'Arayıp sormaya değer', vnTooLarge: 'Bu mekânı kullanan bir takvim yeni adı alamayacak kadar dolu. Buluşmalarının notlarını kısaltın ya da adı olduğu gibi bırakın.', careHint: 'Kendilerini çağıran ve yoklaması alınmış son üç buluşmaya gelmeyenler (gelmedi ya da izinli) ya da bir aydır Provala’yı açmayıp o üç buluşmanın hiçbirine de gelmeyenler. Bunu yalnız siz görürsünüz.',
-    careNone: 'Şu an kimse yok.', careMissed: 'Son üçünde yoktu: {marks}', careAway: '{date} tarihinden beri Provala’yı açmadı', careNever: 'Provala’yı henüz hiç açmadı',
+    careTitle: 'Arayıp sormaya değer ({n})', careTitle0: 'Arayıp sormaya değer', vnTooLarge: 'Bu mekânı kullanan bir takvim yeni adı alamayacak kadar dolu. Buluşmalarının notlarını kısaltın ya da adı olduğu gibi bırakın.', careHint: 'Kendilerini çağıran ve yoklaması alınmış son üç buluşmaya gelmeyenler (gelmedi ya da izinli) ya da bir aydır Provarium’u açmayıp o üç buluşmanın hiçbirine de gelmeyenler. Bunu yalnız siz görürsünüz.',
+    careNone: 'Şu an kimse yok.', careMissed: 'Son üçünde yoktu: {marks}', careAway: '{date} tarihinden beri Provarium’u açmadı', careNever: 'Provarium’u henüz hiç açmadı',
     careCopy: 'Mesajı kopyala', careCopyFor: '{name} için mesajı kopyala',
     msgT_careMsg: 'Hal hatır sorma', msgW_careMsg: 'Katılım sekmesinde, “Arayıp sormaya değer”: son üç buluşmaya gelmeyen biri için',
-    msgT_careAppMsg: 'Provala hatırlatması', msgW_careAppMsg: 'Katılım sekmesinde, “Arayıp sormaya değer”: bir aydır Provala’yı açmayan biri için',
-    tpl_careAppMsg: 'Merhaba {ad}, takvim, provalar ve repertuvar Provala’da seni bekliyor. Buradan tek dokunuşla açabilirsin:\n{bağlantı}',
-    careSince: 'Provala’yı kimin açtığı {date} tarihinden beri not ediliyor: bir ay dolmadan yalnız hiç giriş yapmamış olanlar “açmadı” diye listelenir.', careLoad: 'Listeyi göster',
+    msgT_careAppMsg: 'Provarium hatırlatması', msgW_careAppMsg: 'Katılım sekmesinde, “Arayıp sormaya değer”: bir aydır Provarium’u açmayan biri için',
+    tpl_careAppMsg: 'Merhaba {ad}, takvim, provalar ve repertuvar Provarium’da seni bekliyor. Buradan tek dokunuşla açabilirsin:\n{bağlantı}',
+    careSince: 'Provarium’u kimin açtığı {date} tarihinden beri not ediliyor: bir ay dolmadan yalnız hiç giriş yapmamış olanlar “açmadı” diye listelenir.', careLoad: 'Listeyi göster',
     tpl_careMsg: 'Merhaba {ad}, bir süredir görüşemedik. Her şey yolunda mı? Yardımcı olabileceğim bir şey varsa yaz. Takvim burada:\n{bağlantı}',
-    bkDemo: 'Gerçek Provala’da her yedek Google Drive’ınızda bir tablodur. Demoda yedek alınmaz.',
-    bkHere: 'Verileriniz Provala’nın sunucusunda tutuluyor ve orada yedekleniyor. Kendi kopyanız için indirebilirsiniz.',
-    dlData: 'Verileri indir (.xlsx)', dlHint: 'Provala’nın sayfaları olduğu gibi, üyelerin telefonları ve adresleri de; şifreler, takvim bağlantıları ve giriş bağlantıları olmadan. Kimseyle paylaşmayın.', dlDone: 'İndirildi: {name}',
+    bkDemo: 'Gerçek Provarium’da her yedek Google Drive’ınızda bir tablodur. Demoda yedek alınmaz.',
+    bkHere: 'Verileriniz Provarium’un sunucusunda tutuluyor ve orada yedekleniyor. Kendi kopyanız için indirebilirsiniz.',
+    dlData: 'Verileri indir (.xlsx)', dlHint: 'Provarium’un sayfaları olduğu gibi, üyelerin telefonları ve adresleri de; şifreler, takvim bağlantıları ve giriş bağlantıları olmadan. Kimseyle paylaşmayın.', dlDone: 'İndirildi: {name}',
     errList: 'Hata kayıtları', errTitle: 'Hata kayıtları', errNone: 'Hata kaydı yok.', errHint: 'Sayfanın üyelerin cihazlarında karşılaştığı sorunlar, en yenisi başta (en çok 200).',
     errClear: 'Hepsini temizle', errClearAsk: 'Bütün kayıtlar silinsin mi? Geri getirilemez.', errClearYes: 'Evet, temizle', errCleared: 'Temizlendi',
     errDetails: 'Ayrıntılar', errStack: 'Daha fazla', errLoadErr: 'Kayıtlar yüklenemedi.', errorsNotice2: ({ n }) => 'Sayfa, üyelerin cihazlarında ' + n + ' kez sorunla karşılaştı.',
@@ -2630,10 +2653,10 @@ const T = {
     leadsAdmin: 'Bölüm şefi', leadsChip: '{secs} bölüm şefi', leadsSave: 'Bölümleri kaydet', leadsSaved: '{name} artık bölüm şefi', leadsCleared: '{name} artık bölüm şefi değil',
     leadsAdminHint: 'Şefi olduğu bölümleri işaretleyin. Bölüm şefi, bölüm panelini kendi sayfasından açar: bu bölümler için anket ve bölüm provası yapar (genel provaların üstüne asla), bu bölümlerin yanıtlarındaki adları ve saatleri (uzakta oldukları günler ve gelemedikleri saatlerle; notlar ve yorumlar olmadan) ve buluşmalara verilen yanıtları nedenleri olmadan görür, onlar için yoklama alır ve not yazar. Başka grupları, yorumları, üye listesini, şifreleri ve ayarları görmez. Bitirmek için bütün işaretleri kaldırın.',
     errForbidden: 'Bölüm şefi bunu yapamaz.', errOverlap: 'Genel provayla çakışıyor.', errNotHere: 'Bu burada yapılmıyor.',
-    errMoving: 'Provala taşınıyor: değişiklikler şu an kaydedilmiyor. Bir saat kadar sonra yeniden deneyin.',
-    movingTitle: 'Provala taşınıyor.', movingText: 'Her şeyi görebilirsiniz, ama değişiklikler şu an kaydedilmiyor. Bir saat kadar sonra yeni adresinden devam edebilirsiniz.',
-    movedTitle: 'Provala taşındı', movedText: 'Provala artık yeni adresinde. Bu telefondaki girişiniz ve henüz kaydedilmemiş değişiklikleriniz de sizinle gelir.',
-    movedHome: 'Provala’yı ana ekranınıza eklediyseniz yeni adresten yeniden ekleyin, eskisini silin. (iPhone’da orada bir kez giriş yapmanız gerekebilir.)', movedGo: 'Yeni adrese geç',
+    errMoving: 'Provarium taşınıyor: değişiklikler şu an kaydedilmiyor. Bir saat kadar sonra yeniden deneyin.',
+    movingTitle: 'Provarium taşınıyor.', movingText: 'Her şeyi görebilirsiniz, ama değişiklikler şu an kaydedilmiyor. Bir saat kadar sonra yeni adresinden devam edebilirsiniz.',
+    movedTitle: 'Provarium taşındı', movedText: 'Provarium artık yeni adresinde. Bu telefondaki girişiniz ve henüz kaydedilmemiş değişiklikleriniz de sizinle gelir.',
+    movedHome: 'Provarium’u ana ekranınıza eklediyseniz yeni adresten yeniden ekleyin, eskisini silin. (iPhone’da orada bir kez giriş yapmanız gerekebilir.)', movedGo: 'Yeni adrese geç',
     movedFail: 'Yeni adres girişinizi henüz alamıyor. Birkaç dakika sonra yeniden deneyin.',
     bkNow: 'Şimdi yedekle', bkDone: 'Yedek alındı', bkLoadErr: 'Yedekler yüklenemedi.', bkMaybe: 'Henüz yanıt gelmedi: yedek hâlâ alınıyor olabilir. Bir dakika sonra yeniden bakın.', bkList: 'Yedekler', bkHint: 'Her biri Google Drive’ınızda her şeyi içeren bir tablo; en çok 8 tanesi tutulur, en eskisinin yerine yenisi yazılır. Yalnız siz açabilirsiniz.',
     // Sürüm 2026-10-r5: provanın çevresi.
@@ -2670,7 +2693,7 @@ const T = {
     profShared: 'Grupla paylaşılıyor', profNotShared: 'Grupla paylaşılmıyor', noticeReadAt: 'Aydınlatma metnini {ago} okudu', noticeNotRead: 'Aydınlatma metnini henüz okumadı',
     msgT_kvkk: 'Aydınlatma metni (KVKK)', msgW_kvkk: 'Her üyeye sayfasında bir kez gösterilir; Üyeler sekmesinde her zaman durur',
     msgKvkkHint: 'Veri sorumlusunun kim olduğunu (siz ya da dernek) ve size nasıl ulaşılacağını yazın. Eski metni okumuş bir üyeye yenisi yeniden gösterilir.',
-    tpl_kvkk: 'KİŞİSEL VERİLERİN İŞLENMESİNE İLİŞKİN AYDINLATMA METNİ\n\nBu metin, 6698 sayılı Kişisel Verilerin Korunması Kanunu’nun 10. maddesi uyarınca, Provala’nın sizinle ilgili neleri, niçin sakladığını bilmeniz için hazırlanmıştır.\n\nVeri sorumlusu: Provala’yı grup için kuran ve yürüten yönetici. (Yönetici: buraya adınızı ya da derneğin adını ve iletişim bilginizi yazın.)\n\nNeler saklanıyor\n• Adınız, kullanıcı adınız ve her gruptaki bölümünüz.\n• Müsaitlik yanıtlarınız, gün notlarınız ve yorumunuz; buluşmalara verdiğiniz yanıtlar, nedenleri ve saatleriyle; uzakta olduğunuz günler ve notu; yoklama kayıtlarınız.\n• Profilinize kendiniz yazdıklarınız: telefon, semt ya da adres, doğum günü, kendinizi anlatan bir satır. Bunlar isteğe bağlıdır ve sizin girdiklerinizdir.\n• Son giriş zamanınız ve sayfanın hata bildirimleri (tarayıcının adı ve hata; yanıtlarınız değil).\n\nNiçin\n• Herkesin müsaitliğinden prova ve konser tarihlerini belirlemek, yoklama tutmak, takvimi, prova planlarını, repertuvarı ve sahne düzenlerini sizinle paylaşmak ve bir grubun üyelerinin birbirini tanımasını sağlamak için.\n\nHukuki sebep\n• Katıldığınız grubun faaliyetlerinin yürütülmesi: Kanun’un 5/2-c ve 5/2-f maddeleri.\n• İsteğe bağlı profil bilgileriniz grubunuzla yalnız açık rızanızla paylaşılır; bu rızayı profilinizdeki işaret kutusuyla verir ve dilediğinizde geri alırsınız.\n\nKim neyi görür\n• Müsaitliğinizi, notlarınızı, nedenlerinizi, saatlerinizi ve uzakta olduğunuz günleri yalnız yönetici görür; diğer üyeler yalnız her bölümden kaç kişinin gelebildiğini görür.\n• Yöneticinin bölüm şefi yaptığı bir üye, yalnız kendi bölümleri için şunları görür: açtığı anketlerdeki adları ve saatleri (uzakta olduğunuz günler ve gelemediğiniz saatlerle, notları olmadan), buluşmalarına verilen yanıtları nedenleri olmadan ve bölümünüzün provalarındaki yoklamayı. Notlarınızı, yorumunuzu ve nedenlerinizi hiçbir zaman görmez.\n• Grubunuzun üyeleri adınızı ve bölümünüzü, profilinizde paylaştıklarınızı ve geçmiş provalara kimlerin geldiğini görür. Farklı gruplardaki üyelerin birbirini görüp görmeyeceğine yönetici karar verir.\n\nNerede saklanıyor\n• Yöneticinin Google hesabındaki bir Google E-Tablosu ve Google Apps Script’te. Google’ın sunucuları Türkiye dışında olabilir. Verileriniz başka kimseye aktarılmaz.\n\nNe kadar süreyle\n• Üye olduğunuz sürece. Ayrıldığınızda hesabınız talebiniz üzerine silinir; yoklama kayıtları sezon kaydında kalır.\n\nHaklarınız (11. madde)\n• Verilerinizin işlenip işlenmediğini öğrenmek ve bilgi istemek; düzeltilmesini, silinmesini ya da yok edilmesini istemek; yalnızca otomatik sistemlerle çıkarılan, aleyhinize bir sonuca itiraz etmek; hukuka aykırı işleme yüzünden uğradığınız zararın giderilmesini istemek. Başvurunuzu yöneticiye yapın; en geç otuz gün içinde yanıtlanır.',
+    tpl_kvkk: 'KİŞİSEL VERİLERİN İŞLENMESİNE İLİŞKİN AYDINLATMA METNİ\n\nBu metin, 6698 sayılı Kişisel Verilerin Korunması Kanunu’nun 10. maddesi uyarınca, Provarium’un sizinle ilgili neleri, niçin sakladığını bilmeniz için hazırlanmıştır.\n\nVeri sorumlusu: Provarium’u grup için kuran ve yürüten yönetici. (Yönetici: buraya adınızı ya da derneğin adını ve iletişim bilginizi yazın.)\n\nNeler saklanıyor\n• Adınız, kullanıcı adınız ve her gruptaki bölümünüz.\n• Müsaitlik yanıtlarınız, gün notlarınız ve yorumunuz; buluşmalara verdiğiniz yanıtlar, nedenleri ve saatleriyle; uzakta olduğunuz günler ve notu; yoklama kayıtlarınız.\n• Profilinize kendiniz yazdıklarınız: telefon, semt ya da adres, doğum günü, kendinizi anlatan bir satır. Bunlar isteğe bağlıdır ve sizin girdiklerinizdir.\n• Son giriş zamanınız ve sayfanın hata bildirimleri (tarayıcının adı ve hata; yanıtlarınız değil).\n\nNiçin\n• Herkesin müsaitliğinden prova ve konser tarihlerini belirlemek, yoklama tutmak, takvimi, prova planlarını, repertuvarı ve sahne düzenlerini sizinle paylaşmak ve bir grubun üyelerinin birbirini tanımasını sağlamak için.\n\nHukuki sebep\n• Katıldığınız grubun faaliyetlerinin yürütülmesi: Kanun’un 5/2-c ve 5/2-f maddeleri.\n• İsteğe bağlı profil bilgileriniz grubunuzla yalnız açık rızanızla paylaşılır; bu rızayı profilinizdeki işaret kutusuyla verir ve dilediğinizde geri alırsınız.\n\nKim neyi görür\n• Müsaitliğinizi, notlarınızı, nedenlerinizi, saatlerinizi ve uzakta olduğunuz günleri yalnız yönetici görür; diğer üyeler yalnız her bölümden kaç kişinin gelebildiğini görür.\n• Yöneticinin bölüm şefi yaptığı bir üye, yalnız kendi bölümleri için şunları görür: açtığı anketlerdeki adları ve saatleri (uzakta olduğunuz günler ve gelemediğiniz saatlerle, notları olmadan), buluşmalarına verilen yanıtları nedenleri olmadan ve bölümünüzün provalarındaki yoklamayı. Notlarınızı, yorumunuzu ve nedenlerinizi hiçbir zaman görmez.\n• Grubunuzun üyeleri adınızı ve bölümünüzü, profilinizde paylaştıklarınızı ve geçmiş provalara kimlerin geldiğini görür. Farklı gruplardaki üyelerin birbirini görüp görmeyeceğine yönetici karar verir.\n\nNerede saklanıyor\n• Yöneticinin Google hesabındaki bir Google E-Tablosu ve Google Apps Script’te. Google’ın sunucuları Türkiye dışında olabilir. Verileriniz başka kimseye aktarılmaz.\n\nNe kadar süreyle\n• Üye olduğunuz sürece. Ayrıldığınızda hesabınız talebiniz üzerine silinir; yoklama kayıtları sezon kaydında kalır.\n\nHaklarınız (11. madde)\n• Verilerinizin işlenip işlenmediğini öğrenmek ve bilgi istemek; düzeltilmesini, silinmesini ya da yok edilmesini istemek; yalnızca otomatik sistemlerle çıkarılan, aleyhinize bir sonuca itiraz etmek; hukuka aykırı işleme yüzünden uğradığınız zararın giderilmesini istemek. Başvurunuzu yöneticiye yapın; en geç otuz gün içinde yanıtlanır.',
     // Sürüm 2026-10-r3.2: sahne düzenleri.
     tabStage: 'Sahne', stageTitle: 'Sahne düzenleri', stageGroup: 'Grup', stageNew: 'Yeni sahne düzeni',
     stageIntro: 'Bir konserde kimin nerede duracağı: her biri kendi şarkıları için en çok dört diziliş. Kişileri basamaklara yerleştirin, sonra resmini indirip grubunuzla paylaşın.',
@@ -2813,14 +2836,14 @@ const T = {
     nextTitle: 'Sıradaki buluşma', today: 'Bugün', tomorrow: 'Yarın', allMeetings: 'Tüm tarihler',
     histTitle: 'Bu sezon katılımınız', histLine: 'Geldi {p} · Geç {l} · İzinli {e} · Gelmedi {a}', histMore: 'Buluşmaları göster',
     markP: 'Geldi', markL: 'Geç geldi', markE: 'İzinli', markA: 'Gelmedi',
-    installTitle: 'Provala’yı ana ekranınıza ekleyin', installTitlePlanner: 'Planlama sayfasını ana ekranınıza ekleyin',
+    installTitle: 'Provarium’u ana ekranınıza ekleyin', installTitlePlanner: 'Planlama sayfasını ana ekranınıza ekleyin',
     installText: 'Bir uygulama gibi tam ekran açılır; internet bağlantısı yokken de son hâlini gösterir.',
     installIos: 'Safari’de Paylaş düğmesine (içinden ok çıkan kare; yeni iOS sürümlerinde önce adres çubuğunun yanındaki ••• düğmesine), ardından “Ana Ekrana Ekle”ye dokunun.',
     installIosSignIn: 'Ana ekrandan ilk açtığınızda bir kez daha giriş yapmanız gerekir: kullanıcı adınız ve şifrenizle ya da şefinizden yeni bir giriş bağlantısı isteyip onu kullanıcı adı kutusuna yapıştırarak.',
     pasteLink: 'Giriş bağlantınız mı var? Kopyalayıp kullanıcı adı kutusuna yapıştırın.',
     installIosKey: 'Ana ekrandan ilk açtığınızda planlayıcı anahtarını bir kez daha girmeniz gerekir.',
     installGo: 'Ana ekrana ekle', installNo: 'Hayır, teşekkürler',
-    updateReady: 'Provala’nın yeni sürümü hazır.', updateReload: 'Yenile', updateLater: 'Sonra',
+    updateReady: 'Provarium’un yeni sürümü hazır.', updateReload: 'Yenile', updateLater: 'Sonra',
     updateBusy: 'Yazdıklarınız ya da henüz gönderilmeyenler kaybolabilir.', updateAnyway: 'Yine de yenile',
     updateWait: 'Bir işlem hâlâ sürüyor; şimdi yenilerseniz yarım kalabilir.',
     feedTitle: 'Tarihleri takviminize ekleyin',
@@ -2895,7 +2918,7 @@ const T = {
 // Every page opens in Turkish, whatever language the phone or browser is set to. Someone who picks EN
 // in the header keeps English on that device until they pick TR again.
 function initialLang() {
-  const saved = store.get('provala-lang');
+  const saved = store.get('provarium-lang');
   return saved === 'en' ? 'en' : 'tr';
 }
 
@@ -2908,7 +2931,7 @@ function systemMode() {
   return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'night' : 'day';
 }
 function initialMode() {
-  const saved = store.get('provala-mode');
+  const saved = store.get('provarium-mode');
   return saved === 'day' || saved === 'night' ? saved : systemMode();
 }
 
@@ -2929,11 +2952,11 @@ const S = {
   polls: [], groups: [],
   pollParam: new URLSearchParams(location.search).get('p') || '',
   // Members sign in; the sign-in is remembered on this device until they sign out.
-  session: store.get('provala-session') || '', member: null, needLogin: false, loginErr: '', loginUser: ''
+  session: store.get('provarium-session') || '', member: null, needLogin: false, loginErr: '', loginUser: ''
 };
 // The planner editing an answer as a member (from version 2026-10-r4.9), in this tab: its sign-in, not the device's.
 let actKept = null;
-try { actKept = JSON.parse(sessionStorage.getItem('provala-act') || 'null'); } catch (e) { actKept = null; }
+try { actKept = JSON.parse(sessionStorage.getItem('provarium-act') || 'null'); } catch (e) { actKept = null; }
 if (/^#duzenle=/.test(location.hash) || (actKept && actKept.session)) S.session = '';
 
 function t(key, vars, lang) {
@@ -3493,7 +3516,7 @@ function fitCaps(data, caps) {
 const capsFor = (data, body) => (Array.isArray(data.caps) ? data.caps : data.state && Array.isArray(data.state.caps) ? data.state.caps
   : body && (body.action === 'admin' || body.action === 'leader') ? A.caps : S.caps);
 
-// Requests to Apps Script on their way (a newer Provala waits for them: see busyHere).
+// Requests to Apps Script on their way (a newer Provarium waits for them: see busyHere).
 let inflight = 0;
 const Remote = {
   async call(method, body, params) {
@@ -3502,7 +3525,7 @@ const Remote = {
   },
   async send(method, body, params) {
     if (isDemo) {
-      const data = await window.ProvalaDemo.call(method, body, params);
+      const data = await window.ProvariumDemo.call(method, body, params);
       noteMove(data);
       if (!data || !data.ok) throw new ApiError((data && data.error) || 'server_error', data && data.message);
       return fitCaps(data, capsFor(data, body));
@@ -3722,9 +3745,10 @@ const icsText = (events, p) => icsItems(events.map(ev => [ev, p]));
 function icsItems(items) {
   const esc = s => String(s || '').replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n');
   const now = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
-  const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Provala//Planner//EN', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH'];
+  const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Provarium//Planner//EN', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH'];
   for (const [ev, p] of items) {
     const o = ownTimes(ev, p);
+    // (The ids end in the app's previous name, as before version 2026-10-r6.2: a calendar updates a meeting it has.)
     lines.push('BEGIN:VEVENT', 'UID:' + (p && p.id ? p.id + '.' : '') + ev.id + '@provala', 'DTSTAMP:' + now, 'DTSTART:' + icsWhen(ev.date, o.start, p && p.tz), 'DTEND:' + icsWhen(ev.date, o.end, p && p.tz), 'SUMMARY:' + esc(ev.title || loc(p.title)));
     const vn = S.view !== 'admin' ? venueOf(ev) : null, where = [ev.place || (vn ? vn.name : ''), vn && vn.address ? vn.address.replace(/\s*\n\s*/g, ', ') : ''].filter(Boolean).join(', ');
     if (where) lines.push('LOCATION:' + esc(where));
@@ -3743,7 +3767,7 @@ function resetMember() {
 resetMember();
 
 // Unsent changes are kept on this device, separately for each member and poll.
-const draftKey = () => 'provala-draft-' + S.poll.id + '-' + S.member.id;
+const draftKey = () => 'provarium-draft-' + S.poll.id + '-' + S.member.id;
 // The draft is a snapshot taken at the change, so it can be written later even if the page has moved on.
 let draftTimer = 0, draftDue = null;
 function saveDraftSoon() {
@@ -3782,7 +3806,7 @@ function markDirty() {
 // The page a member last saw is kept on this device, so it opens at once next time while a fresh copy
 // is fetched behind it. It holds only what that member may see anyway (their own answer, the group's numbers,
 // who can come to each rehearsal), and signing out removes it (like unsent changes).
-const PAGE_KEY = 'provala-page';
+const PAGE_KEY = 'provarium-page';
 const pageOf = st => ({ member: st.member, poll: st.poll, schedule: st.schedule, mine: st.mine, prev: st.prev || null, group: st.group || null, attend: st.attend || null,
   replies: st.replies || {}, more: st.more || [], caps: st.caps || [], polls: st.polls || [], groups: st.groups || [], stages: st.stages || [], away: st.away || [],
   repertoire: st.repertoire || [], plans: st.plans || [], people: st.people || null, past: st.past || [], notice: st.notice || null, busy: st.busy || [],
@@ -3791,9 +3815,9 @@ const pageOf = st => ({ member: st.member, poll: st.poll, schedule: st.schedule,
 // "Nothing changed" (from version 2026-10-r6): the server tags each page it sends; asked again with the tag, it says
 // only "the same" while it still is. The tag is sent only while this copy is exactly as it came with it (same content,
 // same version of this page): tagSum, a fingerprint of the copy, taken then. Anything changed here since (a reply, an
-// answer, days away, a newer Provala reading it) and the page is asked for in full.
+// answer, days away, a newer Provarium reading it) and the page is asked for in full.
 function pageSum(pg) {
-  const text = String(window.provalaVersion || '') + '|' + stable(Object.assign({}, pg, { tag: '', tagSum: '' }));
+  const text = String(window.provariumVersion || '') + '|' + stable(Object.assign({}, pg, { tag: '', tagSum: '' }));
   let a = 0x811c9dc5, b = 0x5bd1e995;
   for (let i = 0; i < text.length; i++) { const c = text.charCodeAt(i); a = Math.imul(a ^ c, 16777619); b = Math.imul(b ^ c, 0x85ebca6b); }
   return (a >>> 0).toString(36) + '.' + (b >>> 0).toString(36);
@@ -3972,12 +3996,12 @@ document.addEventListener('visibilitychange', () => {
 
 function endSession() {
   if (S.acting) { actEnd(); return; }
-  if (window.provalaDropOld) window.provalaDropOld();   // (what an earlier version kept under its old names goes too)
+  if (window.provariumDropOld) window.provariumDropOld();   // (what an earlier version kept under its old names goes too)
   for (const q of document.querySelectorAll('#toasts .toast.ask')) q.remove();   // (a question left open: no longer for anyone)
   if (A.leadMode || A.key.indexOf('ldr.') === 0) switchAdmin(false);   // (from version 2026-10-r5.2: their section leader's page goes too)
   flushDraft();   // a sign-out the member didn't choose (password changed elsewhere) keeps their unsent changes
   pageGen++; pageFetch = null;
-  store.del('provala-session');
+  store.del('provarium-session');
   store.del(PAGE_KEY);
   Object.assign(S, { session: '', member: null, needLogin: true, poll: null, schedule: null, prev: null, group: null, attend: null, page: null,
     replies: {}, more: [], caps: [], polls: [], groups: [], stages: [], history: null, feed: '', linkAsk: null, loaded: true, loading: false, away: [],
@@ -3991,7 +4015,7 @@ function endSession() {
   resetMember();
 }
 // A member's unsent changes kept on this device (on a shared device they shouldn't outlive the sign-in).
-const draftsOf = id => (id ? store.keys().filter(k => k.indexOf('provala-draft-') === 0 && k.slice(-id.length - 1) === '-' + id) : []);
+const draftsOf = id => (id ? store.keys().filter(k => k.indexOf('provarium-draft-') === 0 && k.slice(-id.length - 1) === '-' + id) : []);
 function dropDrafts(id) {
   dropDraft();
   draftsOf(id).forEach(k => store.del(k));
@@ -4032,7 +4056,7 @@ async function linkSignIn(token, view, sw) {
     if (S.session) endSession();   // (the same member again: their unsent changes stay)
     pageGen++; pageFetch = null;
     S.session = r.session; S.member = r.member;
-    store.set('provala-session', r.session);
+    store.set('provarium-session', r.session);
     S.loginErr = ''; S.loginUser = '';
     applyState(r.state);
     keepPage(r.state);
@@ -4122,7 +4146,7 @@ function renderLogin(main) {
         const r = await api.login(u, pw, S.pollParam);
         pageGen++; pageFetch = null;
         S.session = r.session; S.member = r.member;
-        store.set('provala-session', r.session);
+        store.set('provarium-session', r.session);
         S.loginErr = ''; S.loginUser = '';
         if (r.state && r.state.member) {
           applyState(r.state);
@@ -4177,7 +4201,7 @@ function openPasswordDialog() {
       try {
         const r = await api.password(S.session, old.value, next.value);
         S.session = r.session;
-        store.set('provala-session', r.session);
+        store.set('provarium-session', r.session);
         close();
         toast(t('pwChanged'));
       } catch (x) {
@@ -5313,7 +5337,7 @@ function renderSchedule(main) {
   // Said once, before the buttons: who sees what of a reply.
   if (anyOpen && can('replies')) head.append(h('p', { class: 'hint' }, t('replyPrivacy')));
   if (anyAtt) wrap.append(attLegend());
-  if (all.length && !framed) wrap.append(h('div', { class: 'actions' }, h('button', { type: 'button', class: 'btn', onclick: () => download('provala.ics', icsItems(all), 'text/calendar') }, t('icsAll'))));
+  if (all.length && !framed) wrap.append(h('div', { class: 'actions' }, h('button', { type: 'button', class: 'btn', onclick: () => download('provarium.ics', icsItems(all), 'text/calendar') }, t('icsAll'))));
   const away = buildAway();
   if (away) wrap.append(away);
   const busyBox = buildBusy();
@@ -5375,7 +5399,7 @@ function changeLine(c, p, lang, gmap) {
 }
 const CHG_DAYS = 14;
 // When this member last pressed Tamam on this device, for a poll (kept in memory too, where the device won't keep it).
-const chgKey = p => 'provala-chg-' + (S.member ? S.member.id + '-' : '') + p.id;
+const chgKey = p => 'provarium-chg-' + (S.member ? S.member.id + '-' : '') + p.id;
 const chgMem = {};
 function chgSeen(p) {
   let v = '';
@@ -5394,7 +5418,7 @@ function chgSaw(p, at) {
 // Since then, what the box last told them about each meeting, as its line ({ id: { at, kind, was, now } }, at: the
 // time of the meeting's last change then): a meeting changed again since (undone, say) is told from how they last saw
 // it, until Tamam. (Kept as it was shown, so changes the schedule no longer keeps don't matter.)
-const shownKey = p => 'provala-chgs-' + (S.member ? S.member.id + '-' : '') + p.id;
+const shownKey = p => 'provarium-chgs-' + (S.member ? S.member.id + '-' : '') + p.id;
 function chgShown(p) {
   const v = store.json(shownKey(p)), all = v && typeof v === 'object' && !Array.isArray(v) ? v : {};
   return Object.assign(all, chgMem[shownKey(p)] || {});
@@ -5458,7 +5482,7 @@ function byDay(list, of) {
 }
 // Also new since the member last pressed Tamam (from version 2026-10-r4.9): a rehearsal plan added or changed for a
 // meeting of theirs still to come, and a piece new in their repertoire. (The first time on a device nothing is news.)
-const newsKey = () => 'provala-news-' + (S.member ? S.member.id : '');
+const newsKey = () => 'provarium-news-' + (S.member ? S.member.id : '');
 let newsMem = '';
 function newsSeen() { let v = ''; try { v = store.get(newsKey()) || ''; } catch (e) { /* newsMem */ } return newsMem > v ? newsMem : v; }
 function newsSaw(at) { if (newsMem < at) newsMem = at; try { if ((store.get(newsKey()) || '') < at) store.set(newsKey(), at); } catch (e) { /* kept in newsMem */ } }
@@ -5789,7 +5813,7 @@ function eventCard(b, ev, now, nested) {
     // (From version 2026-10-r5.3 after the reply, folded into one quiet "Takvime ekle": the page offers the subscription too.)
     over || !called ? null : h('details', { class: 'cal-add' }, h('summary', null, t('calAdd')), h('div', { class: 'event-actions' },
       h('a', { class: 'btn small', href: gcalUrl(ev, b.p), target: '_blank', rel: 'noopener' }, t('googleCal')),
-      framed ? null : h('button', { type: 'button', class: 'btn small', onclick: () => download('provala-' + ev.date + '.ics', icsText([ev], b.p), 'text/calendar') }, t('icsOne')))),
+      framed ? null : h('button', { type: 'button', class: 'btn small', onclick: () => download('provarium-' + ev.date + '.ics', icsText([ev], b.p), 'text/calendar') }, t('icsOne')))),
     buildAttend(ev, b.attend),
     over ? cameBlock(pastOf(b.p.id, ev.id)) : null);
 }
@@ -5835,8 +5859,8 @@ function feedUrls() {
   return { https, webcal, google: 'https://calendar.google.com/calendar/r?cid=' + encodeURIComponent(webcal) };
 }
 /* ---------- On the home screen (from version 2026-10-r4.5). sw.js keeps the page, its pictures and fonts on the
-   phone (never the answers from Apps Script), so Provala opens at once, also without a connection, and always fresh
-   when there is one. A page left open (a phone can keep it for days) checks for a newer Provala and loads it when
+   phone (never the answers from Apps Script), so Provarium opens at once, also without a connection, and always fresh
+   when there is one. A page left open (a phone can keep it for days) checks for a newer Provarium and loads it when
    nothing here is being typed or waits to be sent; otherwise a note offers to. The members' page and the planner's
    are each an app of their own. */
 const inApp = () => !!((window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true);
@@ -5856,14 +5880,14 @@ function startApp() {
   if (document.readyState === 'complete') setTimeout(reg, 2000); else window.addEventListener('load', () => setTimeout(reg, 2000), { once: true });
   window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEvt = e; refreshInstall(); });
   window.addEventListener('appinstalled', () => { installEvt = null; refreshInstall(); });
-  // A newer Provala on the site: taken up soon after opening (when a slow connection opened the kept copy), when the
+  // A newer Provarium on the site: taken up soon after opening (when a slow connection opened the kept copy), when the
   // page is looked at again after a while, and when the connection comes back: by itself if nothing here would be
   // lost, with a note otherwise. While it stays open in view, every half hour, only the note (it may be being read).
   setTimeout(() => checkVersion(true), 15000);
   document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && Date.now() - versionAt > 5 * 60e3) checkVersion(true); });
   window.addEventListener('online', () => { if (Date.now() - versionAt > 60e3) checkVersion(true); });
   setInterval(() => { if (document.visibilityState === 'visible' && Date.now() - versionAt > 25 * 60e3) checkVersion(false); }, 30 * 60e3);
-  window.provalaCheckVersion = auto => checkVersion(auto !== false);   // (for the tests)
+  window.provariumCheckVersion = auto => checkVersion(auto !== false);   // (for the tests)
 }
 // The page's own manifest, icon and name for the home screen: the planner's on its page, the members' elsewhere. When
 // the manifest changes, so does what the browser would install: an offer it made for the other one no longer stands.
@@ -5871,7 +5895,7 @@ function appLinks() {
   const planner = S.view === 'admin', set = (id, k, v) => { const el = document.getElementById(id); if (el && el[k] !== v) { el[k] = v; return true; } return false; };
   if (set('app-manifest', 'href', new URL(planner ? 'planner.webmanifest' : 'manifest.webmanifest', location.href).href) && installEvt) { installEvt = null; refreshInstall(); }
   set('app-touch-icon', 'href', new URL(planner ? 'planner-180.png' : 'icon.png', location.href).href);
-  set('app-title', 'content', planner ? 'Planlama' : 'Provala');
+  set('app-title', 'content', planner ? 'Planlama' : 'Provarium');
 }
 // Fields typed in since they were drawn: while one is still on screen with something in it, that may not be sent or
 // saved yet. Not the fields whose own page state already says so (the member's answers and notes, a reply being
@@ -5911,16 +5935,16 @@ function busyHere() {
 // The versions this tab loaded by itself (at most three in all): should the phone still open an older copy, or the site
 // go back and forth between two versions, the note says so instead of loading again and again.
 function loadedFor() {
-  try { const v = JSON.parse(sessionStorage.getItem('provala-updated') || '[]'); return Array.isArray(v) ? v : []; } catch (e) { return null; }
+  try { const v = JSON.parse(sessionStorage.getItem('provarium-updated') || '[]'); return Array.isArray(v) ? v : []; } catch (e) { return null; }
 }
 async function checkVersion(auto, tries) {
-  if (isDemo || !window.provalaVersion) return;
+  if (isDemo || !window.provariumVersion) return;
   versionAt = Date.now();
   let text = '';
   // (Asked afresh: unchanged, the server says so without sending the page again.)
   try { const r = await fetch('./', { cache: 'no-cache', credentials: 'same-origin' }); if (!r.ok) return; text = await r.text(); } catch (e) { return; }
   const m = /var VERSION = '([^']+)'/.exec(text);
-  if (!m || m[1] === window.provalaVersion) return;
+  if (!m || m[1] === window.provariumVersion) return;
   const done = loadedFor(), why = busyHere();
   if (!auto || !done || done.indexOf(m[1]) !== -1 || done.length >= 3 || why === 'work') { showUpdate(); return; }
   if (why === 'wait') {
@@ -5930,13 +5954,13 @@ async function checkVersion(auto, tries) {
     versionLater = setTimeout(() => checkVersion(true, (tries || 0) + 1), 10000);
     return;
   }
-  try { sessionStorage.setItem('provala-updated', JSON.stringify(done.concat(m[1]).slice(-10))); } catch (e) { showUpdate(); return; }
+  try { sessionStorage.setItem('provarium-updated', JSON.stringify(done.concat(m[1]).slice(-10))); } catch (e) { showUpdate(); return; }
   location.reload();
 }
-// With the other messages (and read out like them): a newer Provala is ready. Yenile asks first if something here
+// With the other messages (and read out like them): a newer Provarium is ready. Yenile asks first if something here
 // would be lost.
-/* ---------- The move (from version 2026-10-r6.1): Provala on Google read-only for an hour or so, then moved */
-// While Provala is being moved, every answer says so (move: 'readonly'): a note on top, until an answer doesn't. Once
+/* ---------- The move (from version 2026-10-r6.1): Provarium on Google read-only for an hour or so, then moved */
+// While Provarium is being moved, every answer says so (move: 'readonly'): a note on top, until an answer doesn't. Once
 // it has moved, every request is answered "moved", with the new address: a notice over everything, with a way there
 // that takes this phone's sign-in along, once (a form posted to the new address's api/carry: never in an address, so
 // in no history; the new address takes it only from this one). Then nothing is kept here any more.
@@ -6009,18 +6033,18 @@ async function carryTo(to) {
   flushDraft();   // (a change typed a moment ago goes along too)
   const form = h('form', { method: 'POST', action: to + 'api/carry' });
   const add = (k, v) => { if (v) form.append(h('input', { type: 'hidden', name: k, value: v })); };
-  const org = store.get('provala-org');
-  add('provala-session', store.get('provala-session'));
-  add('provala-org', org && org.indexOf('org.') === 0 ? org : '');   // (a planner sign-in; never the organizer key itself)
-  add('provala-lang', store.get('provala-lang'));
-  add('provala-mode', store.get('provala-mode'));
-  for (const [k, v] of draftsToCarry(store.keys().filter(k => k.indexOf('provala-draft-') === 0).map(k => [k, store.get(k)]))) add(k, v);   // (changes not yet saved)
+  const org = store.get('provarium-org');
+  add('provarium-session', store.get('provarium-session'));
+  add('provarium-org', org && org.indexOf('org.') === 0 ? org : '');   // (a planner sign-in; never the organizer key itself)
+  add('provarium-lang', store.get('provarium-lang'));
+  add('provarium-mode', store.get('provarium-mode'));
+  for (const [k, v] of draftsToCarry(store.keys().filter(k => k.indexOf('provarium-draft-') === 0).map(k => [k, store.get(k)]))) add(k, v);   // (changes not yet saved)
   // (Where it was going: a poll's link, the planner's page.)
   const then = location.search + location.hash;
-  add('provala-then', /^[?#][\x21-\x7e]{1,500}$/.test(then) ? then : '');
-  // (Once: nothing of Provala stays on this phone at the old address, so nothing signs in there or goes along again.)
-  for (const k of store.keys()) if (k.indexOf('provala-') === 0) store.del(k);
-  if (window.provalaDropOld) window.provalaDropOld();   // (and what pages before version 2026-10-r5.4 kept)
+  add('provarium-then', /^[?#][\x21-\x7e]{1,500}$/.test(then) ? then : '');
+  // (Once: nothing of Provarium stays on this phone at the old address, so nothing signs in there or goes along again.)
+  for (const k of store.keys()) if (k.indexOf('provarium-') === 0) store.del(k);
+  if (window.provariumDropOld) window.provariumDropOld();   // (and what pages before version 2026-10-r5.4 kept)
   document.body.append(form);
   form.submit();
 }
@@ -6075,7 +6099,7 @@ function focusBefore(slot) {
 function fillInstall(slot) {
   const kind = slot.dataset.kind, ios = onIos();
   slot.replaceChildren();
-  if (isDemo || inApp() || store.get('provala-install-' + kind) === 'no' || (!ios && (!installEvt || !onTouch()))) return;
+  if (isDemo || inApp() || store.get('provarium-install-' + kind) === 'no' || (!ios && (!installEvt || !onTouch()))) return;
   const done = () => { refreshInstall(); focusBefore(slot); };
   const go = async () => {
     const ev = installEvt;
@@ -6090,7 +6114,7 @@ function fillInstall(slot) {
     ios ? h('p', { class: 'hint' }, kind === 'planner' ? t('installIosKey') : t('installIosSignIn')) : null,
     h('div', { class: 'actions' },
       !ios && installEvt ? h('button', { type: 'button', class: 'btn primary', id: 'install-go', onclick: go }, t('installGo')) : null,
-      h('button', { type: 'button', class: 'btn quiet', id: 'install-no', onclick: () => { store.set('provala-install-' + kind, 'no'); done(); } }, t('installNo')))));
+      h('button', { type: 'button', class: 'btn quiet', id: 'install-no', onclick: () => { store.set('provarium-install-' + kind, 'no'); done(); } }, t('installNo')))));
 }
 
 function buildFeed() {
@@ -6324,9 +6348,9 @@ function pitchBlock(p, g) {
 
 /* ============================================================= ORGANIZER */
 const A = {
-  // A 30-day planner sign-in made from the key; older versions kept the key itself under provala-admin-key.
-  key: store.get('provala-org') || store.get('provala-admin-key') || '', authed: false, loading: false, error: null, keyErr: '',
-  polls: [], currentId: '', pollId: store.get('provala-admin-poll') || '', data: null,
+  // A 30-day planner sign-in made from the key; older versions kept the key itself under provarium-admin-key.
+  key: store.get('provarium-org') || store.get('provarium-admin-key') || '', authed: false, loading: false, error: null, keyErr: '',
+  polls: [], currentId: '', pollId: store.get('provarium-admin-poll') || '', data: null,
   board: new Set(), tab: 'plan', duration: 120, cell: null, hl: null, scrollX: null,
   draft: { events: [], note: '' }, draftDirty: false, busy: false,
   creds: [],   // sign-in details just created; shown once, never stored
@@ -6337,7 +6361,7 @@ const A = {
   // Release 3: the sections the board is filtered to ("group|section"; none: everyone), how best times are ranked
   // (by the weakest section, or by the number of people), how many meetings a month to find and how far apart, and
   // the meetings whose "who's called" list is open in the schedule editor.
-  secs: new Set(), rank: store.get('provala-org-rank') === 'count' ? 'count' : 'balance', sets: setsPref(), openCall: new Set(),
+  secs: new Set(), rank: store.get('provarium-org-rank') === 'count' ? 'count' : 'balance', sets: setsPref(), openCall: new Set(),
   // From version 2026-10-r5.2: a section leader's page (#bolum) rather than the planner's; what Code.gs says they lead;
   // the general rehearsals they may take attendance at.
   leadMode: false, leader: null, lgen: null
@@ -6348,11 +6372,11 @@ let adminGen = 0;   // (counts switches between the planner's page and a section
 let lgOpening = false;   // (a section leader's general rehearsal's attendance being fetched to open)
 function switchAdmin(lead) {
   adminGen++;
-  for (const b of document.querySelectorAll('.backdrop:not(.moved-back)')) b.remove();   // (the other page's dialogs go with it, and its undo offers; not the notice that Provala has moved)
+  for (const b of document.querySelectorAll('.backdrop:not(.moved-back)')) b.remove();   // (the other page's dialogs go with it, and its undo offers; not the notice that Provarium has moved)
   for (const b of document.querySelectorAll('#toasts .toast button')) b.closest('.toast').remove();
   lgOpening = false;
-  Object.assign(A, { key: lead ? (S.session && !S.acting ? 'ldr.' + S.session : '') : store.get('provala-org') || store.get('provala-admin-key') || '',
-    authed: false, loading: false, error: null, keyErr: '', polls: [], currentId: '', pollId: store.get(lead ? 'provala-lead-poll' : 'provala-admin-poll') || '', data: null,
+  Object.assign(A, { key: lead ? (S.session && !S.acting ? 'ldr.' + S.session : '') : store.get('provarium-org') || store.get('provarium-admin-key') || '',
+    authed: false, loading: false, error: null, keyErr: '', polls: [], currentId: '', pollId: store.get(lead ? 'provarium-lead-poll' : 'provarium-admin-poll') || '', data: null,
     board: new Set(), tab: 'plan', cell: null, hl: null, scrollX: null, draft: { events: [], note: '' }, draftDirty: false, busy: false, creds: [], caps: [], errors: null,
     since: {}, openEv: new Set(), season: null, seasonBusy: false, seasonErr: false, groups: [], current: {}, memberGroup: '', seasonGroup: '', secs: new Set(), openCall: new Set(),
     messages: [], stage: freshStage(), rep: freshRep(), plan: freshPlanUi(), notes: freshNotesUi(), vn: freshVn(), venues: [], leadMode: !!lead, leader: null, lgen: null,
@@ -6372,7 +6396,7 @@ function leadsText(leads, gmap) {
   }).join(' · ');
 }
 function setsPref() {
-  const x = store.json('provala-org-sets');
+  const x = store.json('provarium-org-sets');
   return x && x.n >= 2 && x.n <= 8 && x.gap >= 1 && x.gap <= 14 ? { n: Math.round(x.n), gap: Math.round(x.gap) } : { n: 2, gap: 10 };
 }
 const adminGmap = () => gmapOf(A.groups);
@@ -6417,8 +6441,8 @@ async function adminEnter() {
     if (A.leadMode) A.leader = st.leader && typeof st.leader === 'object' ? st.leader : { leads: {} };
     else {
       if (st.session) A.key = st.session;
-      store.set('provala-org', A.key);
-      store.del('provala-admin-key');
+      store.set('provarium-org', A.key);
+      store.del('provarium-admin-key');
     }
     A.polls = st.polls; A.currentId = st.currentId;
     A.groups = st.groups || [MAIN_GROUP()];
@@ -6439,7 +6463,7 @@ async function adminEnter() {
     else if (e.code === 'bad_key' || e.code === 'locked') {
       // An expired planner sign-in just asks for the key again; a wrong key says so.
       const wasSignIn = A.key.indexOf('org.') === 0;
-      A.authed = false; A.key = ''; store.del('provala-org'); store.del('provala-admin-key');
+      A.authed = false; A.key = ''; store.del('provarium-org'); store.del('provarium-admin-key');
       A.keyErr = e.code === 'locked' ? t('locked') : wasSignIn ? '' : t('badKey');
     }
     else A.error = e;
@@ -6467,7 +6491,7 @@ function applyAdminPoll(r) {
   if (!(A.data && A.data.poll && A.data.poll.id === id)) { A.plan = freshPlanUi(); A.notes = freshNotesUi(); }
   A.pollId = id;
   A.schedStale = null;   // (the schedule as it is now)
-  store.set(A.leadMode ? 'provala-lead-poll' : 'provala-admin-poll', id);
+  store.set(A.leadMode ? 'provarium-lead-poll' : 'provarium-admin-poll', id);
   A.data = { poll: r.poll, responses: r.responses, members: r.members || [], schedule: r.schedule || { draft: null, published: null },
     replies: r.replies || [], attendance: r.attendance || [], seen: r.seen || {}, plans: r.plans || [], clashes: Array.isArray(r.clashes) ? r.clashes : [],
     notes: Array.isArray(r.notes) ? r.notes : [], generals: cleanGenerals(r.generals) };
@@ -6476,7 +6500,7 @@ function applyAdminPoll(r) {
   reAway();
   takeGroups(r);
   // What's new since this device last opened this poll here: the earlier visit is noted once per page load.
-  const seenKey = (A.leadMode ? 'provala-lead-seen-' : 'provala-org-seen-') + id;
+  const seenKey = (A.leadMode ? 'provarium-lead-seen-' : 'provarium-org-seen-') + id;
   if (!(id in A.since)) { A.since[id] = store.get(seenKey) || ''; store.set(seenKey, new Date().toISOString()); }
   A.board = new Set(r.responses.map(x => x.id));
   A.secs = new Set();
@@ -7029,7 +7053,7 @@ function renderBest() {
     h('label', { class: 'inline-field', for: 'a-dur' }, t('length'),
       selectEl('a-dur', durs.map(v => [v, durText(v)]), A.duration, v => { A.duration = +v; A.hl = null; markScore(); renderBest(); })),
     ctx.secKeys.length > 1 ? h('label', { class: 'inline-field', for: 'a-rank' }, t('rankLabel'),
-      selectEl('a-rank', RANKS.map(x => [x[0], t(x[1])]), A.rank, v => { A.rank = v === 'count' ? 'count' : 'balance'; store.set('provala-org-rank', A.rank); A.hl = null; markScore(); renderBest(); })) : null));
+      selectEl('a-rank', RANKS.map(x => [x[0], t(x[1])]), A.rank, v => { A.rank = v === 'count' ? 'count' : 'balance'; store.set('provarium-org-rank', A.rank); A.hl = null; markScore(); renderBest(); })) : null));
   if (acan('required')) el.append(buildRequired());
   if (!N) { el.append(h('p', { class: 'muted' }, t('boardEmpty'))); return; }
   const wins = bestWindows(openDates(p), ctx, p, A.duration);
@@ -7050,7 +7074,7 @@ function setSets(n, gap) {
   // More meetings than fit in a month with this gap: a shorter gap, so there's still something to show.
   if (n) { A.sets.n = n; if ((n - 1) * A.sets.gap > 28) A.sets.gap = SET_GAPS.filter(g => (n - 1) * g <= 28).pop() || 1; }
   if (gap) A.sets.gap = gap;
-  store.set('provala-org-sets', JSON.stringify(A.sets));
+  store.set('provarium-org-sets', JSON.stringify(A.sets));
   renderBest();
 }
 
@@ -7492,7 +7516,7 @@ function fillBackups() {
     acan('errors') ? h('button', { type: 'button', class: 'btn small', id: 'err-list', onclick: () => openErrorsDialog() }, t('errList')) : null) : null;
   const moreHint = acan('download') ? h('p', { class: 'hint' }, t('dlHint')) : null;
   if (isDemo) { el.append(h('div', { class: 'field bk-row' }, h('span', { class: 'label' }, t('bkTitle')), h('p', { class: 'hint' }, t('bkDemo')), more, moreHint)); return; }
-  // On Cloudflare: no spreadsheet copies in anyone's Drive here (Provala's owner keeps the copies).
+  // On Cloudflare: no spreadsheet copies in anyone's Drive here (Provarium's owner keeps the copies).
   if (A.host && A.host !== 'google') { el.append(h('div', { class: 'field bk-row' }, h('span', { class: 'label' }, t('bkTitle')), h('p', { class: 'hint' }, t('bkHere')), more, moreHint)); return; }
   const ask = () => {
     bkUi.asked = true; bkUi.err = false;
@@ -7539,7 +7563,7 @@ function openErrorsDialog() {
       show(r.errors || []); toast(t('errCleared'));
       // (No notice left of reports no longer there, here or on another device: Code.gs keeps how many were cleared.)
       if (A.errors) A.errors.cleared = Math.max(Number(r.cleared) || 0, A.errors.n || 0);
-      store.set('provala-org-errors', String((A.errors && A.errors.n) || 0));
+      store.set('provarium-org-errors', String((A.errors && A.errors.n) || 0));
       const note = document.getElementById('err-details');
       if (note && note.closest('.notice')) note.closest('.notice').remove();
     }
@@ -7581,7 +7605,7 @@ async function downloadData(btn) {
   try {
     const r = await api.admin(A.key, 'sheets', {});
     const d = new Date(), day = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
-    const name = 'provala-veriler-' + day + '.xlsx';
+    const name = 'provarium-veriler-' + day + '.xlsx';
     downloadBlob(name, xlsxOf(r.sheets || []));
     toast(t('dlDone', { name }));
   } catch (e) { toast(errText(e), { error: true }); }
@@ -8445,7 +8469,7 @@ function renderSched() {
     h('div', { class: 'actions' },
       h('button', { type: 'button', class: 'btn small', disabled: !hasEvents, onclick: () => copyText(scheduleMessage('tr'), t('copied')) }, t('copyMsgTr')),
       h('button', { type: 'button', class: 'btn small', disabled: !hasEvents, onclick: () => copyText(scheduleMessage('en'), t('copied')) }, t('copyMsgEn')),
-      framed ? null : h('button', { type: 'button', class: 'btn small', disabled: !hasEvents, onclick: () => download('provala-' + p.id + '.ics', icsText(A.draft.events, p), 'text/calendar') }, t('downloadIcs')),
+      framed ? null : h('button', { type: 'button', class: 'btn small', disabled: !hasEvents, onclick: () => download('provarium-' + p.id + '.ics', icsText(A.draft.events, p), 'text/calendar') }, t('downloadIcs')),
       editMsgBtn('schedMsg')));
 }
 // The schedule saved elsewhere since this page had it (from version 2026-10-r5.3): see that one, or save this over it.
@@ -8809,7 +8833,7 @@ function exportCsv() {
         off ? [t('awayTag') + (off.note ? ': ' + off.note : ''), note].filter(Boolean).join(' · ') : note, r.comment]);
     }
   }
-  download('provala-' + p.id + '.csv', '\ufeff' + rows.map(row => row.map(cell).join(',')).join('\r\n'), 'text/csv;charset=utf-8');
+  download('provarium-' + p.id + '.csv', '\ufeff' + rows.map(row => row.map(cell).join(',')).join('\r\n'), 'text/csv;charset=utf-8');
 }
 
 /* ---------- Rehearsal plans (from version 2026-10-r4.7): for each saved meeting, what it works on, in order, each row
@@ -9437,7 +9461,7 @@ function buildSince() {
 // Problems the page met on members' devices (the backend counts them; details are in the Errors sheet).
 function buildErrorsNotice() {
   // (From version 2026-10-r5.9: none for reports cleared since, on any device.)
-  const n = (A.errors && A.errors.n) || 0, seen = Math.max(Number(store.get('provala-org-errors')) || 0, (A.errors && Number(A.errors.cleared)) || 0);
+  const n = (A.errors && A.errors.n) || 0, seen = Math.max(Number(store.get('provarium-org-errors')) || 0, (A.errors && Number(A.errors.cleared)) || 0);
   if (n <= seen) return null;
   // (From version 2026-10-r5.2.1: a link to the Errors sheet itself, when Code.gs says where it is.)
   const url = A.errors && typeof A.errors.url === 'string' && A.errors.url.indexOf('https://docs.google.com/spreadsheets/d/') === 0 ? A.errors.url : '';
@@ -9447,7 +9471,7 @@ function buildErrorsNotice() {
   const box = h('div', { class: 'notice warn' }, h('span', null, here ? t('errorsNotice2', { n: n - seen }) : t('errorsNotice', { n: n - seen })),
     here ? h('button', { type: 'button', class: 'btn small', id: 'err-details', onclick: () => openErrorsDialog() }, t('errDetails')) : null,
     url ? h('a', { class: 'btn small', id: 'err-open', href: url, target: '_blank', rel: 'noopener noreferrer' }, t('errorsOpen')) : null,
-    h('button', { type: 'button', class: 'btn small', onclick: () => { store.set('provala-org-errors', String(n)); box.remove(); } }, t('dismiss')));
+    h('button', { type: 'button', class: 'btn small', onclick: () => { store.set('provarium-org-errors', String(n)); box.remove(); } }, t('dismiss')));
   return box;
 }
 
@@ -10156,7 +10180,7 @@ function fillSeason() {
     framed ? null : h('div', { class: 'actions' }, h('button', { type: 'button', class: 'btn small', onclick: () => seasonCsv(st) }, t('seasonCsv'))));
 }
 /* ---------- The care list (from version 2026-10-r5.1), planner only, in the Katılım tab: members who weren't there at
-   the last three meetings that called them and had attendance taken (absent or excused), or who haven't opened Provala
+   the last three meetings that called them and had attendance taken (absent or excused), or who haven't opened Provarium
    in a month and weren't at any of those three either; each with a message to copy. The season's record is fetched when
    it's opened. Members in no group, or who can't sign in, aren't in it. */
 let careOpen = false;
@@ -10224,7 +10248,7 @@ function seasonCsv(st) {
     st.taken.map(x => dShort(x.date) + ' ' + hm(x.start) + (x.title ? ' ' + x.title : '')));
   const rows = [head].concat(st.rows.map(r => [r.m.name, seasonSecs(r.m, sgroups), r.pct === null ? '' : r.pct]
     .concat(MARKS.map(k => r.c[k]), st.taken.map(x => (x.marks[r.m.id] ? t(MARK_WORD[x.marks[r.m.id]]) : '')))));
-  download('provala-sezon-' + A.season.from.slice(0, 4) + '.csv', '﻿' + rows.map(row => row.map(csvCell).join(',')).join('\r\n'), 'text/csv;charset=utf-8');
+  download('provarium-sezon-' + A.season.from.slice(0, 4) + '.csv', '﻿' + rows.map(row => row.map(csvCell).join(',')).join('\r\n'), 'text/csv;charset=utf-8');
 }
 
 /* ---------- Poll settings dialog */
@@ -10466,8 +10490,10 @@ function scopePick(f, isNew) {
 function signOut() {
   const go = () => {
     adminGen++;   // (answers still on their way are for a page that's gone)
-    store.del('provala-org');
-    store.del('provala-admin-key');
+    store.del('provarium-org');
+    store.del('provarium-admin-key');
+    // (And under the app's earlier names, so no sign-in kept by an earlier version comes back, or goes along at a move.)
+    if (window.provariumDropOld) window.provariumDropOld(['org', 'admin-key']);
     linksMade.clear();
     for (const k of Object.keys(msgUi)) delete msgUi[k];
     Object.assign(A, { key: '', authed: false, data: null, polls: [], keyErr: '', error: null, caps: [], errors: null, season: null, stage: freshStage(), rep: freshRep(),
@@ -10717,11 +10743,11 @@ function stageChart(lengths, shape, size, cell, o) {
 // The stage as the audience (and the conductor) sees it, the back row at the top; or as the singers do, facing the
 // audience: turned round, the audience and the conductor at the top, left and right as theirs. Each device keeps
 // its choice, for the planner's editor and picture and for the members' Stage page alike.
-const singersView = () => store.get('provala-stage-view') === 'singers';
+const singersView = () => store.get('provarium-stage-view') === 'singers';
 function viewSwitch(id, redraw) {
   return h('label', { class: 'switch-row stage-view' },
     h('input', { type: 'checkbox', id, checked: singersView(), onchange: e => {
-      if (e.target.checked) store.set('provala-stage-view', 'singers'); else store.del('provala-stage-view');
+      if (e.target.checked) store.set('provarium-stage-view', 'singers'); else store.del('provarium-stage-view');
       redraw();
     } }), t('viewSingers'));
 }
@@ -10745,7 +10771,7 @@ const rowName = (r, n, lang) => t('rowLabel', { n: r + 1 }, lang) + (n > 1 && r 
 // 'not_found' when the plan was saved or deleted elsewhere meanwhile; note: people taken off the stage on opening;
 // focus: the place the arrow keys move from.
 const freshStage = () => ({ list: null, members: [], loading: false, error: null, gid: '', edit: null, li: 0, pick: null, dirty: false, busy: false, ask: false, how: 'cols',
-  names: store.get('provala-stage-names') === 'full' ? 'full' : 'short', delAsk: '', rev: 0, conflict: '', note: '', focus: null, exporting: false,
+  names: store.get('provarium-stage-names') === 'full' ? 'full' : 'short', delAsk: '', rev: 0, conflict: '', note: '', focus: null, exporting: false,
   cant: {}, hideCant: false, xp: 'one', xpMore: [] });
 function buildStageTab() {
   const st = A.stage;
@@ -11479,7 +11505,7 @@ async function saveStage(mode) {
    2026-10-r5.5 on A4 pages (upright or on their side, whichever suits the stage), to print as well, and with other plans
    of the planner's beside this one if wanted. */
 const XP_PAGES = ['auto', 'portrait', 'landscape'];
-const xpPage = () => { const v = store.get('provala-stage-page'); return XP_PAGES.indexOf(v) > 0 ? v : 'auto'; };
+const xpPage = () => { const v = store.get('provarium-stage-page'); return XP_PAGES.indexOf(v) > 0 ? v : 'auto'; };
 // The plans that can go with this one: the others saved, of groups still there, with a lineup or more.
 // (By date, the undated last, as they go in.)
 const xpOthers = d => (A.stage.list || []).filter(p => p.id !== d.id && adminGmap()[p.group] && Array.isArray(p.lineups) && p.lineups.length)
@@ -11504,10 +11530,10 @@ function stageExport() {
     h('h3', null, t('exportTitle')),
     h('div', { class: 'actions' },
       h('label', { class: 'inline-field', for: 'st-names' }, t('exportNames'),
-        selectEl('st-names', [['short', t('namesShort')], ['full', t('namesFull')]], st.names, v => { st.names = v === 'full' ? 'full' : 'short'; store.set('provala-stage-names', st.names); }, { class: 'select' })),
+        selectEl('st-names', [['short', t('namesShort')], ['full', t('namesFull')]], st.names, v => { st.names = v === 'full' ? 'full' : 'short'; store.set('provarium-stage-names', st.names); }, { class: 'select' })),
       h('label', { class: 'inline-field', for: 'st-page' }, t('exportPage'),
         selectEl('st-page', [['auto', t('pageAuto')], ['portrait', t('pagePortrait')], ['landscape', t('pageLandscape')]], xpPage(), v => {
-          if (v === 'portrait' || v === 'landscape') store.set('provala-stage-page', v); else store.del('provala-stage-page');
+          if (v === 'portrait' || v === 'landscape') store.set('provarium-stage-page', v); else store.del('provarium-stage-page');
         }, { class: 'select' }))),
     many ? h('fieldset', { class: 'xp-what' }, h('legend', { class: 'label' }, t('exportWhat')),
       h('div', { class: 'ride-kinds' }, radio('one', t('exportOneL', { name: lineupName(curLineup(), st.li) })), radio('all', t('exportAllL', { n: d.lineups.length })))) : null,
@@ -12331,7 +12357,7 @@ function noticeDialog(readOnly, back_) {
   function close() { back.remove(); document.removeEventListener('keydown', onKey); if (back_) focusId(back_); }
   // The notice is read in either language: the switch is in the dialog too (the header's is behind the backdrop).
   if (!readOnly) box.querySelector('h2').after(h('div', { class: 'lang notice-lang', role: 'group', 'aria-label': t('language') }, ['tr', 'en'].map(l => h('button', {
-    type: 'button', lang: l, 'aria-pressed': String(S.lang === l), onclick: () => { if (S.lang !== l) { S.lang = l; store.set('provala-lang', l); render(); } } }, l.toUpperCase()))));
+    type: 'button', lang: l, 'aria-pressed': String(S.lang === l), onclick: () => { if (S.lang !== l) { S.lang = l; store.set('provarium-lang', l); render(); } } }, l.toUpperCase()))));
   if (readOnly) {
     box.append(S.notice && S.notice.at ? h('p', { class: 'hint' }, t('noticeReadOn', { date: dFull(S.notice.at.slice(0, 10)) })) : null,
       h('div', { class: 'modal-foot' }, h('div', { class: 'end' }, h('button', { type: 'button', class: 'btn', id: id + '-close', onclick: close }, t('noticeClose')))));
@@ -12497,7 +12523,7 @@ function buildHeader() {
         leading() ? h('a', { class: 'tab tab-lead', href: '#bolum' }, t('leadPanel')) : null),
     h('div', { class: 'lang', role: 'group', 'aria-label': t('language') }, ['tr', 'en'].map(l => h('button', {
       type: 'button', lang: l, 'aria-pressed': String(S.lang === l),
-      onclick: () => { if (S.lang !== l) { S.lang = l; store.set('provala-lang', l); render(); } }
+      onclick: () => { if (S.lang !== l) { S.lang = l; store.set('provarium-lang', l); render(); } }
     }, l.toUpperCase()))),
     modeButton(),
     v === 'admin' && A.authed && !A.leadMode ? h('button', { type: 'button', class: 'btn small quiet', onclick: signOut }, t('signOut')) : null,
@@ -12510,8 +12536,8 @@ function buildDemoBand() {
     h('span', null, t('demoBanner')),
     S.view === 'admin' ? h('a', { href: '#' }, t('demoMember')) : h('a', { href: '#admin' }, t('demoOrganizer')),
     h('button', { type: 'button', class: 'btn small quiet', onclick: () => {
-      window.ProvalaDemo.reset();
-      store.keys().filter(k => /^provala-(token|draft|admin|session|org|page)/.test(k)).forEach(k => store.del(k));
+      window.ProvariumDemo.reset();
+      store.keys().filter(k => /^provarium-(token|draft|admin|session|org|page)/.test(k)).forEach(k => store.del(k));
       Object.assign(A, { key: '', authed: false, data: null, polls: [], pollId: '', keyErr: '', error: null, tab: 'plan', creds: [], caps: [], errors: null, since: {}, season: null, stage: freshStage(), rep: freshRep() });
       endSession();
       S.loaded = false;
@@ -12534,7 +12560,7 @@ if (document.fonts && document.fonts.ready) document.fonts.ready.then(syncTopHei
 
 // Draws the whole page. If that ever fails, the safety net (top of the page) shows a message instead of a half-empty page.
 function render() {
-  try { drawPage(); } catch (e) { if (window.provalaFail) window.provalaFail(e); else throw e; }
+  try { drawPage(); } catch (e) { if (window.provariumFail) window.provariumFail(e); else throw e; }
 }
 function drawPage() {
   document.documentElement.lang = S.lang;
@@ -12607,7 +12633,7 @@ function modeButton() {
     type: 'button', class: 'mode-btn', 'aria-label': label, title: label,
     onclick: () => {
       S.mode = night ? 'day' : 'night';
-      store.set('provala-mode', S.mode);
+      store.set('provarium-mode', S.mode);
       applyMode();
       const nb = modeButton();
       b.replaceWith(nb);
@@ -12621,7 +12647,7 @@ function modeButton() {
 if (window.matchMedia) {
   const mq = window.matchMedia('(prefers-color-scheme: dark)');
   const follow = () => {
-    if (store.get('provala-mode')) return;
+    if (store.get('provarium-mode')) return;
     S.mode = systemMode();
     applyMode();
     const old = document.querySelector('.mode-btn');
@@ -12673,11 +12699,11 @@ function onRoute() {
    People tab in a new tab (#duzenle=<memberId>), signed in as the member for two hours with a sign-in made from the
    planner's own. The tab keeps nothing of the member on this device (no page copy, no drafts), and shows a band
    saying whose answer it is; what's sent is marked as the planner's. */
-const ACT_KEY = 'provala-act';
+const ACT_KEY = 'provarium-act';
 let actSession = actKept && actKept.session ? actKept : null;
 // keep: a reload of one of the acting tab's pages (the sign-in kept in this tab): that page, not the member's first.
 async function actStart(id, keep) {
-  const key = A.key || store.get('provala-org') || '';
+  const key = A.key || store.get('provarium-org') || '';
   // (Opened again in this tab, a reload say: the sign-in made before, if it's for the same member.)
   const kept = actSession && actSession.id === id && actSession.session ? actSession : null;
   if (!kept && !key) { S.acting = null; Object.assign(S, { needLogin: false, loaded: true, loading: false, error: null }); render(); showActError(t('actNoKey')); return; }
@@ -12695,7 +12721,7 @@ async function actStart(id, keep) {
     if (!keep) history.replaceState(null, '', location.pathname + location.search + '#duzenle=' + id);
     await refreshPage();
   } catch (e) {
-    S.acting = null; S.session = store.get('provala-session') || '';
+    S.acting = null; S.session = store.get('provarium-session') || '';
     Object.assign(S, { loading: false, loaded: true, error: null });
     render();
     showActError(t('actFailed', { why: errText(e) }));
@@ -12729,14 +12755,14 @@ const BANNER = 'banner.webp';
 // code, and failed promises other than the backend's ordinary answers (those are already shown to the person).
 const reportWhere = () => (S.view === 'admin' ? 'admin' : S.needLogin ? 'login' : S.view);
 window.addEventListener('error', e => {
-  if (!window.provalaUp || !window.provalaReport) return;
+  if (!window.provariumUp || !window.provariumReport) return;
   const file = (e.filename || '').split('#')[0];
   if (file && file !== location.href.split('#')[0]) return;   // a browser extension, say
   if (!e.error && /^Script error/i.test(e.message || '')) return;
-  window.provalaReport(e.error || e.message, reportWhere());
+  window.provariumReport(e.error || e.message, reportWhere());
 });
 window.addEventListener('unhandledrejection', e => {
-  if (window.provalaReport && !(e.reason instanceof ApiError)) window.provalaReport(e.reason, reportWhere());
+  if (window.provariumReport && !(e.reason instanceof ApiError)) window.provariumReport(e.reason, reportWhere());
 });
 
 window.addEventListener('hashchange', onRoute);
@@ -12752,7 +12778,7 @@ window.addEventListener('beforeunload', e => {
 });
 onRoute();
 startApp();
-window.provalaUp = true;
+window.provariumUp = true;
 })();
 </script>
 </body>

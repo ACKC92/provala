@@ -1,0 +1,18 @@
+{
+  "id": "./?app=planner",
+  "name": "Provarium Planlama",
+  "short_name": "Planlama",
+  "description": "Provarium’un planlama sayfası: anketler, en uygun saatler, takvim, katılım ve sahne.",
+  "lang": "tr",
+  "dir": "ltr",
+  "start_url": "./?app=planner#admin",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#130d07",
+  "theme_color": "#130d07",
+  "icons": [
+    { "src": "planner-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "planner-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "planner-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
