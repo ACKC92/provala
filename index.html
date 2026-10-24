@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <title>Provala</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Prova planlayıcımız. Giriş yap, uygun olduğun gün ve saatleri işaretle, prova takvimini buradan takip et.">
@@ -779,6 +780,18 @@ summary:hover { text-decoration: underline; text-underline-offset: 2px; }
 .group-secs { color: var(--ink-2); font-size: 14px; }
 @media (max-width: 760px) { .group-item { grid-template-columns: minmax(0, 1fr) auto; } .group-secs { grid-column: 1 / -1; grid-row: 2; } }
 .group-modal { max-width: 760px; }
+/* The error reports (from version 2026-10-r5.9) */
+.err-modal { max-width: 760px; }
+.move-note { position: sticky; top: 0; z-index: 60; margin: 0; border-radius: 0; justify-content: center; }
+.moved-modal { max-width: 520px; }
+.moved-modal .moved-to { font-weight: 600; word-break: break-all; }
+.err-list { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 10px; max-height: 60vh; overflow: auto; }
+.err-list > li { border: 1px solid var(--rule); border-radius: 10px; padding: 8px 10px; }
+.err-msg { margin: 4px 0; overflow-wrap: anywhere; }
+.err-ua { margin: 0; overflow-wrap: anywhere; }
+.err-stack { white-space: pre-wrap; overflow-wrap: anywhere; font-size: .8rem; margin: 6px 0 0; }
+.err-ask { margin-top: 10px; }
+.bk-more { margin-top: 6px; }
 .ge-secs, .ge-mem { display: grid; gap: 8px; }
 .presets { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
 .sec-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; }
@@ -1462,7 +1475,7 @@ var API_URL = 'https://script.google.com/macros/s/AKfycbzjxxXx_t5JqctCYV3iDAjsd-
   // What went wrong on a member's device is sent to the backend, so it can be fixed without anyone having to
   // describe it: the error and the browser, never names, answers or anything typed. At most three per page load,
   // and nothing at all without a backend address (as in the demo).
-  var VERSION = '2026-10-r5.5', sent = 0, seen = {};
+  var VERSION = '2026-10-r6.1', sent = 0, seen = {};
   window.provalaVersion = VERSION;
   window.provalaReport = function (err, where) {
     try {
@@ -1723,12 +1736,12 @@ const T = {
     partsHint: "Set each person's section: for every published rehearsal, members see how many of each section can come.",
     partsHintGroups: "Choose each person's groups, and their section in each. Members only see their own groups' polls and meetings.",
     secLabelIn: "{name}'s section in {group}", membersShow: 'Show', membersFind: 'Find a name', membersNoMatch: 'Nobody by that name here.', allMembers: 'Everyone ({n})', noGroupMembers: 'In no group ({n})',
-    addInto: 'Add them to', addSec: 'Section (optional)', addSecNone: '— pick later', groupMain: 'Choir', switchLabel: "Your groups' polls",
+    addInto: 'Add them to', addSec: 'Section (optional)', addSecNone: '— pick later', groupMain: 'Ensemble', switchLabel: "Your groups' polls",
     groupsTitle: 'Groups', groupNew: 'New group', groupEdit: 'Edit', groupEditFor: 'Edit {name}',
     groupsHint: "Each group has its own sections: voice parts like soprano and alto, or instruments like violin and cello. A member can be in several groups. You choose the groups each poll is for in its settings, and only their members see it.",
     groupCount: ({ n }) => (n === 1 ? '1 member' : n + ' members'), groupNoSections: 'No sections',
     groupNewTitle: 'New group', groupEditTitle: 'Edit group', groupNameLabel: 'Name', groupNamePh: 'For example: Chamber choir',
-    groupMainHint: 'Everyone who was a member before groups is in this group, and so is every earlier poll. Left as it is, its name shows as “Choir” (“Koro” in Turkish).',
+    groupMainHint: 'Everyone who was a member before groups is in this group, and so is every earlier poll. Left as it is, its name shows as “Ensemble” (“Topluluk” in Turkish).',
     groupSections: 'Sections', groupSectionsHint: 'Voice parts like soprano and alto, or instruments. For each published rehearsal, members see how many of each section can come.',
     groupPresets: 'Ready lists:', presetSATB: 'Mixed choir (SATB)', presetSSAA: 'Upper voices (SSAA)', presetTTBB: 'Lower voices (TTBB)',
     presetDouble: 'Eight parts (SSAATTBB)', presetStrings: 'Strings', presetOrchestra: 'Orchestra', presetNone: 'No sections',
@@ -1982,6 +1995,12 @@ const T = {
     careSince: 'Who opens Provala has been noted since {date}: before a month of it, only someone who has never signed in is listed for not opening it.', careLoad: 'Show the list',
     tpl_careMsg: 'Hi {name}, we haven’t seen you for a while. Is everything all right? Tell me if there’s anything I can help with. The schedule is here:\n{link}',
     bkDemo: 'In the real Provala, each backup is a spreadsheet in your Google Drive. The demo makes none.',
+    bkHere: 'Your data is kept on Provala’s server and backed up there. For a copy of your own, download it.',
+    dlData: 'Download the data (.xlsx)', dlHint: 'Provala’s sheets as they are, members’ phones and addresses too, without passwords, calendar links or sign-in links. Share it with nobody.', dlDone: 'Downloaded: {name}',
+    errList: 'Error reports', errTitle: 'Error reports', errNone: 'No error reports.', errHint: 'Problems the page met on members’ devices, the newest first (at most 200).',
+    errClear: 'Clear them all', errClearAsk: 'Clear every report? They can’t be brought back.', errClearYes: 'Yes, clear them', errCleared: 'Cleared',
+    errDetails: 'Details', errStack: 'More', errLoadErr: 'Couldn’t load the reports.', errorsNotice2: ({ n }) => 'The page ran into ' + (n === 1 ? 'a problem' : n + ' problems') + ' on members’ devices.',
+    errWhere: { start: 'opening', stuck: 'stuck', render: 'drawing the page', member: 'member’s page', schedule: 'schedule', admin: 'planner', login: 'signing in', stage: 'stage' },
     errorsOpen: 'Open the Errors sheet',
     schedTooMany: 'A schedule takes at most {n} meetings. Remove some, or put the later ones in next month’s poll.',
     schedStale: 'Not saved: the schedule was changed elsewhere meanwhile.',
@@ -2015,7 +2034,12 @@ const T = {
     leadGenAttHint: 'Only your sections’ members are here. Everyone else’s marks and the number of guests stay as they are.',
     leadsAdmin: 'Section leader', leadsChip: 'Leads {secs}', leadsSave: 'Save the sections', leadsSaved: '{name} is now a section leader', leadsCleared: '{name} no longer leads a section',
     leadsAdminHint: 'Tick the sections they lead. A section leader opens the section panel from their own page: they make polls and sectionals for those sections (never over a general rehearsal), see the names and times in those sections’ answers (with their days away and hours they can’t come, never notes or comments) and replies without reasons, and take attendance and write notes for them. They don’t see other groups, comments, the member list, passwords or settings. Untick everything to end it.',
-    errForbidden: 'A section leader can’t do that.', errOverlap: 'It overlaps a general rehearsal.',
+    errForbidden: 'A section leader can’t do that.', errOverlap: 'It overlaps a general rehearsal.', errNotHere: 'That isn’t done here.',
+    errMoving: 'Provala is moving: changes aren’t saved for now. Try again in an hour or so.',
+    movingTitle: 'Provala is moving.', movingText: 'You can see everything, but changes aren’t saved for now. In an hour or so, you can carry on at its new address.',
+    movedTitle: 'Provala has moved', movedText: 'Provala is at its new address now. Your sign-in on this phone comes along, and so do any changes not saved yet.',
+    movedHome: 'If you added Provala to your home screen, add it again from the new address and remove the old one. (On an iPhone, you may need to sign in once there.)', movedGo: 'Go to the new address',
+    movedFail: 'The new address isn’t ready to take your sign-in yet. Try again in a few minutes.',
     bkNow: 'Back up now', bkDone: 'Backup made', bkLoadErr: 'Couldn’t load the backups.', bkMaybe: 'No answer yet: the backup may still be under way. Look again in a minute.', bkList: 'The backups', bkHint: 'Each is a spreadsheet in your Google Drive with everything in it; up to 8 are kept, the oldest one reused. Only you can open them.',
     // Version 2026-10-r5: around the rehearsal.
     kindConcert: 'Concert', kindOther: 'Other', fKind: 'Kind', kindRehearsal: 'Rehearsal',
@@ -2307,12 +2331,12 @@ const T = {
     partsHint: 'Her üyenin bölümünü seçin: yayımladığınız her provada üyeler, her bölümden kaç kişinin gelebileceğini görür.',
     partsHintGroups: 'Her üyenin gruplarını ve her gruptaki bölümünü seçin. Üyeler yalnızca kendi gruplarının anketlerini ve buluşmalarını görür.',
     secLabelIn: '{name}: {group} grubundaki bölümü', membersShow: 'Göster', membersFind: 'İsim ara', membersNoMatch: 'Bu isimde kimse yok.', allMembers: 'Tüm üyeler ({n})', noGroupMembers: 'Hiçbir grupta olmayanlar ({n})',
-    addInto: 'Eklenecekleri grup', addSec: 'Bölüm (isteğe bağlı)', addSecNone: '— sonra seçerim', groupMain: 'Koro', switchLabel: 'Gruplarınızın anketleri',
+    addInto: 'Eklenecekleri grup', addSec: 'Bölüm (isteğe bağlı)', addSecNone: '— sonra seçerim', groupMain: 'Topluluk', switchLabel: 'Gruplarınızın anketleri',
     groupsTitle: 'Gruplar', groupNew: 'Yeni grup', groupEdit: 'Düzenle', groupEditFor: '{name} grubunu düzenle',
     groupsHint: 'Her grubun kendi bölümleri olur: soprano, alto gibi partiler ya da keman, çello gibi çalgılar. Bir üye birden fazla grupta olabilir. Her anketin hangi gruplar için olduğunu anketin ayarlarında seçersiniz; anketi yalnızca o grupların üyeleri görür.',
     groupCount: ({ n }) => n + ' üye', groupNoSections: 'Bölüm yok',
     groupNewTitle: 'Yeni grup', groupEditTitle: 'Grubu düzenle', groupNameLabel: 'Grubun adı', groupNamePh: 'Örneğin: Oda Korosu',
-    groupMainHint: 'Gruplardan önceki tüm üyeler ve tüm anketler bu gruptadır. Adını olduğu gibi bırakırsanız Türkçede “Koro”, İngilizcede “Choir” görünür.',
+    groupMainHint: 'Gruplardan önceki tüm üyeler ve tüm anketler bu gruptadır. Adını olduğu gibi bırakırsanız Türkçede “Topluluk”, İngilizcede “Ensemble” görünür.',
     groupSections: 'Bölümler', groupSectionsHint: 'Soprano, alto gibi partiler ya da çalgılar. Yayımladığınız her provada üyeler, her bölümden kaç kişinin gelebileceğini görür.',
     groupPresets: 'Hazır listeler:', presetSATB: 'Karma koro (SATB)', presetSSAA: 'Kadınlar korosu (SSAA)', presetTTBB: 'Erkekler korosu (TTBB)',
     presetDouble: 'Sekiz partili (SSAATTBB)', presetStrings: 'Yaylılar', presetOrchestra: 'Orkestra', presetNone: 'Bölümsüz',
@@ -2566,6 +2590,12 @@ const T = {
     careSince: 'Provala’yı kimin açtığı {date} tarihinden beri not ediliyor: bir ay dolmadan yalnız hiç giriş yapmamış olanlar “açmadı” diye listelenir.', careLoad: 'Listeyi göster',
     tpl_careMsg: 'Merhaba {ad}, bir süredir görüşemedik. Her şey yolunda mı? Yardımcı olabileceğim bir şey varsa yaz. Takvim burada:\n{bağlantı}',
     bkDemo: 'Gerçek Provala’da her yedek Google Drive’ınızda bir tablodur. Demoda yedek alınmaz.',
+    bkHere: 'Verileriniz Provala’nın sunucusunda tutuluyor ve orada yedekleniyor. Kendi kopyanız için indirebilirsiniz.',
+    dlData: 'Verileri indir (.xlsx)', dlHint: 'Provala’nın sayfaları olduğu gibi, üyelerin telefonları ve adresleri de; şifreler, takvim bağlantıları ve giriş bağlantıları olmadan. Kimseyle paylaşmayın.', dlDone: 'İndirildi: {name}',
+    errList: 'Hata kayıtları', errTitle: 'Hata kayıtları', errNone: 'Hata kaydı yok.', errHint: 'Sayfanın üyelerin cihazlarında karşılaştığı sorunlar, en yenisi başta (en çok 200).',
+    errClear: 'Hepsini temizle', errClearAsk: 'Bütün kayıtlar silinsin mi? Geri getirilemez.', errClearYes: 'Evet, temizle', errCleared: 'Temizlendi',
+    errDetails: 'Ayrıntılar', errStack: 'Daha fazla', errLoadErr: 'Kayıtlar yüklenemedi.', errorsNotice2: ({ n }) => 'Sayfa, üyelerin cihazlarında ' + n + ' kez sorunla karşılaştı.',
+    errWhere: { start: 'açılış', stuck: 'takılma', render: 'sayfa çizimi', member: 'üye sayfası', schedule: 'takvim', admin: 'planlayıcı', login: 'giriş', stage: 'sahne' },
     errorsOpen: 'Errors sayfasını aç',
     schedTooMany: 'Bir takvimde en çok {n} buluşma olabilir. Bazılarını kaldırın ya da sonrakileri gelecek ayın anketine koyun.',
     schedStale: 'Kaydedilmedi: takvim bu arada başka bir yerde değiştirildi.',
@@ -2599,7 +2629,12 @@ const T = {
     leadGenAttHint: 'Burada yalnız bölümlerinizin üyeleri var. Diğer herkesin işaretleri ve misafir sayısı olduğu gibi kalır.',
     leadsAdmin: 'Bölüm şefi', leadsChip: '{secs} bölüm şefi', leadsSave: 'Bölümleri kaydet', leadsSaved: '{name} artık bölüm şefi', leadsCleared: '{name} artık bölüm şefi değil',
     leadsAdminHint: 'Şefi olduğu bölümleri işaretleyin. Bölüm şefi, bölüm panelini kendi sayfasından açar: bu bölümler için anket ve bölüm provası yapar (genel provaların üstüne asla), bu bölümlerin yanıtlarındaki adları ve saatleri (uzakta oldukları günler ve gelemedikleri saatlerle; notlar ve yorumlar olmadan) ve buluşmalara verilen yanıtları nedenleri olmadan görür, onlar için yoklama alır ve not yazar. Başka grupları, yorumları, üye listesini, şifreleri ve ayarları görmez. Bitirmek için bütün işaretleri kaldırın.',
-    errForbidden: 'Bölüm şefi bunu yapamaz.', errOverlap: 'Genel provayla çakışıyor.',
+    errForbidden: 'Bölüm şefi bunu yapamaz.', errOverlap: 'Genel provayla çakışıyor.', errNotHere: 'Bu burada yapılmıyor.',
+    errMoving: 'Provala taşınıyor: değişiklikler şu an kaydedilmiyor. Bir saat kadar sonra yeniden deneyin.',
+    movingTitle: 'Provala taşınıyor.', movingText: 'Her şeyi görebilirsiniz, ama değişiklikler şu an kaydedilmiyor. Bir saat kadar sonra yeni adresinden devam edebilirsiniz.',
+    movedTitle: 'Provala taşındı', movedText: 'Provala artık yeni adresinde. Bu telefondaki girişiniz ve henüz kaydedilmemiş değişiklikleriniz de sizinle gelir.',
+    movedHome: 'Provala’yı ana ekranınıza eklediyseniz yeni adresten yeniden ekleyin, eskisini silin. (iPhone’da orada bir kez giriş yapmanız gerekebilir.)', movedGo: 'Yeni adrese geç',
+    movedFail: 'Yeni adres girişinizi henüz alamıyor. Birkaç dakika sonra yeniden deneyin.',
     bkNow: 'Şimdi yedekle', bkDone: 'Yedek alındı', bkLoadErr: 'Yedekler yüklenemedi.', bkMaybe: 'Henüz yanıt gelmedi: yedek hâlâ alınıyor olabilir. Bir dakika sonra yeniden bakın.', bkList: 'Yedekler', bkHint: 'Her biri Google Drive’ınızda her şeyi içeren bir tablo; en çok 8 tanesi tutulur, en eskisinin yerine yenisi yazılır. Yalnız siz açabilirsiniz.',
     // Sürüm 2026-10-r5: provanın çevresi.
     kindConcert: 'Konser', kindOther: 'Diğer', fKind: 'Tür', kindRehearsal: 'Prova',
@@ -3468,6 +3503,7 @@ const Remote = {
   async send(method, body, params) {
     if (isDemo) {
       const data = await window.ProvalaDemo.call(method, body, params);
+      noteMove(data);
       if (!data || !data.ok) throw new ApiError((data && data.error) || 'server_error', data && data.message);
       return fitCaps(data, capsFor(data, body));
     }
@@ -3490,13 +3526,15 @@ const Remote = {
     } catch (e) { throw new ApiError('network'); }
     let data;
     try { data = await res.json(); } catch (e) { throw new ApiError('network'); }
+    noteMove(data);
     if (!data || !data.ok) throw new ApiError((data && data.error) || 'server_error', data && data.message);
     return fitCaps(data, capsFor(data, body));
   },
   login(username, password, p) { return this.call('POST', { action: 'login', username, password, p: p || '' }); },
   // session: whoever is signed in here already (someone else's link is then only named, not used); sw: use it anyway.
   link(token, p, session, sw) { return this.call('POST', Object.assign({ action: 'link', token, p: p || '' }, session ? { session } : null, sw ? { switch: true } : null)); },
-  state(session, p) { return this.call('POST', { action: 'state', session, p: p || '' }); },
+  // (known, from version 2026-10-r6: the tag of the page this one has, so an unchanged one isn't sent again.)
+  state(session, p, known) { return this.call('POST', Object.assign({ action: 'state', session, p: p || '' }, typeof known === 'string' ? { known } : {})); },
   submit(session, b) { return this.call('POST', Object.assign({ action: 'submit', session }, b)); },
   password(session, old, next) { return this.call('POST', { action: 'password', session, old, next }); },
   reply(session, b) { return this.call('POST', Object.assign({ action: 'reply', session }, b)); },
@@ -3532,7 +3570,7 @@ function errText(e) {
     bad_password: 'errBadPassword', weak_password: 'errWeakPassword', auth_required: 'errSignedOut', unknown_action: 'errOldBackend',
     past: 'errPast', no_event: 'errNoEvent', no_url: 'errNoUrl', reason_needed: 'replyNeedReason', in_use: 'errInUse', not_found: 'errNotFound',
     not_called: 'errNotCalled', has_stages: 'errHasStages', stale: 'errStale', bad_link: 'linkUsed', link_expired: 'linkExpired',
-    not_leader: 'notLeader', forbidden: 'errForbidden', overlap: 'errOverlap'
+    not_leader: 'notLeader', forbidden: 'errForbidden', overlap: 'errOverlap', not_here: 'errNotHere', moving: 'errMoving', moved: 'movedTitle'
   };
   return t(map[e && e.code] || 'errGeneric');
 }
@@ -3748,7 +3786,20 @@ const PAGE_KEY = 'provala-page';
 const pageOf = st => ({ member: st.member, poll: st.poll, schedule: st.schedule, mine: st.mine, prev: st.prev || null, group: st.group || null, attend: st.attend || null,
   replies: st.replies || {}, more: st.more || [], caps: st.caps || [], polls: st.polls || [], groups: st.groups || [], stages: st.stages || [], away: st.away || [],
   repertoire: st.repertoire || [], plans: st.plans || [], people: st.people || null, past: st.past || [], notice: st.notice || null, busy: st.busy || [],
-  rehearsalNotes: st.rehearsalNotes || [], pieceHistory: st.pieceHistory || [], venues: st.venues || [], rides: st.rides || [] });
+  rehearsalNotes: st.rehearsalNotes || [], pieceHistory: st.pieceHistory || [], venues: st.venues || [], rides: st.rides || [], tag: typeof st.tag === 'string' ? st.tag : '',
+  tagSum: typeof st.tagSum === 'string' ? st.tagSum : '' });
+// "Nothing changed" (from version 2026-10-r6): the server tags each page it sends; asked again with the tag, it says
+// only "the same" while it still is. The tag is sent only while this copy is exactly as it came with it (same content,
+// same version of this page): tagSum, a fingerprint of the copy, taken then. Anything changed here since (a reply, an
+// answer, days away, a newer Provala reading it) and the page is asked for in full.
+function pageSum(pg) {
+  const text = String(window.provalaVersion || '') + '|' + stable(Object.assign({}, pg, { tag: '', tagSum: '' }));
+  let a = 0x811c9dc5, b = 0x5bd1e995;
+  for (let i = 0; i < text.length; i++) { const c = text.charCodeAt(i); a = Math.imul(a ^ c, 16777619); b = Math.imul(b ^ c, 0x85ebca6b); }
+  return (a >>> 0).toString(36) + '.' + (b >>> 0).toString(36);
+}
+const signed = pg => { if (pg && pg.tag) pg.tagSum = pageSum(pg); return pg; };
+const knownTag = pg => (pg && pg.tag && pg.tagSum && pg.tagSum === pageSum(pg) ? pg.tag : '');
 // The parts of a page copy that don't depend on answering: taken as they are.
 function takePage(st) {
   S.member = st.member; S.poll = st.poll; S.schedule = st.schedule; S.prev = st.prev || null; S.group = st.group || null; S.attend = st.attend || null;
@@ -3808,11 +3859,13 @@ function refreshPage() {
   if (pageFetch && pageFetch.gen === pageGen) return pageFetch.promise;
   const job = { gen: pageGen }, session = S.session, param = S.pollParam;
   const shown = S.loaded && !!S.page, rev = M.rev;
+  // (The tag of the page shown, while it's as it came: unchanged, the server says only that.)
+  const known = shown ? knownTag(S.page) : '';
   job.promise = (async () => {
     try {
       let st;
       const seq = replySeq;
-      try { st = pageOf(await api.state(session, param)); } catch (e) {
+      try { st = await api.state(session, param, known); } catch (e) {
         if (job.gen !== pageGen) return;
         if (e.code === 'auth_required') { endSession(); S.loaded = true; S.loading = false; render(); }
         else if (!shown) { S.error = e; S.loading = false; render(); }
@@ -3828,6 +3881,15 @@ function refreshPage() {
         return;
       }
       S.fetchedAt = Date.now();
+      // (Unchanged: what's shown is the latest. Said the same of another copy than this one now is, it's asked for again
+      // in full, through all the checks above.)
+      if (st.same) {
+        if (known && st.tag === known && knownTag(S.page) === known) return;
+        if (S.page) S.page.tag = '';
+        setTimeout(() => { if (S.session === session && job.gen === pageGen) refreshPage(); }, 0);
+        return;
+      }
+      st = signed(pageOf(st));
       keepPage(st, session, param);
       if (!shown) { applyState(st); S.loaded = true; S.loading = false; render(); }
       else takeFresh(st, rev);
@@ -3843,7 +3905,9 @@ const gridOf = p => (p ? [p.id, p.dayStart, p.dayEnd, p.slot, p.open].join('|') 
 
 // A fresh copy of the page arrived while one is showing.
 function takeFresh(st, rev) {
-  if (stable(st) === stable(S.page)) return;
+  // (The same but for its tag, from version 2026-10-r6: the copy shown takes the tag, nothing else changes.)
+  const bare = x => Object.assign({}, x, { tag: '', tagSum: '' });
+  if (stable(bare(st)) === stable(bare(S.page))) { if (S.page.tag !== st.tag) { S.page.tag = st.tag; signed(S.page); keepPage(S.page); } return; }
   const moved = gridOf(st.poll) !== gridOf(S.page.poll);
   if (S.view === 'schedule' && M.rev === rev && !M.saving) {
     flushDraft();
@@ -4238,7 +4302,7 @@ async function switchPoll(id) {
   switching = id;
   redrawSwitcher();
   try {
-    const st = pageOf(await api.state(session, param));
+    const st = signed(pageOf(await api.state(session, param, '')));
     if (S.session !== session || gen !== pageGen) return;
     flushDraft();
     pageGen++; pageFetch = null; refetchAfterReplies = false;
@@ -5483,7 +5547,7 @@ async function saveMyBusy(list, known) {
     throw e;
   }
   S.busy = busyNow({ busy: r.busy });
-  if (S.page) { S.page.busy = S.busy; keepPage(S.page); }
+  if (S.page) { S.page.busy = S.busy; S.page.tag = ''; keepPage(S.page); }
   redrawKeepingFocus(render);
   refreshPage();
   return S.busy;
@@ -5580,7 +5644,7 @@ async function saveMyAway(list, known) {
   }
   S.away = r.away || [];
   // The copy kept on this device follows too (it opens first next time).
-  if (S.page) { S.page.away = S.away; keepPage(S.page); }
+  if (S.page) { S.page.away = S.away; S.page.tag = ''; keepPage(S.page); }
   if (S.poll) M.sel = new Set(Array.from(M.sel).filter(d => canMark(S.poll, d)));
   redrawKeepingFocus(render);
   refreshPage();
@@ -5871,6 +5935,96 @@ async function checkVersion(auto, tries) {
 }
 // With the other messages (and read out like them): a newer Provala is ready. Yenile asks first if something here
 // would be lost.
+/* ---------- The move (from version 2026-10-r6.1): Provala on Google read-only for an hour or so, then moved */
+// While Provala is being moved, every answer says so (move: 'readonly'): a note on top, until an answer doesn't. Once
+// it has moved, every request is answered "moved", with the new address: a notice over everything, with a way there
+// that takes this phone's sign-in along, once (a form posted to the new address's api/carry: never in an address, so
+// in no history; the new address takes it only from this one). Then nothing is kept here any more.
+let moveNote = null, movedTo = '';
+function noteMove(data) {
+  if (!data || typeof data !== 'object') return;
+  if (data.error === 'moved' && typeof data.to === 'string') { showMoved(data.to); return; }
+  const on = data.move === 'readonly';
+  if (on && !moveNote) {
+    moveNote = h('div', { class: 'notice warn move-note', role: 'status', id: 'move-note' }, h('strong', null, t('movingTitle')), h('span', null, t('movingText')));
+    document.body.prepend(moveNote);
+  } else if (!on && data.ok && !data.same && moveNote) { moveNote.remove(); moveNote = null; }
+}
+// (As Code.gs takes it: https, or http on this computer for the tests; a host alone, ending with /.)
+const movedOk = to => typeof to === 'string' && to.length <= 201 && /^(https:\/\/[a-z0-9-]+(\.[a-z0-9-]+)*\.[a-z]{2,}|http:\/\/127\.0\.0\.1:\d{2,5})\/$/.test(to);
+function showMoved(to) {
+  if (movedTo || !movedOk(to) || isDemo) return;
+  movedTo = to;
+  if (moveNote) { moveNote.remove(); moveNote = null; }
+  const go = h('button', { type: 'button', class: 'btn primary', id: 'moved-go', onclick: () => carryTo(to) }, t('movedGo'));
+  // (The address itself goes the same way: with the sign-in.)
+  const link = h('a', { href: to, rel: 'noopener', onclick: e => { e.preventDefault(); carryTo(to); } }, to);
+  document.body.append(h('div', { class: 'backdrop moved-back' },
+    h('div', { class: 'modal moved-modal', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'moved-title' },
+      h('h2', { id: 'moved-title' }, t('movedTitle')),
+      h('p', null, t('movedText')),
+      h('p', { class: 'moved-to' }, link),
+      h('p', { class: 'hint' }, t('movedHome')),
+      h('p', { class: 'err', id: 'moved-err', role: 'alert', hidden: true }, t('movedFail')),
+      h('div', { class: 'modal-foot' }, h('div', { class: 'end' }, go)))));
+  go.focus();
+}
+// Changes not yet saved, to take along: the newest dozen, up to 250,000 characters in all (what api/carry takes, so
+// nothing sent is turned away there); one that isn't one (no time on it) stays behind.
+function draftsToCarry(list) {
+  const out = [];
+  let total = 0;
+  const dated = list.map(([k, v]) => { let ts = 0; try { ts = JSON.parse(v).ts; } catch (e) { /* not one */ } return [k, v, ts]; })
+    .filter(x => typeof x[1] === 'string' && Number.isFinite(x[2]) && x[2] > 0 && x[1].length <= 48000).sort((a, b) => b[2] - a[2]);
+  for (const [k, v] of dated) {
+    if (out.length >= 12 || total + v.length > 250000) break;
+    out.push([k, v]); total += v.length;
+  }
+  return out;
+}
+// Asked of the new address first (a GET to its api/carry, answered to this address alone): does it take sign-ins from
+// here? Only then is anything let go of here; if not, everything stays, and the notice says to try again later.
+let carrying = false;
+async function carryTo(to) {
+  // (In a frame on another site: nothing goes along from here; the new address opens on its own.)
+  if (framed) { window.open(to, '_blank', 'noopener'); return; }
+  if (carrying) return;
+  carrying = true;
+  const go = document.getElementById('moved-go'), err = document.getElementById('moved-err');
+  if (go) go.disabled = true;
+  if (err) err.hidden = true;
+  let yes = false;
+  try {
+    const ask = new AbortController(), give = setTimeout(() => ask.abort(), 10000);
+    const r = await fetch(to + 'api/carry', { mode: 'cors', credentials: 'omit', cache: 'no-store', referrerPolicy: 'no-referrer', signal: ask.signal });
+    clearTimeout(give);
+    yes = r.status === 204;
+  } catch (e) { /* not there, or not taking them from here: said below */ }
+  if (!yes) {
+    carrying = false;
+    if (go) { go.disabled = false; go.focus(); }
+    if (err) err.hidden = false;
+    return;
+  }
+  flushDraft();   // (a change typed a moment ago goes along too)
+  const form = h('form', { method: 'POST', action: to + 'api/carry' });
+  const add = (k, v) => { if (v) form.append(h('input', { type: 'hidden', name: k, value: v })); };
+  const org = store.get('provala-org');
+  add('provala-session', store.get('provala-session'));
+  add('provala-org', org && org.indexOf('org.') === 0 ? org : '');   // (a planner sign-in; never the organizer key itself)
+  add('provala-lang', store.get('provala-lang'));
+  add('provala-mode', store.get('provala-mode'));
+  for (const [k, v] of draftsToCarry(store.keys().filter(k => k.indexOf('provala-draft-') === 0).map(k => [k, store.get(k)]))) add(k, v);   // (changes not yet saved)
+  // (Where it was going: a poll's link, the planner's page.)
+  const then = location.search + location.hash;
+  add('provala-then', /^[?#][\x21-\x7e]{1,500}$/.test(then) ? then : '');
+  // (Once: nothing of Provala stays on this phone at the old address, so nothing signs in there or goes along again.)
+  for (const k of store.keys()) if (k.indexOf('provala-') === 0) store.del(k);
+  if (window.provalaDropOld) window.provalaDropOld();   // (and what pages before version 2026-10-r5.4 kept)
+  document.body.append(form);
+  form.submit();
+}
+
 function showUpdate() {
   const host = document.getElementById('toasts');
   if (!host || document.getElementById('update-note')) return;
@@ -6086,7 +6240,7 @@ async function sendRide(p, ev, ride) {
     const r = await api.ride(session, p.id, ev.id, ride);
     if (S.session !== session) return;
     S.rides = (S.rides || []).filter(x => !(x.poll === p.id && x.event === ev.id)).concat(cleanRides(r.rides));
-    if (S.page) { S.page.rides = S.rides; keepPage(S.page); }
+    if (S.page) { S.page.rides = S.rides; S.page.tag = ''; keepPage(S.page); }
     u.from = ''; u.note = '';   // (shared, or taken back: nothing typed is left waiting)
     u.busy = false;
     redrawReplies(ride ? id + '-undo' : id + '-share');
@@ -6194,7 +6348,7 @@ let adminGen = 0;   // (counts switches between the planner's page and a section
 let lgOpening = false;   // (a section leader's general rehearsal's attendance being fetched to open)
 function switchAdmin(lead) {
   adminGen++;
-  for (const b of document.querySelectorAll('.backdrop')) b.remove();   // (the other page's dialogs go with it, and its undo offers)
+  for (const b of document.querySelectorAll('.backdrop:not(.moved-back)')) b.remove();   // (the other page's dialogs go with it, and its undo offers; not the notice that Provala has moved)
   for (const b of document.querySelectorAll('#toasts .toast button')) b.closest('.toast').remove();
   lgOpening = false;
   Object.assign(A, { key: lead ? (S.session && !S.acting ? 'ldr.' + S.session : '') : store.get('provala-org') || store.get('provala-admin-key') || '',
@@ -6210,7 +6364,7 @@ function switchAdmin(lead) {
 }
 // The member signed in here leads some sections (and this backend has section leaders).
 const leading = () => !!(S.member && !S.acting && can('leaders') && S.member.leads && typeof S.member.leads === 'object' && Object.keys(S.member.leads).length);
-// What a leader leads, as Code.gs said: "Koro · Soprano, Alto".
+// What a leader leads, as Code.gs said: "Topluluk · Soprano, Alto".
 function leadsText(leads, gmap) {
   return Object.keys(leads || {}).filter(gid => own(gmap, gid)).map(gid => {
     const g = gmap[gid], names = leads[gid].map(id => sectionLabel(g, id)).join(', ');
@@ -6228,9 +6382,9 @@ const pollMembers = () => (A.data ? A.data.members.filter(m => canSee(m, A.data.
 // Shown to the members of all of its groups / of some of them.
 const shownToAll = p => { const gs = pollGroups(p, adminGmap()); return gs.length > 0 && gs.every(g => A.current[g] === p.id); };
 const shownAnywhere = p => Object.keys(A.current || {}).some(g => A.current[g] === p.id);
-// The groups of the planner's poll, by name: "Koro + Orkestra".
+// The groups of the planner's poll, by name: "Topluluk + Orkestra".
 const adminGroupsLabel = p => pollGroups(p, adminGmap()).map(id => groupName(adminGmap()[id])).join(' + ');
-// A member's sections in the poll's groups ("Tenor", or "Koro: Tenor · Orkestra: Çello" for a joint poll).
+// A member's sections in the poll's groups ("Tenor", or "Topluluk: Tenor · Orkestra: Çello" for a joint poll).
 function memberSecs(m, p) {
   const gmap = adminGmap(), gs = pollGroups(p, gmap).filter(id => inGroup(m, id));
   if (gs.length === 1) { const sec = sectionOf(m, gmap[gs[0]]); return sec ? sectionLabel(gmap[gs[0]], sec) : ''; }
@@ -6270,6 +6424,7 @@ async function adminEnter() {
     A.groups = st.groups || [MAIN_GROUP()];
     takeGroups(st);
     A.caps = st.caps || []; A.errors = st.errors || null; A.messages = st.messages || [];
+    A.host = typeof st.host === 'string' ? st.host : 'google';   // (from version 2026-10-r5.9: Google, or Cloudflare)
     A.settings = st.settings && typeof st.settings === 'object' ? st.settings : { groupsSee: false };
     if (st.pollData) applyAdminPoll(st.pollData);
     else {
@@ -6701,7 +6856,7 @@ function callFromSecs() {
   }
   return !Object.keys(out).length || whole === gids.length ? null : out;
 }
-// "Tenor ve Bas", "Koro: Tenor ve Bas · Orkestra", or "Herkes".
+// "Tenor ve Bas", "Topluluk: Tenor ve Bas · Orkestra", or "Herkes".
 function callText(call, p, gmap, lang) {
   if (!call) return t('callAll', null, lang);
   const many = pollGroups(p, gmap).length > 1;
@@ -7331,7 +7486,14 @@ function fillBackups() {
   const el = clear(R.backups);
   if (!acan('places')) { el.hidden = true; return; }
   el.hidden = false;
-  if (isDemo) { el.append(h('div', { class: 'field bk-row' }, h('span', { class: 'label' }, t('bkTitle')), h('p', { class: 'hint' }, t('bkDemo')))); return; }
+  // (From version 2026-10-r5.9: the data to download, and the error reports, on any host.)
+  const more = (acan('download') || acan('errors')) ? h('div', { class: 'actions bk-more' },
+    acan('download') ? h('button', { type: 'button', class: 'btn small', id: 'dl-data', onclick: e => downloadData(e.currentTarget) }, t('dlData')) : null,
+    acan('errors') ? h('button', { type: 'button', class: 'btn small', id: 'err-list', onclick: () => openErrorsDialog() }, t('errList')) : null) : null;
+  const moreHint = acan('download') ? h('p', { class: 'hint' }, t('dlHint')) : null;
+  if (isDemo) { el.append(h('div', { class: 'field bk-row' }, h('span', { class: 'label' }, t('bkTitle')), h('p', { class: 'hint' }, t('bkDemo')), more, moreHint)); return; }
+  // On Cloudflare: no spreadsheet copies in anyone's Drive here (Provala's owner keeps the copies).
+  if (A.host && A.host !== 'google') { el.append(h('div', { class: 'field bk-row' }, h('span', { class: 'label' }, t('bkTitle')), h('p', { class: 'hint' }, t('bkHere')), more, moreHint)); return; }
   const ask = () => {
     bkUi.asked = true; bkUi.err = false;
     api.admin(A.key, 'backups', {}).then(r => { bkUi.list = r.backups || []; redrawKeepingFocus(fillBackups); }, () => { bkUi.err = true; redrawKeepingFocus(fillBackups); });
@@ -7361,9 +7523,177 @@ function fillBackups() {
     bkUi.list === null && bkUi.err ? h('div', { class: 'actions' }, h('button', { type: 'button', class: 'btn small', id: 'bk-retry', onclick: () => { ask(); redrawKeepingFocus(fillBackups); focusId('bk-line'); } }, t('retry'))) : null,
     old ? h('p', { class: 'hint bk-old' }, t('bkOld')) : null,
     now ? h('div', { class: 'actions' }, now) : null,
+    more, moreHint,
     list.length ? h('details', { class: 'bk-list' }, h('summary', null, t('bkList') + ' (' + list.length + ')'), h('p', { class: 'hint' }, t('bkHint')),
       h('ul', null, list.map(x => h('li', null, h('a', { href: x.url, target: '_blank', rel: 'noopener noreferrer' }, bkStamp(x.at), h('span', { class: 'visually-hidden' }, ' ' + t('rptNewTab'))))))) : null));
 }
+/* ---------- The error reports (from version 2026-10-r5.9): read here, and cleared */
+function openErrorsDialog() {
+  const prev = document.activeElement;
+  const body = h('div', { class: 'err-body', id: 'err-body', role: 'status', 'aria-live': 'polite' }, '…');
+  const clearBtn = h('button', { type: 'button', class: 'btn', id: 'err-clear', hidden: true, onclick: () => { ask.hidden = false; no.focus(); } }, t('errClear'));
+  const yes = h('button', { type: 'button', class: 'btn danger', id: 'err-clear-yes', onclick: async () => {
+    yes.disabled = no.disabled = true;
+    try {
+      const r = await api.admin(A.key, 'clearErrors', {});
+      show(r.errors || []); toast(t('errCleared'));
+      // (No notice left of reports no longer there, here or on another device: Code.gs keeps how many were cleared.)
+      if (A.errors) A.errors.cleared = Math.max(Number(r.cleared) || 0, A.errors.n || 0);
+      store.set('provala-org-errors', String((A.errors && A.errors.n) || 0));
+      const note = document.getElementById('err-details');
+      if (note && note.closest('.notice')) note.closest('.notice').remove();
+    }
+    catch (e) { toast(errText(e), { error: true }); }
+    yes.disabled = no.disabled = false; ask.hidden = true; closeBtn.focus();
+  } }, t('errClearYes'));
+  const no = h('button', { type: 'button', class: 'btn', id: 'err-clear-no', onclick: () => { ask.hidden = true; clearBtn.focus(); } }, t('cancel'));
+  const ask = h('div', { class: 'err-ask', hidden: true }, h('p', null, t('errClearAsk')), h('div', { class: 'end' }, no, yes));
+  const closeBtn = h('button', { type: 'button', class: 'btn primary', id: 'err-close', onclick: () => close() }, t('close'));
+  const whereOf = w => { const m = t('errWhere') || {}; return Object.prototype.hasOwnProperty.call(m, w) ? m[w] : w; };
+  function show(list) {
+    clear(body);
+    clearBtn.hidden = !list.length;
+    if (!list.length) { body.append(h('p', { class: 'hint' }, t('errNone'))); return; }
+    body.append(h('ol', { class: 'err-list' }, list.map(x => h('li', null,
+      h('div', { class: 'err-head' }, h('strong', null, x.at ? bkStamp(x.at) : '—'), x.where ? ' · ' + whereOf(x.where) : '', x.v ? ' · ' + x.v : ''),
+      h('p', { class: 'err-msg' }, x.msg),
+      x.ua ? h('p', { class: 'hint err-ua' }, x.ua) : null,
+      x.stack ? h('details', null, h('summary', null, t('errStack')), h('pre', { class: 'err-stack' }, x.stack)) : null))));
+  }
+  const back = h('div', { class: 'backdrop', onkeydown: e => { if (e.key === 'Escape') close(); }, onmousedown: e => { if (e.target === back) close(); } },
+    h('div', { class: 'modal err-modal', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'err-title' },
+      h('h2', { id: 'err-title' }, t('errTitle')), h('p', { class: 'hint' }, t('errHint')), body, ask,
+      h('div', { class: 'modal-foot' }, h('div', { class: 'end' }, clearBtn, closeBtn))));
+  function close() {
+    back.remove();
+    // (Opened from the notice, gone once cleared: the Members tab's own button, else the planner's tab in use.)
+    const to = prev && prev.isConnected ? prev : document.getElementById('err-list') || document.querySelector('.atab[aria-selected="true"]');
+    if (to && to.focus) to.focus();
+  }
+  document.body.append(back);
+  closeBtn.focus();
+  api.admin(A.key, 'errors', {}).then(r => show(r.errors || []), () => { clear(body); body.append(h('p', { class: 'err' }, t('errLoadErr'))); });
+}
+
+/* ---------- Everything to download (from version 2026-10-r5.9): the sheets as Code.gs gives them, as a .xlsx file */
+async function downloadData(btn) {
+  if (btn) btn.disabled = true;
+  try {
+    const r = await api.admin(A.key, 'sheets', {});
+    const d = new Date(), day = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+    const name = 'provala-veriler-' + day + '.xlsx';
+    downloadBlob(name, xlsxOf(r.sheets || []));
+    toast(t('dlDone', { name }));
+  } catch (e) { toast(errText(e), { error: true }); }
+  if (btn && btn.isConnected) { btn.disabled = false; btn.focus(); }
+}
+// A spreadsheet file of the given sheets ({ name, frozen, rows }), made here, without any library: Office Open XML, the
+// least of it, in a ZIP whose files are stored as they are. Text stays text (a phone number keeps its 0; nothing
+// becomes a formula), numbers and true/false are themselves. A spreadsheet's cell holds at most 32,767 characters: the
+// rest of a longer last cell of a row (the Data column) goes on in the cells after it; any other is cut.
+function xlsxOf(sheets) {
+  const LIMIT = 32767;
+  const BAD = /[\u0000-\u0008\u000B\u000C\u000E-\u001F\uFFFE\uFFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:^|[^\uD800-\uDBFF])[\uDC00-\uDFFF]/;
+  const clean = v => {   // (only what XML can carry: no control characters, no half of a pair; by whole characters)
+    const s = String(v);
+    if (!BAD.test(s)) return s;   // (most text: nothing to take out)
+    let o = '';
+    for (const ch of s) {
+      const c = ch.codePointAt(0);
+      if ((c >= 0xD800 && c <= 0xDFFF) || (c < 0x20 && c !== 9 && c !== 10 && c !== 13) || c === 0xFFFE || c === 0xFFFF) continue;
+      o += ch;
+    }
+    return o;
+  };
+  // (Also _x0041_ and the like, which a spreadsheet would read as a character of its own: written so it reads as typed.)
+  const ENT = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' };
+  const esc = v => v.replace(/[&<>"]|_(x[0-9A-Fa-f]{4})_/g, (m, hex) => hex ? '_x005F_' + hex + '_' : ENT[m]);
+  const col = n => { let s = ''; for (n++; n > 0; n = Math.floor((n - 1) / 26)) s = String.fromCharCode(65 + (n - 1) % 26) + s; return s; };
+  const strings = [], index = new Map();   // (each text once, in the shared strings, as spreadsheet programs write them)
+  let refs = 0;
+  const sid = text => { refs++; let i = index.get(text); if (i === undefined) { i = strings.length; strings.push(text); index.set(text, i); } return i; };
+  const pieces = text => {   // (cut at a whole character)
+    const out = [];
+    for (let i = 0; i < text.length;) {
+      let j = Math.min(text.length, i + LIMIT);
+      if (j < text.length && /[\uD800-\uDBFF]/.test(text[j - 1])) j--;
+      out.push(text.slice(i, j)); i = j;
+    }
+    return out;
+  };
+  const cellXml = (v, ref) => {
+    if (typeof v === 'number' && isFinite(v)) return '<c r="' + ref + '"><v>' + v + '</v></c>';
+    if (typeof v === 'boolean') return '<c r="' + ref + '" t="b"><v>' + (v ? 1 : 0) + '</v></c>';
+    if (v === null || v === undefined || v === '') return '';
+    return '<c r="' + ref + '" t="s"><v>' + sid(v) + '</v></c>';
+  };
+  const rowCells = line => {
+    const out = [];
+    (line || []).forEach((v, c, all) => {
+      if ((typeof v === 'number' && isFinite(v)) || typeof v === 'boolean' || v === null || v === undefined) { out.push(v); return; }
+      const text = clean(v);   // (anything else as text, a number that isn't one too)
+      if (text.length <= LIMIT) { out.push(text); return; }
+      if (c === all.length - 1) { out.push(...pieces(text)); return; }
+      let cut = text.slice(0, LIMIT - 2);
+      if (/[\uD800-\uDBFF]$/.test(cut)) cut = cut.slice(0, -1);
+      out.push(cut + ' …');
+    });
+    return out;
+  };
+  // A sheet's name: at most 31 characters, none of []:*?/\, not starting or ending with ', not History (a spreadsheet's
+  // own), each its own whatever the case.
+  const used = new Set(['history']);
+  const fit = (text, max) => { let o = ''; for (const ch of text) { if (o.length + ch.length > max) break; o += ch; } return o.replace(/^[\s']+|[\s']+$/g, ''); };
+  const names = sheets.map((sh, i) => {
+    const base = fit(clean(sh.name || '').replace(/[\[\]:*?\/\\]/g, ' '), 31) || 'Sayfa ' + (i + 1);
+    let n = base;
+    for (let k = 2; used.has(n.toLowerCase()); k++) n = (fit(base, 26) || 'Sayfa') + ' (' + k + ')';
+    used.add(n.toLowerCase()); return n;
+  });
+  const sheetFiles = sheets.map((sh, i) => {
+    const rows = (sh.rows || []).map((line, r) => { const cs = rowCells(line).map((v, c) => cellXml(v, col(c) + (r + 1))).join(''); return cs ? '<row r="' + (r + 1) + '">' + cs + '</row>' : ''; }).join('');
+    const frozen = Math.max(0, Math.floor(Number(sh.frozen) || 0));
+    const pane = frozen > 0 ? '<sheetViews><sheetView workbookViewId="0"><pane ySplit="' + frozen + '" topLeftCell="A' + (frozen + 1) + '" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews>' : '';
+    return ['xl/worksheets/sheet' + (i + 1) + '.xml', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">' + pane + '<sheetData>' + rows + '</sheetData></worksheet>'];
+  });
+  const n = sheets.length;
+  const files = [
+    ['[Content_Types].xml', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/><Override PartName="/xl/sharedStrings.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sharedStrings+xml"/>' +
+      sheets.map((sh, i) => '<Override PartName="/xl/worksheets/sheet' + (i + 1) + '.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>').join('') + '</Types>'],
+    ['_rels/.rels', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>'],
+    ['xl/workbook.xml', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets>' +
+      names.map((nm, i) => '<sheet name="' + esc(nm) + '" sheetId="' + (i + 1) + '" r:id="rId' + (i + 1) + '"/>').join('') + '</sheets></workbook>'],
+    ['xl/_rels/workbook.xml.rels', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">' +
+      sheets.map((sh, i) => '<Relationship Id="rId' + (i + 1) + '" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet' + (i + 1) + '.xml"/>').join('') +
+      '<Relationship Id="rId' + (n + 1) + '" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>' +
+      '<Relationship Id="rId' + (n + 2) + '" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/sharedStrings" Target="sharedStrings.xml"/></Relationships>'],
+    ['xl/styles.xml', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><fonts count="1"><font><sz val="11"/><name val="Calibri"/></font></fonts><fills count="2"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill></fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>']
+  ].concat(sheetFiles);
+  // (After the sheets: only then are all their texts known.)
+  files.push(['xl/sharedStrings.xml', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><sst xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" count="' + refs + '" uniqueCount="' + strings.length + '">' +
+    strings.map(t => '<si><t xml:space="preserve">' + esc(t) + '</t></si>').join('') + '</sst>']);
+  return zipStored(files.map(([nm, text]) => [nm, new TextEncoder().encode(text)]), 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+}
+// A ZIP of the given files ([name, bytes]), stored without compression (what a .xlsx is, inside).
+function zipStored(files, type) {
+  const crcTable = zipStored.t || (zipStored.t = Array.from({ length: 256 }, (_, n) => { for (let k = 0; k < 8; k++) n = n & 1 ? 0xEDB88320 ^ (n >>> 1) : n >>> 1; return n >>> 0; }));
+  const crc = b => { let c = 0xFFFFFFFF; for (let i = 0; i < b.length; i++) c = crcTable[(c ^ b[i]) & 0xFF] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; };
+  const d = new Date(), time = (d.getHours() << 11) | (d.getMinutes() << 5) | (d.getSeconds() >> 1), date = ((d.getFullYear() - 1980) << 9) | ((d.getMonth() + 1) << 5) | d.getDate();
+  const parts = [], central = [];
+  let off = 0;
+  const head = (n, fields) => { const b = new DataView(new ArrayBuffer(n)); let p = 0; for (const [size, v] of fields) { if (size === 4) b.setUint32(p, v, true); else b.setUint16(p, v, true); p += size; } return new Uint8Array(b.buffer); };
+  for (const [name, data] of files) {
+    const nb = new TextEncoder().encode(name), c = crc(data);
+    const local = head(30, [[4, 0x04034b50], [2, 20], [2, 0], [2, 0], [2, time], [2, date], [4, c], [4, data.length], [4, data.length], [2, nb.length], [2, 0]]);
+    parts.push(local, nb, data);
+    central.push(head(46, [[4, 0x02014b50], [2, 20], [2, 20], [2, 0], [2, 0], [2, time], [2, date], [4, c], [4, data.length], [4, data.length], [2, nb.length], [2, 0], [2, 0], [2, 0], [2, 0], [4, 0], [4, off]]), nb);
+    off += local.length + nb.length + data.length;
+  }
+  const size = central.reduce((n, b) => n + b.length, 0);
+  const end = head(22, [[4, 0x06054b50], [2, 0], [2, 0], [2, files.length], [2, files.length], [4, size], [4, off], [2, 0]]);
+  return new Blob(parts.concat(central, [end]), { type });
+}
+
 // After members or groups change: the lists and numbers that show them (and group names wherever they appear).
 function membersChanged() {
   reAway();
@@ -7577,7 +7907,9 @@ function openGroupEditor(g) {
     // A known section left with its own name is stored without one, so each reader sees it in their language.
     const sections = secs.map(x => { const nm = x.name.trim(); return { id: x.id, name: builtIn(x.id) && (nm === t('sec' + x.id, null, 'tr') || nm === t('sec' + x.id, null, 'en')) ? '' : nm }; });
     const nm = name.value.trim();
-    const gname = isMain && (nm === t('groupMain', null, 'tr') || nm === t('groupMain', null, 'en')) ? '' : nm;
+    // (The unnamed main group's own word left in the box keeps it unnamed; a main group that has a name keeps it, even
+    // "Topluluk" or "Ensemble".)
+    const gname = isMain && !(g && g.name) && (nm === t('groupMain', null, 'tr') || nm === t('groupMain', null, 'en')) ? '' : nm;
     const members = {};
     for (const id of Object.keys(mem)) if (mem[id] !== start[id]) members[id] = mem[id];
     return { group: { id: g ? g.id : undefined, name: gname, sections }, members };
@@ -7589,7 +7921,9 @@ function openGroupEditor(g) {
     if (!out.group.name && !isMain) { fail(t('vGroupName')); name.focus(); return; }
     const lower = x => x.toLocaleLowerCase(LOC[S.lang]);
     const others = A.groups.filter(x => !g || x.id !== g.id).flatMap(x => (x.id === MAIN && !x.name ? [t('groupMain', null, 'tr'), t('groupMain', null, 'en')] : [groupName(x)]).map(lower));
-    if (out.group.name && others.indexOf(lower(out.group.name)) !== -1) { fail(t('vGroupDup')); name.focus(); return; }
+    // (A group keeps the name it has, even one that clashes since version 2026-10-r5.6: Code.gs allows that too.)
+    const keeps = g && lower(out.group.name) === lower(g.name || '');
+    if (out.group.name && !keeps && others.indexOf(lower(out.group.name)) !== -1) { fail(t('vGroupDup')); name.focus(); return; }
     const blank = secs.findIndex(x => !x.name.trim());
     if (blank !== -1) { fail(t('vSecName')); document.getElementById('ge-sec-' + blank).focus(); return; }
     // The same name twice, in either language (a known section is named in both): Code.gs refuses it too.
@@ -8157,7 +8491,7 @@ function attendanceText(ev) {
     + (w.maybe.length ? ' · ' + t('ifNeeded') + ': ' + w.maybe.map(r => r.name).join(', ') : '')
     + (w.miss.length ? ' · ' + t('missing') + ': ' + w.miss.map(r => r.name).join(', ') : '');
 }
-// "Soprano 2/5 · Alto 3/4 · …" (for a joint poll, "Koro: … · Orkestra: …"): the numbers members see for this
+// "Soprano 2/5 · Alto 3/4 · …" (for a joint poll, "Topluluk: … · Orkestra: …"): the numbers members see for this
 // meeting once it's published.
 function partsText(ev) {
   const p = A.data.poll, ms = A.data.members || [], gmap = adminGmap();
@@ -9102,11 +9436,16 @@ function buildSince() {
 }
 // Problems the page met on members' devices (the backend counts them; details are in the Errors sheet).
 function buildErrorsNotice() {
-  const n = (A.errors && A.errors.n) || 0, seen = Number(store.get('provala-org-errors')) || 0;
+  // (From version 2026-10-r5.9: none for reports cleared since, on any device.)
+  const n = (A.errors && A.errors.n) || 0, seen = Math.max(Number(store.get('provala-org-errors')) || 0, (A.errors && Number(A.errors.cleared)) || 0);
   if (n <= seen) return null;
   // (From version 2026-10-r5.2.1: a link to the Errors sheet itself, when Code.gs says where it is.)
   const url = A.errors && typeof A.errors.url === 'string' && A.errors.url.indexOf('https://docs.google.com/spreadsheets/d/') === 0 ? A.errors.url : '';
-  const box = h('div', { class: 'notice warn' }, h('span', null, t('errorsNotice', { n: n - seen })),
+  // (From version 2026-10-r5.9: the reports themselves, here, with a Code.gs that has them; on Cloudflare there's no
+  // sheet to open.)
+  const here = acan('errors');
+  const box = h('div', { class: 'notice warn' }, h('span', null, here ? t('errorsNotice2', { n: n - seen }) : t('errorsNotice', { n: n - seen })),
+    here ? h('button', { type: 'button', class: 'btn small', id: 'err-details', onclick: () => openErrorsDialog() }, t('errDetails')) : null,
     url ? h('a', { class: 'btn small', id: 'err-open', href: url, target: '_blank', rel: 'noopener noreferrer' }, t('errorsOpen')) : null,
     h('button', { type: 'button', class: 'btn small', onclick: () => { store.set('provala-org-errors', String(n)); box.remove(); } }, t('dismiss')));
   return box;
@@ -12006,7 +12345,7 @@ function noticeDialog(readOnly, back_) {
         if (S.session !== session) return;
         noticeUi.done = sessionMemberId() + '|' + v;
         if (S.notice) S.notice.at = new Date().toISOString();
-        if (S.page) { S.page.notice = S.notice; keepPage(S.page); }
+        if (S.page) { S.page.notice = S.notice; S.page.tag = ''; keepPage(S.page); }
         close();
         focusId('main');
       } catch (e) { toast(errText(e), { error: true }); btn.disabled = false; }
@@ -12054,7 +12393,7 @@ function profileForm() {
       if (S.session !== session) return;
       profUi.dirty = false; profUi.busy = false; profUi.draft = null;
       if (S.member) S.member.profile = r.profile;
-      if (S.page) { S.page.member = S.member; keepPage(S.page); }
+      if (S.page) { S.page.member = S.member; S.page.tag = ''; keepPage(S.page); }
       toast(t('profSaved'));
       refreshPage();   // (the list below follows: their own line)
       redrawKeepingFocus(render);
