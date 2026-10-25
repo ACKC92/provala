@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="strict-origin">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-XxCfRTkNqlfejtsbrSfmXjbun62Eqh9+Y61Kpcz1YHs='; style-src 'unsafe-inline'; connect-src https://vgmo.provarium.net; form-action https://vgmo.provarium.net; base-uri 'none'">
+<meta name="robots" content="noindex">
+<title>Provarium taşındı · Provarium has moved</title>
+<style>
+  :root { color-scheme: light dark; --bg: #f4ecdc; --ink: #2a2118; --soft: #6b5a45; --accent: #2b4c8c; --card: #fbf6ec; --rule: #d8c7a8; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #1b1713; --ink: #efe6d6; --soft: #b8a98f; --accent: #8fb0f0; --card: #26211b; --rule: #4a3f32; } }
+  html, body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.5 Georgia, 'Times New Roman', serif; }
+  main { max-width: 34rem; margin: 12vh auto 0; padding: 24px 20px; background: var(--card); border: 1px solid var(--rule); border-radius: 12px; }
+  h1 { font-size: 1.6rem; margin: 0 0 .6rem; }
+  p { margin: .6rem 0; }
+  .to { font-weight: 600; word-break: break-all; }
+  .to a { color: var(--accent); }
+  .soft { color: var(--soft); font-size: .92rem; }
+  button[disabled] { opacity: .6; cursor: progress; }
+  button { font: inherit; font-weight: 600; padding: 10px 18px; border-radius: 8px; border: 1px solid var(--accent); background: var(--accent); color: var(--card); cursor: pointer; }
+  button:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+  @media (max-width: 480px) { main { margin: 6vh 16px 0; } }
+</style>
+</head>
+<body>
+<main>
+  <h1 id="title">Provarium taşındı</h1>
+  <p id="text">Provarium artık yeni adresinde. Bu telefondaki girişiniz ve henüz kaydedilmemiş değişiklikleriniz de sizinle gelir.</p>
+  <p class="to"><a id="to" href="https://vgmo.provarium.net/">https://vgmo.provarium.net/</a></p>
+  <p class="soft" id="home">Provarium’u ana ekranınıza eklediyseniz yeni adresten yeniden ekleyin, eskisini silin. (iPhone’da orada bir kez giriş yapmanız gerekebilir.)</p>
+  <p><button id="go" type="button">Yeni adrese geç</button></p>
+  <p class="soft" id="soon" role="status">Birazdan kendiliğinden geçilecek.</p>
+</main>
+<script>// Provarium's old address, once Provarium has moved (made by make.mjs, with the old address in FROM and the new one in TO):
+// what this phone kept for Provarium here (a member's sign-in, the planner's, the language, day or night, changes not yet
+// saved) goes along to the new address once, as a form posted there (api/carry, which takes it only from this
+// address); then nothing of Provarium stays here. The service worker the app left here, and what it kept, go too (the
+// app's only: other pages at this address keep theirs). An address with ?p= or #… keeps it at the new one (a sign-in
+// link sent earlier still works there). Old-style JavaScript, as the app's safety net.
+// Nothing is let go of before the new address says it takes it (a GET to api/carry, answered to this address alone):
+// if it doesn't, everything stays here, and the page says to try again later.
+(function () {
+  var TO = "https://vgmo.provarium.net/", FROM = "https://ackc92.github.io/provala/";
+  var HERE = FROM.replace(/^[a-z]+:\/\/[^\/]+/, '');   // (the app's folder here: /provarium/)
+  var KEYS = ['session', 'org', 'lang', 'mode'];
+  var get = function (k) { try { return window.localStorage.getItem(k); } catch (e) { return null; } };
+  // (What the phone kept under the app's names, newest first: Provarium's, the previous name's, the first working title's.)
+  var NAMES = ['provarium-', 'prov' + 'ala-', 'tu' + 'tti-'];
+  var mine = function (k) { for (var n = 0; n < NAMES.length; n++) if (k && k.indexOf(NAMES[n]) === 0) return NAMES[n]; return ''; };
+  // (Which of them hold what the phone has now: each version from 2026-10-r5.4 copied the earlier names over once, and
+  // marked it. What stays under an earlier name after that was left behind (a planner signed out since, say): never
+  // carried, only cleared.)
+  var LIVE = get('provarium-moved') ? ['provarium-'] : get(NAMES[1] + 'moved') ? [NAMES[1]] : NAMES;
+  var live = function (n) { for (var i = 0; i < LIVE.length; i++) if (LIVE[i] === n) return true; return false; };
+  var newest = function (k) { for (var n = 0; n < LIVE.length; n++) { var v = get(LIVE[n] + k); if (v) return v; } return null; };
+  var EN = { title: 'Provarium has moved', text: 'Provarium is at its new address now. Your sign-in on this phone comes along, and so do any changes not saved yet.',
+    home: 'If you added Provarium to your home screen, add it again from the new address and remove the old one. (On an iPhone, you may need to sign in once there.)',
+    go: 'Go to the new address', soon: 'Going there in a moment.' };
+  var FAIL = { tr: 'Yeni adres girişinizi henüz alamıyor. Birkaç dakika sonra yeniden deneyin.', en: 'The new address isn’t ready to take your sign-in yet. Try again in a few minutes.' };
+  var lang = newest('lang') || ((navigator.language || '').toLowerCase().indexOf('en') === 0 ? 'en' : 'tr');
+  if (lang !== 'en') lang = 'tr';
+  if (lang === 'en') {
+    document.documentElement.lang = 'en'; document.title = 'Provarium has moved';
+    for (var id in EN) { var el = document.getElementById(id); if (el) el.textContent = EN[id]; }
+  }
+  var button = document.getElementById('go'), soon = document.getElementById('soon');
+  var say = function (t) { soon.textContent = t; };
+  // In a frame (on another site), or at the new address itself (a mistake in making these files): nothing automatic,
+  // nothing carried; the link alone.
+  var framed = true;
+  try { framed = window.top !== window.self; } catch (e) { /* framed */ }
+  var toOrigin = TO.replace(/^([a-z]+:\/\/[^\/]+).*$/, '$1');
+  if (framed || location.protocol + '//' + location.host === toOrigin) { button.parentNode.removeChild(button); say(''); return; }
+  // (Come back to with Back, after going: nothing automatic again, so Back works; the button still does.)
+  var back = false;
+  try { var nav = performance.getEntriesByType('navigation')[0]; back = !!nav && nav.type === 'back_forward'; } catch (e) { /* older browsers */ }
+  try { if (!back && performance.navigation && performance.navigation.type === 2) back = true; } catch (e) { /* none */ }
+  try {
+    navigator.serviceWorker.getRegistrations().then(function (rs) { rs.forEach(function (r) { if (r.scope === FROM) r.unregister(); }); });
+  } catch (e) { /* none */ }
+  try {
+    caches.keys().then(function (ks) {
+      ks.forEach(function (k) {
+        var ours = !!mine(k), at = k.indexOf(':');
+        if (ours && (at === -1 || k.slice(at + 1) === HERE)) caches['delete'](k);
+      });
+    });
+  } catch (e) { /* none */ }
+  // (Does the new address take sign-ins from here? Asked of it, answered to this address alone.)
+  function ready(cb) {
+    var done = false, end = function (yes) { if (!done) { done = true; cb(yes); } };
+    try {
+      var x = new XMLHttpRequest();
+      x.open('GET', TO + 'api/carry', true);
+      x.timeout = 10000;
+      x.onload = function () { end(x.status === 204); };
+      x.onerror = x.ontimeout = x.onabort = function () { end(false); };
+      x.send();
+    } catch (e) { end(false); }
+  }
+  function keys() {
+    var all = [], i;
+    try { for (i = 0; i < window.localStorage.length; i++) all.push(window.localStorage.key(i)); } catch (e) { /* no storage */ }
+    return all;
+  }
+  var gone = false, timer = 0;
+  function go() {
+    if (gone) return;
+    gone = true;
+    clearTimeout(timer);
+    var kept = {}, any = false, i, all = keys();
+    for (i = 0; i < KEYS.length; i++) {
+      var v = newest(KEYS[i]);
+      if (KEYS[i] === 'org' && v && v.indexOf('org.') !== 0) v = null;   // (a planner sign-in; never the organizer key itself)
+      if (v) { kept['provarium-' + KEYS[i]] = v; if (KEYS[i] === 'session' || KEYS[i] === 'org') any = true; }
+    }
+    // (Changes not yet saved: the newest dozen, up to 250,000 characters in all, as api/carry takes them.)
+    var drafts = [];
+    for (i = 0; i < all.length; i++) {
+      var k = all[i] || '', d = '', dv = null, ts = 0;
+      var was = mine(k);
+      if (was && live(was) && k.indexOf(was + 'draft-') === 0) d = 'provarium-' + k.slice(was.length);
+      if (d) dv = get(k);
+      try { ts = dv ? JSON.parse(dv).ts : 0; } catch (e) { ts = 0; }
+      if (dv && typeof ts === 'number' && ts > 0 && dv.length <= 48000) drafts.push([d, dv, ts]);
+    }
+    drafts.sort(function (x, y) { return y[2] - x[2]; });
+    var total = 0, n = 0, some = false;
+    for (i = 0; i < drafts.length && n < 12; i++) {
+      if (kept[drafts[i][0]]) continue;
+      if (total + drafts[i][1].length > 250000) break;
+      kept[drafts[i][0]] = drafts[i][1]; total += drafts[i][1].length; n++;
+    }
+    for (var kk in kept) some = true;
+    var then = (location.search || '') + (location.hash || '');
+    if (!/^[?#][\x21-\x7e]{0,500}$/.test(then)) then = '';
+    var forget = function () {
+      try { for (var j = 0; j < all.length; j++) if (mine(all[j])) window.localStorage.removeItem(all[j]); } catch (e) { /* no storage */ }
+    };
+    // (Nothing kept here: straight there. Only the language, day or night, or changes with no sign-in: carried if the
+    // new address takes them, else straight there all the same; a sign-in waits until it does.)
+    var plain = function () { forget(); location.replace(TO + then); };
+    if (!some) { plain(); return; }
+    button.disabled = true;
+    ready(function (yes) {
+      button.disabled = false;
+      if (!yes && !any) { plain(); return; }
+      if (!yes) { gone = false; say(FAIL[lang]); return; }
+      var f = document.createElement('form');
+      f.method = 'POST'; f.action = TO + 'api/carry';
+      kept['provarium-then'] = then;
+      for (var n in kept) { var inp = document.createElement('input'); inp.type = 'hidden'; inp.name = n; inp.value = kept[n]; f.appendChild(inp); }
+      document.body.appendChild(f);
+      forget();
+      f.submit();
+    });
+  }
+  button.addEventListener('click', go);
+  button.focus();
+  if (back) say(''); else timer = setTimeout(go, 2500);
+  window.addEventListener('pageshow', function (e) { if (e.persisted) { clearTimeout(timer); gone = false; button.disabled = false; say(''); } });
+})();
+</script>
+</body>
+</html>
